@@ -193,11 +193,8 @@
 # Date        : March. 2019
 #--------------------------------------------------------------------------
 
-#from matplotlib.pyplot import plot
-#import GENERAL.log as log
 import networkx as nx
 import json
-#from networkx.readwrite import json_graph
 import os
 import pandas as pd
 import numpy as np
@@ -206,44 +203,8 @@ from sklearn.preprocessing import MinMaxScaler
 import seaborn as sns
 from helpers.ismember import ismember
 import webbrowser
-#import matplotlib.pyplot as plt
-#import NETWORKS.network as network
-#%matplotlib inline
 
 #%%
-#def G2d3(G, width=1800, height=500, collision=0.5, charge=250, edge_distance_minmax=[1,100], title='d3graph', slider=None, path=None, savename='index', cmap='Paired', verbose=log.INFO):
-#    
-#    config = set_configurations(width, height, collision, charge, edge_distance_minmax, title, slider, path, savename, cmap, verbose)
-#    config['edge_distance'] = '.linkDistance(function(d) {return d.edge_weight;})' # Distance of nodes depends on the weight of the edges
-#    
-#    # Inlucde information in Graph
-#    [df_nodes, df_edges] = network.G2df(G, edge_distance_minmax=edge_distance_minmax)
-#    # And back to graph
-#    G1 = network.df2G(df_nodes, df_edges)
-#
-#    # Slider
-#    [min_slider, max_slider]=setup_slider(G1, slider=slider)
-#    config['min_slider']=min_slider
-#    config['max_slider']=max_slider
-#
-#    # Check path
-#    set_source_dir(config)
-#    # Write to json
-#    jsonpath = write_json(G1, config)
-#    # Create html with json file embedded
-#    write_index_html(config, jsonpath)
-#    # Set user-defined parameters in javascript
-#    write_jscript(df_nodes, config)
-#    # Cleaning
-#    os.remove(jsonpath)
-#    
-#    out=dict()
-#    out['G']=G1
-#    out['path']=config['path']+'index.html'
-#    webbrowser.open(out['path'], new=2)
-#    
-#    return(out)
-
 def do_checks(adjmat):
     assert float(nx.__version__)>2, 'This function requires networkx to be v2 or higher. Try to: pip install --upgrade networkx'
     if 'numpy' in str(type(adjmat)):

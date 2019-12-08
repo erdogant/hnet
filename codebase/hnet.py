@@ -734,7 +734,7 @@ def path_split(filepath, rem_spaces=False):
     
 #%% Make network d3
 def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=False, showfig=True):
-    from NETWORKS.d3graph import d3graph
+    from helpers.d3graph import d3graph
 
     [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
     node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
@@ -764,7 +764,7 @@ def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, d
 def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, figsize=[15,10], pos=None):
     import networkx as nx
     import matplotlib.pyplot as plt
-    import NETWORKS.network as network
+    import helpers.network as network
 
     config=dict()
     config['scale']=scale
@@ -847,7 +847,7 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
 
 #%% Make plot of the structure_learning
 def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=''):
-    from VIZ.imagesc import imagesc
+    from helpers.imagesc import imagesc
 
     simmatP = out['simmatP'].copy()
     adjmatLog = out['simmatLogP'].copy()
@@ -931,7 +931,7 @@ def to_symmetric(out, make_symmetric='logp', verbose=3):
 
 #%% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
-    import NETWORKS.network as network
+    import helpers.network as network
     [scores, adjmat_diff] = network.compare_networks(adjmat_true, adjmat_pred, pos=pos, showfig=showfig, width=width, height=height, verbose=verbose)
     return(scores, adjmat_diff)
     

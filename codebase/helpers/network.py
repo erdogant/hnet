@@ -380,8 +380,8 @@ def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[2
 
 #%% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
-    from GENERAL.ismember import ismember
-    import SUPERVISED.twoClassSummary as twoClassSummary
+    from helpers.ismember import ismember
+    import helpers.twoClassSummary as twoClassSummary
 
     # Make sure columns and indices to match
     [IArow,IBrow]=ismember(adjmat_true.index.values, adjmat_pred.index.values)

@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 #import Core
 # Front-end
-import dash_dangerously_set_inner_html
-import codecs
+# import dash_dangerously_set_inner_html
+# import codecs
 import dash
 #import dash_bootstrap_components as dbc
 import dash_core_components as dcc
@@ -20,13 +20,13 @@ import webbrowser
 import hnet as hnet
 import helpers.picklefast as picklefast
 
-global labels
+# global labels
 
 #%% Initializatoin
 TMP_DIRECTORY     = './tmp/'
 HNET_DIR_STABLE   = './results/stable/'
 HNET_DIR_TMP      = './results/tmp/'
-BACKGROUND_IMAGE  = 'url(./static/background.jpg)'
+# BACKGROUND_IMAGE  = 'url(./static/background.jpg)'
 TMP_DIRECTORY_DEL = False
 
 # Create directories
@@ -58,10 +58,13 @@ HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
 
 #%%
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app=dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 #app.css.append_css({'external_url':external_stylesheets}) # Required for making columns
 app.scripts.config.serve_locally = True
-app.scripts.append_script({"external_url": ['https://d3js.org/d3.v3.min.js']})
+app.title = "HNet: Graphical Hypergeometric Networks"
+
+# app.scripts.append_script({"external_url": ['https://d3js.org/d3.v3.min.js']})
+
 # Normally Dahs creates its own Flas server internally but by creating our own, we cancreate a route for downloading files
 # server=Flask(__name__)
 #app=dash.Dash(server=server)
@@ -87,8 +90,10 @@ app.scripts.append_script({"external_url": ['https://d3js.org/d3.v3.min.js']})
 #%% Setup webpage
 
 GUIelements = html.Div([
-        html.Div([html.H5("HNets: Graphical Hypergeometric Networks")], style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
+        # Row 1
+        html.Div([html.H5("HNets: Graphical Hypergeometric Networks")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
 
+        # Row 2 - Column 1
         html.Div([
 
             html.Div([
@@ -99,7 +104,6 @@ GUIelements = html.Div([
                 #dcc.Checklist(id='checkbox-id', options=[{'label':'drop nan','value':'True'}], value=['True'], style={"width": "100%"}),
                 dcc.Input(id='perc_min_num-id', placeholder='Minimum percentage..', type='text', value='', style={"width": "100%"}), 
                 dcc.Input(id='excl_background-id', placeholder='Remove background..', type='text', value='', style={"width": "100%"}), 
-
                 dcc.Dropdown(id='alpha-id',
                     options=[
                         {'label': '0.0001', 'value': '0.0001'},
@@ -110,7 +114,6 @@ GUIelements = html.Div([
                         {'label': '1', 'value': '1'},
                     ],
                     value='0.05', style={"width": "100%"}),
-
                 dcc.Dropdown(id='ymin-id',
                     options=[
                         {'label': '1', 'value': '1'},
@@ -121,7 +124,6 @@ GUIelements = html.Div([
                         {'label': '100', 'value': '100'},
                     ],
                     value='10', style={"width": "100%"}),
-
                 dcc.Dropdown(id='specificity-id',
                     options=[
                         {'label': 'Low', 'value': 'low'},
@@ -129,7 +131,6 @@ GUIelements = html.Div([
                         {'label': 'High', 'value': 'high'}
                     ],
                     value='medium', style={"width": "100%"}),
-                
                 dcc.Dropdown(id='multtest-id',
                     options=[
                         {'label': 'Holm', 'value': 'holm'},
@@ -141,10 +142,7 @@ GUIelements = html.Div([
                         {'label': 'Holm-sidak', 'value': 'holm-sidak'},
                     ],
                     value='holm', style={"width": "100%"}),
-
-
                 html.Div(id="OUTPUT_CSV"),
-
                 dcc.Upload(id="UPLOAD_BOX",children=html.Div(["Drag and drop or click to select a file to upload."]),
                        style={
                         #"width": "100%",
@@ -158,16 +156,36 @@ GUIelements = html.Div([
                         'backgroundColor':'white',
                     },
                     multiple=False), 
-               
-                # Create drop-down for 
+
                 dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
                 html.Div(id="results-output")
 
+            ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
-            ], className="six columns", style={"width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
+            # COLUMN 2 --------------------- NETWORK PLOTLY  ------------------ 
+            html.Div([
+                ], className="three columns", style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"}),
 
-            # --------------------- NETWORK plotly  ------------------------- # 
-            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html','r').read())),
+            # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
+            html.Div([
+                # dcc.RangeSlider(
+                #     id='alpha_slider-id',
+                #     min=0,
+                #     max=100,
+                #     step=1,
+                #     value=[100,100],
+                #     # marks={i:{'label':i} for i in range(0,100)}
+                #            ),
+                # html.Br(),
+                # html.Div(id='alpha_slider-output')
+                ], className="three columns", style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
+
+            # ROW 3: Create drop-down for dir listing
+            # html.Div([
+                # dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
+                # html.Div(id="results-output")
+            # ], style={"margin":"0px","width": "100%","border":"1px black solid",'backgroundColor':''}),
+
             # --------------------------------------------------------------- # 
 
 #            html.Div(id="results-output", className="six columns", style={"width": "80%", "border":"1px black solid", "height": "700px"}),
@@ -181,149 +199,7 @@ GUIelements = html.Div([
 
             # Dit werkt bijna
 #            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(codecs.open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html', 'r', 'utf-8').read())),
-            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html','r').read())),
-
-#            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''
-#            <head>
-#            <script type="text/javascript" src="D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/d3.v3.js"></script>
-#            <link rel="stylesheet" href="D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/style.css">
-#            </head>
-#            <body>
-#            <script type="application/json" id="d3graph"> {
-#                "links": [
-#                    {
-#                        "weight": 54.82158881980537,
-#                        "edge_weight": 54.82158881980537,
-#                        "edge_width": 12.247324856961392,
-#                        "source_label": "Sprinkler_1",
-#                        "target_label": "Cloudy_0",
-#                        "source": 3,
-#                        "target": 0
-#                    },
-#                    {
-#                        "weight": 22.833715739709238,
-#                        "edge_weight": 22.833715739709238,
-#                        "edge_width": 5.684618307217716,
-#                        "source_label": "Rain_0",
-#                        "target_label": "Sprinkler_1",
-#                        "source": 4,
-#                        "target": 3
-#                    },
-#                    {
-#                        "weight": 24.53340465164335,
-#                        "edge_weight": 24.53340465164335,
-#                        "edge_width": 6.0333304434371575,
-#                        "source_label": "Wet_Grass_1",
-#                        "target_label": "Sprinkler_1",
-#                        "source": 6,
-#                        "target": 3
-#                    },
-#                    {
-#                        "weight": 54.82158881980537,
-#                        "edge_weight": 54.82158881980537,
-#                        "edge_width": 12.247324856961392,
-#                        "source_label": "Sprinkler_0",
-#                        "target_label": "Cloudy_1",
-#                        "source": 2,
-#                        "target": 1
-#                    },
-#                    {
-#                        "weight": 92.60959390993409,
-#                        "edge_weight": 92.60959390993409,
-#                        "edge_width": 20.0,
-#                        "source_label": "Rain_1",
-#                        "target_label": "Cloudy_1",
-#                        "source": 5,
-#                        "target": 1
-#                    },
-#                    {
-#                        "weight": 10.636268384000315,
-#                        "edge_weight": 10.636268384000315,
-#                        "edge_width": 3.182161596481509,
-#                        "source_label": "Wet_Grass_1",
-#                        "target_label": "Cloudy_1",
-#                        "source": 6,
-#                        "target": 1
-#                    },
-#                    {
-#                        "weight": 22.833715739709238,
-#                        "edge_weight": 22.833715739709238,
-#                        "edge_width": 5.684618307217716,
-#                        "source_label": "Rain_1",
-#                        "target_label": "Sprinkler_0",
-#                        "source": 5,
-#                        "target": 2
-#                    },
-#                    {
-#                        "weight": 67.01662541674791,
-#                        "edge_weight": 67.01662541674791,
-#                        "edge_width": 14.749286970813761,
-#                        "source_label": "Wet_Grass_1",
-#                        "target_label": "Rain_1",
-#                        "source": 6,
-#                        "target": 5
-#                    }
-#                ],
-#                "nodes": [
-#                    {
-#                        "node_name": "Cloudy_0",
-#                        "node_color": "#a6cee3",
-#                        "node_size": "12",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Cloudy_1",
-#                        "node_color": "#a6cee3",
-#                        "node_size": "12",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Sprinkler_0",
-#                        "node_color": "#b2df8a",
-#                        "node_size": "15",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Sprinkler_1",
-#                        "node_color": "#b2df8a",
-#                        "node_size": "10",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Rain_0",
-#                        "node_color": "#1f78b4",
-#                        "node_size": "12",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Rain_1",
-#                        "node_color": "#1f78b4",
-#                        "node_size": "12",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    },
-#                    {
-#                        "node_name": "Wet_Grass_1",
-#                        "node_color": "#33a02c",
-#                        "node_size": "14",
-#                        "node_size_edge": "0.10000000000000009",
-#                        "node_color_edge": "#000000"
-#                    }
-#                ]
-#            }
-#            </script>
-#            <form>
-#            <h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value=9.0 min="9.0" max="93.0" onchange="threshold(this.value)"> 93.0 </h3>
-#            </form>
-#            <script  src="D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/d3graphscript.js"></script>
-#            </body>
-#            </html>
-#            ''')),
+            # html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html','r').read())),
 
 
 
@@ -361,7 +237,7 @@ GUIelements = html.Div([
             
         
         ], className="row", style={"width": "100%"}),
-        
+
 
     ], className="row", style={"width": "100%"} #style={"max-width": "500px"},
 )
@@ -370,6 +246,9 @@ GUIelements = html.Div([
 app.layout = html.Div([GUIelements])
 
 #%%
+# https://towardsdatascience.com/python-interactive-network-visualization-using-networkx-plotly-and-dash-e44749161ed7
+
+
 
 #%%
 #@app.callback(Output('video-target', 'children'), [Input('video-dropdown', 'value')])
@@ -584,6 +463,5 @@ def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, exc
     
 #%% Main
 if __name__ == "__main__":
-    webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
-    app.run_server(debug=True, use_reloader=True)
-    #app.run_server(debug=True, port=8888)
+    # webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)
+    app.run_server(debug=True, use_reloader=True, port=8050)

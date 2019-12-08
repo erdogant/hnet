@@ -9,10 +9,10 @@ __pycache__/
 # Distribution / packaging
 .Python
 tmp/
-codebase/assets/
-codebase/DATA/
-codebase/results/
-codebase/tmp/
+assets/
+DATA/
+results/
+tmp/
 results/
 build/
 develop-eggs/

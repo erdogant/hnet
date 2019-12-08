@@ -16,7 +16,14 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import webbrowser
-# Method
+# Network center panel
+import networkx as nx
+import plotly.graph_objs as go
+from colour import Color
+from datetime import datetime
+from textwrap import dedent as d
+import json
+# HNet
 import hnet as hnet
 import helpers.picklefast as picklefast
 
@@ -49,6 +56,10 @@ HNET_PATH_STABLE = [{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in
 HNET_PATH_TMP    = [{'label':i,'value':os.path.join(HNET_DIR_TMP,i)} for i in os.listdir(HNET_DIR_TMP)]
 HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
 
+#%% NETWORK PROPERTIES
+ALPHA_SCORE=[0, 1000]
+NODE_NAME="A0001"
+
 #%%
 #df=pd.read_csv('D://stack/TOOLBOX_PY/DATA/OTHER/titanic/titanic_train.csv')
 #labels=[{'label':i,'value':i} for i in df.columns.unique()]
@@ -70,6 +81,228 @@ app.title = "HNet: Graphical Hypergeometric Networks"
 #app=dash.Dash(server=server)
 #app.css.append_css({'external_url':'./static/bWLwgP.css'}) # Required for making columns
 
+#%% Split filepath into dir, filename and extension
+def splitpath(filepath, rem_spaces=False):
+    [dirpath, filename]=os.path.split(filepath)
+    [filename,ext]=os.path.splitext(filename)
+    if rem_spaces:
+        filename=filename.replace(' ','_')
+    return(dirpath, filename, ext)
+
+#%% Saving file
+def save_file(name, content, savepath):
+    # Decode and store file uploaded with plotly dash
+    print('[HNET-GUI] Saving uploaded file..')
+    data=content.encode('utf8').split(b";base64,")[1]
+    filepath = os.path.join(savepath,name)
+    with open(filepath, "wb") as fp:
+        fp.write(base64.decodebytes(data))
+    return(filepath)
+
+#%% Check input params
+def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, excl_background, perc_min_num, specificity, multtest):
+    runtxt=[]
+    runOK=True
+    dropna=[True]
+
+    try:
+        k=np.int(k)
+    except:
+        runtxt.append('k is a required parameter (k=1)\n')
+        #k=1
+
+    try:
+        y_min=np.int(y_min)
+    except:
+        runtxt.append('y_min is a required parameter (y_min=10)\n')
+        #y_min=10
+
+    try:
+        alpha=np.float(alpha)
+    except:
+        runtxt.append('alpha is a required parameter (alpha=0.05)\n')
+        #alpha=0.05
+
+    try:
+        perc_min_num=np.float(perc_min_num)
+    except:
+        perc_min_num=None
+
+    if specificity==None:
+        runtxt.append('specificity is a required parameter (specificity=medium)\n')
+        #specificity='medium'
+
+    if len(dropna)>0:
+        dropna=True
+    else:
+        dropna=False
+
+    if excl_background=='':
+        excl_background=None
+    
+    if (uploaded_filenames is None) or (uploaded_file_contents is None):
+        runtxt.append('Input file is required\n')
+
+    if len(runtxt)>0:
+        runOK=False
+    
+    out=dict()
+    out['k']=k
+    out['dropna']=dropna
+    out['y_min']=y_min
+    out['alpha']=alpha
+    out['multtest']=multtest
+    out['perc_min_num']=perc_min_num
+    out['specificity']=specificity
+    out['excl_background']=excl_background
+    out['uploaded_filenames']=uploaded_filenames
+    out['uploaded_file_contents']=uploaded_file_contents
+    return(out, runOK, runtxt)
+
+#%% Create Network
+def network_graph(alphaRange, NodeToSearch):
+
+    edge1 = pd.read_csv('edge1.csv')
+    node1 = pd.read_csv('node1.csv')
+    # edge1.columns=edge1.columns.str.lower()
+
+    # filter the record by datetime, to enable interactive control through the input box
+    I = edge1['Weight'].values >= np.min(alphaRange)
+    edge1 = edge1.loc[I,:]
+    edge1.reset_index(drop=True, inplace=True)
+
+    # I = np.isin(node1['NodeName'].values,  np.unique(list(edge1['Source'])+list(edge1['Target'])))
+    # node1 = node1.loc[I,:]
+    nodeSet= np.unique(list(edge1['Source'])+list(edge1['Target']))
+    # nodeSet=set() # contain unique Nodes
+    # for index in edge1.index:
+    #     nodeSet.add(edge1['Source'][index])
+    #     nodeSet.add(edge1['Target'][index])
+
+    # to define the centric point of the networkx layout
+    shells=[]
+    shell1=[]
+    shell1.append(NodeToSearch)
+    shells.append(shell1)
+    shell2=[]
+    for node in nodeSet:
+        if node!=NodeToSearch:
+            shell2.append(node)
+    shells.append(shell2)
+    
+    # import network as network
+    # edge1 = edge1[['Source','Target','Weight']]
+    # G = network.df2G(node1.set_index('NodeName'), edge1)
+    
+    G = nx.from_pandas_edgelist(edge1, 'Source', 'Target', ['Source', 'Target', 'Weight'], create_using=nx.MultiDiGraph())
+    nx.set_node_attributes(G, node1.set_index('NodeName')['Label'].to_dict(), 'Label')
+    nx.set_node_attributes(G, node1.set_index('NodeName')['Type'].to_dict(), 'Type')
+
+    # pos = nx.layout.spring_layout(G)
+    # pos = nx.layout.circular_layout(G)
+    # nx.layout.shell_layout only works for more than 3 nodes
+    if len(shell2)>1:
+        pos = nx.layout.shell_layout(G, shells)
+    else:
+        pos = nx.layout.spring_layout(G)
+    for node in G.nodes:
+        G.nodes[node]['pos'] = list(pos[node])
+
+    # IF EMPTY
+    if len(shell2)==0:
+        print('Empty number of nodes selected.')
+        traceRecode = []  # contains edge_trace, node_trace, middle_node_trace
+
+        node_trace = go.Scatter(x=tuple([1]), y=tuple([1]), text=tuple([str(NodeToSearch)]), textposition="bottom center",
+                                mode='markers+text',
+                                marker={'size': 50, 'color': 'LightSkyBlue'})
+        traceRecode.append(node_trace)
+
+        node_trace1 = go.Scatter(x=tuple([1]), y=tuple([1]),
+                                mode='markers',
+                                marker={'size': 50, 'color': 'LightSkyBlue'},
+                                opacity=0)
+        traceRecode.append(node_trace1)
+
+        figure = {
+            "data": traceRecode,
+            "layout": go.Layout(title='Interactive Visualization', showlegend=False,
+                                margin={'b': 40, 'l': 40, 'r': 40, 't': 40},
+                                xaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
+                                yaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
+                                height=600
+                                )}
+        return(figure)
+
+    else:
+        traceRecode = []  # contains edge_trace, node_trace, middle_node_trace
+        ############################################################################################################################################################
+        colors = list(Color('lightcoral').range_to(Color('darkred'), len(G.edges())))
+        colors = ['rgb' + str(x.rgb) for x in colors]
+    
+        for index, edge in enumerate(G.edges):
+            x0, y0 = G.nodes[edge[0]]['pos']
+            x1, y1 = G.nodes[edge[1]]['pos']
+            weight = float(G.edges[edge]['Weight']) / max(edge1['Weight']) * 10
+            trace = go.Scatter(x=tuple([x0, x1, None]), y=tuple([y0, y1, None]),
+                               mode='lines',
+                               line={'width': weight},
+                               marker=dict(color=colors[index]),
+                               line_shape='spline',
+                               opacity=1)
+            traceRecode.append(trace)
+
+        ###############################################################################################################################################################
+        node_trace = go.Scatter(x=[], y=[], hovertext=[], text=[], mode='markers+text', textposition="bottom center", hoverinfo="text", marker={'size': 50, 'color': 'LightSkyBlue'})
+    
+        for node in G.nodes():
+            x, y = G.nodes[node]['pos']
+            hovertext = "Label: " + str(G.nodes[node]['Label']) + "<br>" + "Label: " + str(G.nodes[node]['Type'])
+            text = node#node1['NodeName'][index]
+            node_trace['x'] += tuple([x])
+            node_trace['y'] += tuple([y])
+            node_trace['hovertext'] += tuple([hovertext])
+            node_trace['text'] += tuple([text])
+    
+        traceRecode.append(node_trace)
+        ################################################################################################################################################################
+        middle_hover_trace = go.Scatter(x=[], y=[], hovertext=[], mode='markers', hoverinfo="text", marker={'size': 20, 'color': 'LightSkyBlue'}, opacity=0)
+    
+        for edge in G.edges:
+            x0, y0 = G.nodes[edge[0]]['pos']
+            x1, y1 = G.nodes[edge[1]]['pos']
+            hovertext = "From: " + str(G.edges[edge]['Source']) + "<br>" + "To: " + str(
+                G.edges[edge]['Target']) + "<br>" + str(
+                G.edges[edge]['Weight']) + "<br>"
+            middle_hover_trace['x'] += tuple([(x0 + x1) / 2])
+            middle_hover_trace['y'] += tuple([(y0 + y1) / 2])
+            middle_hover_trace['hovertext'] += tuple([hovertext])
+    
+        traceRecode.append(middle_hover_trace)
+        #################################################################################################################################################################
+        figure = {
+            "data": traceRecode,
+            "layout": go.Layout(title='Interactive Transaction Visualization', showlegend=False, hovermode='closest',
+                                margin={'b': 40, 'l': 40, 'r': 40, 't': 40},
+                                xaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
+                                yaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
+                                height=600,
+                                clickmode='event+select',
+                                annotations=[
+                                    dict(
+                                        ax=(G.nodes[edge[0]]['pos'][0] + G.nodes[edge[1]]['pos'][0]) / 2,
+                                        ay=(G.nodes[edge[0]]['pos'][1] + G.nodes[edge[1]]['pos'][1]) / 2, axref='x', ayref='y',
+                                        x=(G.nodes[edge[1]]['pos'][0] * 3 + G.nodes[edge[0]]['pos'][0]) / 4,
+                                        y=(G.nodes[edge[1]]['pos'][1] * 3 + G.nodes[edge[0]]['pos'][1]) / 4, xref='x', yref='y',
+                                        showarrow=True,
+                                        arrowhead=3,
+                                        arrowsize=4,
+                                        arrowwidth=1,
+                                        opacity=1
+                                    ) for edge in G.edges]
+                                )}
+        return(figure)
+    
 #%% Styles
 #STYLE_UNDERSCRIPT={"max-width":"90%","textAlign":"center","color":"white","font-size":"20px"}
 #STYLE_BACKGROUND={"background-image":"BACKGROUND_IMAGE","background-repeat":"no-repeat","background-size":"cover","background-position":"center"}
@@ -97,7 +330,7 @@ GUIelements = html.Div([
         html.Div([
 
             html.Div([
-                html.H6('Parameters'),
+                html.H6('HNet Parameters'),
                 dcc.Input(id='k-id', placeholder='Enter k..', type='text', value=1, style={"width": "100%"}), 
                 #dcc.Input(id='alpha-id', placeholder='Enter alpha..', type='text', value=0.05, style={"width": "100%"}), 
                 #dcc.Input(id='ymin-id', placeholder='Enter a value for y_min..', type='text', value=10, style={"width": "100%"}), 
@@ -163,22 +396,73 @@ GUIelements = html.Div([
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
             # COLUMN 2 --------------------- NETWORK PLOTLY  ------------------ 
-            html.Div([
-                ], className="three columns", style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"}),
-
+            html.Div(className="three columns", 
+                     children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME))], 
+                     style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
+            
             # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
             html.Div([
-                # dcc.RangeSlider(
-                #     id='alpha_slider-id',
-                #     min=0,
-                #     max=100,
-                #     step=1,
-                #     value=[100,100],
-                #     # marks={i:{'label':i} for i in range(0,100)}
-                #            ),
-                # html.Br(),
-                # html.Div(id='alpha_slider-output')
+                html.H6('Network Settings'),
+                dcc.Input(id='alpha-slider-id', placeholder='slider', type='text', value=0, style={"width": "100%"}), 
+                html.Div(id="output-container-range-slider"),
+                dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}), 
+                html.Div(id="output"),
                 ], className="three columns", style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
+
+
+            # # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
+            # html.Div(className="three columns",
+            #         dcc.Markdown(d("""
+            #                 **Minimum Significance to Visualize**
+
+            #                 Slide the bar to define significance.
+            #                 """)),
+            #             children=[
+            #                 dcc.RangeSlider(
+            #                     id='alpha-slider-id',
+            #                     min=0,
+            #                     max=1000,
+            #                     step=1,
+            #                     value=[0, 1000],
+            #                     # marks={i:{'label':str(i)} for i in np.arange(0,1000,100)}
+            #                     marks={
+            #                         0: {'label': '0'},
+            #                         100: {'label': '100'},
+            #                         200: {'label': '200'},
+            #                         300: {'label': '300'},
+            #                         400: {'label': '400'},
+            #                         500: {'label': '500'},
+            #                         600: {'label': '600'},
+            #                         700: {'label': '700'},
+            #                         800: {'label': '800'},
+            #                         900: {'label': '900'},
+            #                         1000: {'label': '1000'}
+            #                     }
+            #                 ),
+            #                 html.Br(),
+            #                 html.Div(id='output-container-range-slider')
+            #             ], style={'height': '300px', "width": "100%"}
+                        
+            #             dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}),
+                        
+            #             ], style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
+
+
+                            # html.Div(
+                            #         dcc.Markdown(d("""
+                            #         **Node name to search**
+        
+                            #         Input the node name to visualize.
+                            #         """)),
+                            #         dcc.Input(id="node-id", type="text", placeholder="Node name"),
+                            #         html.Div(id="output")
+                            #     style={'height': '300px', "width": "100%"})
+                            # )
+
+                   
+
+
+
 
             # ROW 3: Create drop-down for dir listing
             # html.Div([
@@ -278,8 +562,25 @@ app.layout = html.Div([GUIelements])
 ##            </script>
 ##        '''
 ##    ))
+
+#%% Callback for plotly (right-side) components
+@app.callback(
+    dash.dependencies.Output('hnet-graph', 'figure'),
+    [dash.dependencies.Input('alpha-slider-id', 'value'), dash.dependencies.Input('node-id', 'value')])
+def update_output(alpha_limit,node_name):
+    # Change input variables
+    if alpha_limit=='': alpha_limit=0
+    if alpha_limit==None: alpha_limit=0
+    alpha_limit=np.int(alpha_limit)
+    ALPHA_SCORE = np.int(alpha_limit)
+    NODE_NAME = node_name
+    # Make graph
+    hnet_graph=network_graph(alpha_limit, node_name)
+    # Return to screen
+    return(hnet_graph)
+    # to update the global variable of ALPHA_SCORE and NODE_NAME
     
-#%%
+#%% Callback for center network menu
 @app.callback(
     Output("results-output", "children"),
     [Input("results-id","value")],
@@ -300,7 +601,7 @@ def load_results(results_path):
     # Return
     return(d3path)
 
-#%%
+#%% Callback for HNet menu (left-side)
 @app.callback(
     Output("OUTPUT_CSV", "children"),
     [Input("UPLOAD_BOX","filename"), 
@@ -383,84 +684,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
 
     return(('%s done!' %(filename)))
 
-#%% Split filepath into dir, filename and extension
-def splitpath(filepath, rem_spaces=False):
-    [dirpath, filename]=os.path.split(filepath)
-    [filename,ext]=os.path.splitext(filename)
-    if rem_spaces:
-        filename=filename.replace(' ','_')
-    return(dirpath, filename, ext)
 
-#%% Saving file
-def save_file(name, content, savepath):
-    # Decode and store file uploaded with plotly dash
-    print('[HNET-GUI] Saving uploaded file..')
-    data=content.encode('utf8').split(b";base64,")[1]
-    filepath = os.path.join(savepath,name)
-    with open(filepath, "wb") as fp:
-        fp.write(base64.decodebytes(data))
-    return(filepath)
-
-#%% Check input params
-def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, excl_background, perc_min_num, specificity, multtest):
-    runtxt=[]
-    runOK=True
-    dropna=[True]
-
-    try:
-        k=np.int(k)
-    except:
-        runtxt.append('k is a required parameter (k=1)\n')
-        #k=1
-
-    try:
-        y_min=np.int(y_min)
-    except:
-        runtxt.append('y_min is a required parameter (y_min=10)\n')
-        #y_min=10
-
-    try:
-        alpha=np.float(alpha)
-    except:
-        runtxt.append('alpha is a required parameter (alpha=0.05)\n')
-        #alpha=0.05
-
-    try:
-        perc_min_num=np.float(perc_min_num)
-    except:
-        perc_min_num=None
-
-    if specificity==None:
-        runtxt.append('specificity is a required parameter (specificity=medium)\n')
-        #specificity='medium'
-
-    if len(dropna)>0:
-        dropna=True
-    else:
-        dropna=False
-
-    if excl_background=='':
-        excl_background=None
-    
-    if (uploaded_filenames is None) or (uploaded_file_contents is None):
-        runtxt.append('Input file is required\n')
-
-    if len(runtxt)>0:
-        runOK=False
-    
-    out=dict()
-    out['k']=k
-    out['dropna']=dropna
-    out['y_min']=y_min
-    out['alpha']=alpha
-    out['multtest']=multtest
-    out['perc_min_num']=perc_min_num
-    out['specificity']=specificity
-    out['excl_background']=excl_background
-    out['uploaded_filenames']=uploaded_filenames
-    out['uploaded_file_contents']=uploaded_file_contents
-    return(out, runOK, runtxt)
-    
 #%% Main
 if __name__ == "__main__":
     # webbrowser.open('http://127.0.0.1:8050/', new=0, autoraise=True)

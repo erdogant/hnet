@@ -276,11 +276,11 @@ def df2G(df_nodes, df_edges, verbose=3):
     G = nx.from_pandas_edgelist(df_edges, 'source', 'target', colnames)
 
     # Put node info in G
-    getnodes=[*G.node]
+    getnodes=[*G.nodes]
     for col in df_nodes.columns:
         for i in range(0, df_nodes.shape[0]):
             if np.any(np.isin(getnodes, df_nodes.index.values[i])):
-                G.node[df_nodes.index.values[i]][col] = str(df_nodes[col].iloc[i])
+                G.nodes[df_nodes.index.values[i]][col] = str(df_nodes[col].iloc[i])
     
     return(G)
     

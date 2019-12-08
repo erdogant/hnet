@@ -751,7 +751,7 @@ def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, d
         simmatLogP = out['simmatLogP'].copy()>0
     else:
         # Make symmetric
-         simmatLogP = to_symmetric(out, make_symmetric='logp')
+        simmatLogP = to_symmetric(out, make_symmetric='logp')
     
     # Make network
     Gout = d3graph(simmatLogP.T, path=savepath, node_size=node_size, charge=500,  width=1500, height=800, collision=0.1, node_color=labx, directed=directed, showfig=showfig)

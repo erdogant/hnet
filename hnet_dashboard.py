@@ -20,9 +20,8 @@ import webbrowser
 import networkx as nx
 import plotly.graph_objs as go
 from colour import Color
-from datetime import datetime
 from textwrap import dedent as d
-import json
+# import json
 # HNet
 import hnet as hnet
 import helpers.picklefast as picklefast
@@ -640,8 +639,8 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     d3path          = os.path.join(savepath,'index.html')
     pklpath         = os.path.join(savepath,'hnet.pkl')
 
-    print('Filepath %s' %(filepath))
-    print('Savepath %s' %(savepath))
+    print('filepath %s' %(filepath))
+    print('savepath %s' %(savepath))
     print('d3path %s' %(d3path))
     print('pklpath %s' %(pklpath))
     
@@ -672,6 +671,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
         webbrowser.open(os.path.abspath(d3path), new=2)
     print('-----------------------Done!-----------------------')
 
+#       import hnet as hnet
 #        df=pd.read_csv('D://stack/TOOLBOX_PY/DATA/OTHER/titanic/titanic_train.csv')
 #        df.columns
         

@@ -636,9 +636,9 @@ def set_configurations(width, height, collision, charge, edge_distance_minmax, e
     config['edge_distance_minmax'] = edge_distance_minmax
     config['directed']             = directed
     config['showfig']              = showfig
-    config['d3_library']           = './NETWORKS/d3graph/d3.v3.js'
-    config['d3_script']            = './NETWORKS/d3graph/d3graphscript.js'
-    config['css']                  = './NETWORKS/d3graph/style.css'
+    config['d3_library']           = './helpers/d3graph/d3.v3.js'
+    config['d3_script']            = './helpers/d3graph/d3graphscript.js'
+    config['css']                  = './helpers/d3graph/style.css'
 
     config['cmap']                 = cmap
 

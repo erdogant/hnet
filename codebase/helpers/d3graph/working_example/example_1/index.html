@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>Networkd3</title>
+<script type="text/javascript" src="d3.v3.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script type="application/json" id="ETA"> {
+    "nodes": [
+        {
+            "degree": "16",
+            "other_info": "16",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "16",
+            "node_size_edge": "3.75625",
+            "node_color_edge": "#000000",
+            "id": "0"
+        },
+        {
+            "degree": "9",
+            "other_info": "9",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "9",
+            "node_size_edge": "2.0500000000000003",
+            "node_color_edge": "#000000",
+            "id": "1"
+        },
+        {
+            "degree": "10",
+            "other_info": "10",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "10",
+            "node_size_edge": "2.29375",
+            "node_color_edge": "#000000",
+            "id": "2"
+        },
+        {
+            "degree": "6",
+            "other_info": "6",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "6",
+            "node_size_edge": "1.3187499999999999",
+            "node_color_edge": "#000000",
+            "id": "3"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "4"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "5"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "6"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "7"
+        },
+        {
+            "degree": "5",
+            "other_info": "5",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "5",
+            "node_size_edge": "1.075",
+            "node_color_edge": "#000000",
+            "id": "8"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "10"
+        },
+        {
+            "degree": "1",
+            "other_info": "1",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "1",
+            "node_size_edge": "0.1",
+            "node_color_edge": "#000000",
+            "id": "11"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "12"
+        },
+        {
+            "degree": "5",
+            "other_info": "5",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "5",
+            "node_size_edge": "1.075",
+            "node_color_edge": "#000000",
+            "id": "13"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "17"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "19"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "21"
+        },
+        {
+            "degree": "6",
+            "other_info": "6",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "6",
+            "node_size_edge": "1.3187499999999999",
+            "node_color_edge": "#000000",
+            "id": "31"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "30"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "9"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "27"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "28"
+        },
+        {
+            "degree": "12",
+            "other_info": "12",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "12",
+            "node_size_edge": "2.78125",
+            "node_color_edge": "#000000",
+            "id": "32"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Mr. Hi",
+            "node_color": "#e41a1c",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "16"
+        },
+        {
+            "degree": "17",
+            "other_info": "17",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "17",
+            "node_size_edge": "4.0",
+            "node_color_edge": "#000000",
+            "id": "33"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "14"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "15"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "18"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "20"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "22"
+        },
+        {
+            "degree": "5",
+            "other_info": "5",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "5",
+            "node_size_edge": "1.075",
+            "node_color_edge": "#000000",
+            "id": "23"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "25"
+        },
+        {
+            "degree": "4",
+            "other_info": "4",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "4",
+            "node_size_edge": "0.83125",
+            "node_color_edge": "#000000",
+            "id": "29"
+        },
+        {
+            "degree": "3",
+            "other_info": "3",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "3",
+            "node_size_edge": "0.5874999999999999",
+            "node_color_edge": "#000000",
+            "id": "24"
+        },
+        {
+            "degree": "2",
+            "other_info": "2",
+            "node_label": "Officer",
+            "node_color": "#377eb8",
+            "node_size": "2",
+            "node_size_edge": "0.34375",
+            "node_color_edge": "#000000",
+            "id": "26"
+        }
+    ],
+    "links": [
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 1
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 2
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 3
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 4
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 5
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 6
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 7
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 8
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 9
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 10
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 11
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 12
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 13
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 14
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 15
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 0,
+            "target": 16
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 2
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 3
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 7
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 12
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 13
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 14
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 15
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 1,
+            "target": 17
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 3
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 7
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 8
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 18
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 12
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 19
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 20
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 2,
+            "target": 21
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 3,
+            "target": 7
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 3,
+            "target": 11
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 3,
+            "target": 12
+        },
+        {
+            "weight": 15,
+            "edge_weight": 250.0,
+            "source": 3,
+            "target": 4
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 4,
+            "target": 6
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 4,
+            "target": 9
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 5,
+            "target": 6
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 5,
+            "target": 9
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 5,
+            "target": 22
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 6,
+            "target": 22
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 8,
+            "target": 17
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 8,
+            "target": 21
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 8,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 12,
+            "target": 23
+        },
+        {
+            "weight": 4,
+            "edge_weight": 116.42857142857143,
+            "source": 13,
+            "target": 28
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 14,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 16,
+            "target": 32
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 16,
+            "target": 30
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 16,
+            "target": 20
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 16,
+            "target": 21
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 16,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 17,
+            "target": 21
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 17,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 18,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 19,
+            "target": 29
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 19,
+            "target": 32
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 19,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 20,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 24
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 25
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 26
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 27
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 28
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 29
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 31
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 21,
+            "target": 23
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 24
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 25
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 26
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 27
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 28
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 29
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 33
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 23,
+            "target": 31
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 29,
+            "target": 30
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 29,
+            "target": 31
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 30,
+            "target": 32
+        },
+        {
+            "weight": 1,
+            "edge_weight": 80.0,
+            "source": 31,
+            "target": 33
+        }
+    ]
+}
+</script>
+<form>
+<h3> Link threshold 0 <input type="range" id="thersholdSlider" name="points" value=0.0 min="0.0" max="15.0" onchange="threshold(this.value)"> 15.0 </h3>
+</form>
+<script  src="d3graphscript.js"></script>
+</body>
+</html>

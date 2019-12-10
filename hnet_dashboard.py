@@ -30,6 +30,7 @@ import helpers.picklefast as picklefast
 global TMP_DIRECTORY
 # global edge1, node1
 
+
 #%% Initializatoin
 TMP_DIRECTORY     = './results/tmp/'
 # HNET_DIR_TMP      = './results/tmp/'
@@ -53,6 +54,7 @@ if TMP_DIRECTORY_DEL:
         if os.path.isfile(remfile): os.remove(os.path.join(TMP_DIRECTORY,remfile))
 
 # Extract HNet results from tmp and stable directories
+# HNET_PATH_STABLE=get_hnetpath(HNET_DIR_STABLE)
 HNET_PATH_STABLE=[]
 for i in os.listdir(HNET_DIR_STABLE):
     getdir=os.path.join(HNET_DIR_STABLE,i)
@@ -64,7 +66,8 @@ for i in os.listdir(HNET_DIR_STABLE):
 # HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
 
 #%% NETWORK PROPERTIES
-ALPHA_SCORE=[0,1000]
+# ALPHA_SCORE=[0,1000]
+ALPHA_SCORE=0
 NODE_NAME=''
 edge1=None
 node1=None
@@ -168,6 +171,15 @@ def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, exc
     out['uploaded_file_contents']=uploaded_file_contents
     return(out, runOK, runtxt)
 
+#%% 
+def get_hnetpath(HNET_DIR_STABLE):
+    HNET_PATH_STABLE=[]
+    for i in os.listdir(HNET_DIR_STABLE):
+        getdir=os.path.join(HNET_DIR_STABLE,i)
+        if os.path.isdir(getdir):
+            HNET_PATH_STABLE.append({'label':i,'value':getdir})
+    return(HNET_PATH_STABLE)
+
 #%%
 def get_d3path(results_path):
     return(os.path.join(results_path,'index.html'))
@@ -184,7 +196,7 @@ def network_graph(alphaRange, NodeToSearch):
     node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
 
     # filter the record by alpha score, to enable interactive control through the input box
-    print(alphaRange)
+    #print(alphaRange)
     I = edge1['Weight'].values >= np.min(alphaRange)
     # I = edge1['Weight'].values >= alphaRange
     edge1 = edge1.loc[I,:]
@@ -409,14 +421,13 @@ GUIelements = html.Div([
                     multiple=False), 
 
                 # dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
-                dcc.Dropdown(id='results-id', options=HNET_PATH_STABLE, value='', style={"width": "100%"}),
+                dcc.Dropdown(id='results-id', options=get_hnetpath(HNET_DIR_STABLE), value='', style={"width": "100%"}),
                 html.Div(id="results-output")
 
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
             # COLUMN 2 --------------------- NETWORK PLOTLY  ------------------ 
-            html.Div(className="three columns", 
-                     children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME))], 
+            html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME))], 
                      style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
             
             # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
@@ -618,9 +629,6 @@ def update_output(alpha_limit, node_name, results_path):
         edge1.to_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'), index=False)
         node1.to_csv(os.path.join(TMP_DIRECTORY+'node1.csv'), index=False)
         # ALPHA_SCORE=[0,np.max(edge1['Weight'].values)]
-
-
-        
         
     
     # Data read
@@ -726,6 +734,9 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     if os.path.isfile(d3path):
         webbrowser.open(os.path.abspath(d3path), new=2)
     print('-----------------------Done!-----------------------')
+
+    # Extract HNet results from tmp and stable directories
+    HNET_PATH_STABLE=get_hnetpath(HNET_DIR_STABLE)
 
     return(('%s done!' %(filename)))
 

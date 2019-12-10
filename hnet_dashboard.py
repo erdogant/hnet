@@ -27,19 +27,21 @@ import hnet as hnet
 import helpers.picklefast as picklefast
 
 # global labels
+global TMP_DIRECTORY
+# global edge1, node1
 
 #%% Initializatoin
-TMP_DIRECTORY     = './tmp/'
+TMP_DIRECTORY     = './results/tmp/'
+# HNET_DIR_TMP      = './results/tmp/'
 HNET_DIR_STABLE   = './results/stable/'
-HNET_DIR_TMP      = './results/tmp/'
 # BACKGROUND_IMAGE  = 'url(./static/background.jpg)'
 TMP_DIRECTORY_DEL = False
 
 # Create directories
 path=Path(TMP_DIRECTORY)
 path.mkdir(parents=True, exist_ok=True)
-path=Path(HNET_DIR_TMP)
-path.mkdir(parents=True, exist_ok=True)
+# path=Path(HNET_DIR_TMP)
+# path.mkdir(parents=True, exist_ok=True)
 path=Path(HNET_DIR_STABLE)
 path.mkdir(parents=True, exist_ok=True)
 
@@ -51,13 +53,21 @@ if TMP_DIRECTORY_DEL:
         if os.path.isfile(remfile): os.remove(os.path.join(TMP_DIRECTORY,remfile))
 
 # Extract HNet results from tmp and stable directories
-HNET_PATH_STABLE = [{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)]
-HNET_PATH_TMP    = [{'label':i,'value':os.path.join(HNET_DIR_TMP,i)} for i in os.listdir(HNET_DIR_TMP)]
-HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
+HNET_PATH_STABLE=[]
+for i in os.listdir(HNET_DIR_STABLE):
+    getdir=os.path.join(HNET_DIR_STABLE,i)
+    if os.path.isdir(getdir):
+        HNET_PATH_STABLE.append({'label':i,'value':getdir})
+
+
+# HNET_PATH_TMP    = [{'label':i,'value':os.path.join(HNET_DIR_TMP,i)} for i in os.listdir(HNET_DIR_TMP)]
+# HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
 
 #%% NETWORK PROPERTIES
-ALPHA_SCORE=[0, 1000]
-NODE_NAME="A0001"
+ALPHA_SCORE=[0,1000]
+NODE_NAME=''
+edge1=None
+node1=None
 
 #%%
 #df=pd.read_csv('D://stack/TOOLBOX_PY/DATA/OTHER/titanic/titanic_train.csv')
@@ -158,15 +168,25 @@ def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, exc
     out['uploaded_file_contents']=uploaded_file_contents
     return(out, runOK, runtxt)
 
+#%%
+def get_d3path(results_path):
+    return(os.path.join(results_path,'index.html'))
+
+def get_pklpath(results_path):
+    return(os.path.join(results_path,'hnet.pkl'))
+
 #%% Create Network
 def network_graph(alphaRange, NodeToSearch):
 
-    edge1 = pd.read_csv('edge1.csv')
-    node1 = pd.read_csv('node1.csv')
-    # edge1.columns=edge1.columns.str.lower()
+    # if (isinstance(edge1, type(None))) and (isinstance(node1, type(None))):
+    #     print('demo case')
+    edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
+    node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
 
-    # filter the record by datetime, to enable interactive control through the input box
+    # filter the record by alpha score, to enable interactive control through the input box
+    print(alphaRange)
     I = edge1['Weight'].values >= np.min(alphaRange)
+    # I = edge1['Weight'].values >= alphaRange
     edge1 = edge1.loc[I,:]
     edge1.reset_index(drop=True, inplace=True)
 
@@ -320,7 +340,6 @@ def network_graph(alphaRange, NodeToSearch):
 #        }
 
 #%% Setup webpage
-
 GUIelements = html.Div([
         # Row 1
         html.Div([html.H5("HNets: Graphical Hypergeometric Networks")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
@@ -329,7 +348,7 @@ GUIelements = html.Div([
         html.Div([
 
             html.Div([
-                html.H6('HNet Parameters'),
+                html.H6('HNet input parameters'),
                 dcc.Input(id='k-id', placeholder='Enter k..', type='text', value=1, style={"width": "100%"}), 
                 #dcc.Input(id='alpha-id', placeholder='Enter alpha..', type='text', value=0.05, style={"width": "100%"}), 
                 #dcc.Input(id='ymin-id', placeholder='Enter a value for y_min..', type='text', value=10, style={"width": "100%"}), 
@@ -389,7 +408,8 @@ GUIelements = html.Div([
                     },
                     multiple=False), 
 
-                dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
+                # dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
+                dcc.Dropdown(id='results-id', options=HNET_PATH_STABLE, value='', style={"width": "100%"}),
                 html.Div(id="results-output")
 
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
@@ -562,19 +582,56 @@ app.layout = html.Div([GUIelements])
 ##        '''
 ##    ))
 
+
 #%% Callback for plotly (right-side) components
 @app.callback(
     dash.dependencies.Output('hnet-graph', 'figure'),
-    [dash.dependencies.Input('alpha-slider-id', 'value'), dash.dependencies.Input('node-id', 'value')])
-def update_output(alpha_limit,node_name):
+    [dash.dependencies.Input('alpha-slider-id', 'value'), dash.dependencies.Input('node-id', 'value'), Input("results-id","value")])
+def update_output(alpha_limit, node_name, results_path):
     # Change input variables
     if alpha_limit=='': alpha_limit=0
     if alpha_limit==None: alpha_limit=0
     alpha_limit=np.int(alpha_limit)
     ALPHA_SCORE = np.int(alpha_limit)
     NODE_NAME = node_name
+    # edge1=None
+    # node1=None
+    
+    # Print selection dropdownbox
+    # print(get_d3path(results_path))
+    # print(get_pklpath(results_path))
+    print(node_name)
+    # Load data
+    if os.path.isfile(get_pklpath(results_path)):
+        df=picklefast.load(get_pklpath(results_path))
+        print(df['simmatLogP'])
+
+        df_edges=df['simmatLogP'].stack().reset_index()
+        df_edges.columns=['Source', 'Target', 'Weight']
+        df_edges['Weight']=df_edges['Weight'].astype(float)
+        edge1 = df_edges.loc[df_edges['Weight']>0,:]
+        node1 = pd.DataFrame(np.unique(df_edges[['Source','Target']].values.reshape(-1)), columns=['NodeName'])
+        node1['Label']=node1['NodeName']
+        node1['Type']=''
+        
+        # Write to disk
+        edge1.to_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'), index=False)
+        node1.to_csv(os.path.join(TMP_DIRECTORY+'node1.csv'), index=False)
+        # ALPHA_SCORE=[0,np.max(edge1['Weight'].values)]
+
+
+        
+        
+    
+    # Data read
+    # edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
+    # node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
+    
     # Make graph
+    # if (not isinstance(edge1, type(None))) and (not isinstance(node1, type(None))):
     hnet_graph=network_graph(alpha_limit, node_name)
+    # else:
+    #     print('Select one first in dropdown!')
     # Return to screen
     return(hnet_graph)
     # to update the global variable of ALPHA_SCORE and NODE_NAME
@@ -591,9 +648,9 @@ def load_results(results_path):
 #    d3path = os.path.join(HNET_DIR_STABLE,results_path,'index.html')
     if results_path!=None:
         # Set path
-        if os.path.isfile(os.path.join(results_path,'index.html')):
+        if os.path.isfile(get_d3path(results_path)):
             print(d3path)
-            d3path=os.path.abspath(os.path.join(results_path,'index.html'))
+            d3path=os.path.abspath(get_d3path(results_path))
             # open in webbrowser
             webbrowser.open(d3path, new=2)
             # https://plot.ly/python/network-graphs/
@@ -636,8 +693,8 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     filepath        = save_file(args['uploaded_filenames'], args['uploaded_file_contents'], TMP_DIRECTORY)
     [_,filename, _] = splitpath(args['uploaded_filenames'])
     savepath        = os.path.join(HNET_DIR_STABLE,filename+'_'+str(args['y_min'])+'_'+str(args['k'])+'_'+str(args['multtest'])+'_'+str(args['specificity'])+'_'+str(args['perc_min_num'])+'_'+str(args['excl_background'])+'/')
-    d3path          = os.path.join(savepath,'index.html')
-    pklpath         = os.path.join(savepath,'hnet.pkl')
+    d3path          = get_d3path(savepath)
+    pklpath         = get_pklpath(savepath)
 
     print('filepath %s' %(filepath))
     print('savepath %s' %(savepath))
@@ -664,23 +721,11 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     else:
         print('dir exists, load stuff')
         out=picklefast.load(pklpath)
-#            out=picklefast.load(os.path.abspath(pklpath))
         
     # Open in browser
     if os.path.isfile(d3path):
         webbrowser.open(os.path.abspath(d3path), new=2)
     print('-----------------------Done!-----------------------')
-
-#       import hnet as hnet
-#        df=pd.read_csv('D://stack/TOOLBOX_PY/DATA/OTHER/titanic/titanic_train.csv')
-#        df.columns
-        
-        # out = hnet.main(df, alpha=alpha, dropna=dropna)
-        # G = hnet.plot_d3graph(out, savepath=SAVEPATH)
-#        headernames=','.join(df.columns.values)
-#        headernames=[]
-#        for headername in df.columns.values:
-#            headernames.append({'label':str(headername),'value':headername})
 
     return(('%s done!' %(filename)))
 

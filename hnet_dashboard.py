@@ -27,7 +27,7 @@ import hnet as hnet
 import helpers.picklefast as picklefast
 
 # global labels
-global TMP_DIRECTORY
+global TMP_DIRECTORY, HNET_DIR_STABLE
 # global edge1, node1
 
 
@@ -92,6 +92,18 @@ app.title = "HNet: Graphical Hypergeometric Networks"
 # server=Flask(__name__)
 #app=dash.Dash(server=server)
 #app.css.append_css({'external_url':'./static/bWLwgP.css'}) # Required for making columns
+
+#%% Start d3 network in browser
+def boot_d3network_in_browser(dropdown_path):
+    d3path=''
+    if dropdown_path!=None:
+        if os.path.isfile(get_d3path(dropdown_path)):
+            print(d3path)
+            d3path=os.path.abspath(get_d3path(dropdown_path))
+            # open in webbrowser
+            webbrowser.open(d3path, new=2)
+            # https://plot.ly/python/network-graphs/
+    return(d3path)
 
 #%% Split filepath into dir, filename and extension
 def splitpath(filepath, rem_spaces=False):
@@ -171,7 +183,7 @@ def check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, exc
     out['uploaded_file_contents']=uploaded_file_contents
     return(out, runOK, runtxt)
 
-#%% 
+#%% List result directories
 def get_hnetpath(HNET_DIR_STABLE):
     HNET_PATH_STABLE=[]
     for i in os.listdir(HNET_DIR_STABLE):
@@ -180,12 +192,12 @@ def get_hnetpath(HNET_DIR_STABLE):
             HNET_PATH_STABLE.append({'label':i,'value':getdir})
     return(HNET_PATH_STABLE)
 
-#%%
-def get_d3path(results_path):
-    return(os.path.join(results_path,'index.html'))
+# Make path for d3js
+def get_d3path(filepath):
+    return(os.path.join(filepath,'index.html'))
 
-def get_pklpath(results_path):
-    return(os.path.join(results_path,'hnet.pkl'))
+def get_pklpath(filepath):
+    return(os.path.join(filepath,'hnet.pkl'))
 
 #%% Create Network
 def network_graph(alphaRange, NodeToSearch):
@@ -421,21 +433,29 @@ GUIelements = html.Div([
                     multiple=False), 
 
                 # dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
-                dcc.Dropdown(id='results-id', options=get_hnetpath(HNET_DIR_STABLE), value='', style={"width": "100%"}),
-                html.Div(id="results-output")
+                dcc.Dropdown(id='opt-dropdown', options=get_hnetpath(HNET_DIR_STABLE), value='', style={"width": "100%"}),
+                # dcc.Dropdown(id='opt-dropdown', value='', style={"width": "100%"}),
+                # html.Div(id="results-output")
 
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
-            # COLUMN 2 --------------------- NETWORK PLOTLY  ------------------ 
+            # COLUMN 2 --------------------- CENTER PANEL: NETWORK ------------------ 
             html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME))], 
                      style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
             
-            # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
+            # COLUMN 3 -------------------- RIGHT PANEL: CONTROLS -------------------
             html.Div([
                 html.H6('Network Settings'),
                 dcc.Input(id='alpha-slider-id', placeholder='slider', type='text', value=0, style={"width": "100%"}), 
                 html.Div(id="output-container-range-slider"),
-                dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}), 
+                dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}),
+                
+                # html.Div(dcc.Input(id='message-box', type='text', style={"width": "100%"})),
+                html.Button('Make d3graph', id='button', style={"width": "100%"}),
+                html.Div(id='output-container-button',children='Enter a value and press submit', style={"width": "100%"}),
+    
+                # html.Button('Make d3graph!', id='button-id'),                
+                # html.Div(id='output-button', children='Enter a value and press submit'),
                 html.Div(id="output"),
                 ], className="three columns", style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
 
@@ -593,15 +613,25 @@ app.layout = html.Div([GUIelements])
 ##        '''
 ##    ))
 
+#%% Callback for button (right panel)
+@app.callback(
+    Output('output-container-button', 'children'),
+    [Input('button', 'n_clicks'), Input("opt-dropdown","value")])
+def button_click_action(n_clicks, dropdown_path):
+    if dropdown_path==None: dropdown_path=''
+    d3path=boot_d3network_in_browser(dropdown_path)
+    if d3path=='': d3path='Select first using the dropdown-box!'
+    print(d3path)
 
 #%% Callback for plotly (right-side) components
 @app.callback(
-    dash.dependencies.Output('hnet-graph', 'figure'),
-    [dash.dependencies.Input('alpha-slider-id', 'value'), dash.dependencies.Input('node-id', 'value'), Input("results-id","value")])
-def update_output(alpha_limit, node_name, results_path):
+    Output('hnet-graph', 'figure'),
+    [Input('alpha-slider-id', 'value'), Input('node-id', 'value'), Input("opt-dropdown","value")])
+def update_output(alpha_limit, node_name, dropdown_path):
     # Change input variables
     if alpha_limit=='': alpha_limit=0
     if alpha_limit==None: alpha_limit=0
+    if dropdown_path==None: dropdown_path=''
     alpha_limit=np.int(alpha_limit)
     ALPHA_SCORE = np.int(alpha_limit)
     NODE_NAME = node_name
@@ -609,13 +639,14 @@ def update_output(alpha_limit, node_name, results_path):
     # node1=None
     
     # Print selection dropdownbox
-    # print(get_d3path(results_path))
-    # print(get_pklpath(results_path))
-    print(node_name)
+    # print(get_d3path(dropdown_path))
+    # print(get_pklpath(dropdown_path))
+    print('Dropdown_path path: %s' %(dropdown_path))
+    print('Node name selected : %s' %(node_name))
     # Load data
-    if os.path.isfile(get_pklpath(results_path)):
-        df=picklefast.load(get_pklpath(results_path))
-        print(df['simmatLogP'])
+    if os.path.isfile(get_pklpath(dropdown_path)):
+        df=picklefast.load(get_pklpath(dropdown_path))
+        #print(df['simmatLogP'])
 
         df_edges=df['simmatLogP'].stack().reset_index()
         df_edges.columns=['Source', 'Target', 'Weight']
@@ -643,31 +674,22 @@ def update_output(alpha_limit, node_name, results_path):
     # Return to screen
     return(hnet_graph)
     # to update the global variable of ALPHA_SCORE and NODE_NAME
-    
-#%% Callback for center network menu
-@app.callback(
-    Output("results-output", "children"),
-    [Input("results-id","value")],
-)
-def load_results(results_path):
-    """Save uploaded files and regenerate the file list."""
-    d3path=''
-    #print(results_path)
-#    d3path = os.path.join(HNET_DIR_STABLE,results_path,'index.html')
-    if results_path!=None:
-        # Set path
-        if os.path.isfile(get_d3path(results_path)):
-            print(d3path)
-            d3path=os.path.abspath(get_d3path(results_path))
-            # open in webbrowser
-            webbrowser.open(d3path, new=2)
-            # https://plot.ly/python/network-graphs/
-    # Return
-    return(d3path)
+
+#%% Callback for center screen
+# @app.callback(
+#     Output("results-output", "children"),
+#     [Input("opt-dropdown","value")])
+# def load_results(dropdown_path):
+#     """Save uploaded files and regenerate the file list."""
+#     # print(dropdown_path)
+#     # d3path=boot_d3network_in_browser(dropdown_path)
+#     # Return
+#     return(dropdown_path)
 
 #%% Callback for HNet menu (left-side)
 @app.callback(
     Output("OUTPUT_CSV", "children"),
+    # Output('opt-dropdown', 'options'),
     [Input("UPLOAD_BOX","filename"), 
      Input("UPLOAD_BOX","contents"), 
      Input("ymin-id","value"), 
@@ -722,10 +744,9 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
 
         out = hnet.main(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
         # Save pickle file
-#            picklefast.save(os.path.abspath(pklpath), out)
         picklefast.save(pklpath, out)
         #G = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-        G = hnet.plot_d3graph(out, savepath=savepath, directed=False, showfig=False)
+        _ = hnet.plot_d3graph(out, savepath=savepath, directed=False, showfig=False)
     else:
         print('dir exists, load stuff')
         out=picklefast.load(pklpath)
@@ -733,11 +754,13 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     # Open in browser
     if os.path.isfile(d3path):
         webbrowser.open(os.path.abspath(d3path), new=2)
+
+    print('HNET_DIR_STABLE: %s!' %(HNET_DIR_STABLE))
+    print('%s done!' %(filename))
     print('-----------------------Done!-----------------------')
-
+    print(get_hnetpath(HNET_DIR_STABLE))
     # Extract HNet results from tmp and stable directories
-    HNET_PATH_STABLE=get_hnetpath(HNET_DIR_STABLE)
-
+    # return(get_hnetpath(HNET_DIR_STABLE))
     return(('%s done!' %(filename)))
 
 

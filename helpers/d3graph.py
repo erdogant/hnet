@@ -605,8 +605,10 @@ def adjmat2G(adjmat, df, edge_distance_min=None, edge_distance_max=None, edge_wi
     return(G, df)
 
 #%% Normalize in good d3 range
-def normalize_size(getsizes, minscale=0.1, maxscale=4):
-    getsizes = MinMaxScaler(feature_range=(minscale,maxscale)).fit_transform(getsizes).flatten()
+def normalize_size(weights, minscale=0.1, maxscale=4):
+    # getsizes = MinMaxScaler(feature_range=(minscale,maxscale)).fit_transform(weights).flatten()
+    getsizes = MinMaxScaler(feature_range=(minscale,maxscale)).fit_transform(np.append('0',weights).astype(float).reshape(-1,1)).flatten()[1:]
+
     return(getsizes)
     
 #%% Convert to hex color

@@ -27,7 +27,7 @@ import hnet as hnet
 import helpers.picklefast as picklefast
 
 # global labels
-global TMP_DIRECTORY, HNET_DIR_STABLE
+global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT
 # global edge1, node1
 
 
@@ -69,6 +69,7 @@ for i in os.listdir(HNET_DIR_STABLE):
 # ALPHA_SCORE=[0,1000]
 ALPHA_SCORE=0
 NODE_NAME=''
+NETWORK_LAYOUT='shell'
 edge1=None
 node1=None
 
@@ -200,8 +201,7 @@ def get_pklpath(filepath):
     return(os.path.join(filepath,'hnet.pkl'))
 
 #%% Create Network
-def network_graph(alphaRange, NodeToSearch):
-
+def network_graph(alphaRange, NodeToSearch, network_layout):
     # if (isinstance(edge1, type(None))) and (isinstance(node1, type(None))):
     #     print('demo case')
     edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
@@ -244,10 +244,23 @@ def network_graph(alphaRange, NodeToSearch):
     # pos = nx.layout.spring_layout(G)
     # pos = nx.layout.circular_layout(G)
     # nx.layout.shell_layout only works for more than 3 nodes
-    if len(shell2)>1:
+    # print(len(NodeToSearch))
+
+    if len(shell2)>1 and isinstance(NodeToSearch, type(None)) and NodeToSearch=='':
+    # if len(shell2)>1:
         pos = nx.layout.shell_layout(G, shells)
     else:
-        pos = nx.layout.spring_layout(G)
+        if network_layout=='fruchterman_reingold':
+            pos = nx.layout.fruchterman_reingold_layout(G)
+        elif network_layout=='kamada_kawai':
+            pos = nx.layout.kamada_kawai_layout(G)
+        elif network_layout=='circular':
+            pos = nx.layout.circular_layout(G)
+        elif network_layout=='planar':
+            pos = nx.layout.planar_layout(G)
+        else:
+            pos = nx.layout.spring_layout(G)
+
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
 
@@ -269,7 +282,7 @@ def network_graph(alphaRange, NodeToSearch):
 
         figure = {
             "data": traceRecode,
-            "layout": go.Layout(title='Interactive Visualization', showlegend=False,
+            "layout": go.Layout(title='Network', showlegend=False,
                                 margin={'b': 40, 'l': 40, 'r': 40, 't': 40},
                                 xaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
                                 yaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
@@ -417,7 +430,7 @@ GUIelements = html.Div([
                         {'label': 'Holm-sidak', 'value': 'holm-sidak'},
                     ],
                     value='holm', style={"width": "100%"}),
-                html.Div(id="OUTPUT_CSV"),
+                html.Div(id="message-box-output"),
                 dcc.Upload(id="UPLOAD_BOX",children=html.Div(["Drag and drop or click to select a file to upload."]),
                        style={
                         #"width": "100%",
@@ -440,23 +453,34 @@ GUIelements = html.Div([
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
             # COLUMN 2 --------------------- CENTER PANEL: NETWORK ------------------ 
-            html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME))], 
+            html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME, NETWORK_LAYOUT))], 
                      style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
             
             # COLUMN 3 -------------------- RIGHT PANEL: CONTROLS -------------------
             html.Div([
                 html.H6('Network Settings'),
+
+                dcc.Dropdown(id='network-layout-id',
+                    options=[
+                        {'label': 'kamada_kawai', 'value': 'kamada_kawai'},
+                        {'label': 'planar', 'value': 'planar'},
+                        {'label': 'circular', 'value': 'circular'},
+                        {'label': 'shell', 'value': 'shell'},
+                        {'label': 'spring', 'value': 'spring'},
+                        {'label': 'fruchterman_reingold', 'value': 'fruchterman_reingold'},
+                        {'label': 'graph', 'value': 'graph'}
+                    ],
+                    value='shell', style={"width": "100%"}),
+
                 dcc.Input(id='alpha-slider-id', placeholder='slider', type='text', value=0, style={"width": "100%"}), 
                 html.Div(id="output-container-range-slider"),
                 dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}),
-                
                 # html.Div(dcc.Input(id='message-box', type='text', style={"width": "100%"})),
                 html.Button('Make d3graph', id='button', style={"width": "100%"}),
                 html.Div(id='output-container-button',children='Enter a value and press submit', style={"width": "100%"}),
-    
                 # html.Button('Make d3graph!', id='button-id'),                
                 # html.Div(id='output-button', children='Enter a value and press submit'),
-                html.Div(id="output"),
+                # html.Div(id="output"),
                 ], className="three columns", style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
 
 
@@ -626,15 +650,18 @@ def button_click_action(n_clicks, dropdown_path):
 #%% Callback for plotly (right-side) components
 @app.callback(
     Output('hnet-graph', 'figure'),
-    [Input('alpha-slider-id', 'value'), Input('node-id', 'value'), Input("opt-dropdown","value")])
-def update_output(alpha_limit, node_name, dropdown_path):
+    [Input('alpha-slider-id', 'value'), Input('node-id', 'value'), Input("opt-dropdown","value"), Input('network-layout-id', 'value')])
+def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     # Change input variables
     if alpha_limit=='': alpha_limit=0
     if alpha_limit==None: alpha_limit=0
+    if network_layout=='': network_layout='shell'
+    if network_layout==None: network_layout='shell'
     if dropdown_path==None: dropdown_path=''
     alpha_limit=np.int(alpha_limit)
     ALPHA_SCORE = np.int(alpha_limit)
     NODE_NAME = node_name
+    NETWORK_LAYOUT = network_layout
     # edge1=None
     # node1=None
     
@@ -643,6 +670,7 @@ def update_output(alpha_limit, node_name, dropdown_path):
     # print(get_pklpath(dropdown_path))
     print('Dropdown_path path: %s' %(dropdown_path))
     print('Node name selected : %s' %(node_name))
+    print('Node layout selected : %s' %(network_layout))
     # Load data
     if os.path.isfile(get_pklpath(dropdown_path)):
         df=picklefast.load(get_pklpath(dropdown_path))
@@ -668,7 +696,7 @@ def update_output(alpha_limit, node_name, dropdown_path):
     
     # Make graph
     # if (not isinstance(edge1, type(None))) and (not isinstance(node1, type(None))):
-    hnet_graph=network_graph(alpha_limit, node_name)
+    hnet_graph=network_graph(alpha_limit, node_name, network_layout)
     # else:
     #     print('Select one first in dropdown!')
     # Return to screen
@@ -688,7 +716,7 @@ def update_output(alpha_limit, node_name, dropdown_path):
 
 #%% Callback for HNet menu (left-side)
 @app.callback(
-    Output("OUTPUT_CSV", "children"),
+    Output("message-box-output", "children"),
     # Output('opt-dropdown', 'options'),
     [Input("UPLOAD_BOX","filename"), 
      Input("UPLOAD_BOX","contents"), 
@@ -738,9 +766,9 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     if not os.path.isfile(d3path):
         # Read file
         df = pd.read_csv(filepath)
-        print(df.shape)
-        labels=[{'label':i,'value':i} for i in df.columns.unique()]
-        print(labels)
+        # print(df.shape)
+        # labels=[{'label':i,'value':i} for i in df.columns.unique()]
+        # print(labels)
 
         out = hnet.main(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
         # Save pickle file
@@ -758,7 +786,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     print('HNET_DIR_STABLE: %s!' %(HNET_DIR_STABLE))
     print('%s done!' %(filename))
     print('-----------------------Done!-----------------------')
-    print(get_hnetpath(HNET_DIR_STABLE))
+    # print(get_hnetpath(HNET_DIR_STABLE))
     # Extract HNet results from tmp and stable directories
     # return(get_hnetpath(HNET_DIR_STABLE))
     return(('%s done!' %(filename)))

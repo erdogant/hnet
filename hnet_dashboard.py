@@ -20,14 +20,14 @@ import webbrowser
 import networkx as nx
 import plotly.graph_objs as go
 from colour import Color
-from textwrap import dedent as d
+# from textwrap import dedent as d
 # import json
 # HNet
 import hnet as hnet
 import helpers.picklefast as picklefast
 
 # global labels
-global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT
+global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT, HNET_OUT
 # global edge1, node1
 
 
@@ -69,7 +69,8 @@ for i in os.listdir(HNET_DIR_STABLE):
 # ALPHA_SCORE=[0,1000]
 ALPHA_SCORE=0
 NODE_NAME=''
-NETWORK_LAYOUT='shell'
+NETWORK_LAYOUT='fruchterman_reingold'
+HNET_OUT=None
 edge1=None
 node1=None
 
@@ -85,7 +86,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 #app.css.append_css({'external_url':external_stylesheets}) # Required for making columns
 app.scripts.config.serve_locally = True
-app.title = "HNet: Graphical Hypergeometric Networks"
+app.title = "HNet: Graphical Hypergeometric Networks by inference"
 
 # app.scripts.append_script({"external_url": ['https://d3js.org/d3.v3.min.js']})
 
@@ -95,7 +96,8 @@ app.title = "HNet: Graphical Hypergeometric Networks"
 #app.css.append_css({'external_url':'./static/bWLwgP.css'}) # Required for making columns
 
 #%% Start d3 network in browser
-def boot_d3network_in_browser(dropdown_path):
+def boot_d3network_in_browser(dropdown_path, who=''):
+    print('D3PATH: WHO: [%s]' %who)
     d3path=''
     if dropdown_path!=None:
         if os.path.isfile(get_d3path(dropdown_path)):
@@ -201,7 +203,7 @@ def get_pklpath(filepath):
     return(os.path.join(filepath,'hnet.pkl'))
 
 #%% Create Network
-def network_graph(alphaRange, NodeToSearch, network_layout):
+def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
     # if (isinstance(edge1, type(None))) and (isinstance(node1, type(None))):
     #     print('demo case')
     edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
@@ -236,8 +238,23 @@ def network_graph(alphaRange, NodeToSearch, network_layout):
     # import network as network
     # edge1 = edge1[['Source','Target','Weight']]
     # G = network.df2G(node1.set_index('NodeName'), edge1)
-    
     G = nx.from_pandas_edgelist(edge1, 'Source', 'Target', ['Source', 'Target', 'Weight'], create_using=nx.MultiDiGraph())
+    
+    # # hnet.plot_network
+    # HNET_OUT=get_pklpath(hnet_path)
+    # if hnet_path!='hnet.pkl':
+        # print('LOAD HNet ')
+        # hnet_out = picklefast.load(hnet_path)
+        # G = hnet_out['G']['G']
+    
+    # os.path.isfile(hnet_path)
+    # if isinstance(hnet_path, type(None)) or (not os.path.isfile(hnet_out)):
+    #     G = nx.from_pandas_edgelist(edge1, 'Source', 'Target', ['Source', 'Target', 'Weight'], create_using=nx.MultiDiGraph())
+    # else:
+    #     print('Get HNet Graph: %s' %(hnet_path))
+    #     G = hnet_out['G']['G']
+    #     pos = hnet_out['G']['pos']
+
     nx.set_node_attributes(G, node1.set_index('NodeName')['Label'].to_dict(), 'Label')
     nx.set_node_attributes(G, node1.set_index('NodeName')['Type'].to_dict(), 'Type')
 
@@ -248,21 +265,30 @@ def network_graph(alphaRange, NodeToSearch, network_layout):
 
     if len(shell2)>1 and isinstance(NodeToSearch, type(None)) and NodeToSearch=='':
     # if len(shell2)>1:
-        pos = nx.layout.shell_layout(G, shells)
+        pos = nx.layout.shell_layout(G, shells, scale=0.4, iterations=50)
     else:
         if network_layout=='fruchterman_reingold':
-            pos = nx.layout.fruchterman_reingold_layout(G)
+            pos = nx.layout.fruchterman_reingold_layout(G, scale=0.4, iterations=50)
         elif network_layout=='kamada_kawai':
-            pos = nx.layout.kamada_kawai_layout(G)
+            pos = nx.layout.kamada_kawai_layout(G, scale=0.4)
         elif network_layout=='circular':
-            pos = nx.layout.circular_layout(G)
+            pos = nx.layout.circular_layout(G, scale=0.4)
         elif network_layout=='planar':
-            pos = nx.layout.planar_layout(G)
+            pos = nx.layout.planar_layout(G, scale=0.4)
         else:
-            pos = nx.layout.spring_layout(G)
+            pos = nx.layout.spring_layout(G, scale=0.4, iterations=50)
 
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
+
+
+    # if not isinstance(HNET_OUT, type(None)):
+    #     # print('Get HNET_PATH Graph: %s' %(HNET_OUT))
+    #     print('Get HNET_PATH Graph!!!')
+    #     del G
+    #     print(HNET_OUT['G']['pos'])
+    #     G = HNET_OUT['G']['G']
+    #     pos = HNET_OUT['G']['pos']
 
     # IF EMPTY
     if len(shell2)==0:
@@ -338,7 +364,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout):
         #################################################################################################################################################################
         figure = {
             "data": traceRecode,
-            "layout": go.Layout(title='Interactive Transaction Visualization', showlegend=False, hovermode='closest',
+            "layout": go.Layout(title='Selected network', showlegend=False, hovermode='closest',
                                 margin={'b': 40, 'l': 40, 'r': 40, 't': 40},
                                 xaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
                                 yaxis={'showgrid': False, 'zeroline': False, 'showticklabels': False},
@@ -379,7 +405,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout):
 #%% Setup webpage
 GUIelements = html.Div([
         # Row 1
-        html.Div([html.H5("HNets: Graphical Hypergeometric Networks")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
+        html.Div([html.H5("HNets: Graphical Hypergeometric Network inference")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
 
         # Row 2 - Column 1
         html.Div([
@@ -470,7 +496,7 @@ GUIelements = html.Div([
                         {'label': 'fruchterman_reingold', 'value': 'fruchterman_reingold'},
                         {'label': 'graph', 'value': 'graph'}
                     ],
-                    value='shell', style={"width": "100%"}),
+                    value='fruchterman_reingold', style={"width": "100%"}),
 
                 dcc.Input(id='alpha-slider-id', placeholder='slider', type='text', value=0, style={"width": "100%"}), 
                 html.Div(id="output-container-range-slider"),
@@ -643,7 +669,7 @@ app.layout = html.Div([GUIelements])
     [Input('button', 'n_clicks'), Input("opt-dropdown","value")])
 def button_click_action(n_clicks, dropdown_path):
     if dropdown_path==None: dropdown_path=''
-    d3path=boot_d3network_in_browser(dropdown_path)
+    d3path=boot_d3network_in_browser(dropdown_path, who='button')
     if d3path=='': d3path='Select first using the dropdown-box!'
     print(d3path)
 
@@ -655,16 +681,17 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     # Change input variables
     if alpha_limit=='': alpha_limit=0
     if alpha_limit==None: alpha_limit=0
-    if network_layout=='': network_layout='shell'
-    if network_layout==None: network_layout='shell'
+    if network_layout=='': network_layout='fruchterman_reingold'
+    if network_layout==None: network_layout='fruchterman_reingold'
     if dropdown_path==None: dropdown_path=''
     alpha_limit=np.int(alpha_limit)
     ALPHA_SCORE = np.int(alpha_limit)
     NODE_NAME = node_name
     NETWORK_LAYOUT = network_layout
+    HNET_OUT = None
     # edge1=None
     # node1=None
-    
+
     # Print selection dropdownbox
     # print(get_d3path(dropdown_path))
     # print(get_pklpath(dropdown_path))
@@ -673,10 +700,12 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     print('Node layout selected : %s' %(network_layout))
     # Load data
     if os.path.isfile(get_pklpath(dropdown_path)):
-        df=picklefast.load(get_pklpath(dropdown_path))
+        print('Load picke file')
+        HNET_OUT=picklefast.load(get_pklpath(dropdown_path))
+        # HNET_OUT=hnet_out
         #print(df['simmatLogP'])
 
-        df_edges=df['simmatLogP'].stack().reset_index()
+        df_edges=HNET_OUT['simmatLogP'].stack().reset_index()
         df_edges.columns=['Source', 'Target', 'Weight']
         df_edges['Weight']=df_edges['Weight'].astype(float)
         edge1 = df_edges.loc[df_edges['Weight']>0,:]
@@ -696,7 +725,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     
     # Make graph
     # if (not isinstance(edge1, type(None))) and (not isinstance(node1, type(None))):
-    hnet_graph=network_graph(alpha_limit, node_name, network_layout)
+    hnet_graph=network_graph(alpha_limit, node_name, network_layout, HNET_OUT=HNET_OUT)
     # else:
     #     print('Select one first in dropdown!')
     # Return to screen
@@ -746,7 +775,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     print('specificity:%s' %args['specificity'])
     print('dropna:%s' %args['dropna'])
     print('File input: %s' %(args['uploaded_filenames']))
-    
+
 #    if uploaded_filenames is not None and uploaded_file_contents is not None:
     filepath        = save_file(args['uploaded_filenames'], args['uploaded_file_contents'], TMP_DIRECTORY)
     [_,filename, _] = splitpath(args['uploaded_filenames'])
@@ -766,22 +795,22 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     if not os.path.isfile(d3path):
         # Read file
         df = pd.read_csv(filepath)
-        # print(df.shape)
-        # labels=[{'label':i,'value':i} for i in df.columns.unique()]
-        # print(labels)
-
-        out = hnet.main(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
+        # Run HNet
+        HNET_OUT = hnet.main(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
         # Save pickle file
-        picklefast.save(pklpath, out)
-        #G = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-        _ = hnet.plot_d3graph(out, savepath=savepath, directed=False, showfig=False)
+        HNET_OUT['G'] = hnet.plot_network(HNET_OUT, dist_between_nodes=0.4, scale=2, showfig=False)
+        # Store pickle file
+        picklefast.save(pklpath, HNET_OUT)
+        _ = hnet.plot_d3graph(HNET_OUT, savepath=savepath, directed=False, showfig=False)
     else:
         print('dir exists, load stuff')
-        out=picklefast.load(pklpath)
+        HNET_OUT=picklefast.load(pklpath)
         
     # Open in browser
     if os.path.isfile(d3path):
-        webbrowser.open(os.path.abspath(d3path), new=2)
+        print('OPEN BROWSER')
+        # webbrowser.open(os.path.abspath(d3path), new=2)
+        boot_d3network_in_browser(d3path, who='upload')
 
     print('HNET_DIR_STABLE: %s!' %(HNET_DIR_STABLE))
     print('%s done!' %(filename))

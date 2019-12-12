@@ -761,7 +761,7 @@ def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, d
     return(Gout)
 
 #%% Make network d3
-def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, figsize=[15,10], pos=None):
+def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, figsize=[15,10], pos=None, layout='fruchterman_reingold'):
     import networkx as nx
     import matplotlib.pyplot as plt
     import helpers.network as network
@@ -771,7 +771,7 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     config['node_color']=node_color
     config['dist_between_nodes']=dist_between_nodes # k=0.4
     config['node_size_limits']=node_size_limits
-    config['layout']='fruchterman_reingold'
+    config['layout']=layout
     config['iterations']=50
 
 

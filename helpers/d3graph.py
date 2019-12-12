@@ -277,7 +277,7 @@ def d3graph(adjmat, df=None, node_name=None, node_color='#000080', node_size=10,
 #    out['path']=config['path']
     # Open the webbrowser
     if config['showfig']:
-        webbrowser.open(out['path'], new=2)
+        webbrowser.open(os.path.abspath(out['path']), new=2)
     # Return
     return(out)
 

@@ -810,6 +810,15 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         [_,labx]=network.cluster(G.to_undirected())
     else:
         labx = label_encoder.fit_transform(out['labx'])
+
+    # G = nx.DiGraph() # Directed graph
+    # Layout
+    if isinstance(pos, type(None)):
+        pos = nx.fruchterman_reingold_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
+    else:
+        pos = network.graphlayout(G, pos=pos, scale=config['scale'], layout=config['layout'])
+
+    # pos = nx.spring_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
     
     # Boot figure
     if showfig:
@@ -820,14 +829,6 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         'font_size':18,
         'font_color':'black',
         }
-#        G = nx.DiGraph() # Directed graph
-        # Layout
-        if isinstance(pos, type(None)):
-            pos = nx.fruchterman_reingold_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
-        else:
-            pos = network.graphlayout(G, pos=pos, scale=config['scale'], layout=config['layout'])
-
-#        pos = nx.spring_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
         # Draw plot
         nx.draw(G, pos, with_labels=True, **options, node_size=node_size*5, width=edge_weights, node_color=labx, cmap='Paired')
         # Plot weights

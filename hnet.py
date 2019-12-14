@@ -74,6 +74,11 @@
                    None     (default)
                    ['0.0']: To remove catagorical values with label 0
    
+   savepath:       [string]: Direcotry or Full path of figure to save to disk. If only dir is given, filename is created.
+                   None    : (default) do not save
+                   './hnet/figs/'
+                   './hnet/figs/hnet_fig.png'
+
    verbose:        [Integer] [0..5] if verbose >= DEBUG: print('debug message')
                    0: (default)
                    1: ERROR
@@ -105,7 +110,7 @@
    import numpy as np
    import pandas as pd
    from VIZ.imagesc import imagesc
-   import hnet as hnet
+   import STATS.hnet as hnet
 
    ########################################################################
    # Example with random categorical and numerical values
@@ -149,7 +154,7 @@
    imagesc(out['simmatP'], cluster=1, cmap='Reds_r')
    
    ########################################################################
-   df    = pd.read_csv('./DATA/titanic.zip')
+   df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
    out   = hnet.main(df)
    out   = hnet.main(df, k=10)
    G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
@@ -161,6 +166,7 @@
    out   = hnet.main(df, alpha=0.05, multtest='holm')
    G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
    G     = hnet.plot_network(out)
+   G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
    A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
    A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
@@ -213,21 +219,32 @@
 #--------------------------------------------------------------------------
 
 #%% Libraries
+# Basics
 import os
 import pandas as pd
 import numpy as np
-from numpy import inf
+from pathlib import Path
 from tqdm import tqdm
 import itertools
+# Known libraries
 from scipy.stats import hypergeom, ranksums
 import statsmodels.stats.multitest as multitest
 from sklearn.preprocessing import MinMaxScaler 
 from sklearn.preprocessing import LabelEncoder
+import networkx as nx
+label_encoder = LabelEncoder()
+# Custom helpers
 from helpers.showprogress import showprogress
 from helpers.set_dtypes import set_dtypes, set_y
 from helpers.ismember import ismember
 from helpers.df2onehot import df2onehot
-label_encoder = LabelEncoder()
+# VIZ
+from helpers.savefig import savefig
+from helpers.d3graph import d3graph
+import matplotlib.pyplot as plt
+import helpers.network as network
+from helpers.imagesc import imagesc
+# Warnings
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -506,8 +523,8 @@ def logscale(simmat_padj, verbose=3):
     # Set minimum amount
     simmat_padj[simmat_padj==0]=1e-323
     adjmatLog=(-np.log10(simmat_padj)).copy()
-    adjmatLog[adjmatLog == -inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
-    adjmatLog[adjmatLog == inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
+    adjmatLog[adjmatLog == -np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
+    adjmatLog[adjmatLog == np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
     adjmatLog[adjmatLog == -0] = 0
     return(adjmatLog)
 
@@ -731,11 +748,34 @@ def path_split(filepath, rem_spaces=False):
     if rem_spaces:
         filename=filename.replace(' ','_')
     return(dirpath, filename, ext)
-    
+
+#%% From savepath to full and correct path
+def path_correct(savepath, filename='fig', ext='.png'):
+    '''
+    savepath can be a string that looks like below.
+    savepath='./tmp'
+    savepath='./tmp/fig'
+    savepath='./tmp/fig.png'
+    savepath='fig.png'
+    '''
+    out=None
+    if not isinstance(savepath, type(None)):
+        # Set savepath and filename
+        [getdir,getfile,getext]=path_split(savepath)
+        # Make savepath
+        if len(getdir[1:])==0: getdir=''
+        if len(getfile)==0: getfile=filename
+        if len(getext)==0: getext=ext
+        # Create dir
+        if len(getdir)>0:
+            path=Path(getdir)
+            path.mkdir(parents=True, exist_ok=True)
+        # Make final path
+        out=os.path.join(getdir,getfile+getext)
+    return(out)
+
 #%% Make network d3
 def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=False, showfig=True):
-    from helpers.d3graph import d3graph
-
     [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
     node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
     node_size[IA]=scale_weights(out['counts'][IB,1], node_size_limits)
@@ -761,11 +801,7 @@ def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, d
     return(Gout)
 
 #%% Make network d3
-def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, figsize=[15,10], pos=None, layout='fruchterman_reingold'):
-    import networkx as nx
-    import matplotlib.pyplot as plt
-    import helpers.network as network
-
+def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250):
     config=dict()
     config['scale']=scale
     config['node_color']=node_color
@@ -773,8 +809,12 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     config['node_size_limits']=node_size_limits
     config['layout']=layout
     config['iterations']=50
+    config['dpi']=dpi
 
-
+    # Set savepath and filename
+    config['savepath']=path_correct(savepath, filename='hnet_network', ext='.png')
+    
+    # Get adjmat
     adjmatLog = out['simmatLogP'].copy()
 
     # Set weights for edges
@@ -810,7 +850,7 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         [_,labx]=network.cluster(G.to_undirected())
     else:
         labx = label_encoder.fit_transform(out['labx'])
-
+    
     # G = nx.DiGraph() # Directed graph
     # Layout
     if isinstance(pos, type(None)):
@@ -819,10 +859,11 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         pos = network.graphlayout(G, pos=pos, scale=config['scale'], layout=config['layout'])
 
     # pos = nx.spring_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
-    
+
     # Boot figure
-    if showfig:
-        plt.figure(figsize=(figsize[0],figsize[1]))
+    if showfig or (not isinstance(config['savepath'], type(None))):
+        # [fig,ax]=plt.figure(figsize=(figsize[0],figsize[1]))
+        [fig,ax]=plt.subplots(figsize=(figsize[0],figsize[1]))
         options = {
         # 'node_color': 'grey',
         'arrowsize': 12,
@@ -836,7 +877,11 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         # Figure cleaning
         ax = plt.gca()
         ax.set_axis_off()
-        plt.show()
+        # Show figure
+        if showfig: plt.show()
+        # Save figure to disk
+        if not isinstance(config['savepath'], type(None)):
+            savefig(fig, config['savepath'], dpi=config['dpi'], transp=True)
 
     
     Gout=dict()
@@ -847,12 +892,13 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     return(Gout)
 
 #%% Make plot of the structure_learning
-def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=''):
-    from helpers.imagesc import imagesc
-
+def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None):
     simmatP = out['simmatP'].copy()
     adjmatLog = out['simmatLogP'].copy()
-    
+    # Set savepath and filename
+    savepath=path_correct(savepath, filename='hnet_heatmap', ext='.png')
+    if isinstance(savepath, type(None)): savepath=''
+
 #    import seaborn as sns
 #    getcolors=sns.color_palette('Reds_r')
 #    getcolors=getcolors+[(0,0,0)]
@@ -932,7 +978,6 @@ def to_symmetric(out, make_symmetric='logp', verbose=3):
 
 #%% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
-    import helpers.network as network
     [scores, adjmat_diff] = network.compare_networks(adjmat_true, adjmat_pred, pos=pos, showfig=showfig, width=width, height=height, verbose=verbose)
     return(scores, adjmat_diff)
     

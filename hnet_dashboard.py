@@ -10,7 +10,7 @@ import pandas as pd
 # import dash_dangerously_set_inner_html
 # import codecs
 import dash
-#import dash_bootstrap_components as dbc
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -25,13 +25,11 @@ from colour import Color
 import hnet as hnet
 import helpers.picklefast as picklefast
 # progressbar
-import tkinter as tk
-from tkinter import ttk
-# from flask import Flask
+# import tkinter as tk
+# from tkinter import ttk
 # global labels
 global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT, HNET_OUT
 # global edge1, node1
-
 
 #%% Initializatoin
 TMP_DIRECTORY     = './results/tmp/'
@@ -206,92 +204,93 @@ def get_pklpath(filepath):
     return(os.path.join(filepath,'hnet.pkl'))
 
 #%% Create Network
-def network_graph_hnet(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
-    import plotly.graph_objects as go
+# def network_graph_hnet(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
+#     https://towardsdatascience.com/python-interactive-network-visualization-using-networkx-plotly-and-dash-e44749161ed7
+#     import plotly.graph_objects as go
 
-    if isinstance(HNET_OUT, type(None)):
-        edge_trace = go.Scatter(x=[0], y=[0], line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
-        node_trace = go.Scatter(x=[0], y=[0])
-    else:
-        G = HNET_OUT['G']['G']
-        # G = nx.random_geometric_graph(200, 0.125)
+#     if isinstance(HNET_OUT, type(None)):
+#         edge_trace = go.Scatter(x=[0], y=[0], line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
+#         node_trace = go.Scatter(x=[0], y=[0])
+#     else:
+#         G = HNET_OUT['G']['G']
+#         # G = nx.random_geometric_graph(200, 0.125)
         
-        # Create edge traces
-        edge_x = []
-        edge_y = []
-        for edge in G.edges():
-            x0, y0 = HNET_OUT['G']['pos'][edge[0]]
-            x1, y1 = HNET_OUT['G']['pos'][edge[0]]
-            # x0, y0 = G.nodes[edge[0]]['pos']
-            # x1, y1 = G.nodes[edge[1]]['pos']
-            edge_x.append(x0)
-            edge_x.append(x1)
-            # edge_x.append(None)
-            edge_y.append(y0)
-            edge_y.append(y1)
-            # edge_y.append(None)
+#         # Create edge traces
+#         edge_x = []
+#         edge_y = []
+#         for edge in G.edges():
+#             x0, y0 = HNET_OUT['G']['pos'][edge[0]]
+#             x1, y1 = HNET_OUT['G']['pos'][edge[0]]
+#             # x0, y0 = G.nodes[edge[0]]['pos']
+#             # x1, y1 = G.nodes[edge[1]]['pos']
+#             edge_x.append(x0)
+#             edge_x.append(x1)
+#             # edge_x.append(None)
+#             edge_y.append(y0)
+#             edge_y.append(y1)
+#             # edge_y.append(None)
         
-        edge_trace = go.Scatter(x=edge_x, y=edge_y, line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
+#         edge_trace = go.Scatter(x=edge_x, y=edge_y, line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
         
-        node_x = []
-        node_y = []
-        for node in G.nodes():
-            # x, y = G.nodes[node]['pos']
-            x, y = HNET_OUT['G']['pos'][node]
-            node_x.append(x)
-            node_y.append(y)
+#         node_x = []
+#         node_y = []
+#         for node in G.nodes():
+#             # x, y = G.nodes[node]['pos']
+#             x, y = HNET_OUT['G']['pos'][node]
+#             node_x.append(x)
+#             node_y.append(y)
         
-        # Create node traces
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers',
-            hoverinfo='text',
-            marker=dict(
-                showscale=True,
-                # colorscale options
-                #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-                #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-                #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-                colorscale='YlGnBu',
-                reversescale=True,
-                color=[],
-                size=10,
-                colorbar=dict(
-                    thickness=15,
-                    title='Node Connections',
-                    xanchor='left',
-                    titleside='right'
-                ),
-                line_width=2))
+#         # Create node traces
+#         node_trace = go.Scatter(
+#             x=node_x, y=node_y,
+#             mode='markers',
+#             hoverinfo='text',
+#             marker=dict(
+#                 showscale=True,
+#                 # colorscale options
+#                 #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
+#                 #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
+#                 #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
+#                 colorscale='YlGnBu',
+#                 reversescale=True,
+#                 color=[],
+#                 size=10,
+#                 colorbar=dict(
+#                     thickness=15,
+#                     title='Node Connections',
+#                     xanchor='left',
+#                     titleside='right'
+#                 ),
+#                 line_width=2))
     
-        # Create node traces
-        node_adjacencies = []
-        node_text = []
-        for node, adjacencies in enumerate(G.adjacency()):
-            node_adjacencies.append(len(adjacencies[1]))
-            node_text.append('# of connections: '+str(len(adjacencies[1])))
+#         # Create node traces
+#         node_adjacencies = []
+#         node_text = []
+#         for node, adjacencies in enumerate(G.adjacency()):
+#             node_adjacencies.append(len(adjacencies[1]))
+#             node_text.append('# of connections: '+str(len(adjacencies[1])))
         
-        node_trace.marker.color = node_adjacencies
-        node_trace.text = node_text
+#         node_trace.marker.color = node_adjacencies
+#         node_trace.text = node_text
         
-    # Combine edge and node traces in figure
-    figure = go.Figure(data=[edge_trace, node_trace],
-                 layout=go.Layout(
-                    title='<br>Network graph made with Python',
-                    titlefont_size=16,
-                    showlegend=False,
-                    hovermode='closest',
-                    margin=dict(b=20,l=5,r=5,t=40),
-                    annotations=[ dict(
-                        text="HNET graph",
-                        showarrow=True,
-                        xref="paper", yref="paper",
-                        x=0.005, y=-0.002 ) ],
-                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-                    )
-    # figure.show()
-    return(figure)
+#     # Combine edge and node traces in figure
+#     figure = go.Figure(data=[edge_trace, node_trace],
+#                  layout=go.Layout(
+#                     title='<br>Network graph made with Python',
+#                     titlefont_size=16,
+#                     showlegend=False,
+#                     hovermode='closest',
+#                     margin=dict(b=20,l=5,r=5,t=40),
+#                     annotations=[ dict(
+#                         text="HNET graph",
+#                         showarrow=True,
+#                         xref="paper", yref="paper",
+#                         x=0.005, y=-0.002 ) ],
+#                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+#                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+#                     )
+#     # figure.show()
+#     return(figure)
 
 #%% Create Network
 def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
@@ -569,13 +568,12 @@ GUIelements = html.Div([
 
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
-            # COLUMN 2 --------------------- CENTER PANEL: NETWORK ------------------ 
+            # ROWS 2 - COLUMN 2 --------------------- CENTER PANEL: NETWORK ------------------ 
             html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME, NETWORK_LAYOUT))], 
                      style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
-            
-            # COLUMN 3 -------------------- RIGHT PANEL: CONTROLS -------------------
-            html.Div([
-                html.H6('Network Settings'),
+
+            # ROW 2 - COLUMN 3 -------------------- RIGHT PANEL: CONTROLS -------------------
+            html.Div([html.H6('Network Settings'),
 
                 dcc.Dropdown(id='network-layout-id',
                     options=[
@@ -599,119 +597,15 @@ GUIelements = html.Div([
                 # html.Div(id='output-button', children='Enter a value and press submit'),
                 # html.Div(id="output"),
                 ], className="three columns", style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
-
-
-            # # COLUMN 3 -------------------- CONTROLS PLOTLY -------------------
-            # html.Div(className="three columns",
-            #         dcc.Markdown(d("""
-            #                 **Minimum Significance to Visualize**
-
-            #                 Slide the bar to define significance.
-            #                 """)),
-            #             children=[
-            #                 dcc.RangeSlider(
-            #                     id='alpha-slider-id',
-            #                     min=0,
-            #                     max=1000,
-            #                     step=1,
-            #                     value=[0, 1000],
-            #                     # marks={i:{'label':str(i)} for i in np.arange(0,1000,100)}
-            #                     marks={
-            #                         0: {'label': '0'},
-            #                         100: {'label': '100'},
-            #                         200: {'label': '200'},
-            #                         300: {'label': '300'},
-            #                         400: {'label': '400'},
-            #                         500: {'label': '500'},
-            #                         600: {'label': '600'},
-            #                         700: {'label': '700'},
-            #                         800: {'label': '800'},
-            #                         900: {'label': '900'},
-            #                         1000: {'label': '1000'}
-            #                     }
-            #                 ),
-            #                 html.Br(),
-            #                 html.Div(id='output-container-range-slider')
-            #             ], style={'height': '300px', "width": "100%"}
-                        
-            #             dcc.Input(id='node-id', placeholder='Node Name', type='text', style={"width": "100%"}),
-                        
-            #             ], style={"margin":"0px","width": "15%", "height": "700px","border":"1px black solid"}),
-
-
-                            # html.Div(
-                            #         dcc.Markdown(d("""
-                            #         **Node name to search**
-        
-                            #         Input the node name to visualize.
-                            #         """)),
-                            #         dcc.Input(id="node-id", type="text", placeholder="Node name"),
-                            #         html.Div(id="output")
-                            #     style={'height': '300px', "width": "100%"})
-                            # )
-
-                   
-
-
-
-
-            # ROW 3: Create drop-down for dir listing
-            # html.Div([
-                # dcc.Dropdown(id='results-id', options=[{'label':i,'value':os.path.join(HNET_DIR_STABLE,i)} for i in os.listdir(HNET_DIR_STABLE)], value='', style={"width": "100%"}),
-                # html.Div(id="results-output")
-            # ], style={"margin":"0px","width": "100%","border":"1px black solid",'backgroundColor':''}),
-
-            # --------------------------------------------------------------- # 
-
-#            html.Div(id="results-output", className="six columns", style={"width": "80%", "border":"1px black solid", "height": "700px"}),
-#            html.Iframe('D://stack/TOOLBOX_PY/PROJECTS/HNET/results/stable/sprinkler_data_1000_10_1_holm_medium_None_None/index.html'),
-#            html.Iframe(src=app.get_asset_url('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html')),
-#            html.Div(html.Iframe(src='D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html'), className="six columns"),
-
-#            https://github.com/plotly/dash/issues/71
-#            https://dash.plot.ly/external-resources
-#            https://stackoverflow.com/questions/52013320/how-can-i-add-raw-html-javascript-to-a-dash-application
-
-            # Dit werkt bijna
-#            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(codecs.open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html', 'r', 'utf-8').read())),
-            # html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML(open('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html','r').read())),
-
-
-
-#            html.Div(dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''<h1>Header</h1>'''),),
-            # https://dash.plot.ly/external-resources
-            # https://community.plot.ly/t/rendering-html-similar-to-markdown/6232/2
-
             
-#            html.Div(html.Iframe(
-#            # enable all sandbox features
-#            # see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
-#            # this prevents javascript from running inside the iframe
-#            # and other things security reasons
-#            sandbox='',
-#            srcDoc='''
-#                <h3>IFrame</h3>
-#                <script type="text/javascript">
-#                    alert("This javascript will not be executed")
-#                </script>
-#            '''
-#        ), className="six columns"),
 
-
-#        html.Div(id='video-target'),
-#            dcc.Dropdown(
-#                id='video-dropdown',
-#                options=[
-#                    {'label': 'Video 1', 'value': 'video1'},
-#                    {'label': 'Video 2', 'value': 'video2'},
-#                    {'label': 'Video 3', 'value': 'video3'},
-#                ],
-#                value='video1'
-#            )
-
-            
-        
         ], className="row", style={"width": "100%"}),
+
+        # html.Div(
+        #     [dcc.Interval(id="progress-interval", n_intervals=0, interval=500),
+        #      dbc.Progress(id="progress")],
+        #     className="row", style={"width": "95%","border":"1px black solid"}
+        #     ),
 
 
     ], className="row", style={"width": "100%"} #style={"max-width": "500px"},
@@ -721,38 +615,17 @@ GUIelements = html.Div([
 app.layout = html.Div([GUIelements])
 
 #%%
-# https://towardsdatascience.com/python-interactive-network-visualization-using-networkx-plotly-and-dash-e44749161ed7
-
-
-
-#%%
-#@app.callback(Output('video-target', 'children'), [Input('video-dropdown', 'value')])
-#def embed_iframe(value):
-#    videos = {
-#        'video1': 'sea2K4AuPOk',
-#        'video2': '5BAthiN0htc',
-#        'video3': 'e4ti2fCpXMI',
-#    }
-##    https://community.plot.ly/t/how-to-load-html-file-directly-on-dash/8563
-##    https://community.plot.ly/t/how-can-i-use-my-html-file-in-dash/7740/2
-##    https://community.plot.ly/t/how-to-load-html-file-directly-on-dash/8563
-#    
-##    return html.Iframe(src=f'https://www.youtube.com/embed/{videos[value]}')
-#    return dash_dangerously_set_inner_html.DangerouslySetInnerHTML('''<h1>Header</h1>''')
-#    #return html.Iframe('D://stack/TOOLBOX_PY/PROJECTS/HNET/assets/index.html')
-##    return(html.Iframe(
-##        # enable all sandbox features
-##        # see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
-##        # this prevents javascript from running inside the iframe
-##        # and other things security reasons
-##        sandbox='',
-##        srcDoc='''
-##            <h3>IFrame</h3>
-##            <script type="text/javascript">
-##                alert("This javascript will not be executed")
-##            </script>
-##        '''
-##    ))
+# @app.callback(
+#     [Output("progress", "value"), Output("progress", "children")],
+#     [Input("progress-interval", "n_intervals")],
+# )
+# def update_progress(n):
+#     https://dash-bootstrap-components.opensource.faculty.ai/l/components/progress
+#     # check progress of some background process, in this example we'll just
+#     # use n_intervals constrained to be in 0-100
+#     progress = min(n % 110, 100)
+#     # only add text after 5% progress to ensure text isn't squashed too much
+#     return progress, f"{progress} %" if progress >= 5 else ""
 
 #%% Callback for button (right panel)
 @app.callback(
@@ -836,7 +709,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
 
 #%% Callback for HNet menu (left-side)
 @app.callback(
-    Output("message-box-output", "children"),
+    [Output("message-box-output", "children")],
     # Output('opt-dropdown', 'options'),
     [Input("UPLOAD_BOX","filename"), 
      Input("UPLOAD_BOX","contents"), 
@@ -933,9 +806,8 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     # try:
     #     mGUI.destroy()
     # except:
-    #     pass    
-    
-    return(('%s done!' %(filename)))
+    #     pass
+    return(out)
 
 
 #%% Main

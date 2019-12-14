@@ -1,4 +1,3 @@
-#https://dash.plot.ly/dash-core-components
 #%% Libraries
 import os
 import base64
@@ -25,7 +24,10 @@ from colour import Color
 # HNet
 import hnet as hnet
 import helpers.picklefast as picklefast
-
+# progressbar
+import tkinter as tk
+from tkinter import ttk
+# from flask import Flask
 # global labels
 global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT, HNET_OUT
 # global edge1, node1
@@ -110,12 +112,12 @@ def boot_d3network_in_browser(dropdown_path, who=''):
     return(d3path)
 
 #%% Split filepath into dir, filename and extension
-def splitpath(filepath, rem_spaces=False):
-    [dirpath, filename]=os.path.split(filepath)
-    [filename,ext]=os.path.splitext(filename)
-    if rem_spaces:
-        filename=filename.replace(' ','_')
-    return(dirpath, filename, ext)
+# def splitpath(filepath, rem_spaces=False):
+#     [dirpath, filename]=os.path.split(filepath)
+#     [filename,ext]=os.path.splitext(filename)
+#     if rem_spaces:
+#         filename=filename.replace(' ','_')
+#     return(dirpath, filename, ext)
 
 #%% Saving file
 def save_file(name, content, savepath):
@@ -568,7 +570,7 @@ GUIelements = html.Div([
             ], className="three columns", style={"margin":"0px", "width": "15%", "border":"1px black solid", "height": "700px",'backgroundColor':''}),
 
             # COLUMN 2 --------------------- CENTER PANEL: NETWORK ------------------ 
-            html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph_hnet(ALPHA_SCORE, NODE_NAME, NETWORK_LAYOUT))], 
+            html.Div(className="three columns", children=[dcc.Graph(id="hnet-graph", figure=network_graph(ALPHA_SCORE, NODE_NAME, NETWORK_LAYOUT))], 
                      style={"margin":"0px","width": "65%", "height": "700px","border":"1px black solid"} ),
             
             # COLUMN 3 -------------------- RIGHT PANEL: CONTROLS -------------------
@@ -814,7 +816,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     
     # Make graph
     # if (not isinstance(edge1, type(None))) and (not isinstance(node1, type(None))):
-    hnet_graph=network_graph_hnet(alpha_limit, node_name, network_layout, HNET_OUT=HNET_OUT)
+    hnet_graph=network_graph(alpha_limit, node_name, network_layout, HNET_OUT=HNET_OUT)
     # else:
     #     print('Select one first in dropdown!')
     # Return to screen
@@ -849,7 +851,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
 )
 def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, excl_background, perc_min_num, specificity, multtest):
     """Save uploaded files and regenerate the file list."""
-    # Check input
+    # Check input parameters
     [args, runOK, runtxt]=check_input(uploaded_filenames, uploaded_file_contents, y_min, alpha, k, excl_background, perc_min_num, specificity, multtest)
     if runOK==False:
         for txt in runtxt: print('[HNET-GUI] %s' %txt)
@@ -867,7 +869,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
 
 #    if uploaded_filenames is not None and uploaded_file_contents is not None:
     filepath        = save_file(args['uploaded_filenames'], args['uploaded_file_contents'], TMP_DIRECTORY)
-    [_,filename, _] = splitpath(args['uploaded_filenames'])
+    [_,filename, _] = hnet.path_split(args['uploaded_filenames'])
     savepath        = os.path.join(HNET_DIR_STABLE,filename+'_'+str(args['y_min'])+'_'+str(args['k'])+'_'+str(args['multtest'])+'_'+str(args['specificity'])+'_'+str(args['perc_min_num'])+'_'+str(args['excl_background'])+'/')
     d3path          = get_d3path(savepath)
     pklpath         = get_pklpath(savepath)
@@ -876,7 +878,20 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     print('savepath %s' %(savepath))
     print('d3path %s' %(d3path))
     print('pklpath %s' %(pklpath))
-    
+
+    # Progressbar
+    # mGUI=tk.Tk()
+    # mGUI.title('HNET '+ filename)
+    # progressbar = ttk.Progressbar(mGUI, orient='horizontal', length=300)
+    # progressbar.pack(side=tk.TOP)
+    # progressbar.config(mode='determinate')
+    # progressbar.update()
+    # progressbar['value']=0
+    # progressbar['maximum']=5
+    # # Set starting position
+    # progressbar['value']=progressbar['value']+1 # update bar
+    # progressbar.update() # update gui
+
     # Make directory
     if not os.path.isdir(savepath):
         os.mkdir(savepath)
@@ -885,11 +900,20 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
         # Read file
         df = pd.read_csv(filepath)
         # Run HNet
+        # progressbar['value']=progressbar['value']+1 # update bar
+        # progressbar.update() # update gui
         HNET_OUT = hnet.main(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
         # Save pickle file
-        HNET_OUT['G'] = hnet.plot_network(HNET_OUT, dist_between_nodes=0.4, scale=2, showfig=False)
+        print('SAVING NETWORK FIGURE: %s' %(savepath))
+        # progressbar['value']=progressbar['value']+1 # update bar
+        # progressbar.update() # update gui
+        HNET_OUT['G'] = hnet.plot_network(HNET_OUT, dist_between_nodes=0.4, scale=2, dpi=250, figsize=[30,20], showfig=False, savepath=os.path.join(savepath,'hnet_network.png'))
         # Store pickle file
+        print('STORE PICKLE')
+        # progressbar['value']=progressbar['value']+1 # update bar
+        # progressbar.update() # update gui
         picklefast.save(pklpath, HNET_OUT)
+        print('MAKE D3GRAPH')
         _ = hnet.plot_d3graph(HNET_OUT, savepath=savepath, directed=False, showfig=False)
     else:
         print('dir exists, load stuff')
@@ -904,9 +928,13 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     print('HNET_DIR_STABLE: %s!' %(HNET_DIR_STABLE))
     print('%s done!' %(filename))
     print('-----------------------Done!-----------------------')
-    # print(get_hnetpath(HNET_DIR_STABLE))
-    # Extract HNet results from tmp and stable directories
-    # return(get_hnetpath(HNET_DIR_STABLE))
+    # progressbar['value']=progressbar['maximum'] # update bar
+    # progressbar.update() # update gui
+    # try:
+    #     mGUI.destroy()
+    # except:
+    #     pass    
+    
     return(('%s done!' %(filename)))
 
 

@@ -115,7 +115,7 @@
    %reset -f
    %matplotlib auto
    import networkx as nx
-   from NETWORKS.d3graph import d3graph
+   from d3graph.d3graph import d3graph
    import pandas as pd
    import numpy as np
 

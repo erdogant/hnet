@@ -807,7 +807,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     #     mGUI.destroy()
     # except:
     #     pass
-    return(out)
+    return(filename)
 
 
 #%% Main

@@ -17,7 +17,7 @@
                    s1 0   ,0   ,1
                    s2 0   ,1   ,0
                    s3 1   ,1   ,0
-  
+
     y              [numpy array] Vector of labels
                    [0,1,0,1,1,2,1,2,2,2,2,0,0,1,0,1,..]
                    ['aap','aap','boom','mies','boom','aap',..]
@@ -46,7 +46,7 @@
    target:         Target value for response variable y should have dtype y. 
                    None : (default) All values for y are tested
                    1    :  In a two class model
-   
+
    dropna:         [Bool] [True,False] Drop rows/columns in adjacency matrix that showed no significance
                    True  (default)
                    False
@@ -73,7 +73,7 @@
    excl_background:[String]: String name to exclude from the background
                    None     (default)
                    ['0.0']: To remove catagorical values with label 0
-   
+
    savepath:       [string]: Direcotry or Full path of figure to save to disk. If only dir is given, filename is created.
                    None    : (default) do not save
                    './hnet/figs/'
@@ -94,14 +94,17 @@
 	output
 
  DESCRIPTION
-   Automatically generates networks from datasets with mixed datatypes return by an unknown function. Thse datasets can range from 
-   generic dataframes to nested data structures with lists, missing values and enumerations. I solved this problem to minimize the amount 
-   of configurations required while still gaining many benefits of having schemas available.
+   Automatically generates networks from datasets with mixed datatypes return 
+   by an unknown function. These datasets can range from generic dataframes to 
+   nested data structures with lists, missing values and enumerations. 
+   I solved this problem to minimize the amount of configurations required 
+   while still gaining many benefits of having schemas available.
 
-   The response variable (y) should be a vector with the same number of samples as for the input data
-   For each column in the dataframe significance is assessed for the labels in a two-class approach (y=1 vs y!=1).
-   Significane is assessed one tailed; only the fit for y=1 with an overrepresentation.
-   Hypergeometric test is used for catagorical values
+   The response variable (y) should be a vector with the same number of samples 
+   as for the input data. For each column in the dataframe significance is 
+   assessed for the labels in a two-class approach (y=1 vs y!=1).
+   Significane is assessed one tailed; only the fit for y=1 with an 
+   overrepresentation. Hypergeometric test is used for catagorical values
    Wilcoxen rank-sum test for numerical values
 
  EXAMPLE
@@ -398,7 +401,7 @@ def compute_significance(df, y, dtypes, specificity=None, verbose=3):
             
             # Numerical
             if dtypes[i]=='num':
-                outtest = prob_ranksums(datac, yc==target, specificity=specificity, verbose=verbose)
+                outtest = prob_ranksums(datac, yc==target, specificity=specificity)
                 outtest.update({'y':target})
                 outtest.update({'category_name':colname})
                 out.append(outtest)
@@ -409,7 +412,7 @@ def compute_significance(df, y, dtypes, specificity=None, verbose=3):
     return(out)
 
 #%% Wilcoxon Ranksum test
-def prob_ranksums(datac, yc, specificity=None, verbose=3):
+def prob_ranksums(datac, yc, specificity=None):
     P=np.nan
     zscore=np.nan
     datac=datac.values
@@ -755,7 +758,7 @@ def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
         simmat_padj=simmat_padj.iloc[keepidx,keepidx]
         adjmatLog=adjmatLog.iloc[keepidx,keepidx]
         simmat_labx=simmat_labx[keepidx]
-        [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
+        [IA,_]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
         nr_succes_pop_n=nr_succes_pop_n[IA,:]
     
     return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
@@ -961,8 +964,6 @@ def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None):
         imagesc(adjmatLog, cluster=cluster, cmap='Reds', width=figsize[0], height=figsize[1], savepath=savepath2)
     except:
         print('[HNET][plot_heatmap] Failed making imagesc plot.')
-
-    return(None)
 
 #%% Make adjacency matrix symmetric with repect to the diagonal
 def to_symmetric(out, make_symmetric='logp', verbose=3):

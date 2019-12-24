@@ -248,6 +248,78 @@ from helpers.imagesc import imagesc
 import warnings
 warnings.filterwarnings("ignore")
 
+#%% Do the math
+def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
+    count=0
+    out=[]
+    # Get response variable to test association
+    y=X_comb.iloc[:,i].values.astype(str)
+    # Get column name
+    colname=X_comb.columns[i]
+    # Do something if response variable has more then 1 option. 
+    if len(np.unique(y))>1:
+        if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
+        # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
+        I=~np.isin(df.columns, X_labx[i])
+        # Compute fit
+        dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
+        # Count        
+        count=count+dfout.shape[0]
+        # Match with dataframe and store
+        if not dfout.empty:
+            # Column names
+            idx           = np.where(dfout['category_label'].isna())[0]
+            catnames      = dfout['category_name']
+            colnames      = catnames+'_'+dfout['category_label']
+            colnames[idx] = catnames[idx].values
+            # Add new column and index
+            [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
+            # Store values
+            [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
+            simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
+            # Count nr. successes
+            out = [colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]]
+            # showprogress
+            if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
+    else:
+        if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+
+    if param['verbose']>=4: print('')
+    # Return
+    return(out, simmat_padj, simmat_labx)
+
+#%% Do the math
+def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
+    # Clean label names
+    simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
+    simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
+    nr_succes_pop_n=np.array(nr_succes_pop_n)
+    nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
+
+    # Multiple test correction
+    simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
+    # Remove variables for which both rows and columns are empty
+    if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
+    # Fill empty fields
+    if param['fillna']: simmat_padj.fillna(1, inplace=True)
+    # Remove those with P>alpha, to prevent unnecesarilly edges
+    simmat_padj[simmat_padj>param['alpha']]=1
+    # Convert P-values to -log10 scale
+    adjmatLog = logscale(simmat_padj)
+    
+    # Remove edges from matrix
+    if param['dropna']:
+        idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
+        idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
+        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
+        simmat_padj=simmat_padj.iloc[keepidx,keepidx]
+        adjmatLog=adjmatLog.iloc[keepidx,keepidx]
+        simmat_labx=simmat_labx[keepidx]
+        [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
+        nr_succes_pop_n=nr_succes_pop_n[IA,:]
+    
+    return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
+
 #%% Structure learning across all variables
 def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=None, dropna=True, excl_background=None, verbose=3):
     assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'

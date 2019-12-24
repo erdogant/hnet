@@ -110,7 +110,7 @@
    import numpy as np
    import pandas as pd
    from VIZ.imagesc import imagesc
-   import STATS.hnet as hnet
+   import hnet as hnet
 
    ########################################################################
    # Example with random categorical and numerical values
@@ -212,10 +212,10 @@
 
 #--------------------------------------------------------------------------
 # Name        : hnet.py
-# Version     : 1.0
+# Version     : 0.1
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
-# Date        : Nov. 2019
+# Date        : Dec. 2019
 #--------------------------------------------------------------------------
 
 #%% Libraries

@@ -355,74 +355,102 @@ def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specif
     colNum      = df.columns[df.dtypes=='float64'].values
     simmat_labx = np.append(X_labo, colNum).astype(str)
     simmat_padj = pd.DataFrame(index=np.append(X_comb.columns, colNum).astype(str), columns=np.append(X_comb.columns, colNum).astype(str)).astype(float)
-    
+
+
+    # Here we go! in paralel!
+    # from multiprocessing import Pool
+    # nr_succes_pop_n=[]
+    # with Pool(processes=os.cpu_count()-1) as pool:
+    #     for i in range(0,X_comb.shape[1]):
+    #         result = pool.apply_async(do_the_math, (df, X_comb, dtypes, X_labx, param, i,))
+    #         nr_succes_pop_n.append(result)
+        
+    #     results = [result.get() for result in result_objs]
+    #     print(len(results))
+        
+
+
     # Here we go! Over all columns now
     count=0
     nr_succes_pop_n=[]
     for i in tqdm(range(0,X_comb.shape[1]), disable=(True if param['verbose']==0 else False)):
-        y=X_comb.iloc[:,i].values.astype(str)
-        colname=X_comb.columns[i]
-        # Do something if response variable has more then 1 option. 
-        if len(np.unique(y))>1:
-            if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
-            # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
-            # Compute fit
-            I=~np.isin(df.columns, X_labx[i])
-            dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
-            
-#            I=~np.isin(df_labx, X_labx[i])
-#            dfout=fit(df_tot.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=df_dtypes[I], specificity=param['specificity'], verbose=0)
-            #dfout=fit(df.loc[:,~np.isin(df_labx, X_labx[i])], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=None, specificity=param['specificity'], verbose=0)
-            count=count+dfout.shape[0]
-            # Match with dataframe and store
-            if not dfout.empty:
-                # Column names
-                idx           = np.where(dfout['category_label'].isna())[0]
-                catnames      = dfout['category_name']
-                colnames      = catnames+'_'+dfout['category_label']
-                colnames[idx] = catnames[idx].values
-                # Add new column and index
-                [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
-                # Store values
-                [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
-                simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
-                # Count nr. successes
-                nr_succes_pop_n.append([colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]])
-                # showprogress
-                if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
-        else:
-            if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
-        if param['verbose']>=4: print('')
+        [nr_succes_i, simmat_padj, simmat_labx] = do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
+        nr_succes_pop_n.append(nr_succes_i)
+
+    # Message
     if param['verbose']>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
+    # Post processing
+    [simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx] = post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param)
 
 
-    # Clean label names
-    simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
-    simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
-    nr_succes_pop_n=np.array(nr_succes_pop_n)
-    nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
+#     # Here we go! Over all columns now
+#     count=0
+#     nr_succes_pop_n=[]
+#     for i in tqdm(range(0,X_comb.shape[1]), disable=(True if param['verbose']==0 else False)):
+#         y=X_comb.iloc[:,i].values.astype(str)
+#         colname=X_comb.columns[i]
+#         # Do something if response variable has more then 1 option. 
+#         if len(np.unique(y))>1:
+#             if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
+#             # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
+#             # Compute fit
+#             I=~np.isin(df.columns, X_labx[i])
+#             dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
+            
+# #            I=~np.isin(df_labx, X_labx[i])
+# #            dfout=fit(df_tot.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=df_dtypes[I], specificity=param['specificity'], verbose=0)
+#             #dfout=fit(df.loc[:,~np.isin(df_labx, X_labx[i])], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=None, specificity=param['specificity'], verbose=0)
+#             count=count+dfout.shape[0]
+#             # Match with dataframe and store
+#             if not dfout.empty:
+#                 # Column names
+#                 idx           = np.where(dfout['category_label'].isna())[0]
+#                 catnames      = dfout['category_name']
+#                 colnames      = catnames+'_'+dfout['category_label']
+#                 colnames[idx] = catnames[idx].values
+#                 # Add new column and index
+#                 [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
+#                 # Store values
+#                 [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
+#                 simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
+#                 # Count nr. successes
+#                 nr_succes_pop_n.append([colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]])
+#                 # showprogress
+#                 if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
+#         else:
+#             if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+#         if param['verbose']>=4: print('')
 
-    # Multiple test correction
-    simmat_padj = multipletestcorrectionAdjmat(simmat_padj, multtest, verbose=param['verbose'])
-    # Remove variables for which both rows and columns are empty
-    if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
-    # Fill empty fields
-    if param['fillna']: simmat_padj.fillna(1, inplace=True)
-    # Remove those with P>alpha, to prevent unnecesarilly edges
-    simmat_padj[simmat_padj>param['alpha']]=1
-    # Convert P-values to -log10 scale
-    adjmatLog = logscale(simmat_padj)
+#     if param['verbose']>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
+
+
+#     # Clean label names
+#     simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
+#     simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
+#     nr_succes_pop_n=np.array(nr_succes_pop_n)
+#     nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
+
+#     # Multiple test correction
+#     simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
+#     # Remove variables for which both rows and columns are empty
+#     if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
+#     # Fill empty fields
+#     if param['fillna']: simmat_padj.fillna(1, inplace=True)
+#     # Remove those with P>alpha, to prevent unnecesarilly edges
+#     simmat_padj[simmat_padj>param['alpha']]=1
+#     # Convert P-values to -log10 scale
+#     adjmatLog = logscale(simmat_padj)
     
-    # Remove no-edges from matrix
-    if param['dropna']:
-        idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
-        idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
-        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
-        simmat_padj=simmat_padj.iloc[keepidx,keepidx]
-        adjmatLog=adjmatLog.iloc[keepidx,keepidx]
-        simmat_labx=simmat_labx[keepidx]
-        [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
-        nr_succes_pop_n=nr_succes_pop_n[IA,:]
+#     # Remove no-edges from matrix
+#     if param['dropna']:
+#         idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
+#         idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
+#         keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
+#         simmat_padj=simmat_padj.iloc[keepidx,keepidx]
+#         adjmatLog=adjmatLog.iloc[keepidx,keepidx]
+#         simmat_labx=simmat_labx[keepidx]
+#         [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
+#         nr_succes_pop_n=nr_succes_pop_n[IA,:]
     
     # Store
     out=dict()

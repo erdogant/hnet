@@ -234,7 +234,7 @@ from sklearn.preprocessing import LabelEncoder
 import networkx as nx
 label_encoder = LabelEncoder()
 # Custom helpers
-from helpers.showprogress import showprogress
+# from helpers.showprogress import showprogress
 from helpers.set_dtypes import set_dtypes, set_y
 from helpers.ismember import ismember
 from helpers.df2onehot import df2onehot
@@ -247,78 +247,6 @@ from helpers.imagesc import imagesc
 # Warnings
 import warnings
 warnings.filterwarnings("ignore")
-
-#%% Do the math
-def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
-    count=0
-    out=[]
-    # Get response variable to test association
-    y=X_comb.iloc[:,i].values.astype(str)
-    # Get column name
-    colname=X_comb.columns[i]
-    # Do something if response variable has more then 1 option. 
-    if len(np.unique(y))>1:
-        if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
-        # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
-        I=~np.isin(df.columns, X_labx[i])
-        # Compute fit
-        dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
-        # Count        
-        count=count+dfout.shape[0]
-        # Match with dataframe and store
-        if not dfout.empty:
-            # Column names
-            idx           = np.where(dfout['category_label'].isna())[0]
-            catnames      = dfout['category_name']
-            colnames      = catnames+'_'+dfout['category_label']
-            colnames[idx] = catnames[idx].values
-            # Add new column and index
-            [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
-            # Store values
-            [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
-            simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
-            # Count nr. successes
-            out = [colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]]
-            # showprogress
-            if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
-    else:
-        if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
-
-    if param['verbose']>=4: print('')
-    # Return
-    return(out, simmat_padj, simmat_labx)
-
-#%% Do the math
-def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
-    # Clean label names
-    simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
-    simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
-    nr_succes_pop_n=np.array(nr_succes_pop_n)
-    nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
-
-    # Multiple test correction
-    simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
-    # Remove variables for which both rows and columns are empty
-    if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
-    # Fill empty fields
-    if param['fillna']: simmat_padj.fillna(1, inplace=True)
-    # Remove those with P>alpha, to prevent unnecesarilly edges
-    simmat_padj[simmat_padj>param['alpha']]=1
-    # Convert P-values to -log10 scale
-    adjmatLog = logscale(simmat_padj)
-    
-    # Remove edges from matrix
-    if param['dropna']:
-        idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
-        idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
-        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
-        simmat_padj=simmat_padj.iloc[keepidx,keepidx]
-        adjmatLog=adjmatLog.iloc[keepidx,keepidx]
-        simmat_labx=simmat_labx[keepidx]
-        [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
-        nr_succes_pop_n=nr_succes_pop_n[IA,:]
-    
-    return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
 
 #%% Structure learning across all variables
 def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=None, dropna=True, excl_background=None, verbose=3):
@@ -379,79 +307,10 @@ def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specif
 
     # Message
     if param['verbose']>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
+
     # Post processing
     [simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx] = post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param)
 
-
-#     # Here we go! Over all columns now
-#     count=0
-#     nr_succes_pop_n=[]
-#     for i in tqdm(range(0,X_comb.shape[1]), disable=(True if param['verbose']==0 else False)):
-#         y=X_comb.iloc[:,i].values.astype(str)
-#         colname=X_comb.columns[i]
-#         # Do something if response variable has more then 1 option. 
-#         if len(np.unique(y))>1:
-#             if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
-#             # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
-#             # Compute fit
-#             I=~np.isin(df.columns, X_labx[i])
-#             dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
-            
-# #            I=~np.isin(df_labx, X_labx[i])
-# #            dfout=fit(df_tot.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=df_dtypes[I], specificity=param['specificity'], verbose=0)
-#             #dfout=fit(df.loc[:,~np.isin(df_labx, X_labx[i])], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=None, specificity=param['specificity'], verbose=0)
-#             count=count+dfout.shape[0]
-#             # Match with dataframe and store
-#             if not dfout.empty:
-#                 # Column names
-#                 idx           = np.where(dfout['category_label'].isna())[0]
-#                 catnames      = dfout['category_name']
-#                 colnames      = catnames+'_'+dfout['category_label']
-#                 colnames[idx] = catnames[idx].values
-#                 # Add new column and index
-#                 [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
-#                 # Store values
-#                 [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
-#                 simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
-#                 # Count nr. successes
-#                 nr_succes_pop_n.append([colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]])
-#                 # showprogress
-#                 if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
-#         else:
-#             if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
-#         if param['verbose']>=4: print('')
-
-#     if param['verbose']>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
-
-
-#     # Clean label names
-#     simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
-#     simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
-#     nr_succes_pop_n=np.array(nr_succes_pop_n)
-#     nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
-
-#     # Multiple test correction
-#     simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
-#     # Remove variables for which both rows and columns are empty
-#     if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
-#     # Fill empty fields
-#     if param['fillna']: simmat_padj.fillna(1, inplace=True)
-#     # Remove those with P>alpha, to prevent unnecesarilly edges
-#     simmat_padj[simmat_padj>param['alpha']]=1
-#     # Convert P-values to -log10 scale
-#     adjmatLog = logscale(simmat_padj)
-    
-#     # Remove no-edges from matrix
-#     if param['dropna']:
-#         idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
-#         idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
-#         keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
-#         simmat_padj=simmat_padj.iloc[keepidx,keepidx]
-#         adjmatLog=adjmatLog.iloc[keepidx,keepidx]
-#         simmat_labx=simmat_labx[keepidx]
-#         [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
-#         nr_succes_pop_n=nr_succes_pop_n[IA,:]
-    
     # Store
     out=dict()
     out['simmatP']    = simmat_padj
@@ -488,7 +347,7 @@ def fit(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specifi
     # Multiple test correction
     out = multipletestcorrection(out, config['multtest'], verbose=config['verbose'])
     # Keep only significant ones
-    out = filter_significance(out, config['alpha'], multtest, verbose=config['verbose'])
+    out = filter_significance(out, config['alpha'], multtest)
     # Make dataframe
     out = pd.DataFrame(out)
     # Return
@@ -532,7 +391,7 @@ def compute_significance(df, y, dtypes, specificity=None, verbose=3):
                     datacOnehot.drop(labels=['0.0'], axis=1, inplace=True)
                 # Run over all unique entities/cats in column for target vlue
                 for k in range(0,datacOnehot.shape[1]):
-                    outtest = prob_hypergeo(datacOnehot.iloc[:,k], yc==target, verbose=verbose)
+                    outtest = prob_hypergeo(datacOnehot.iloc[:,k], yc==target)
                     outtest.update({'y':target})
                     outtest.update({'category_name':colname})
                     out.append(outtest)
@@ -587,7 +446,7 @@ def prob_ranksums(datac, yc, specificity=None, verbose=3):
     return(out)
 
 #%% Hypergeometric test
-def prob_hypergeo(datac, yc, verbose=3):
+def prob_hypergeo(datac, yc):
     '''
     Suppose you have a lot of 100 floppy disks (M), and you know that 20 of them are defective (n).
     What is the prbability of drawing zero to 2 floppy disks (N=2), if you select 10 at random (N).
@@ -619,7 +478,7 @@ def prob_hypergeo(datac, yc, verbose=3):
     return(out)
 
 #%% Make logscale
-def logscale(simmat_padj, verbose=3):
+def logscale(simmat_padj):
     # Set minimum amount
     simmat_padj[simmat_padj==0]=1e-323
     adjmatLog=(-np.log10(simmat_padj)).copy()
@@ -636,7 +495,7 @@ def combined_rules(out, verbose=3):
     df_rules = pd.DataFrame(index=np.arange(0,out['simmatP'].shape[0]), columns=['antecedents_labx','antecedents','consequents','Pfisher'])
     df_rules['consequents'] = out['simmatP'].index.values
     
-    for i in range(0, out['simmatP'].shape[0]):
+    for i in tqdm(range(0, out['simmatP'].shape[0]), disable=(True if verbose==0 else False)):
         idx=np.where(out['simmatP'].iloc[i,:]<1)[0]
         # Remove self
         idx=np.setdiff1d(idx,i)
@@ -646,7 +505,7 @@ def combined_rules(out, verbose=3):
         # Combine pvalues
         df_rules['Pfisher'].iloc[i] = combine_pvalues(out['simmatP'].iloc[i,idx].values, method='fisher')[1]
         # Showprogress
-        if verbose>=3: showprogress(i, out['simmatP'].shape[0])
+        # if verbose>=3: showprogress(i, out['simmatP'].shape[0])
     
     # Keep only lines with pvalues
     df_rules.dropna(how='any', subset=['Pfisher'], inplace=True)
@@ -752,7 +611,7 @@ def multipletestcorrection(out, multtest, verbose=3):
     return(out)
 
 #%% Setup columns in correct dtypes
-def filter_significance(out, alpha, multtest, verbose=3):
+def filter_significance(out, alpha, multtest):
     if isinstance(multtest, type(None)):
         idx=np.where(np.array(list(map(lambda x: x['P']<=alpha, out))))[0]
     else:
@@ -763,7 +622,7 @@ def filter_significance(out, alpha, multtest, verbose=3):
     return(outf)
 
 #%% Cleaning
-def nancleaning(datac, y, verbose=3):
+def nancleaning(datac, y):
     I     = datac.replace([np.inf, -np.inf, None, 'nan', 'None', 'inf', '-inf'], np.nan).notnull()
     datac = datac[I]
     yc    = y[I]
@@ -792,14 +651,7 @@ def make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
                 if verbose>=3: print('[HNET] No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
                 break
         
-        # Find repetative output, and combine
-#        from sklearn.metrics import pairwise_distances
-#        distmat=pairwise_distances(out_hot, metric='hamming')
-        
         # Add to one-hot dataframe
-#        Xhot  = pd.concat([Xhot, out_hot], axis=1)
-#        Xlabx = np.append(Xlabx, out_labx)
-#        Xlabo = np.append(Xlabo, out_labo)
         Xhot  = out_hot
         Xlabo = out_labo
         Xlabx = out_labx
@@ -820,7 +672,7 @@ def cmbnN(Xhot, Xlabx, y_min, k):
     cmbn_labH = []
     cmbn_labX = []
     cmbn_labO = []
-    for i,idx in enumerate(cmbn_idx):
+    for idx in cmbn_idx:
         # Compute product
         prodFeat = Xhot.iloc[:,idx].prod(axis=1)
         # Store if allowed
@@ -835,6 +687,78 @@ def cmbnN(Xhot, Xlabx, y_min, k):
     # Combine repetative values
     #assert cmbn_hot.shape[1]==len(cmbn_labX), print('one-hot matrix should have equal size with labels')
     return(cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO)
+
+#%% Do the math
+def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
+    count=0
+    out=[]
+    # Get response variable to test association
+    y=X_comb.iloc[:,i].values.astype(str)
+    # Get column name
+    colname=X_comb.columns[i]
+    # Do something if response variable has more then 1 option. 
+    if len(np.unique(y))>1:
+        if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
+        # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
+        I=~np.isin(df.columns, X_labx[i])
+        # Compute fit
+        dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
+        # Count        
+        count=count+dfout.shape[0]
+        # Match with dataframe and store
+        if not dfout.empty:
+            # Column names
+            idx           = np.where(dfout['category_label'].isna())[0]
+            catnames      = dfout['category_name']
+            colnames      = catnames+'_'+dfout['category_label']
+            colnames[idx] = catnames[idx].values
+            # Add new column and index
+            [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
+            # Store values
+            [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
+            simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
+            # Count nr. successes
+            out = [colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]]
+            # showprogress
+            if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
+    else:
+        if param['verbose']>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+
+    if param['verbose']>=4: print('')
+    # Return
+    return(out, simmat_padj, simmat_labx)
+
+#%% Do the math
+def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
+    # Clean label names
+    simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
+    simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
+    nr_succes_pop_n=np.array(nr_succes_pop_n)
+    nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
+
+    # Multiple test correction
+    simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
+    # Remove variables for which both rows and columns are empty
+    if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
+    # Fill empty fields
+    if param['fillna']: simmat_padj.fillna(1, inplace=True)
+    # Remove those with P>alpha, to prevent unnecesarilly edges
+    simmat_padj[simmat_padj>param['alpha']]=1
+    # Convert P-values to -log10 scale
+    adjmatLog = logscale(simmat_padj)
+    
+    # Remove edges from matrix
+    if param['dropna']:
+        idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
+        idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
+        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
+        simmat_padj=simmat_padj.iloc[keepidx,keepidx]
+        adjmatLog=adjmatLog.iloc[keepidx,keepidx]
+        simmat_labx=simmat_labx[keepidx]
+        [IA,IB]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
+        nr_succes_pop_n=nr_succes_pop_n[IA,:]
+    
+    return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
 
 #%% Scale weights
 def scale_weights(weights, node_size_limits):
@@ -1037,7 +961,6 @@ def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None):
         imagesc(adjmatLog, cluster=cluster, cmap='Reds', width=figsize[0], height=figsize[1], savepath=savepath2)
     except:
         print('[HNET][plot_heatmap] Failed making imagesc plot.')
-        pass
 
     return(None)
 

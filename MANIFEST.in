@@ -1,0 +1,3 @@
+include versioneer.py
+include hnet/_version.py
+include hnet/data/*.csv

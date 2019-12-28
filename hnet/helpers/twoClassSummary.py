@@ -46,8 +46,8 @@ from sklearn.metrics import cohen_kappa_score
 from sklearn.metrics import  matthews_corrcoef
 from sklearn.metrics import average_precision_score, precision_recall_curve
 from funcsigs import signature
-import helpers.confmatrix as confmatrix
-import helpers.CAP as CAP
+import hnet.helpers.confmatrix as confmatrix
+import hnet.helpers.CAP as CAP
 
 #%% Main function for all two class results
 def allresults(y_true, y_pred_proba, threshold=0.5, title='', classnames=['class1','class2'], showfig=True, verbose=3):

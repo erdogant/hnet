@@ -23,7 +23,7 @@ from colour import Color
 # import json
 # HNet
 import hnet as hnet
-import helpers.picklefast as picklefast
+import ethelpers.picklefast as picklefast
 # progressbar
 # import tkinter as tk
 # from tkinter import ttk

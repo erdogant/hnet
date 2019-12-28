@@ -70,7 +70,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
-from helpers.set_dtypes import set_dtypes
+from hnet.helpers.set_dtypes import set_dtypes
 #from GENERAL.ismember import ismember
 label_encoder = LabelEncoder()
 onehot_encoder = OneHotEncoder(sparse=False, categories='auto')

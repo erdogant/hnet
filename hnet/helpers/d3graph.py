@@ -201,7 +201,7 @@ import numpy as np
 from shutil import copyfile
 from sklearn.preprocessing import MinMaxScaler 
 import seaborn as sns
-from helpers.ismember import ismember
+from hnet.helpers.ismember import ismember
 import webbrowser
 
 #%%

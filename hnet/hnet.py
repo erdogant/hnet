@@ -1,7 +1,7 @@
-""" Hypergeometric-networks (hnet). This function computes significance of the response variable with catagorical/numerical variables (hnet)
+""" HNET: Hypergeometric-networks. This function computes significance of the response variable with catagorical/numerical variables.
 
-  out              = hnet.main(df, <optional>)
-  outy             = hnet.fit(df, y, <optional>)
+  out              = hnet.fit(df, <optional>)
+  outy             = hnet.enrichment(df, y, <optional>)
   G                = hnet.plot_heatmap(out, <optional>)
   G                = hnet.plot_network(out, <optional>)
   G                = hnet.plot_d3graph(out, <optional>)
@@ -123,8 +123,8 @@
    dtypes = np.array(['cat']*nobservations)
    dtypes[np.random.randint(0,2,nobservations)==1]='num'
    y   = np.random.randint(0,2,nfeat)
-   out = hnet.fit(df,y, dtypes=dtypes)
-   out = hnet.main(df,dtypes=dtypes)
+   out = hnet.enrichment(df,y, dtypes=dtypes)
+   out = hnet.fit(df,dtypes=dtypes)
    
    ########################################################################
    # Example with 1 true positive column
@@ -136,7 +136,7 @@
    dtypes = np.array(['cat']*(nobservations+1))
    dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
    dtypes[-1]='cat'
-   out = hnet.fit(df,y, alpha=0.05, dtypes=dtypes)
+   out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
    
    ########################################################################
    # Example most simple manner
@@ -144,29 +144,29 @@
    nobservations=50
    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
    y  = np.random.randint(0,2,nfeat)
-   out  = hnet.fit(df,y)
-   out  = hnet.fit(df,y, multtest=None)
+   out  = hnet.enrichment(df,y)
+   out  = hnet.enrichment(df,y, multtest=None)
 
    ########################################################################
    df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.fit(df, y=df['Survived'].values, alpha=0.05, multtest='holm')
+   out   = hnet.enrichment(df, y=df['Survived'].values, alpha=0.05, multtest='holm')
    rules = hnet.combined_rules(out)
 
    ########################################################################
-   out  = hnet.main(df)
+   out  = hnet.fit(df)
    imagesc(out['simmatP'], cluster=1, cmap='Reds_r')
    
    ########################################################################
-   df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.main(df)
-   out   = hnet.main(df, k=10)
+   df    = pd.read_csv('../../../DATA/OTHER/titanic/titanic.zip')
+   out   = hnet.fit(df)
+   out   = hnet.fit(df, k=10)
    G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
    A     = hnet.plot_d3graph(out, savepath='c://temp/titanic3/', directed=False)
    
    ########################################################################
-   df    = pd.read_csv('../DATA/NETWORKS/bayesian/SPRINKLER/sprinkler_data_1000.zip')
-   out   = hnet.main(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
-   out   = hnet.main(df, alpha=0.05, multtest='holm')
+   df    = pd.read_csv('../../../DATA/NETWORKS/bayesian/SPRINKLER/sprinkler_data_1000.zip')
+   out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
+   out   = hnet.fit(df, alpha=0.05, multtest='holm')
    G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
    G     = hnet.plot_network(out)
    G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
@@ -174,15 +174,15 @@
    A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
    ########################################################################
-   df    = pd.read_csv('../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
-   out   = hnet.main(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
+   df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
+   out   = hnet.fit(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
    G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
    A     = hnet.plot_d3graph(out, savepath='c://temp/USA_2016_elections/')
 
    ########################################################################
    df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.main(df)
-   out   = hnet.main(df, alpha=1, dropna=False)
+   out   = hnet.fit(df)
+   out   = hnet.fit(df, alpha=1, dropna=False)
    G     = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
 
    from EMBEDDINGS.tsneBH import tsneBH
@@ -199,15 +199,7 @@
    ########################################################################
    df    = pd.read_csv('../DATA/OTHER/Market_Basket_Optimisation.csv', header=None).T
    df    = pd.read_csv('D:/stack/TOOLBOX_PY/COURSES/Machine Learning A-Z New/Part 8 - Deep Learning/Section 39 - Artificial Neural Networks (ANN)/Churn_Modelling.csv')
-   out   = hnet.main(df)
-
-   ########################################################################
-
-#   d3graph.G2d3(G, path='c://temp/titanic/')
-#   from pyvis.network import Network
-#   import networkx as nx
-#   Gviz = Network()
-#   Gviz.from_nx(G)
+   out   = hnet.fit(df)
 
    ########################################################################
 
@@ -215,7 +207,6 @@
 
 #--------------------------------------------------------------------------
 # Name        : hnet.py
-# Version     : 0.1
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
 # Date        : Dec. 2019
@@ -237,22 +228,21 @@ from sklearn.preprocessing import LabelEncoder
 import networkx as nx
 label_encoder = LabelEncoder()
 # Custom helpers
-# from helpers.showprogress import showprogress
-from helpers.set_dtypes import set_dtypes, set_y
-from helpers.ismember import ismember
-from helpers.df2onehot import df2onehot
+from hnet.helpers.set_dtypes import set_dtypes, set_y
+from hnet.helpers.ismember import ismember
+from hnet.helpers.df2onehot import df2onehot
 # VIZ
-from helpers.savefig import savefig
-from helpers.d3graph import d3graph
+from hnet.helpers.savefig import savefig
+from hnet.helpers.d3graph import d3graph
 import matplotlib.pyplot as plt
-import helpers.network as network
-from helpers.imagesc import imagesc
+import hnet.helpers.network as network
+from hnet.helpers.imagesc import imagesc
 # Warnings
 import warnings
 warnings.filterwarnings("ignore")
 
 #%% Structure learning across all variables
-def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=None, dropna=True, excl_background=None, verbose=3):
+def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=None, dropna=True, excl_background=None, verbose=3):
     assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'
     param=dict()
     param['k']=k
@@ -327,7 +317,7 @@ def main(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specif
     return(out)
 
 #%% Compute fit
-def fit(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', verbose=3):
+def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', verbose=3):
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'
     assert len(y)==df.shape[0], 'Length of [df] and [y] must be equal'
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
@@ -705,7 +695,7 @@ def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         I=~np.isin(df.columns, X_labx[i])
         # Compute fit
-        dfout=fit(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
+        dfout=enrichment(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
         # Count        
         count=count+dfout.shape[0]
         # Match with dataframe and store
@@ -1009,4 +999,4 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 #if __name__ == "__main__":
 #    parser = argparse.ArgumentParser()
 #    args = parser.parse_args()
-#    main(**vars(args))
+#    fit(**vars(args))

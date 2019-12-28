@@ -227,13 +227,14 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 import networkx as nx
 label_encoder = LabelEncoder()
+# Custom package
+from d3graph import d3graph
 # Custom helpers
 from hnet.helpers.set_dtypes import set_dtypes, set_y
 from hnet.helpers.ismember import ismember
 from hnet.helpers.df2onehot import df2onehot
 # VIZ
 from hnet.helpers.savefig import savefig
-from hnet.helpers.d3graph import d3graph
 import matplotlib.pyplot as plt
 import hnet.helpers.network as network
 from hnet.helpers.imagesc import imagesc

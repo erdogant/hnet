@@ -1,5 +1,7 @@
 """ HNET: Hypergeometric-networks. This function computes significance of the response variable with catagorical/numerical variables.
 
+  import hnet as hnet
+
   out              = hnet.fit(df, <optional>)
   outy             = hnet.enrichment(df, y, <optional>)
   G                = hnet.plot_heatmap(out, <optional>)
@@ -793,7 +795,7 @@ def path_correct(savepath, filename='fig', ext='.png'):
     return(out)
 
 #%% Make network d3
-def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=False, showfig=True):
+def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
     [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
     node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
     node_size[IA]=scale_weights(out['counts'][IB,1], node_size_limits)
@@ -805,11 +807,11 @@ def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, d
         labx = label_encoder.fit_transform(out['labx'])
 
     # Make network
-    if directed:
-        simmatLogP = out['simmatLogP'].copy()>0
-    else:
+    #if directed:
+    #    simmatLogP = out['simmatLogP'].copy()>0
+    #else:
         # Make symmetric
-        simmatLogP = to_symmetric(out, make_symmetric='logp')
+    simmatLogP = to_symmetric(out, make_symmetric='logp')
     
     # Make network
     Gout = d3graph(simmatLogP.T, path=savepath, node_size=node_size, charge=500,  width=1500, height=800, collision=0.1, node_color=labx, directed=directed, showfig=showfig)

@@ -1,6 +1,6 @@
 # HNET - Graphical Hypergeometric Networks
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdoganta/hnet/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
 
 This package detects associations in datasets across features with unknown function.
 
@@ -10,7 +10,7 @@ This package detects associations in datasets across features with unknown funct
 
 ## Method overview
 <p align="center">
-  <img src="https://github.com/erdoganta/hnet/blob/master/docs/manuscript/figs/fig1.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig1.png" width="900" />
 </p>
 
 ## Contents
@@ -31,7 +31,7 @@ pip install hnet
 * Alternatively, install hnet from the GitHub source:
 
 ```bash
-git clone https://github.com/erdoganta/hnet.git
+git clone https://github.com/erdogant/hnet.git
 cd hnet
 python setup.py install
 ```  
@@ -45,46 +45,46 @@ from hnet import hnet
 
 - Simple example for the sprinkler data set
 ```python
-df = pd.read_csv('https://github.com/erdoganta/hnet/blob/master/hnet/data/sprinkler_1000.csv')['close']
+df = pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/sprinkler_1000.csv')['close']
 out = hnet.fit(df)
 figHEAT = hnet.plot_heatmap(out)
 figNETW = hnet.plot_network(out)
 figD3GR = hnet.plot_d3graph(out)
 ```
 <p align="center">
-  <img src="https://github.com/erdoganta/hnet/blob/master/docs/manuscript/figs/fig2.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig2.png" width="900" />
 </p>
 
 
 ```python
-df=pd.read_csv('https://github.com/erdoganta/hnet/blob/master/hnet/data/titanic_train.csv')['Close']
+df=pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/titanic_train.csv')['Close']
 out = hnet.fit(df)
 figHEAT = hnet.plot_heatmap(out)
 figNETW = hnet.plot_network(out)
 figD3GR = hnet.plot_d3graph(out)
 ```
 <p align="center">
-  <img src="https://github.com/erdoganta/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
 </p>
 
 ## Performance
 <p align="center">
-  <img src="https://github.com/erdoganta/hnet/blob/master/docs/manuscript/figs/fig3.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig3.png" width="900" />
 </p>
 
 ## Citation
 Please cite hnet in your publications if this is useful for your research. Here is an example BibTeX entry:
 ```BibTeX
-@misc{erdoganta2019hnet,
+@misc{erdogant2019hnet,
   title={hnet},
   author={Erdogan Taskesen},
   year={2019},
-  howpublished={\url{https://github.com/erdoganta/hnet}},
+  howpublished={\url{https://github.com/erdogant/hnet}},
 }
 ```
 
 ## Maintainers
-* Erdogan Taskesen, github: [erdoganta](https://github.com/erdoganta)
+* Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
 
 ## © Copyright
 See [LICENSE](LICENSE) for details.

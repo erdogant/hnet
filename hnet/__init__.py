@@ -21,7 +21,7 @@ del get_versions
 
 # module level doc-string
 __doc__ = """
-HNET - Hypergeometric networks. Detection of associations for datasets with mixed datatypes with unknown function.
+HNET - Graphical Hypergeometric networks.
 =====================================================================
 
 **hnet** 

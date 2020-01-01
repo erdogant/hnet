@@ -6,12 +6,13 @@ from pathlib import Path
 # popular libraries
 import numpy as np
 import pandas as pd
-#import Core
+
 # Front-end
+# import Core
 # import dash_dangerously_set_inner_html
 # import codecs
 import dash
-import dash_bootstrap_components as dbc
+# import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -20,9 +21,7 @@ import webbrowser
 import networkx as nx
 import plotly.graph_objs as go
 from colour import Color
-# from textwrap import dedent as d
-# import json
-# HNet
+# Hnet
 import hnet as hnet
 import hnet.helpers.picklefast as picklefast
 
@@ -35,7 +34,6 @@ global TMP_DIRECTORY, HNET_DIR_STABLE, NETWORK_LAYOUT, HNET_OUT
 
 #%% Initializatoin
 TMP_DIRECTORY     = './results/tmp/'
-# HNET_DIR_TMP      = './results/tmp/'
 HNET_DIR_STABLE   = './results/stable/'
 # BACKGROUND_IMAGE  = 'url(./static/background.jpg)'
 TMP_DIRECTORY_DEL = False
@@ -43,8 +41,6 @@ TMP_DIRECTORY_DEL = False
 # Create directories
 path=Path(TMP_DIRECTORY)
 path.mkdir(parents=True, exist_ok=True)
-# path=Path(HNET_DIR_TMP)
-# path.mkdir(parents=True, exist_ok=True)
 path=Path(HNET_DIR_STABLE)
 path.mkdir(parents=True, exist_ok=True)
 
@@ -56,16 +52,11 @@ if TMP_DIRECTORY_DEL:
         if os.path.isfile(remfile): os.remove(os.path.join(TMP_DIRECTORY,remfile))
 
 # Extract HNet results from tmp and stable directories
-# HNET_PATH_STABLE=get_hnetpath(HNET_DIR_STABLE)
 HNET_PATH_STABLE=[]
 for i in os.listdir(HNET_DIR_STABLE):
     getdir=os.path.join(HNET_DIR_STABLE,i)
     if os.path.isdir(getdir):
         HNET_PATH_STABLE.append({'label':i,'value':getdir})
-
-
-# HNET_PATH_TMP    = [{'label':i,'value':os.path.join(HNET_DIR_TMP,i)} for i in os.listdir(HNET_DIR_TMP)]
-# HNET_PATH_TOTAL  = HNET_PATH_STABLE + HNET_PATH_TMP
 
 #%% NETWORK PROPERTIES
 # ALPHA_SCORE=[0,1000]
@@ -77,26 +68,11 @@ edge1=None
 node1=None
 
 #%%
-# df=pd.read_csv('D://stack/TOOLBOX_PY/DATA/OTHER/titanic/titanic_train.csv')
-# HNET_OUT=hnet.main(df)
-#labels=[{'label':i,'value':i} for i in df.columns.unique()]
-#if 'labels' not in globals():
-#    labels=[{'label':'','value':''}]
-#    print('setup labels first time')
-
-#%%
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 #app.css.append_css({'external_url':external_stylesheets}) # Required for making columns
 app.scripts.config.serve_locally = True
-app.title = "HNet: Graphical Hypergeometric Networks by inference"
-
-# app.scripts.append_script({"external_url": ['https://d3js.org/d3.v3.min.js']})
-
-# Normally Dahs creates its own Flas server internally but by creating our own, we cancreate a route for downloading files
-# server=Flask(__name__)
-#app=dash.Dash(server=server)
-#app.css.append_css({'external_url':'./static/bWLwgP.css'}) # Required for making columns
+app.title = "HNet: Graphical Hypergeometric Networks"
 
 #%% Start d3 network in browser
 def boot_d3network_in_browser(dropdown_path, who=''):
@@ -110,14 +86,6 @@ def boot_d3network_in_browser(dropdown_path, who=''):
             webbrowser.open(d3path, new=2)
             # https://plot.ly/python/network-graphs/
     return(d3path)
-
-#%% Split filepath into dir, filename and extension
-# def splitpath(filepath, rem_spaces=False):
-#     [dirpath, filename]=os.path.split(filepath)
-#     [filename,ext]=os.path.splitext(filename)
-#     if rem_spaces:
-#         filename=filename.replace(' ','_')
-#     return(dirpath, filename, ext)
 
 #%% Saving file
 def save_file(name, content, savepath):
@@ -207,7 +175,6 @@ def get_pklpath(filepath):
 
 #%% Create Network
 # def network_graph_hnet(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
-#     https://towardsdatascience.com/python-interactive-network-visualization-using-networkx-plotly-and-dash-e44749161ed7
 #     import plotly.graph_objects as go
 
 #     if isinstance(HNET_OUT, type(None)):
@@ -298,23 +265,19 @@ def get_pklpath(filepath):
 def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
     # if (isinstance(edge1, type(None))) and (isinstance(node1, type(None))):
     #     print('demo case')
-    edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
-    node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
+    if not os.path.isfile(os.path.join(TMP_DIRECTORY+'edge1.csv')):
+        # Load demo dataset
+        print('[HNET-GUI] DATA REQUIRED!')
+    else:
+       edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
+       node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
 
     # filter the record by alpha score, to enable interactive control through the input box
     #print(alphaRange)
     I = edge1['Weight'].values >= np.min(alphaRange)
-    # I = edge1['Weight'].values >= alphaRange
     edge1 = edge1.loc[I,:]
     edge1.reset_index(drop=True, inplace=True)
-
-    # I = np.isin(node1['NodeName'].values,  np.unique(list(edge1['Source'])+list(edge1['Target'])))
-    # node1 = node1.loc[I,:]
     nodeSet= np.unique(list(edge1['Source'])+list(edge1['Target']))
-    # nodeSet=set() # contain unique Nodes
-    # for index in edge1.index:
-    #     nodeSet.add(edge1['Source'][index])
-    #     nodeSet.add(edge1['Target'][index])
 
     # to define the centric point of the networkx layout
     shells=[]
@@ -328,25 +291,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
     shells.append(shell2)
     
     # import network as network
-    # edge1 = edge1[['Source','Target','Weight']]
-    # G = network.df2G(node1.set_index('NodeName'), edge1)
     G = nx.from_pandas_edgelist(edge1, 'Source', 'Target', ['Source', 'Target', 'Weight'], create_using=nx.MultiDiGraph())
-    
-    # # hnet.plot_network
-    # HNET_OUT=get_pklpath(hnet_path)
-    # if hnet_path!='hnet.pkl':
-        # print('LOAD HNet ')
-        # hnet_out = picklefast.load(hnet_path)
-        # G = hnet_out['G']['G']
-    
-    # os.path.isfile(hnet_path)
-    # if isinstance(hnet_path, type(None)) or (not os.path.isfile(hnet_out)):
-    #     G = nx.from_pandas_edgelist(edge1, 'Source', 'Target', ['Source', 'Target', 'Weight'], create_using=nx.MultiDiGraph())
-    # else:
-    #     print('Get HNet Graph: %s' %(hnet_path))
-    #     G = hnet_out['G']['G']
-    #     pos = hnet_out['G']['pos']
-
     nx.set_node_attributes(G, node1.set_index('NodeName')['Label'].to_dict(), 'Label')
     nx.set_node_attributes(G, node1.set_index('NodeName')['Type'].to_dict(), 'Type')
 
@@ -356,7 +301,6 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
     # print(len(NodeToSearch))
 
     if len(shell2)>1 and isinstance(NodeToSearch, type(None)) and NodeToSearch=='':
-    # if len(shell2)>1:
         pos = nx.layout.shell_layout(G, shells, scale=0.4, iterations=50)
     else:
         if network_layout=='fruchterman_reingold':
@@ -373,14 +317,6 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
     for node in G.nodes:
         G.nodes[node]['pos'] = list(pos[node])
 
-
-    # if not isinstance(HNET_OUT, type(None)):
-    #     # print('Get HNET_PATH Graph: %s' %(HNET_OUT))
-    #     print('Get HNET_PATH Graph!!!')
-    #     del G
-    #     print(HNET_OUT['G']['pos'])
-    #     G = HNET_OUT['G']['G']
-    #     pos = HNET_OUT['G']['pos']
 
     # IF EMPTY
     if len(shell2)==0:
@@ -410,7 +346,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
 
     else:
         traceRecode = []  # contains edge_trace, node_trace, middle_node_trace
-        ############################################################################################################################################################
+        #==============================================================================
         colors = list(Color('lightcoral').range_to(Color('darkred'), len(G.edges())))
         colors = ['rgb' + str(x.rgb) for x in colors]
     
@@ -426,7 +362,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
                                opacity=1)
             traceRecode.append(trace)
 
-        ###############################################################################################################################################################
+        #==============================================================================
         node_trace = go.Scatter(x=[], y=[], hovertext=[], text=[], mode='markers+text', textposition="bottom center", hoverinfo="text", marker={'size': 50, 'color': 'LightSkyBlue'})
     
         for node in G.nodes():
@@ -439,7 +375,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
             node_trace['text'] += tuple([text])
     
         traceRecode.append(node_trace)
-        ################################################################################################################################################################
+        #==============================================================================
         middle_hover_trace = go.Scatter(x=[], y=[], hovertext=[], mode='markers', hoverinfo="text", marker={'size': 20, 'color': 'LightSkyBlue'}, opacity=0)
     
         for edge in G.edges:
@@ -453,7 +389,7 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
             middle_hover_trace['hovertext'] += tuple([hovertext])
     
         traceRecode.append(middle_hover_trace)
-        #################################################################################################################################################################
+        #==============================================================================
         figure = {
             "data": traceRecode,
             "layout": go.Layout(title='Selected network', showlegend=False, hovermode='closest',
@@ -477,27 +413,11 @@ def network_graph(alphaRange, NodeToSearch, network_layout, HNET_OUT=None):
                                 )}
         return(figure)
     
-#%% Styles
-#STYLE_UNDERSCRIPT={"max-width":"90%","textAlign":"center","color":"white","font-size":"20px"}
-#STYLE_BACKGROUND={"background-image":"BACKGROUND_IMAGE","background-repeat":"no-repeat","background-size":"cover","background-position":"center"}
-#DRAG_AND_DROP={
-#        "width":"90%",
-#        "height":"320px",
-#        "lineHeight":"60px",
-#        "borderWidth":"10px",
-#        "borderStyle":"dashed",
-#        "borderRadius":"5px",
-#        "margin":"10px",
-#        "backgroundColor":"",
-#        "color":"white",
-#        "font-size":"22px",
-#        "display":"inline-block",
-#        }
 
 #%% Setup webpage
 GUIelements = html.Div([
         # Row 1
-        html.Div([html.H5("HNets: Graphical Hypergeometric Network inference")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
+        html.Div([html.H5("HNets: Graphical Hypergeometric Networks")], className="row", style={'textAlign':'left','width':'100%','backgroundColor':'#e0e0e0'}),
 
         # Row 2 - Column 1
         html.Div([
@@ -685,10 +605,6 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
         # ALPHA_SCORE=[0,np.max(edge1['Weight'].values)]
         
     
-    # Data read
-    # edge1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'edge1.csv'))
-    # node1 = pd.read_csv(os.path.join(TMP_DIRECTORY+'node1.csv'))
-    
     # Make graph
     # if (not isinstance(edge1, type(None))) and (not isinstance(node1, type(None))):
     hnet_graph=network_graph(alpha_limit, node_name, network_layout, HNET_OUT=HNET_OUT)
@@ -711,7 +627,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
 
 #%% Callback for HNet menu (left-side)
 @app.callback(
-    [Output("message-box-output", "children")],
+    Output("message-box-output", "children"),
     # Output('opt-dropdown', 'options'),
     [Input("UPLOAD_BOX","filename"), 
      Input("UPLOAD_BOX","contents"), 
@@ -744,7 +660,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
 
 #    if uploaded_filenames is not None and uploaded_file_contents is not None:
     filepath        = save_file(args['uploaded_filenames'], args['uploaded_file_contents'], TMP_DIRECTORY)
-    [_,filename, _] = hnet.path_split(args['uploaded_filenames'])
+    [_,filename, _] = hnet.hnet.path_split(args['uploaded_filenames'])
     savepath        = os.path.join(HNET_DIR_STABLE,filename+'_'+str(args['y_min'])+'_'+str(args['k'])+'_'+str(args['multtest'])+'_'+str(args['specificity'])+'_'+str(args['perc_min_num'])+'_'+str(args['excl_background'])+'/')
     d3path          = get_d3path(savepath)
     pklpath         = get_pklpath(savepath)
@@ -788,8 +704,8 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
         # progressbar['value']=progressbar['value']+1 # update bar
         # progressbar.update() # update gui
         picklefast.save(pklpath, HNET_OUT)
-        print('MAKE D3GRAPH')
-        _ = hnet.plot_d3graph(HNET_OUT, savepath=savepath, directed=False, showfig=False)
+        #print('MAKE D3GRAPH')
+        _ = hnet.plot_d3graph(HNET_OUT, savepath=savepath, showfig=False)
     else:
         print('dir exists, load stuff')
         HNET_OUT=picklefast.load(pklpath)
@@ -798,7 +714,6 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
     if os.path.isfile(d3path):
         print('OPEN BROWSER')
         webbrowser.open(os.path.abspath(d3path), new=2)
-        # boot_d3network_in_browser(d3path, who='upload')
 
     print('HNET_DIR_STABLE: %s!' %(HNET_DIR_STABLE))
     print('%s done!' %(filename))

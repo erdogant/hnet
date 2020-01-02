@@ -57,7 +57,7 @@ figD3GR = hnet.plot_d3graph(out)
 
 
 ```python
-df=pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/titanic_train.csv')['Close']
+df=pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/titanic_train.csv')
 out = hnet.fit(df)
 figHEAT = hnet.plot_heatmap(out)
 figNETW = hnet.plot_network(out)

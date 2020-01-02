@@ -45,7 +45,7 @@ from hnet import hnet
 
 - Simple example for the sprinkler data set
 ```python
-df = pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/sprinkler_1000.csv')['close']
+df = pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/sprinkler_1000.csv')
 out = hnet.fit(df)
 figHEAT = hnet.plot_heatmap(out)
 figNETW = hnet.plot_network(out)

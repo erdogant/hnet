@@ -1,4 +1,5 @@
 # HNET - Graphical Hypergeometric Networks
+[![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
 

@@ -1,11 +1,11 @@
 import setuptools
-import versioneer
-new_version='0.1.4'
+# import versioneer
+new_version='0.1.5'
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
-     install_requires=['d3graph','matplotlib','numpy','pandas','statsmodels','networkx','seaborn','community','python-louvain','tqdm','sklearn'],
+     install_requires=['d3graph','matplotlib','numpy','pandas','statsmodels','networkx','community','python-louvain','tqdm','sklearn'],
      python_requires='>=3',
      name='hnet',
      version=new_version,

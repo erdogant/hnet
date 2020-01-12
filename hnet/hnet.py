@@ -39,8 +39,8 @@
                    ['cat','cat','num','','cat',...]
 
    perc_min_num: [float] Force column (int or float) to be numerical if unique non-zero values are above percentage.
-                   None (default)
-                   0.8
+                   None 
+                   0.8 (default)
 
    k:              [integer][1..n] Number of combinatoric elements to create for the n features
                    1 (default)
@@ -89,7 +89,7 @@
                    4: DEBUG
                    
  REQUIREMENTS
- pip install matplotlib numpy pandas statsmodels networkx seaborn community python-louvain tqdm
+ pip install matplotlib numpy pandas statsmodels networkx community python-louvain tqdm
  
 
  OUTPUT
@@ -110,11 +110,8 @@
    Wilcoxen rank-sum test for numerical values
 
  EXAMPLE
-   %reset -f
-#   %matplotlib auto
    import numpy as np
    import pandas as pd
-   from VIZ.imagesc import imagesc
    import hnet as hnet
 
    ########################################################################
@@ -187,22 +184,6 @@
    out   = hnet.fit(df, alpha=1, dropna=False)
    G     = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
 
-   from EMBEDDINGS.tsneBH import tsneBH
-   from VIZ.scatter import scatter
-   from STATS.norm_data import norm_data
-
-   adjmatSym = hnet.to_symmetric(out)
-   adjmatSym = norm_data(adjmatSym)
-   adjmatSym = norm_data(adjmatSym.T).T
-   coord=tsneBH(adjmatSym)
-   scatter(coord[:,0],coord[:,1], size=100, density=2)
-   G = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-
-   ########################################################################
-   df    = pd.read_csv('../DATA/OTHER/Market_Basket_Optimisation.csv', header=None).T
-   df    = pd.read_csv('D:/stack/TOOLBOX_PY/COURSES/Machine Learning A-Z New/Part 8 - Deep Learning/Section 39 - Artificial Neural Networks (ANN)/Churn_Modelling.csv')
-   out   = hnet.fit(df)
-
    ########################################################################
 
 """
@@ -245,7 +226,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 #%% Structure learning across all variables
-def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=None, dropna=True, excl_background=None, verbose=3):
+def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None, verbose=3):
     assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'
     param=dict()
     param['k']=k
@@ -997,7 +978,38 @@ def to_symmetric(out, make_symmetric='logp', verbose=3):
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
     [scores, adjmat_diff] = network.compare_networks(adjmat_true, adjmat_pred, pos=pos, showfig=showfig, width=width, height=height, verbose=verbose)
     return(scores, adjmat_diff)
+
+#%% Example data
+def import_example(getfile='titanic'):
+    '''
     
+    Parameters
+    ----------
+    getfile : String, optional
+        'titanic'
+        'sprinkler'
+
+    Returns
+    -------
+    df : DataFrame
+
+    '''
+    
+    if getfile=='titanic':
+        getfile='titanic_train.zip'
+    else:
+        getfile='sprinkler.zip'
+
+    print('[HNET] Loading %s..' %getfile)
+    curpath = os.path.dirname(os.path.abspath( __file__ ))
+    PATH_TO_DATA=os.path.join(curpath,'data',getfile)
+    if os.path.isfile(PATH_TO_DATA):
+        df=pd.read_csv(PATH_TO_DATA, sep=',')
+        return df
+    else:
+        print('[HNET] Oops! Example data not found!')
+        return None
+
 #%% Main
 #if __name__ == "__main__":
 #    parser = argparse.ArgumentParser()

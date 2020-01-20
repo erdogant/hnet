@@ -86,6 +86,7 @@ import networkx as nx
 from sklearn.preprocessing import minmax_scale
 from sklearn.preprocessing import MinMaxScaler 
 from hnet.helpers.set_dtypes import is_DataFrame
+from ismember import ismember
 
 #%% Make graph from adjacency matrix
 def to_graph(adjmat, verbose=3):
@@ -380,7 +381,6 @@ def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[2
 
 #%% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
-    from hnet.helpers.ismember import ismember
     import hnet.helpers.twoClassSummary as twoClassSummary
 
     # Make sure columns and indices to match

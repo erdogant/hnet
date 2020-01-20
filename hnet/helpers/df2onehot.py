@@ -59,10 +59,9 @@
 
 #-----------------------------------
 # Name        : cat2onehot.py
-# Version     : 1.0
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
-# Date        : April. 2019
+# Licence     : See licences.txt
 #-----------------------------------
 
 #%% Libraries
@@ -71,7 +70,6 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from hnet.helpers.set_dtypes import set_dtypes
-#from GENERAL.ismember import ismember
 label_encoder = LabelEncoder()
 onehot_encoder = OneHotEncoder(sparse=False, categories='auto')
 

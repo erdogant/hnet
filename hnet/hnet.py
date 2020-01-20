@@ -206,16 +206,16 @@ import itertools
 # Known libraries
 from scipy.stats import hypergeom, ranksums
 import statsmodels.stats.multitest as multitest
-from sklearn.preprocessing import MinMaxScaler 
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 import networkx as nx
 label_encoder = LabelEncoder()
 import matplotlib.pyplot as plt
 # Custom package
 from d3graph import d3graph
+from ismember import ismember
 # Custom helpers
 from hnet.helpers.set_dtypes import set_dtypes, set_y
-from hnet.helpers.ismember import ismember
 from hnet.helpers.df2onehot import df2onehot
 # VIZ
 from hnet.helpers.savefig import savefig
@@ -946,8 +946,6 @@ def to_symmetric(out, make_symmetric='logp', verbose=3):
     columns=out['simmatLogP'].columns.values
     index=out['simmatLogP'].index.values
     
-#    [IA,IB]=ismember(columns,index)
-
     # Make selected matrix symmetric
     if make_symmetric=='logp':
         adjmat=out['simmatLogP'].values.copy()

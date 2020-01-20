@@ -1,4 +1,4 @@
-""" HNET: Hypergeometric-networks. This function computes significance of the response variable with catagorical/numerical variables.
+"""HNET: Hypergeometric-networks. This function computes significance of the response variable with catagorical/numerical variables.
 
   import hnet as hnet
 
@@ -39,13 +39,13 @@
                    ['cat','cat','num','','cat',...]
 
    perc_min_num: [float] Force column (int or float) to be numerical if unique non-zero values are above percentage.
-                   None 
+                   None
                    0.8 (default)
 
    k:              [integer][1..n] Number of combinatoric elements to create for the n features
                    1 (default)
 
-   target:         Target value for response variable y should have dtype y. 
+   target:         Target value for response variable y should have dtype y.
                    None : (default) All values for y are tested
                    1    :  In a two class model
 
@@ -87,115 +87,45 @@
                    2: WARN
                    3: INFO
                    4: DEBUG
-                   
- REQUIREMENTS
- pip install matplotlib numpy pandas statsmodels networkx community python-louvain tqdm
- 
 
- OUTPUT
-	output
+ Requirements
+   See Requirements.txt
 
- DESCRIPTION
-   Automatically generates networks from datasets with mixed datatypes return 
-   by an unknown function. These datasets can range from generic dataframes to 
-   nested data structures with lists, missing values and enumerations. 
-   I solved this problem to minimize the amount of configurations required 
+
+ Output
+ ------
+   model
+
+ Descriptions
+ -----------
+   Automatically generates networks from datasets with mixed datatypes return
+   by an unknown function. These datasets can range from generic dataframes to
+   nested data structures with lists, missing values and enumerations.
+   I solved this problem to minimize the amount of configurations required
    while still gaining many benefits of having schemas available.
 
-   The response variable (y) should be a vector with the same number of samples 
-   as for the input data. For each column in the dataframe significance is 
+   The response variable (y) should be a vector with the same number of samples
+   as for the input data. For each column in the dataframe significance is
    assessed for the labels in a two-class approach (y=1 vs y!=1).
-   Significane is assessed one tailed; only the fit for y=1 with an 
+   Significane is assessed one tailed; only the fit for y=1 with an
    overrepresentation. Hypergeometric test is used for catagorical values
    Wilcoxen rank-sum test for numerical values
 
- EXAMPLE
-   import numpy as np
-   import pandas as pd
-   import hnet as hnet
+ Example
+ -------
+   See test.py
 
-   ########################################################################
-   # Example with random categorical and numerical values
-   nfeat=100
-   nobservations=50
-   df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-   dtypes = np.array(['cat']*nobservations)
-   dtypes[np.random.randint(0,2,nobservations)==1]='num'
-   y   = np.random.randint(0,2,nfeat)
-   out = hnet.enrichment(df,y, dtypes=dtypes)
-   out = hnet.fit(df,dtypes=dtypes)
-   
-   ########################################################################
-   # Example with 1 true positive column
-   nfeat=100
-   nobservations=50
-   df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-   y  = np.random.randint(0,2,nfeat)
-   df['positive_one'] = y
-   dtypes = np.array(['cat']*(nobservations+1))
-   dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
-   dtypes[-1]='cat'
-   out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
-   
-   ########################################################################
-   # Example most simple manner
-   nfeat=100
-   nobservations=50
-   df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-   y  = np.random.randint(0,2,nfeat)
-   out  = hnet.enrichment(df,y)
-   out  = hnet.enrichment(df,y, multtest=None)
-
-   ########################################################################
-   df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.enrichment(df, y=df['Survived'].values, alpha=0.05, multtest='holm')
-   rules = hnet.combined_rules(out)
-
-   ########################################################################
-   out  = hnet.fit(df)
-   imagesc(out['simmatP'], cluster=1, cmap='Reds_r')
-   
-   ########################################################################
-   df    = pd.read_csv('../../../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.fit(df)
-   out   = hnet.fit(df, k=10)
-   G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-   A     = hnet.plot_d3graph(out, savepath='c://temp/titanic3/', directed=False)
-   
-   ########################################################################
-   df    = pd.read_csv('../../../DATA/NETWORKS/bayesian/SPRINKLER/sprinkler_data_1000.zip')
-   out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
-   out   = hnet.fit(df, alpha=0.05, multtest='holm')
-   G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
-   G     = hnet.plot_network(out)
-   G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
-   A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
-   A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
-
-   ########################################################################
-   df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
-   out   = hnet.fit(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
-   G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-   A     = hnet.plot_d3graph(out, savepath='c://temp/USA_2016_elections/')
-
-   ########################################################################
-   df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-   out   = hnet.fit(df)
-   out   = hnet.fit(df, alpha=1, dropna=False)
-   G     = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
-
-   ########################################################################
 
 """
 
-#--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Name        : hnet.py
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
 # Date        : Dec. 2019
-#--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
-#%% Libraries
+# %% Libraries
 # Basics
 import os
 import pandas as pd

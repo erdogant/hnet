@@ -52,8 +52,23 @@ G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
 A     = hnet.plot_d3graph(out, savepath='c://temp/titanic3/', directed=False)
 
 # %%
-df    = pd.read_csv('../../../DATA/NETWORKS/bayesian/SPRINKLER/sprinkler_data_1000.zip')
+import hnet.hnet as hnet
+
+df    = hnet.import_example('sprinkler')
 out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
+
+G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
+G     = hnet.plot_network(out)
+G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
+
+A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
+A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
+A     = hnet.plot_heatmap(out, cluster=False)
+
+A     = hnet.plot_d3graph(out)
+A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
+
+# %%
 out   = hnet.fit(df, alpha=0.05, multtest='holm')
 G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
 G     = hnet.plot_network(out)

@@ -128,6 +128,7 @@
 # %% Libraries
 # Basics
 import os
+import tempfile
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -707,6 +708,9 @@ def path_correct(savepath, filename='fig', ext='.png'):
 
 #%% Make network d3
 def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
+    # Setup tempdir
+    savepath=tempdir(savepath)
+    
     [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
     node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
     node_size[IA]=scale_weights(out['counts'][IB,1], node_size_limits)

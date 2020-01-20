@@ -13,7 +13,10 @@ df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
 dtypes = np.array(['cat']*nobservations)
 dtypes[np.random.randint(0,2,nobservations)==1]='num'
 y   = np.random.randint(0,2,nfeat)
+
+# %%
 out = hnet.enrichment(df,y, dtypes=dtypes)
+# %%
 out = hnet.fit(df,dtypes=dtypes)
 
 # %% Example with 1 true positive column
@@ -25,31 +28,32 @@ df['positive_one'] = y
 dtypes = np.array(['cat']*(nobservations+1))
 dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
 dtypes[-1]='cat'
+# Run model
 out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
 
-# %% Example most simple manner
+# %% Example most simple manner with and without multiple test correction
 nfeat=100
 nobservations=50
 df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-y  = np.random.randint(0,2,nfeat)
-out  = hnet.enrichment(df,y)
-out  = hnet.enrichment(df,y, multtest=None)
+y = np.random.randint(0,2,nfeat)
+out = hnet.enrichment(df,y)
+out = hnet.enrichment(df,y, multtest=None)
 
 # %%
-df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-out   = hnet.enrichment(df, y=df['Survived'].values, alpha=0.05, multtest='holm')
-rules = hnet.combined_rules(out)
+df = hnet.import_example('titanic')
+model = hnet.enrichment(df, y=df['Survived'].values)
 
 # %%
-out  = hnet.fit(df)
-hnet.plot_heatmap(out['simmatP'], cluster=1, cmap='Reds_r')
+model = hnet.fit(df)
+hnet.plot_heatmap(model, cluster=True)
+rules = hnet.combined_rules(model)
 
 # %%
-df    = pd.read_csv('../../../DATA/OTHER/titanic/titanic.zip')
-out   = hnet.fit(df)
-out   = hnet.fit(df, k=10)
-G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-A     = hnet.plot_d3graph(out, savepath='c://temp/titanic3/', directed=False)
+df = hnet.import_example('titanic')
+model = hnet.fit(df)
+model = hnet.fit(df, k=10)
+G = hnet.plot_network(model, dist_between_nodes=0.4, scale=2)
+G = hnet.plot_d3graph(model, savepath='c://temp/titanic3/')
 
 # %%
 import hnet.hnet as hnet
@@ -63,7 +67,7 @@ G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
 
 A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
 A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
-A     = hnet.plot_heatmap(out, cluster=False)
+A     = hnet.plot_heatmap(out)
 
 A     = hnet.plot_d3graph(out)
 A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
@@ -83,8 +87,8 @@ G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
 A     = hnet.plot_d3graph(out, savepath='c://temp/USA_2016_elections/')
 
 # %%
-df    = pd.read_csv('../DATA/OTHER/titanic/titanic.zip')
-out   = hnet.fit(df)
-out   = hnet.fit(df, alpha=1, dropna=False)
-G     = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
+df = hnet.import_example('titanic')
+out = hnet.fit(df)
+out = hnet.fit(df, alpha=1, dropna=False)
+G = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
 

@@ -2,95 +2,19 @@
 
   import hnet as hnet
 
-  out              = hnet.fit(df, <optional>)
-  outy             = hnet.enrichment(df, y, <optional>)
-  G                = hnet.plot_heatmap(out, <optional>)
-  G                = hnet.plot_network(out, <optional>)
-  G                = hnet.plot_d3graph(out, <optional>)
-  rules            = hnet.combined_rules(out)
-  [scores, adjmat] = hnet.compare_networks(out1['adjmat'], out['adjmat'])
-  adjmatSymmetric  = hnet.to_symmetric(out)
+  model            = hnet.fit(df)
+  outy             = hnet.enrichment(df, y)
+  G                = hnet.plot_heatmap(model)
+  G                = hnet.plot_network(model)
+  G                = hnet.plot_d3graph(model)
+  rules            = hnet.combined_rules(model)
+  [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
+  adjmatSymmetric  = hnet.to_symmetric(model)
 
-
- INPUT:
-   df:             [pd.DataFrame] Pandas DataFrame for which every row contains samples with featureson the columns
-
-                      f1  ,f2  ,f3
-                   s1 0   ,0   ,1
-                   s2 0   ,1   ,0
-                   s3 1   ,1   ,0
-
-    y              [numpy array] Vector of labels
-                   [0,1,0,1,1,2,1,2,2,2,2,0,0,1,0,1,..]
-                   ['aap','aap','boom','mies','boom','aap',..]
-
-
- OPTIONAL
-
-   y_min:          [Integer] [samples>=y_min] Minimal number of samples in a group. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
-                   10  (default)
-                   None
-
-   alpha:          Float [0..1] Alpha that serves as cuttoff point for significance
-                   0.05 : (default)
-                   1    : (for all results)
-
-   dtypes:         [list strings] in the form ['cat','num',''] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped.
-                   ['cat','cat','num','','cat',...]
-
-   perc_min_num: [float] Force column (int or float) to be numerical if unique non-zero values are above percentage.
-                   None
-                   0.8 (default)
-
-   k:              [integer][1..n] Number of combinatoric elements to create for the n features
-                   1 (default)
-
-   target:         Target value for response variable y should have dtype y.
-                   None : (default) All values for y are tested
-                   1    :  In a two class model
-
-   dropna:         [Bool] [True,False] Drop rows/columns in adjacency matrix that showed no significance
-                   True  (default)
-                   False
-
-   specificity:    [string]: To configure how numerical data labels are stored. Setting this variable can be of use in the 'structure_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
-                   None    : No additional information in the labels
-                   'low'   : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
-                   'medium': (default) 'high' or 'low' are included with 1 decimal behind the comma.
-                   'high'  : 'high' or 'low' are included with 3 decimal behind the comma.
-
-   multtest:       [String]:
-                    None            : No multiple Test
-                   'bonferroni'     : one-step correction
-                   'sidak'          : one-step correction
-                   'holm-sidak'     : step down method using Sidak adjustments
-                   'holm'           : step-down method using Bonferroni adjustments (default)
-                   'simes-hochberg' : step-up method  (independent)
-                   'hommel'         : closed method based on Simes tests (non-negative)
-                   'fdr_bh'         : Benjamini/Hochberg  (non-negative)
-                   'fdr_by'         : Benjamini/Yekutieli (negative)
-                   'fdr_tsbh'       : two stage fdr correction (non-negative)
-                   'fdr_tsbky'      : two stage fdr correction (non-negative)
-
-   excl_background:[String]: String name to exclude from the background
-                   None     (default)
-                   ['0.0']: To remove catagorical values with label 0
-
-   savepath:       [string]: Direcotry or Full path of figure to save to disk. If only dir is given, filename is created.
-                   None    : (default) do not save
-                   './hnet/figs/'
-                   './hnet/figs/hnet_fig.png'
-
-   verbose:        [Integer] [0..5] if verbose >= DEBUG: print('debug message')
-                   0: (default)
-                   1: ERROR
-                   2: WARN
-                   3: INFO
-                   4: DEBUG
 
  Requirements
+ ------------
    See Requirements.txt
-
 
  Output
  ------
@@ -98,7 +22,7 @@
 
  Descriptions
  -----------
-   Automatically generates networks from datasets with mixed datatypes return
+   Creating networks from datasets with mixed datatypes return
    by an unknown function. These datasets can range from generic dataframes to
    nested data structures with lists, missing values and enumerations.
    I solved this problem to minimize the amount of configurations required
@@ -135,6 +59,7 @@ from pathlib import Path
 from tqdm import tqdm
 import itertools
 # Known libraries
+from scipy.stats import combine_pvalues
 from scipy.stats import hypergeom, ranksums
 import statsmodels.stats.multitest as multitest
 from sklearn.preprocessing import MinMaxScaler
@@ -156,91 +81,190 @@ import hnet.helpers.network as network
 import warnings
 warnings.filterwarnings("ignore")
 
-#%% Structure learning across all variables
-def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None, verbose=3):
-    assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'
-    param=dict()
-    param['k']=k
-    param['alpha']=alpha
-    param['y_min']=y_min
-    param['multtest']=multtest
-    param['fillna']=True
-    param['specificity']=specificity
-    param['perc_min_num']=perc_min_num
-    param['dropna']=dropna
-    param['excl_background']=excl_background
-    param['verbose']=verbose
-    
-    # newline=True if verbose>=4 else False
+# %% Preprocessing
+def preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, verbose=3):
     df.columns = df.columns.astype(str)
     # Remove columns without dtype
-    [df, dtypes]=remove_columns_without_dtype(df, dtypes, verbose=param['verbose'])
+    [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
-    out_onehot=df2onehot(df, dtypes=dtypes, y_min=param['y_min'], hot_only=True, perc_min_num=param['perc_min_num'], excl_background=param['excl_background'], verbose=param['verbose'])
-    dtypes=out_onehot['dtypes']
+    df_onehot = df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    dtypes = df_onehot['dtypes']
     # Some check before proceeding
-    assert (not out_onehot['onehot'].empty) or (not np.all(np.isin(dtypes,'num'))), '[HNET] ALL data is excluded from the dataframe! There should be at least 1 categorical value!'
-    assert df.shape[1]==len(dtypes), '[HNET] DataFrame Shape and dtypes length does not match'
+    assert (not df_onehot['onehot'].empty) or (not np.all(np.isin(dtypes, 'num'))), '[HNET] ALL data is excluded from the dataframe! There should be at least 1 categorical value!'
+    assert df.shape[1] == len(dtypes), '[HNET] DataFrame Shape and dtypes length does not match'
     # Make all integer
-    out_onehot['onehot']=out_onehot['onehot'].astype(int)
+    df_onehot['onehot'] = df_onehot['onehot'].astype(int)
+    # Return
+    return df, df_onehot, dtypes
+
+# %% Structure learning across all variables
+def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None, verbose=3):
+    """
+
+    Parameters
+    ----------
+
+    df : DataFrame, [NxM], with N=rows->samples, M=columns->features.
+           f1  ,f2  ,f3
+        s1 0   ,0   ,1
+        s2 0   ,1   ,0
+        s3 1   ,1   ,0
+
+    alpha : float [0..1], Significance to keep only edges with <=alhpa. The default is 0.05.
+        0.05 : (default)
+        1    : (for all results)
+
+    y_min : [Integer], [samples>=y_min] Minimal number of samples in a group. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
+        10  (default)
+        None
+
+    k : int, [1..n] Number of combinatoric elements to create for the n features
+        The default is 1.
+
+    multtest : String
+         None            : No multiple Test
+        'bonferroni'     : one-step correction
+        'sidak'          : one-step correction
+        'holm-sidak'     : step down method using Sidak adjustments
+        'holm'           : step-down method using Bonferroni adjustments (default)
+        'simes-hochberg' : step-up method  (independent)
+        'hommel'         : closed method based on Simes tests (non-negative)
+        'fdr_bh'         : Benjamini/Hochberg  (non-negative)
+        'fdr_by'         : Benjamini/Yekutieli (negative)
+        'fdr_tsbh'       : two stage fdr correction (non-negative)
+        'fdr_tsbky'      : two stage fdr correction (non-negative)
+
+    dtypes : list strings, example: ['cat','num',''] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped.
+        ['cat','cat','num','','cat',...]
+        'pandas' (default)
+
+    specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'structure_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
+            None    : No additional information in the labels
+            'low'   : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
+            'medium': (default) 'high' or 'low' are included with 1 decimal behind the comma.
+            'high'  : 'high' or 'low' are included with 3 decimal behind the comma.
+
+    perc_min_num : float, Force column (int or float) to be numerical if unique non-zero values are above percentage.
+        None
+        0.8 (default)
+
+    dropna : Bool, [True,False] Drop rows/columns in adjacency matrix that showed no significance
+        True  (default)
+        False
+
+    excl_background : String, String name to exclude from the background
+        None     (default)
+        ['0.0']: To remove catagorical values with label 0
+
+    verbose : Int, [0..5] if verbose >= DEBUG: print('debug message')
+        0: No
+        1: ERROR
+        2: WARN
+        3: INFO (default)
+        4: DEBUG
+
+
+    Returns
+    -------
+    Models.
+
+    """
+    assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'
+    param = dict()
+    param['k'] = k
+    param['alpha'] = alpha
+    param['y_min'] = y_min
+    param['multtest'] = multtest
+    param['fillna'] = True
+    param['specificity'] = specificity
+    param['perc_min_num'] = perc_min_num
+    param['dropna'] = dropna
+    param['excl_background'] = excl_background
+    param['verbose'] = verbose
+
+    # Pre processing
+    df, df_onehot, dtypes = preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     # Add combinations
-    [X_comb, X_labx, X_labo]=make_n_combinations(out_onehot['onehot'], out_onehot['labx'], param['k'], param['y_min'], verbose=param['verbose'])
+    [X_comb, X_labx, X_labo] = _make_n_combinations(df_onehot['onehot'], df_onehot['labx'], param['k'], param['y_min'], verbose=param['verbose'])
     # Print some
     if param['verbose']>=3: print('[HNET] Structure learning across [%d] features.' %(X_comb.shape[1]))
     # Get numerical columns
-    colNum      = df.columns[df.dtypes=='float64'].values
+    colNum = df.columns[df.dtypes == 'float64'].values
     simmat_labx = np.append(X_labo, colNum).astype(str)
     simmat_padj = pd.DataFrame(index=np.append(X_comb.columns, colNum).astype(str), columns=np.append(X_comb.columns, colNum).astype(str)).astype(float)
-
 
     # Here we go! in paralel!
     # from multiprocessing import Pool
     # nr_succes_pop_n=[]
     # with Pool(processes=os.cpu_count()-1) as pool:
     #     for i in range(0,X_comb.shape[1]):
-    #         result = pool.apply_async(do_the_math, (df, X_comb, dtypes, X_labx, param, i,))
+    #         result = pool.apply_async(_do_the_math, (df, X_comb, dtypes, X_labx, param, i,))
     #         nr_succes_pop_n.append(result)
-        
     #     results = [result.get() for result in result_objs]
     #     print(len(results))
-        
-
 
     # Here we go! Over all columns now
-    count=0
-    nr_succes_pop_n=[]
-    for i in tqdm(range(0,X_comb.shape[1]), disable=(True if param['verbose']==0 else False)):
-        [nr_succes_i, simmat_padj, simmat_labx] = do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
+    count = 0
+    nr_succes_pop_n = []
+    for i in tqdm(range(0, X_comb.shape[1]), disable=(True if param['verbose'] == 0 else False)):
+        [nr_succes_i, simmat_padj, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
         nr_succes_pop_n.append(nr_succes_i)
 
     # Message
     if param['verbose']>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
 
     # Post processing
-    [simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx] = post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param)
+    [simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx] = _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param)
 
     # Store
-    out=dict()
-    out['simmatP']    = simmat_padj
+    out = dict()
+    out['simmatP'] = simmat_padj
     out['simmatLogP'] = adjmatLog
-    out['labx']       = simmat_labx.astype(str)
-    out['dtypes']     = np.array(list(zip(df.columns.values.astype(str), dtypes)))
-    out['counts']     = nr_succes_pop_n
-    out['rules']      = combined_rules(out, verbose=0)
+    out['labx'] = simmat_labx.astype(str)
+    out['dtypes'] = np.array(list(zip(df.columns.values.astype(str), dtypes)))
+    out['counts'] = nr_succes_pop_n
+    out['rules'] = combined_rules(out, verbose=0)
 
     # Return
     return(out)
 
-#%% Compute fit
+# %% Compute fit
 def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', verbose=3):
+    """
+
+
+    Parameters
+    ----------
+    df : DataFrame
+        Input Dataframe.
+    y : list of length df.index
+        Response variable.
+    y_min : int, optional
+        Minimal number of samples in a group.. The default is None.
+    alpha : float, optional
+        Significance. The default is 0.05.
+    multtest : String, optional
+        Multiple test correcton. The default is 'holm'.
+    dtypes : list of length df.columns, optional
+        By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped. The default is 'pandas'.
+    specificity : String, optional
+        Configure how numerical data labels are stored.. The default is 'medium'.
+    verbose : int, optional
+        Printing message. The default is 3.
+
+    Returns
+    -------
+    dict.
+
+    """
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'
     assert len(y)==df.shape[0], 'Length of [df] and [y] must be equal'
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
-    
-	# DECLARATIONS
+
+    # DECLARATIONS
     config = dict()
-    config['verbose']  = verbose
-    config['alpha']    = alpha
+    config['verbose'] = verbose
+    config['alpha'] = alpha
     config['multtest'] = multtest
     config['specificity'] = specificity
 
@@ -251,28 +275,28 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     # Determine dtypes for columns
     [df, dtypes] = set_dtypes(df, dtypes, verbose=config['verbose'])
     # Compute fit
-    out = compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
+    out = _compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
     # Multiple test correction
-    out = multipletestcorrection(out, config['multtest'], verbose=config['verbose'])
+    out = _multipletestcorrection(out, config['multtest'], verbose=config['verbose'])
     # Keep only significant ones
-    out = filter_significance(out, config['alpha'], multtest)
+    out = _filter_significance(out, config['alpha'], multtest)
     # Make dataframe
     out = pd.DataFrame(out)
     # Return
     if config['verbose']>=3: print('[HNET] Fin')
     return(out)
 
-#%% Compute significance
-def compute_significance(df, y, dtypes, specificity=None, verbose=3):
+# %% Compute significance
+def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
     out=[]
     # Run over all columns
     for i in range(0, df.shape[1]):
         if (i>0) and (verbose>=3): print('')
         if verbose>=3: print('[HNET] Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
         colname = df.columns[i]
-        
+
         # Clean nan fields
-        [datac, yc] = nancleaning(df[colname], y)
+        [datac, yc] = _nancleaning(df[colname], y)
         # In a two class model, remove 0-catagory
         uiy = np.unique(yc)
         # No need to compute _other_ because it is a mixed group that is auto generated based on y_min
@@ -281,13 +305,13 @@ def compute_significance(df, y, dtypes, specificity=None, verbose=3):
         if len(uiy)==1 and (uiy=='0'):
             if verbose>=4: print('[HNET] The response variable [y] has only one catagory; [0] which is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
-        
+
         if len(uiy)==2:
             if verbose>=4: print('[HNET] The response variable [y] has two catagories, the catagory 0 is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
             uiy=uiy[uiy!='False']
             uiy=uiy[uiy!='false']
-            
+
         # Run over all target values
         for j in range(0, len(uiy)):
             target = uiy[j]
@@ -295,38 +319,38 @@ def compute_significance(df, y, dtypes, specificity=None, verbose=3):
             if dtypes[i]=='cat':
                 datacOnehot=pd.get_dummies(datac)
                 # Remove background column if 2 columns of which 0.0 also there
-                if (datacOnehot.shape[1]==2) & (np.any(np.isin(datacOnehot.columns,'0.0'))):
+                if (datacOnehot.shape[1]==2) & (np.any(np.isin(datacOnehot.columns, '0.0'))):
                     datacOnehot.drop(labels=['0.0'], axis=1, inplace=True)
                 # Run over all unique entities/cats in column for target vlue
-                for k in range(0,datacOnehot.shape[1]):
-                    outtest = prob_hypergeo(datacOnehot.iloc[:,k], yc==target)
+                for k in range(0, datacOnehot.shape[1]):
+                    outtest = _prob_hypergeo(datacOnehot.iloc[:, k], yc==target)
                     outtest.update({'y':target})
                     outtest.update({'category_name':colname})
                     out.append(outtest)
-            
+
             # Numerical
             if dtypes[i]=='num':
-                outtest = prob_ranksums(datac, yc==target, specificity=specificity)
-                outtest.update({'y':target})
-                outtest.update({'category_name':colname})
+                outtest = _prob_ranksums(datac, yc==target, specificity=specificity)
+                outtest.update({'y': target})
+                outtest.update({'category_name': colname})
                 out.append(outtest)
             # Print dots
-            if verbose>=3: print('.',end='')
-    
+            if verbose>=3: print('.', end='')
+
     if verbose>=3: print('')
     return(out)
 
-#%% Wilcoxon Ranksum test
-def prob_ranksums(datac, yc, specificity=None):
+# %% Wilcoxon Ranksum test
+def _prob_ranksums(datac, yc, specificity=None):
     P=np.nan
     zscore=np.nan
     datac=datac.values
     getsign=''
-    
+
     # Wilcoxon Ranksum test
     if sum(yc==True)>1 and sum(yc==False)>1:
-        [zscore,P]=ranksums(datac[yc==True], datac[yc==False])
-    
+        [zscore, P] = ranksums(datac[yc==True], datac[yc==False])
+
     # Store
     out=dict()
     out['P']=P
@@ -353,8 +377,8 @@ def prob_ranksums(datac, yc, specificity=None):
     
     return(out)
 
-#%% Hypergeometric test
-def prob_hypergeo(datac, yc):
+# %% Hypergeometric test
+def _prob_hypergeo(datac, yc):
     '''
     Suppose you have a lot of 100 floppy disks (M), and you know that 20 of them are defective (n).
     What is the prbability of drawing zero to 2 floppy disks (N=2), if you select 10 at random (N).
@@ -385,8 +409,8 @@ def prob_hypergeo(datac, yc):
     
     return(out)
 
-#%% Make logscale
-def logscale(simmat_padj):
+# %% Make logscale
+def _logscale(simmat_padj):
     # Set minimum amount
     simmat_padj[simmat_padj==0]=1e-323
     adjmatLog=(-np.log10(simmat_padj)).copy()
@@ -395,25 +419,23 @@ def logscale(simmat_padj):
     adjmatLog[adjmatLog == -0] = 0
     return(adjmatLog)
 
-#%% Extract combined rules from structure_learning
-def combined_rules(out, verbose=3):
-#    assert isinstance(out.get('simmatP',None), type(None)), 'input value should be dictionary containing simmatP.'
+# %% Extract combined rules from structure_learning
+def combined_rules(model, verbose=3):
+    assert model.get('simmatP') is not None, print('[HNET.combined_rules] Error: Input requires the result from the hnet.fit() function.')
+    df_rules = pd.DataFrame(index=np.arange(0,model['simmatP'].shape[0]), columns=['antecedents_labx','antecedents','consequents','Pfisher'])
+    df_rules['consequents'] = model['simmatP'].index.values
     
-    from scipy.stats import combine_pvalues
-    df_rules = pd.DataFrame(index=np.arange(0,out['simmatP'].shape[0]), columns=['antecedents_labx','antecedents','consequents','Pfisher'])
-    df_rules['consequents'] = out['simmatP'].index.values
-    
-    for i in tqdm(range(0, out['simmatP'].shape[0]), disable=(True if verbose==0 else False)):
-        idx=np.where(out['simmatP'].iloc[i,:]<1)[0]
+    for i in tqdm(range(0, model['simmatP'].shape[0]), disable=(True if verbose==0 else False)):
+        idx=np.where(model['simmatP'].iloc[i,:]<1)[0]
         # Remove self
         idx=np.setdiff1d(idx,i)
         # Store rules
-        df_rules['antecedents'].iloc[i] = list(out['simmatP'].iloc[i,idx].index)
-        df_rules['antecedents_labx'].iloc[i] = out['labx'][idx]
+        df_rules['antecedents'].iloc[i] = list(model['simmatP'].iloc[i,idx].index)
+        df_rules['antecedents_labx'].iloc[i] = model['labx'][idx]
         # Combine pvalues
-        df_rules['Pfisher'].iloc[i] = combine_pvalues(out['simmatP'].iloc[i,idx].values, method='fisher')[1]
+        df_rules['Pfisher'].iloc[i] = combine_pvalues(model['simmatP'].iloc[i,idx].values, method='fisher')[1]
         # Showprogress
-        # if verbose>=3: showprogress(i, out['simmatP'].shape[0])
+        # if verbose>=3: showprogress(i, model['simmatP'].shape[0])
     
     # Keep only lines with pvalues
     df_rules.dropna(how='any', subset=['Pfisher'], inplace=True)
@@ -423,8 +445,8 @@ def combined_rules(out, verbose=3):
     
     return(df_rules)
     
-#%% Add columns
-def addcolumns(simmat_padj, colnames, Xlabx, catnames):
+# %% Add columns
+def _addcolumns(simmat_padj, colnames, Xlabx, catnames):
     I=np.isin(colnames.values.astype(str), simmat_padj.index.values)
     if np.any(I):
         newcols=list((colnames.values[I==False]).astype(str))
@@ -440,8 +462,8 @@ def addcolumns(simmat_padj, colnames, Xlabx, catnames):
         simmat_padj=pd.concat([simmat_padj, addrow])
     return(simmat_padj, Xlabx)
 
-#%% Remove columns without dtype
-def remove_columns_without_dtype(df, dtypes, verbose=3):
+# %% Remove columns without dtype
+def _remove_columns_without_dtype(df, dtypes, verbose=3):
     if not isinstance(dtypes, str):
         assert df.shape[1]==len(dtypes), 'Columns in df and dtypes should match! [hnet.remove_columns_without_dtype]'
         I=np.isin(dtypes,'')
@@ -455,8 +477,8 @@ def remove_columns_without_dtype(df, dtypes, verbose=3):
 
     return(df, dtypes)
 
-#%% Clean empty rows
-def drop_empty(df, Xlabx, verbose=3):
+# %% Clean empty rows
+def _drop_empty(df, Xlabx, verbose=3):
     dfO=df.copy()
     cols=dfO.columns.values
     rows=dfO.index.values
@@ -477,8 +499,8 @@ def drop_empty(df, Xlabx, verbose=3):
     dfO.drop(labels=droplabel, axis=1, inplace=True)
     return(dfO, Xlabx)
 
-#%% Do multiple test correction
-def multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
+# %% Do multiple test correction
+def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
     if verbose>=3: print('[HNET] Multiple test correction using %s' %(multtest))
     # Multiple test correction
     if not (isinstance(multtest, type(None))):
@@ -495,11 +517,11 @@ def multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
     # Return
     return(adjmat)
 
-#%% Do multiple test correction
-def multipletestcorrection(out, multtest, verbose=3):
-    if verbose>=3: print('[HNET] Multiple test correction using %s' %(multtest))
+# %% Do multiple test correction
+def _multipletestcorrection(out, multtest, verbose=3):
     # Always do a multiple test correction but do not use it in the filtering step if not desired
-    
+    if verbose>=3: print('[HNET] Multiple test correction using %s' %(multtest))
+
     if out!=[]:
         # Get pvalues
         Praw=np.array(list(map(lambda x: x['P'], out)))
@@ -518,8 +540,8 @@ def multipletestcorrection(out, multtest, verbose=3):
     
     return(out)
 
-#%% Setup columns in correct dtypes
-def filter_significance(out, alpha, multtest):
+# %% Setup columns in correct dtypes
+def _filter_significance(out, alpha, multtest):
     if isinstance(multtest, type(None)):
         idx=np.where(np.array(list(map(lambda x: x['P']<=alpha, out))))[0]
     else:
@@ -529,15 +551,15 @@ def filter_significance(out, alpha, multtest):
     if outf==[]: outf=None
     return(outf)
 
-#%% Cleaning
-def nancleaning(datac, y):
+# %% Cleaning
+def _nancleaning(datac, y):
     I     = datac.replace([np.inf, -np.inf, None, 'nan', 'None', 'inf', '-inf'], np.nan).notnull()
     datac = datac[I]
     yc    = y[I]
     return(datac, yc)
 
-#%% Add combinations
-def make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
+# %% Add combinations
+def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
     Xlabo=Xlabx.copy()
     if isinstance(y_min, type(None)): y_min=1
     # If any, run over combinations
@@ -548,7 +570,7 @@ def make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
         # Run over all combinations
         for k in np.arange(2,combK+1):
             # Make smart combinations because of mutual exclusive classes
-            [cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO] = cmbnN(Xhot, Xlabx, y_min, k)
+            [cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO] = _cmbnN(Xhot, Xlabx, y_min, k)
             # If any combinations is found, add to dataframe
             if len(cmbn_labX)>0:
                 if verbose>=3: print('[HNET] Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
@@ -568,8 +590,8 @@ def make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
     assert Xhot.shape[1]==len(Xlabo), print('one-hot matrix should have equal size with olabels')
     return(Xhot,Xlabx,Xlabo)
     
-#%% Add combinations
-def cmbnN(Xhot, Xlabx, y_min, k):
+# %% Add combinations
+def _cmbnN(Xhot, Xlabx, y_min, k):
     # Take only those varibles if combinations is larger then N (otherwise it is not mutually exclusive)
     [uilabx, uicount]=np.unique(Xlabx, return_counts=True)
     I=np.isin(Xlabx, uilabx[uicount>k])
@@ -596,8 +618,8 @@ def cmbnN(Xhot, Xlabx, y_min, k):
     #assert cmbn_hot.shape[1]==len(cmbn_labX), print('one-hot matrix should have equal size with labels')
     return(cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO)
 
-#%% Do the math
-def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
+# %% Do the math
+def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
     count=0
     out=[]
     # Get response variable to test association
@@ -621,7 +643,7 @@ def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
             colnames      = catnames+'_'+dfout['category_label']
             colnames[idx] = catnames[idx].values
             # Add new column and index
-            [simmat_padj, simmat_labx]=addcolumns(simmat_padj, colnames, simmat_labx, catnames)
+            [simmat_padj, simmat_labx]=_addcolumns(simmat_padj, colnames, simmat_labx, catnames)
             # Store values
             [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
             simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
@@ -636,8 +658,8 @@ def do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i):
     # Return
     return(out, simmat_padj, simmat_labx)
 
-#%% Do the math
-def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
+# %% Do the math
+def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
     # Clean label names
     simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
     simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
@@ -645,15 +667,15 @@ def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
     nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x,  nr_succes_pop_n[:,0]))
 
     # Multiple test correction
-    simmat_padj = multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
+    simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, param['multtest'], verbose=param['verbose'])
     # Remove variables for which both rows and columns are empty
-    if param['dropna']: [simmat_padj, simmat_labx]=drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
+    if param['dropna']: [simmat_padj, simmat_labx]=_drop_empty(simmat_padj, simmat_labx, verbose=param['verbose'])
     # Fill empty fields
     if param['fillna']: simmat_padj.fillna(1, inplace=True)
     # Remove those with P>alpha, to prevent unnecesarilly edges
     simmat_padj[simmat_padj>param['alpha']]=1
     # Convert P-values to -log10 scale
-    adjmatLog = logscale(simmat_padj)
+    adjmatLog = _logscale(simmat_padj)
     
     # Remove edges from matrix
     if param['dropna']:
@@ -668,21 +690,21 @@ def post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, param):
     
     return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
 
-#%% Scale weights
-def scale_weights(weights, node_size_limits):
+# %% Scale weights
+def _scale_weights(weights, node_size_limits):
     out = MinMaxScaler(feature_range=(node_size_limits[0],node_size_limits[1])).fit_transform(np.append('0',weights).astype(float).reshape(-1,1)).flatten()[1:]
     return(out)
 
-#%% Split filepath
-def path_split(filepath, rem_spaces=False):
+# %% Split filepath
+def _path_split(filepath, rem_spaces=False):
     [dirpath, filename]=os.path.split(filepath)
     [filename,ext]=os.path.splitext(filename)
     if rem_spaces:
         filename=filename.replace(' ','_')
     return(dirpath, filename, ext)
 
-#%% From savepath to full and correct path
-def path_correct(savepath, filename='fig', ext='.png'):
+# %% From savepath to full and correct path
+def _path_correct(savepath, filename='fig', ext='.png'):
     '''
     savepath can be a string that looks like below.
     savepath='./tmp'
@@ -693,7 +715,7 @@ def path_correct(savepath, filename='fig', ext='.png'):
     out=None
     if not isinstance(savepath, type(None)):
         # Set savepath and filename
-        [getdir,getfile,getext]=path_split(savepath)
+        [getdir,getfile,getext]=_path_split(savepath)
         # Make savepath
         if len(getdir[1:])==0: getdir=''
         if len(getfile)==0: getfile=filename
@@ -706,37 +728,31 @@ def path_correct(savepath, filename='fig', ext='.png'):
         out=os.path.join(getdir,getfile+getext)
     return(out)
 
-#%% Make network d3
-def plot_d3graph(out, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
+# %% Make network d3
+def plot_d3graph(model, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
     # Setup tempdir
-    savepath=tempdir(savepath)
-    
-    [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
-    node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
-    node_size[IA]=scale_weights(out['counts'][IB,1], node_size_limits)
+    savepath=_tempdir(savepath)
+
+    [IA,IB]=ismember(model['simmatLogP'].columns, model['counts'][:,0])
+    node_size = np.repeat(node_size_limits[0], len(model['simmatLogP'].columns))
+    node_size[IA]=_scale_weights(model['counts'][IB,1], node_size_limits)
 
     # Color node using network-clustering
     if node_color=='cluster':
-        _,labx=plot_network(out, showfig=False)
+        _,labx=plot_network(model, showfig=False)
     else:
-        labx = label_encoder.fit_transform(out['labx'])
+        labx = label_encoder.fit_transform(model['labx'])
 
     # Make network
-    #if directed:
-    #    simmatLogP = out['simmatLogP'].copy()>0
-    #else:
-        # Make symmetric
-    simmatLogP = to_symmetric(out, make_symmetric='logp')
-    
+    simmatLogP = to_symmetric(model, make_symmetric='logp')
     # Make network
     Gout = d3graph(simmatLogP.T, path=savepath, node_size=node_size, charge=500,  width=1500, height=800, collision=0.1, node_color=labx, directed=directed, showfig=showfig)
-    
     # Return
     Gout['labx']=labx
     return(Gout)
 
-#%% Make network d3
-def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250):
+# %% Make network d3
+def plot_network(model, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250):
     config=dict()
     config['scale']=scale
     config['node_color']=node_color
@@ -747,10 +763,10 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     config['dpi']=dpi
 
     # Set savepath and filename
-    config['savepath']=path_correct(savepath, filename='hnet_network', ext='.png')
+    config['savepath']=_path_correct(savepath, filename='hnet_network', ext='.png')
     
     # Get adjmat
-    adjmatLog = out['simmatLogP'].copy()
+    adjmatLog = model['simmatLogP'].copy()
 
     # Set weights for edges
     adjmatLogWEIGHT = adjmatLog.copy()
@@ -758,14 +774,14 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values, data=MinMaxScaler(feature_range=(0,20)).fit_transform(adjmatLogWEIGHT), columns=adjmatLog.columns)
     
     # Set size for node 
-    [IA,IB]=ismember(out['simmatLogP'].columns, out['counts'][:,0])
-    node_size = np.repeat(node_size_limits[0], len(out['simmatLogP'].columns))
-    node_size[IA]=scale_weights(out['counts'][IB,1], node_size_limits)
+    [IA,IB]=ismember(model['simmatLogP'].columns, model['counts'][:,0])
+    node_size = np.repeat(node_size_limits[0], len(model['simmatLogP'].columns))
+    node_size[IA]=_scale_weights(model['counts'][IB,1], node_size_limits)
 
     # Make new graph (G) and add properties to nodes
     G = nx.DiGraph(directed=True)
     for i in range(0, adjmatLog.shape[0]):
-        G.add_node(adjmatLog.index.values[i], node_size=node_size[i], node_label=out['labx'][i])
+        G.add_node(adjmatLog.index.values[i], node_size=node_size[i], node_label=model['labx'][i])
     # Add properties to edges
     np.fill_diagonal(adjmatLog.values, 0)
     for i in range(0, adjmatLog.shape[0]):
@@ -784,7 +800,7 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     if node_color=='cluster':
         [_,labx]=network.cluster(G.to_undirected())
     else:
-        labx = label_encoder.fit_transform(out['labx'])
+        labx = label_encoder.fit_transform(model['labx'])
     
     # G = nx.DiGraph() # Directed graph
     # Layout
@@ -797,8 +813,7 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
 
     # Boot figure
     if showfig or (not isinstance(config['savepath'], type(None))):
-        # [fig,ax]=plt.figure(figsize=(figsize[0],figsize[1]))
-        [fig,ax]=plt.subplots(figsize=(figsize[0],figsize[1]))
+        [fig,ax]=plt.subplots(figsize=figsize)
         options = {
         # 'node_color': 'grey',
         'arrowsize': 12,
@@ -817,7 +832,6 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
         # Save figure to disk
         if not isinstance(config['savepath'], type(None)):
             savefig(fig, config['savepath'], dpi=config['dpi'], transp=True)
-
     
     Gout=dict()
     Gout['G']=G
@@ -827,17 +841,17 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     return(Gout)
 
 # %% Tempdir
-def tempdir(savepath):
+def _tempdir(savepath):
     if savepath is None:
         savepath=os.path.join(tempfile.gettempdir(),'')
     return(savepath)
 
-#%% Make plot of the structure_learning
-def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None, verbose=3):
-    simmatP = out['simmatP'].copy()
-    adjmatLog = out['simmatLogP'].copy()
+# %% Make plot of the structure_learning
+def plot_heatmap(model, cluster=False, figsize=[15,10], savepath=None, verbose=3):
+    simmatP = model['simmatP'].copy()
+    adjmatLog = model['simmatLogP'].copy()
     # Set savepath and filename
-    savepath = path_correct(savepath, filename='hnet_heatmap', ext='.png')
+    savepath = _path_correct(savepath, filename='hnet_heatmap', ext='.png')
 
     try:
         if cluster==False:
@@ -857,19 +871,21 @@ def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None, verbose=3):
         savepath1=''
         savepath2=''
         if savepath is not None:
-            [getdir,getname,getext]=path_split(savepath)
+            [getdir,getname,getext]=_path_split(savepath)
             if getname=='': getname='heatmap'
             savepath1=os.path.join(getdir,getname+'_P'+getext)
             savepath2=os.path.join(getdir,getname+'_logP'+getext)
-
-        if cluster:
-            fig1=imagesc.cluster(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds', figsize=figsize)
-            fig2=imagesc.cluster(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
-            # savepath=savepath2
-        else:
-            fig1=imagesc.plot(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds', figsize=figsize)
-            fig2=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
         
+        try:
+            if cluster:
+                fig1=imagesc.cluster(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds_r', figsize=figsize)
+                fig2=imagesc.cluster(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
+            else:
+                fig1=imagesc.plot(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds_r', figsize=figsize)
+                fig2=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
+        except:
+            print('[HNET.heatmap] Error: Heatmap failed. Try cluster=False')
+
         if savepath is not None:
             if verbose>=3: print('[HNET.plot_heatmap] Saving figure..')
             _ = savefig(fig1, savepath1, transp=True)
@@ -878,7 +894,7 @@ def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None, verbose=3):
     except:
         print('[HNET][plot_heatmap] Failed making imagesc plot.')
 
-#%% Make adjacency matrix symmetric with repect to the diagonal
+# %% Make adjacency matrix symmetric with repect to the diagonal
 def to_symmetric(out, make_symmetric='logp', verbose=3):
     assert np.sum(np.isin(out['simmatLogP'].index.values, out['simmatLogP'].columns.values))==np.max(out['simmatLogP'].shape), 'Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!'
     progressbar=(True if verbose==0 else False)
@@ -911,12 +927,12 @@ def to_symmetric(out, make_symmetric='logp', verbose=3):
     adjmatS=pd.DataFrame(index=index, data=adjmatS, columns=columns, dtype=float)
     return(adjmatS)
 
-#%% Comparison of two networks
+# %% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
     [scores, adjmat_diff] = network.compare_networks(adjmat_true, adjmat_pred, pos=pos, showfig=showfig, width=width, height=height, verbose=verbose)
     return(scores, adjmat_diff)
 
-#%% Example data
+# %% Example data
 def import_example(getfile='titanic'):
     '''
     
@@ -947,7 +963,7 @@ def import_example(getfile='titanic'):
         print('[HNET] Oops! Example data not found!')
         return None
 
-#%% Main
+# %% Main
 #if __name__ == "__main__":
 #    parser = argparse.ArgumentParser()
 #    args = parser.parse_args()

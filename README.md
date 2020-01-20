@@ -52,9 +52,9 @@ df = pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/sprinkl
 # Fit
 out = hnet.fit(df)
 # Plot
-figHEAT = hnet.plot_heatmap(out)
+figHEAT = hnet.heatmap(out)
 figNETW = hnet.plot_network(out)
-figD3GR = hnet.plot_d3graph(out)
+figD3GR = hnet.d3graph(out)
 ```
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig2.png" width="900" />
@@ -85,9 +85,9 @@ print(df)
 out = hnet.fit(df)
 
 # Make plots
-figHEAT = hnet.plot_heatmap(out)
+figHEAT = hnet.heatmap(out)
 figNETW = hnet.plot_network(out)
-figD3GR = hnet.plot_d3graph(out)
+figD3GR = hnet.d3graph(out)
 ```
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />

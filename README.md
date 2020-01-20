@@ -2,7 +2,7 @@
 [![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
-[![Downloads](https://pepy.tech/badge/hnet/week)](https://pepy.tech/project/hnet/week)
+[![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
 
 This package detects associations in datasets across features with unknown function.
 
@@ -65,20 +65,21 @@ figD3GR = hnet.plot_d3graph(out)
 # Import titanic dataset
 # df=pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/titanic_train.csv')
 df = pd.import_example()
+
 # Print to screen
 print(df)
-     PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
-0              1         0       3  ...   7.2500   NaN         S
-1              2         1       1  ...  71.2833   C85         C
-2              3         1       3  ...   7.9250   NaN         S
-3              4         1       1  ...  53.1000  C123         S
-4              5         0       3  ...   8.0500   NaN         S
-..           ...       ...     ...  ...      ...   ...       ...
-886          887         0       2  ...  13.0000   NaN         S
-887          888         1       1  ...  30.0000   B42         S
-888          889         0       3  ...  23.4500   NaN         S
-889          890         1       1  ...  30.0000  C148         C
-890          891         0       3  ...   7.7500   NaN         Q
+#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
+# 0              1         0       3  ...   7.2500   NaN         S
+# 1              2         1       1  ...  71.2833   C85         C
+# 2              3         1       3  ...   7.9250   NaN         S
+# 3              4         1       1  ...  53.1000  C123         S
+# 4              5         0       3  ...   8.0500   NaN         S
+# ..           ...       ...     ...  ...      ...   ...       ...
+# 886          887         0       2  ...  13.0000   NaN         S
+# 887          888         1       1  ...  30.0000   B42         S
+# 888          889         0       3  ...  23.4500   NaN         S
+# 889          890         1       1  ...  30.0000  C148         C
+# 890          891         0       3  ...   7.7500   NaN         Q
 
 # Fit
 out = hnet.fit(df)

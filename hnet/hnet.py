@@ -144,13 +144,13 @@ import matplotlib.pyplot as plt
 # Custom package
 from d3graph import d3graph
 from ismember import ismember
+import imagesc as imagesc
 # Custom helpers
 from hnet.helpers.set_dtypes import set_dtypes, set_y
 from hnet.helpers.df2onehot import df2onehot
 # VIZ
 from hnet.helpers.savefig import savefig
 import hnet.helpers.network as network
-from hnet.helpers.imagesc import imagesc
 # Warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -822,50 +822,55 @@ def plot_network(out, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500]
     
     return(Gout)
 
+# %% Tempdir
+def tempdir(savepath):
+    if savepath is None:
+        savepath=os.path.join(tempfile.gettempdir(),'')
+    return(savepath)
+
 #%% Make plot of the structure_learning
-def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None):
+def plot_heatmap(out, cluster=False, figsize=[15,10], savepath=None, verbose=3):
     simmatP = out['simmatP'].copy()
     adjmatLog = out['simmatLogP'].copy()
     # Set savepath and filename
-    savepath=path_correct(savepath, filename='hnet_heatmap', ext='.png')
-    if isinstance(savepath, type(None)): savepath=''
-
-#    import seaborn as sns
-#    getcolors=sns.color_palette('Reds_r')
-#    getcolors=getcolors+[(0,0,0)]
-#    sns.palplot(getcolors)
+    savepath = path_correct(savepath, filename='hnet_heatmap', ext='.png')
 
     try:
         if cluster==False:
             np.fill_diagonal(simmatP.values, 0)
             np.fill_diagonal(adjmatLog.values, np.maximum(1, np.max(adjmatLog.values)))
             # Add additional lines to avoid distortion of the heatmap
-            simmatP=pd.concat([pd.DataFrame(data=np.ones((1,simmatP.shape[1]))*np.nan, columns=simmatP.columns), simmatP])
-            simmatP=simmatP.T
-            simmatP['']=np.nan
-            simmatP=simmatP.T
-    
-            adjmatLog=pd.concat([pd.DataFrame(data=np.zeros((1,adjmatLog.shape[1]))*np.nan, columns=adjmatLog.columns), adjmatLog])
-            adjmatLog=adjmatLog.T
-            adjmatLog['']=np.nan
-            adjmatLog=adjmatLog.T
+            # simmatP=pd.concat([pd.DataFrame(data=np.ones((1,simmatP.shape[1]))*np.nan, columns=simmatP.columns), simmatP])
+            # simmatP=simmatP.T
+            # simmatP['']=np.nan
+            # simmatP=simmatP.T
+            # adjmatLog=pd.concat([pd.DataFrame(data=np.zeros((1,adjmatLog.shape[1]))*np.nan, columns=adjmatLog.columns), adjmatLog])
+            # adjmatLog=adjmatLog.T
+            # adjmatLog['']=np.nan
+            # adjmatLog=adjmatLog.T
 
-#        imagesc(simmatP, cluster=cluster, cmap=getcolors)
-#        ax = sns.heatmap(simmatP, cmap='Reds_r')
+
         savepath1=''
         savepath2=''
-        if savepath!='':
+        if savepath is not None:
             [getdir,getname,getext]=path_split(savepath)
             if getname=='': getname='heatmap'
             savepath1=os.path.join(getdir,getname+'_P'+getext)
             savepath2=os.path.join(getdir,getname+'_logP'+getext)
-        
-#        my_palette = dict(zip(np.unique(out['labx']), ["orange","yellow","brown","blue"]))
-#        row_colors = list(map(lambda x: my_palette.get(x), out['labx']))
-#        sns.clustermap(simmatP,  metric='euclidean', method='ward', cmap="Reds_r", row_colors=row_colors)
 
-        imagesc(simmatP, cluster=cluster, cmap='Reds_r', width=figsize[0], height=figsize[1], savepath=savepath1)
-        imagesc(adjmatLog, cluster=cluster, cmap='Reds', width=figsize[0], height=figsize[1], savepath=savepath2)
+        if cluster:
+            fig1=imagesc.cluster(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds', figsize=figsize)
+            fig2=imagesc.cluster(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
+            # savepath=savepath2
+        else:
+            fig1=imagesc.plot(simmatP.fillna(value=0).values, row_labels=simmatP.index.values, col_labels=simmatP.columns.values, cmap='Reds', figsize=figsize)
+            fig2=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
+        
+        if savepath is not None:
+            if verbose>=3: print('[HNET.plot_heatmap] Saving figure..')
+            _ = savefig(fig1, savepath1, transp=True)
+            _ = savefig(fig2, savepath2, transp=True)
+        
     except:
         print('[HNET][plot_heatmap] Failed making imagesc plot.')
 

@@ -45,15 +45,15 @@ model = hnet.enrichment(df, y=df['Survived'].values)
 
 # %%
 model = hnet.fit(df)
-hnet.plot_heatmap(model, cluster=True)
+hnet.heatmap(model, cluster=True)
 rules = hnet.combined_rules(model)
 
 # %%
 df = hnet.import_example('titanic')
 model = hnet.fit(df)
 model = hnet.fit(df, k=10)
-G = hnet.plot_network(model, dist_between_nodes=0.4, scale=2)
-G = hnet.plot_d3graph(model, savepath='c://temp/titanic3/')
+G = hnet.plot(model, dist_between_nodes=0.4, scale=2)
+G = hnet.d3graph(model, savepath='c://temp/titanic3/')
 
 # %%
 import hnet.hnet as hnet
@@ -61,34 +61,34 @@ import hnet.hnet as hnet
 df    = hnet.import_example('sprinkler')
 out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
 
-G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
-G     = hnet.plot_network(out)
-G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
+G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
+G     = hnet.plot(out)
+G     = hnet.plot(out, savepath='c://temp/sprinkler/')
 
-A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
-A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
-A     = hnet.plot_heatmap(out)
+A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
+A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
+A     = hnet.heatmap(out)
 
-A     = hnet.plot_d3graph(out)
-A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
+A     = hnet.d3graph(out)
+A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
 # %%
 out   = hnet.fit(df, alpha=0.05, multtest='holm')
-G     = hnet.plot_network(out, dist_between_nodes=0.1, scale=2)
-G     = hnet.plot_network(out)
-G     = hnet.plot_network(out, savepath='c://temp/sprinkler/')
-A     = hnet.plot_heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
-A     = hnet.plot_d3graph(out, savepath='c://temp/sprinkler/', directed=False)
+G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
+G     = hnet.plot(out)
+G     = hnet.plot(out, savepath='c://temp/sprinkler/')
+A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
+A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
 # %%
 df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
 out   = hnet.fit(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
-G     = hnet.plot_network(out, dist_between_nodes=0.4, scale=2)
-A     = hnet.plot_d3graph(out, savepath='c://temp/USA_2016_elections/')
+G     = hnet.plot(out, dist_between_nodes=0.4, scale=2)
+A     = hnet.d3graph(out, savepath='c://temp/USA_2016_elections/')
 
 # %%
 df = hnet.import_example('titanic')
 out = hnet.fit(df)
 out = hnet.fit(df, alpha=1, dropna=False)
-G = hnet.plot_d3graph(out, savepath='c://temp/magweg/')
+G = hnet.d3graph(out, savepath='c://temp/magweg/')
 

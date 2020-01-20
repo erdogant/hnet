@@ -4,11 +4,13 @@
 
   model            = hnet.fit(df)
   outy             = hnet.enrichment(df, y)
-  G                = hnet.plot_heatmap(model)
-  G                = hnet.plot_network(model)
-  G                = hnet.plot_d3graph(model)
-  rules            = hnet.combined_rules(model)
+
+  G                = hnet.plot(model)
+  G                = hnet.heatmap(model)
+  G                = hnet.d3graph(model)
+
   [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
+  rules            = hnet.combined_rules(model)
   adjmatSymmetric  = hnet.to_symmetric(model)
 
 
@@ -365,7 +367,7 @@ def _prob_ranksums(datac, yc, specificity=None):
         getsign='high_'
     else:
         getsign='low_'
-    
+
     if specificity=='low':
         out['category_label']=getsign[:-1]
     elif specificity=='medium':
@@ -390,12 +392,12 @@ def _prob_hypergeo(datac, yc):
     n = np.sum(datac) #Number of successes in populatoin, known in pathway, eg 2000
     N = np.sum(yc) # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
     X = np.sum(np.logical_and(yc, datac))-1 # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
-    
+
     # Test
     if np.any(yc) and (X>0):
-        P    = hypergeom.sf(X, M, n, N)
+        P = hypergeom.sf(X, M, n, N)
         logP = hypergeom.logsf(X, M, n, N)
-    
+
     # Store
     out=dict()
     out['category_label']=datac.name
@@ -406,7 +408,7 @@ def _prob_hypergeo(datac, yc):
     out['nr_succes_pop_n']=n
     out['samplesize_N']=N
     out['dtype']='categorical'
-    
+
     return(out)
 
 # %% Make logscale
@@ -534,8 +536,8 @@ def _multipletestcorrection(out, multtest, verbose=3):
         else:
             #Padj=np.zeros_like(Praw)*np.nan
             Padj=multitest.multipletests(Praw, method=multtest)[1]
-        
-        for i in range(0,len(out)):
+
+        for i in range(0, len(out)):
             out[i].update({'Padj':Padj[i]})
     
     return(out)
@@ -729,7 +731,7 @@ def _path_correct(savepath, filename='fig', ext='.png'):
     return(out)
 
 # %% Make network d3
-def plot_d3graph(model, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
+def d3graph(model, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
     # Setup tempdir
     savepath=_tempdir(savepath)
 
@@ -739,7 +741,7 @@ def plot_d3graph(model, node_size_limits=[6,15], savepath=None, node_color=None,
 
     # Color node using network-clustering
     if node_color=='cluster':
-        _,labx=plot_network(model, showfig=False)
+        _,labx=plot(model, showfig=False)
     else:
         labx = label_encoder.fit_transform(model['labx'])
 
@@ -752,7 +754,7 @@ def plot_d3graph(model, node_size_limits=[6,15], savepath=None, node_color=None,
     return(Gout)
 
 # %% Make network d3
-def plot_network(model, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250):
+def plot(model, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, showfig=True, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250):
     config=dict()
     config['scale']=scale
     config['node_color']=node_color
@@ -847,7 +849,7 @@ def _tempdir(savepath):
     return(savepath)
 
 # %% Make plot of the structure_learning
-def plot_heatmap(model, cluster=False, figsize=[15,10], savepath=None, verbose=3):
+def heatmap(model, cluster=False, figsize=[15,10], savepath=None, verbose=3):
     simmatP = model['simmatP'].copy()
     adjmatLog = model['simmatLogP'].copy()
     # Set savepath and filename
@@ -887,12 +889,12 @@ def plot_heatmap(model, cluster=False, figsize=[15,10], savepath=None, verbose=3
             print('[HNET.heatmap] Error: Heatmap failed. Try cluster=False')
 
         if savepath is not None:
-            if verbose>=3: print('[HNET.plot_heatmap] Saving figure..')
+            if verbose>=3: print('[HNET.heatmap] Saving figure..')
             _ = savefig(fig1, savepath1, transp=True)
             _ = savefig(fig2, savepath2, transp=True)
         
     except:
-        print('[HNET][plot_heatmap] Failed making imagesc plot.')
+        print('[HNET][heatmap] Failed making imagesc plot.')
 
 # %% Make adjacency matrix symmetric with repect to the diagonal
 def to_symmetric(out, make_symmetric='logp', verbose=3):

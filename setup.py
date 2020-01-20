@@ -1,16 +1,22 @@
 import setuptools
-# import versioneer
-new_version='0.1.5'
+import re
 
+# versioning ------------
+VERSIONFILE="XXX/__init__.py"
+getversion = re.search( r"^__version__ = ['\"]([^'\"]*)['\"]", open(VERSIONFILE, "rt").read(), re.M)
+if getversion:
+    new_version = getversion.group(1)
+else:
+    raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE,))
+
+# Setup ------------
 with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
-     install_requires=['d3graph','matplotlib','numpy','pandas','statsmodels','networkx','community','python-louvain','tqdm','sklearn'],
+     install_requires=['d3graph','matplotlib','numpy','pandas','statsmodels','networkx','community','python-louvain','tqdm','sklearn','ismember','imagesc'],
      python_requires='>=3',
      name='hnet',
      version=new_version,
-#     version=versioneer.get_version(),    # VERSION CONTROL
-#     cmdclass=versioneer.get_cmdclass(),  # VERSION CONTROL
      author="Erdogan Taskesen",
      author_email="erdogant@gmail.com",
      description="Graphical Hypergeometric Networks",

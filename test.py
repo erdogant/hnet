@@ -16,6 +16,7 @@ y   = np.random.randint(0,2,nfeat)
 
 # %%
 out = hnet.enrichment(df,y, dtypes=dtypes)
+
 # %%
 out = hnet.fit(df,dtypes=dtypes)
 
@@ -73,12 +74,14 @@ A     = hnet.d3graph(out)
 A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
 # %%
-out   = hnet.fit(df, alpha=0.05, multtest='holm')
+df    = hnet.import_example('sprinkler')
+out   = hnet.fit(df)
 G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
 G     = hnet.plot(out)
 G     = hnet.plot(out, savepath='c://temp/sprinkler/')
-A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
-A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
+A     = hnet.heatmap(out, cluster=False)
+A     = hnet.heatmap(out, cluster=True)
+A     = hnet.d3graph(out, savepath='c://temp/sprinkler/')
 
 # %%
 df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
@@ -89,6 +92,6 @@ A     = hnet.d3graph(out, savepath='c://temp/USA_2016_elections/')
 # %%
 df = hnet.import_example('titanic')
 out = hnet.fit(df)
-out = hnet.fit(df, alpha=1, dropna=False)
-G = hnet.d3graph(out, savepath='c://temp/magweg/')
+# out = hnet.fit(df, alpha=1, dropna=False)
+G = hnet.d3graph(out)
 

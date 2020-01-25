@@ -2,7 +2,8 @@
 [![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
-[![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
+[![Downloads](https://pepy.tech/badge/hnet/week)](https://pepy.tech/project/hnet/week)
+[![Donate Bitcoin](https://img.shields.io/badge/donate-orange.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)
 
 This package detects associations in datasets across features with unknown function.
 
@@ -93,12 +94,12 @@ figD3GR = hnet.d3graph(out)
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
 </p>
 
-## Performance
+### Performance
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig3.png" width="900" />
 </p>
 
-## Citation
+### Citation
 Please cite hnet in your publications if this is useful for your research. Here is an example BibTeX entry:
 ```BibTeX
 @misc{erdogant2019hnet,
@@ -109,8 +110,11 @@ Please cite hnet in your publications if this is useful for your research. Here 
 }
 ```
 
-## Maintainers
+### Maintainers
 * Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
 
-## © Copyright
+### Licence
 See [LICENSE](LICENSE) for details.
+
+### Donation
+* This work is created and maintained in my free time. If this package is usefull to you and if want to see more like this, you can show your <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">gratitude</a> :) Thanks!

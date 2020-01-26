@@ -1,46 +1,41 @@
-"""HNET: Hypergeometric-networks. This function computes significance of the response variable with catagorical/numerical variables.
+"""HNET: Graphical Hypergeometric-networks.
 
-  import hnet as hnet
-
-  model            = hnet.fit(df)
-  outy             = hnet.enrichment(df, y)
-
-  G                = hnet.plot(model)
-  G                = hnet.heatmap(model)
-  G                = hnet.d3graph(model)
-
-  [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
-  rules            = hnet.combined_rules(model)
-  adjmatSymmetric  = hnet.to_symmetric(model)
+    import hnet as hnet
 
 
- Requirements
- ------------
-   See Requirements.txt
+    Description
+    -----------
+    Creating networks from datasets with mixed datatypes return
+    by an unknown function. These datasets can range from generic dataframes to
+    nested data structures with lists, missing values and enumerations.
+    I solved this problem to minimize the amount of configurations required
+    while still gaining many benefits of having schemas available.
+    
+    The response variable (y) should be a vector with the same number of samples
+    as for the input data. For each column in the dataframe significance is
+    assessed for the labels in a two-class approach (y=1 vs y!=1).
+    Significane is assessed one tailed; only the fit for y=1 with an
+    overrepresentation. Hypergeometric test is used for catagorical values
+    Wilcoxen rank-sum test for numerical values
 
- Output
- ------
-   model
 
- Descriptions
- -----------
-   Creating networks from datasets with mixed datatypes return
-   by an unknown function. These datasets can range from generic dataframes to
-   nested data structures with lists, missing values and enumerations.
-   I solved this problem to minimize the amount of configurations required
-   while still gaining many benefits of having schemas available.
+    Requirements
+    ------------
+    See Requirements.txt
 
-   The response variable (y) should be a vector with the same number of samples
-   as for the input data. For each column in the dataframe significance is
-   assessed for the labels in a two-class approach (y=1 vs y!=1).
-   Significane is assessed one tailed; only the fit for y=1 with an
-   overrepresentation. Hypergeometric test is used for catagorical values
-   Wilcoxen rank-sum test for numerical values
 
- Example
- -------
-   See test.py
-
+    Example
+    -------
+    model = hnet.fit(df)
+    outy = hnet.enrichment(df, y)
+    
+    G = hnet.plot(model)
+    G = hnet.heatmap(model)
+    G = hnet.d3graph(model)
+    
+    [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
+    rules = hnet.combined_rules(model)
+    adjmatSymmetric = hnet.to_symmetric(model)
 
 """
 
@@ -48,7 +43,7 @@
 # Name        : hnet.py
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
-# Date        : Dec. 2019
+# Licence     : See licences
 # --------------------------------------------------------------------------
 
 # %% Libraries
@@ -196,7 +191,7 @@ def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specifi
     simmat_labx = np.append(X_labo, colNum).astype(str)
     simmat_padj = pd.DataFrame(index=np.append(X_comb.columns, colNum).astype(str), columns=np.append(X_comb.columns, colNum).astype(str)).astype(float)
 
-    # Here we go! in paralel!
+    # Here we go! in parallel!
     # from multiprocessing import Pool
     # nr_succes_pop_n=[]
     # with Pool(processes=os.cpu_count()-1) as pool:

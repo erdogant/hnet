@@ -4,15 +4,16 @@
 import numpy as np
 import pandas as pd
 # import hnet as hnet
-import hnet.hnet as hnet
+import hnet as hnet
+print(hnet.__version__)
 
 # %% Example with random categorical and numerical values
-nfeat=100
-nobservations=50
+nfeat = 100
+nobservations = 50
 df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
 dtypes = np.array(['cat']*nobservations)
 dtypes[np.random.randint(0,2,nobservations)==1]='num'
-y   = np.random.randint(0,2,nfeat)
+y = np.random.randint(0,2,nfeat)
 
 # %%
 out = hnet.enrichment(df,y, dtypes=dtypes)

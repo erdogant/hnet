@@ -117,4 +117,4 @@ Please cite hnet in your publications if this is useful for your research. Here 
 See [LICENSE](LICENSE) for details.
 
 ### Donation
-* This work is created and maintained in my free time. If this package is usefull to you and if want to see more like this, you can show your <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">gratitude</a> :) Thanks!
+* This package is created and maintained in my free time. If this package is usefull, you can show your <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">gratitude</a> :) Thanks!

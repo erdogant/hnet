@@ -43,7 +43,7 @@ python setup.py install
 - Import hnet method
 
 ```python
-from hnet import hnet
+import hnet as hnet
 ```
 
 - Simple example for the sprinkler data set

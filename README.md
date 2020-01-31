@@ -93,6 +93,9 @@ figD3GR = hnet.d3graph(out)
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
 </p>
+<p align="center">
+  <img src="https://github.com/erdogant/d3graph/blob/master/docs/titanic_example/d3graph.png" width="600" />
+</p>
 
 ### Performance
 <p align="center">

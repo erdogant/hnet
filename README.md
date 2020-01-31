@@ -120,4 +120,4 @@ Please cite hnet in your publications if this is useful for your research. Here 
 See [LICENSE](LICENSE) for details.
 
 ### Donation
-This package is created and maintained in my free time. If this package is usefull, feel free to use more of my packages. Sponder <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">here</a>.
+This package is created and maintained in my free time. If this package is usefull, feel free to use more of my packages. Sponser <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">here</a>.

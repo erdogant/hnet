@@ -94,10 +94,8 @@ figD3GR = hnet.d3graph(out)
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
 </p>
 
-<head>
-  <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
-</head>
 * <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph example</a> 
+<link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
 ### Performance
 <p align="center">
@@ -122,4 +120,4 @@ Please cite hnet in your publications if this is useful for your research. Here 
 See [LICENSE](LICENSE) for details.
 
 ### Donation
-* This package is created and maintained in my free time. If this package is usefull, you can show your <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">gratitude</a> :) Thanks!
+* <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">This package is created and maintained in my free time. If this package is usefull, feel free to try more of my packages.</a>

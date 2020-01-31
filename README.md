@@ -90,6 +90,9 @@ figNETW = hnet.plot(out)
 figHEAT = hnet.heatmap(out)
 figD3GR = hnet.d3graph(out)
 ```
+
+* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph example</a> 
+
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
 </p>

@@ -11,6 +11,7 @@ seaborn
 community
 python-louvain
 statsmodels
+d3graph
 
 tqdm
 community
@@ -19,5 +20,6 @@ sklearn
 # Custom libraries
 ismember
 imagesc
+df2onehot
 
 # pip install dash dash-renderer dash-html-components dash-core-components

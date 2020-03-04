@@ -77,7 +77,7 @@
 # Date        : July. 2019
 #--------------------------------------------------------------------------
 
-#%% Libraries
+# %% Libraries
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -85,7 +85,7 @@ import community
 import networkx as nx
 from sklearn.preprocessing import minmax_scale
 from sklearn.preprocessing import MinMaxScaler 
-from hnet.helpers.set_dtypes import is_DataFrame
+import df2onehot
 from ismember import ismember
 
 #%% Make graph from adjacency matrix
@@ -94,7 +94,7 @@ def to_graph(adjmat, verbose=3):
     config = dict()
     config['verbose'] = verbose
 
-    adjmat = is_DataFrame(adjmat)
+    adjmat = df2onehot.is_DataFrame(adjmat)
     if config['verbose']>=3: print('[NETWORK.to_graph] Making graph')
     G=nx.from_pandas_adjacency(adjmat)
 

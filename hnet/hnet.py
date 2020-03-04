@@ -28,10 +28,8 @@ import matplotlib.pyplot as plt
 # Custom package
 from d3graph import d3graph as d3graphs
 from ismember import ismember
-import imagesc as imagesc
-# Custom helpers
-from hnet.helpers.set_dtypes import set_dtypes, set_y
-from hnet.helpers.df2onehot import df2onehot
+import imagesc
+import df2onehot
 # VIZ
 from hnet.helpers.savefig import savefig
 import hnet.helpers.network as network
@@ -46,7 +44,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Remove columns without dtype
     [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
-    df_onehot = df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     dtypes = df_onehot['dtypes']
     # Some check before proceeding
     assert (not df_onehot['onehot'].empty) or (not np.all(np.isin(dtypes, 'num'))), '[HNET] ALL data is excluded from the dataframe! There should be at least 1 categorical value!'
@@ -56,9 +54,10 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Return
     return df, df_onehot, dtypes
 
+
 # %% Structure learning across all variables
 def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None, verbose=3):
-    """
+    """Learn the structure in the data.
 
     Parameters
     ----------
@@ -73,7 +72,7 @@ def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specifi
         0.05 : (default)
         1    : (for all results)
 
-    y_min : [Integer], [samples>=y_min] Minimal number of samples in a group. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
+    y_min : [Integer], [samples>=y_min] Minimum number of samples in a group. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
         10  (default)
         None
 
@@ -142,7 +141,7 @@ def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specifi
     param['verbose'] = verbose
 
     # Pre processing
-    df, df_onehot, dtypes = _preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    [df, df_onehot, dtypes] = _preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     # Add combinations
     [X_comb, X_labx, X_labo] = _make_n_combinations(df_onehot['onehot'], df_onehot['labx'], param['k'], param['y_min'], verbose=param['verbose'])
     # Print some
@@ -233,9 +232,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     if config['verbose']>=3: print('[HNET] Start making fit..')
     df.columns = df.columns.astype(str)
     # Set y as string
-    y = set_y(y, y_min=y_min, verbose=config['verbose'])
+    y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
     # Determine dtypes for columns
-    [df, dtypes] = set_dtypes(df, dtypes, verbose=config['verbose'])
+    [df, dtypes] = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
     # Compute fit
     out = _compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
     # Multiple test correction
@@ -1036,6 +1035,7 @@ def import_example(getfile='titanic'):
     else:
         print('[HNET] Oops! Example data not found!')
         return None
+
 
 # %% Main
 if __name__ == "__main__":

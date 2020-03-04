@@ -1,48 +1,9 @@
-"""HNET: Graphical Hypergeometric-networks.
-
-    import hnet as hnet
-
-
-    Description
-    -----------
-    Creating networks from datasets with mixed datatypes return
-    by an unknown function. These datasets can range from generic dataframes to
-    nested data structures with lists, missing values and enumerations.
-    I solved this problem to minimize the amount of configurations required
-    while still gaining many benefits of having schemas available.
-    
-    The response variable (y) should be a vector with the same number of samples
-    as for the input data. For each column in the dataframe significance is
-    assessed for the labels in a two-class approach (y=1 vs y!=1).
-    Significane is assessed one tailed; only the fit for y=1 with an
-    overrepresentation. Hypergeometric test is used for catagorical values
-    Wilcoxen rank-sum test for numerical values
-
-
-    Requirements
-    ------------
-    See Requirements.txt
-
-
-    Example
-    -------
-    model = hnet.fit(df)
-    outy = hnet.enrichment(df, y)
-    
-    G = hnet.plot(model)
-    G = hnet.heatmap(model)
-    G = hnet.d3graph(model)
-    
-    [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
-    rules = hnet.combined_rules(model)
-    adjmatSymmetric = hnet.to_symmetric(model)
-
-"""
-
+"""HNET: Graphical Hypergeometric-networks."""
 # --------------------------------------------------------------------------
 # Name        : hnet.py
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
+# github      : https://github.com/erdogant/hnet
 # Licence     : See licences
 # --------------------------------------------------------------------------
 

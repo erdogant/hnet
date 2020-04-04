@@ -1056,30 +1056,15 @@ def heatmap(model, cluster=False, figsize=[15,10], savepath=None, verbose=3):
     None.
 
     """
-    simmatP = model['simmatP'].copy()
     adjmatLog = model['simmatLogP'].copy()
     # Set savepath and filename
     savepath = _path_correct(savepath, filename='hnet_heatmap', ext='.png')
 
     try:
-        # if cluster is False:
-            # np.fill_diagonal(simmatP.values, 0)
-            # np.fill_diagonal(adjmatLog.values, np.maximum(1, np.max(adjmatLog.values)))
-            # Add additional lines to avoid distortion of the heatmap
-            # simmatP=pd.concat([pd.DataFrame(data=np.ones((1,simmatP.shape[1]))*np.nan, columns=simmatP.columns), simmatP])
-            # simmatP=simmatP.T
-            # simmatP['']=np.nan
-            # simmatP=simmatP.T
-            # adjmatLog=pd.concat([pd.DataFrame(data=np.zeros((1,adjmatLog.shape[1]))*np.nan, columns=adjmatLog.columns), adjmatLog])
-            # adjmatLog=adjmatLog.T
-            # adjmatLog['']=np.nan
-            # adjmatLog=adjmatLog.T
-
         savepath1=''
-        savepath2=''
         if savepath is not None:
             [getdir, getname, getext]=_path_split(savepath)
-            if getname is '': getname='heatmap'
+            if getname=='': getname='heatmap'
             savepath1 = os.path.join(getdir, getname + '_logP' + getext)
 
         if cluster:
@@ -1138,7 +1123,7 @@ def to_symmetric(out, method='logp', verbose=3):
     # Make symmetric using maximum as combining function
     for i in tqdm(range(adjmat.shape[0]), disable=progressbar):
         for j in range(adjmat.shape[1]):
-            if make_symmetric=='logp':
+            if method=='logp':
                 # Maximum -log10(P) values
                 score = np.maximum(adjmat[i, j], adjmat[j, i])
             else:
@@ -1150,6 +1135,7 @@ def to_symmetric(out, method='logp', verbose=3):
 
     # Make dataframe and return
     adjmatS=pd.DataFrame(index=index, data=adjmatS, columns=columns, dtype=float)
+    # Return
     return(adjmatS)
 
 
@@ -1199,39 +1185,45 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     return(scores, adjmat_diff)
 
 
-# %% Example data
-def import_example(getfile='titanic'):
-    """Import example.
-
-    Description
-    -----------
+# %% Import example dataset from github.
+def import_example(data='titanic', verbose=3):
+    """Import example dataset from github source.
 
     Parameters
     ----------
-    getfile : String, optional
-        'titanic'
-        'sprinkler'
+    data : str, optional
+        Name of the dataset 'sprinkler' or 'titanic' or 'student'.
+    verbose : int, optional
+        Print message to screen. The default is 3.
 
     Returns
     -------
-    df : DataFrame
+    pd.DataFrame()
+        Dataset containing mixed features.
 
     """
+    if data=='sprinkler':
+        url='https://erdogant.github.io/datasets/sprinkler.zip'
+    elif data=='titanic':
+        url='https://erdogant.github.io/datasets/titanic_train.zip'
+    elif data=='student':
+        url='https://erdogant.github.io/datasets/student_train.zip'
 
-    if getfile=='titanic':
-        getfile='titanic_train.zip'
-    else:
-        getfile='sprinkler.zip'
+    import wget
+    curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+    PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
 
-    print('[HNET] Loading %s..' %getfile)
-    curpath = os.path.dirname(os.path.abspath(__file__))
-    PATH_TO_DATA=os.path.join(curpath, 'data', getfile)
-    if os.path.isfile(PATH_TO_DATA):
-        df=pd.read_csv(PATH_TO_DATA, sep=',')
-        return df
-    else:
-        print('[HNET] Oops! Example data not found!')
-        return None
+    # Check file exists.
+    if not os.path.isfile(PATH_TO_DATA):
+        if verbose>=3: print('[hnet] Downloading example dataset from github source..')
+        wget.download(url, curpath)
+
+    # Import local dataset
+    if verbose>=3: print('[hnet] Import dataset [%s]' %(data))
+    df = pd.read_csv(PATH_TO_DATA)
+
+    # Return
+    return df
 
 
 # %% Main

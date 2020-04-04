@@ -8,7 +8,17 @@
 # --------------------------------------------------------------------------
 
 # %% Libraries
-# Basics
+# Warnings
+import warnings
+warnings.filterwarnings("ignore")
+# Custom package
+from d3graph import d3graph as d3graphs
+from ismember import ismember
+import imagesc
+import df2onehot
+from hnet.helpers.savefig import savefig
+import hnet.helpers.network as network
+# Internal
 import os
 import tempfile
 import pandas as pd
@@ -16,6 +26,7 @@ import numpy as np
 from pathlib import Path
 from tqdm import tqdm
 import itertools
+import matplotlib.pyplot as plt
 # Known libraries
 from scipy.stats import combine_pvalues
 from scipy.stats import hypergeom, ranksums
@@ -24,40 +35,25 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import LabelEncoder
 import networkx as nx
 label_encoder = LabelEncoder()
-import matplotlib.pyplot as plt
-# Custom package
-from d3graph import d3graph as d3graphs
-from ismember import ismember
-import imagesc
-import df2onehot
-# VIZ
-from hnet.helpers.savefig import savefig
-import hnet.helpers.network as network
-# Warnings
-import warnings
-warnings.filterwarnings("ignore")
-
-
-# %% Preprocessing
-def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, verbose=3):
-    df.columns = df.columns.astype(str)
-    # Remove columns without dtype
-    [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
-    # Make onehot matrix for response variable y
-    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
-    dtypes = df_onehot['dtypes']
-    # Some check before proceeding
-    assert (not df_onehot['onehot'].empty) or (not np.all(np.isin(dtypes, 'num'))), '[HNET] ALL data is excluded from the dataframe! There should be at least 1 categorical value!'
-    assert df.shape[1] == len(dtypes), '[HNET] DataFrame Shape and dtypes length does not match'
-    # Make all integer
-    df_onehot['onehot'] = df_onehot['onehot'].astype(int)
-    # Return
-    return df, df_onehot, dtypes
 
 
 # %% Structure learning across all variables
 def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None, verbose=3):
     """Learn the structure in the data.
+
+    Description
+    -----------
+    This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input data set **df**.
+    A multi-step process is performed which consisting 5 steps.
+
+        1. Pre-processing: Typing and One-hot Enconding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).
+        2. Combinations: Make smart combinations between features because many mutual exclusive classes do exists.
+        3. Hypergeometric test: The final dense array is used to assess significance with the categoric features.
+        4. Wilcoxon Ranksum: To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination), the Mann-Whitney-U test is performed.
+        5. Multiple test correction: Declaring significance for node-links.
+
+    The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices.
+    The adjacency matrix can then be examined as a network representation using d3graph.
 
     Parameters
     ----------

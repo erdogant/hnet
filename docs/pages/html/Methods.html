@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pre-processing &mdash; hnet hnet documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Network Graphs" href="Plots.html" />
+    <link rel="prev" title="Datasets" href="Datasets.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hnet
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Abstract.html">Abstract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abstract.html#schematic-overview">Schematic overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datasets</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Algorithm</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pre-processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#typing">Typing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#one-hot-enconding">One-hot Enconding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#statistics">Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#hypergeometric-test">Hypergeometric test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#enrichment">Enrichment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Plots</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html">Network Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#comparing-networks">Comparing networks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Coding quality.html">Coding quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hnet</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Pre-processing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Methods.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <hr class="docutils" id="code-directive" />
+<div class="section" id="pre-processing">
+<h1>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">¶</a></h1>
+<p>To detect significant edge probabilities between pairs of vertices (node-links) given a data set, <code class="docutils literal notranslate"><span class="pre">hnet</span></code> consists a multi-step process that are described below.</p>
+</div>
+<div class="section" id="typing">
+<h1>Typing<a class="headerlink" href="#typing" title="Permalink to this headline">¶</a></h1>
+<p>The first step is pre-processing the data set by feature typing. In this step we type each feature as categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. In the latter case, features are set to numerical if values are floating type or have more than a minimum number of unique elements (e.g., if the number of unique elements &gt;20% of the total non-missing). Features are set to categoric if values are boolean, integer or string.</p>
+</div>
+<div class="section" id="one-hot-enconding">
+<h1>One-hot Enconding<a class="headerlink" href="#one-hot-enconding" title="Permalink to this headline">¶</a></h1>
+<p>The second step is encoding the categoric values into a one-hot dense array. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k&gt;1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array.</p>
+<p><code class="docutils literal notranslate"><span class="pre">df2onehot</span></code></p>
+</div>
+<div class="section" id="statistics">
+<h1>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h1>
+<p>Each feature is examined on enrichment compared to another in the function <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a>. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2).</p>
+<div class="figure align-default">
+<img alt="_images/eq_1_2.png" src="_images/eq_1_2.png" />
+</div>
+</div>
+<div class="section" id="hypergeometric-test">
+<h1>Hypergeometric test<a class="headerlink" href="#hypergeometric-test" title="Permalink to this headline">¶</a></h1>
+<p>To assess significance with the categoric features (Xcategoric), the final dense array is tested for over-representation of successes in sample Xi by means of the hypergeometric distribution. The hypergeometric P-value between feature Xi and feature Xcj, is calculated as the probability of randomly drawing x or more successes from the population in n total draws with population size N containing K successes. For any Xi and Xcj, Pc(i,j) is computed as depicted in eq.3.</p>
+<div class="figure align-default">
+<img alt="_images/eq_3.png" src="_images/eq_3.png" />
+</div>
+</div>
+<div class="section" id="wilcoxon-ranksum">
+<h1>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Permalink to this headline">¶</a></h1>
+<p>To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.
+All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
+<div class="figure align-default">
+<img alt="_images/eq_4.png" src="_images/eq_4.png" />
+</div>
+<p>The last step in HNet (Figure 1F) is declaring significance for node-links. An edge is called significant under alpha is 0.05 by default. The edge-weight is computed as depicted in equation 5.</p>
+<div class="figure align-default">
+<img alt="_images/eq_5.png" src="_images/eq_5.png" />
+</div>
+<p>The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices. The adjacency matrix can then be examined as a network representation using d3graph.</p>
+</div>
+<div class="section" id="enrichment">
+<h1>Enrichment<a class="headerlink" href="#enrichment" title="Permalink to this headline">¶</a></h1>
+<p>An example of calculating hte enrichment is demonstrated below for a single response variable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
+
+<span class="c1"># Example dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set response variable y</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Compute enrichment for input dataset df and y</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># [HNET] Start making fit..</span>
+<span class="c1">#</span>
+<span class="c1"># [DTYPES] Auto detecting dtypes</span>
+<span class="c1"># [DTYPES] [PassengerId] &gt; [int]  -&gt;[cat] [891]</span>
+<span class="c1"># [DTYPES] [Survived]    &gt; [int]  -&gt;[cat] [2]</span>
+<span class="c1"># [DTYPES] [Pclass]      &gt; [int]  -&gt;[cat] [3]</span>
+<span class="c1"># [DTYPES] [Name]        &gt; [obj]  -&gt;[cat] [891]</span>
+<span class="c1"># [DTYPES] [Sex]         &gt; [obj]  -&gt;[cat] [2]</span>
+<span class="c1"># [DTYPES] [Age]         &gt; [float]-&gt;[num] [88]</span>
+<span class="c1"># [DTYPES] [SibSp]       &gt; [int]  -&gt;[cat] [7]</span>
+<span class="c1"># [DTYPES] [Parch]       &gt; [int]  -&gt;[cat] [7]</span>
+<span class="c1"># [DTYPES] [Ticket]      &gt; [obj]  -&gt;[cat] [681]</span>
+<span class="c1"># [DTYPES] [Fare]        &gt; [float]-&gt;[num] [248]</span>
+<span class="c1"># [DTYPES] [Cabin]       &gt; [obj]  -&gt;[cat] [147]</span>
+<span class="c1"># [DTYPES] [Embarked]    &gt; [obj]  -&gt;[cat] [3]</span>
+<span class="c1"># [DTYPES] Setting dtypes in dataframe</span>
+<span class="c1">#</span>
+<span class="c1"># [HNET] Analyzing [cat] PassengerId.</span>
+<span class="c1"># [HNET] Analyzing [cat] Survived.</span>
+<span class="c1"># [HNET] Analyzing [cat] Pclass.</span>
+<span class="c1"># [HNET] Analyzing [cat] Name.</span>
+<span class="c1"># [HNET] Analyzing [cat] Sex.</span>
+<span class="c1"># [HNET] Analyzing [num] Age.</span>
+<span class="c1"># [HNET] Analyzing [cat] SibSp.</span>
+<span class="c1"># [HNET] Analyzing [cat] Parch.</span>
+<span class="c1"># [HNET] Analyzing [cat] Ticket.</span>
+<span class="c1"># [HNET] Analyzing [num] Fare.</span>
+<span class="c1"># [HNET] Analyzing [cat] Cabin.</span>
+<span class="c1"># [HNET] Analyzing [cat] Embarked.</span>
+<span class="c1"># [HNET] Multiple test correction using holm</span>
+<span class="c1"># [HNET] Fin</span>
+</pre></div>
+</div>
+<p>The output is a dataframe for which each row describes the feature and the columns the statistics belonging to it. By default, only significant features, i.e., <cite>alpha&lt;0.05</cite> after multiple test correction are kept in the output.</p>
+<div class="figure align-default">
+<img alt="_images/output_enrichment.png" src="_images/output_enrichment.png" />
+</div>
+<p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Plots.html" class="btn btn-neutral float-right" title="Network Graphs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Datasets.html" class="btn btn-neutral float-left" title="Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Erdogan Taskesen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -681,7 +681,7 @@ def _cmbnN(Xhot, Xlabx, y_min, k):
     # Make array
     cmbn_hot=np.array(cmbn_hot).T
     # Combine repetative values
-    #assert cmbn_hot.shape[1]==len(cmbn_labX), print('one-hot matrix should have equal size with labels')
+    # assert cmbn_hot.shape[1]==len(cmbn_labX), print('one-hot matrix should have equal size with labels')
     return(cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO)
 
 
@@ -693,7 +693,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
     y=X_comb.iloc[:,i].values.astype(str)
     # Get column name
     colname=X_comb.columns[i]
-    # Do something if response variable has more then 1 option. 
+    # Do something if response variable has more then 1 option
     if len(np.unique(y))>1:
         if param['verbose']>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
@@ -701,13 +701,13 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
         # Compute fit
         dfout=enrichment(df.loc[:,I], y, y_min=param['y_min'], alpha=1, multtest=None, dtypes=dtypes[I], specificity=param['specificity'], verbose=0)
         # Count
-        count=count+dfout.shape[0]
+        count=count + dfout.shape[0]
         # Match with dataframe and store
         if not dfout.empty:
             # Column names
             idx = np.where(dfout['category_label'].isna())[0]
             catnames = dfout['category_name']
-            colnames = catnames+'_'+dfout['category_label']
+            colnames = catnames + '_' + dfout['category_label']
             colnames[idx] = catnames[idx].values
             # Add new column and index
             [simmat_padj, simmat_labx]=_addcolumns(simmat_padj, colnames, simmat_labx, catnames)
@@ -715,7 +715,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, param, i)
             [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
             simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
             # Count nr. successes
-            out = [colname, X_comb.iloc[:,i].sum()/X_comb.shape[0]]
+            out = [colname, X_comb.iloc[:,i].sum() / X_comb.shape[0]]
             # showprogress
             if param['verbose']>=4: print('[%g]' %(len(IB)), end='')
     else:

@@ -93,24 +93,24 @@ def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specifi
         'pandas' (default)
 
     specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'structure_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
-            None    : No additional information in the labels
-            'low'   : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
-            'medium': (default) 'high' or 'low' are included with 1 decimal behind the comma.
-            'high'  : 'high' or 'low' are included with 3 decimal behind the comma.
+            None : No additional information in the labels
+            'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
+            'medium' : (default) 'high' or 'low' are included with 1 decimal behind the comma.
+            'high' : 'high' or 'low' are included with 3 decimal behind the comma.
 
     perc_min_num : float, Force column (int or float) to be numerical if unique non-zero values are above percentage.
         None
         0.8 (default)
 
     dropna : Bool, [True,False] Drop rows/columns in adjacency matrix that showed no significance
-        True  (default)
+        True (default)
         False
 
     excl_background : String, String name to exclude from the background
-        None     (default)
+        None (default)
         ['0.0']: To remove catagorical values with label 0
 
-    verbose : Int, [0..5] if verbose >= DEBUG: print('debug message')
+    verbose : Int, [0..5]. The higher the number, the more information is printed.
         0: No
         1: ERROR
         2: WARN
@@ -120,7 +120,27 @@ def fit(df, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specifi
 
     Returns
     -------
-    Models.
+    dict
+        The output is a dictionary containing the following keys:
+
+    simmatP : pd.DataFrame()
+        Adjacency matrix containing P-values between variable assocations.
+    simmatLogP :  pd.DataFrame()
+        -log10(P-value) of the simmatP.
+    labx :  list of str
+        Labels that are analyzed.
+    dtypes :  list of str
+        dtypes that are set for the labels.
+    counts :  list of str
+        Relative counts for the labels based on the number of successes in population.
+
+
+    Examples
+    --------
+    >>> import hnet
+    >>> df = hnet.import_example('sprinkler')
+    >>> model = hnet.fit(df)
+    >>> G = hnet.d3graph(model)
 
     """
     assert isinstance(df, pd.DataFrame), 'Input data [df] must be of type pd.DataFrame()'
@@ -189,6 +209,8 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
 
     Description
     -----------
+    Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
+    The input dataset is converted into a one-hot dense array based on automatic typing ``dtypes='pandas'`` or user defined dtypes.
 
     Parameters
     ----------
@@ -207,11 +229,44 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     specificity : String, optional
         Configure how numerical data labels are stored.. The default is 'medium'.
     verbose : int, optional
-        Printing message. The default is 3.
+        Print message to screen. The higher the number, the more details. The default is 3.
 
     Returns
     -------
-    dict.
+    The output is a Pandas dataframe containing the following columns:
+
+    category_label : str
+        Label of the catagory.
+    P :  float
+        Pvalue of the hypergeometric test or Wilcoxon Ranksum.
+    logP :  float
+        -log10(Pvalue) of the hypergeometric test or Wilcoxon Ranksum.
+    Padj :  float
+        Adjusted P-value.
+    dtype : list of str
+        Categoric or numeric.
+    y : str
+        Response variable name.
+    category_name : str
+        Subname of the category_label.
+    popsize_M : int
+        Population size: Total number of samples.
+    nr_succes_pop_n : int
+        Number of successes in population.
+    overlap_X : int
+        Overlap between response variable y and input feature.
+    samplesize_N : int
+        Sample size: Random variate, eg clustersize or groupsize, those of interest.
+    zscore : float
+        Z-score of the Wilcoxon Ranksum test.
+    nr_not_succes_pop_n : int
+        Number of successes in population.
+
+    Examples
+    --------
+    >>> df = hnet.import_example('titanic')
+    >>> y = df['Survived'].values
+    >>> out = hnet.enrichment(df, y)
 
     """
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'
@@ -242,6 +297,69 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     # Return
     if config['verbose']>=3: print('[HNET] Fin')
     return(out)
+
+
+# %% Extract combined rules from structure_learning
+def combined_rules(model, verbose=3):
+    """Association testing and combining Pvalues using fishers-method.
+    
+    Description
+    -----------
+    Multiple variables (antecedents) can be associated to a single variable (consequent).
+    To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.
+
+    Parameters
+    ----------
+    model : dict
+        The output of .fit()
+    verbose : int, optional
+        Print message to screen. The higher the number, the more details. The default is 3.
+
+    Returns
+    -------
+    pd.DataFrane()
+        Dataset containing antecedents and consequents. The strongest connection will be sorted on top.
+        The columns are as following:
+    
+    antecedents_labx
+        Generic label name.
+    antecedents
+        Specific label names in the 'from' catagory.
+    consequents
+        Specific label names that are the result of the antecedents.
+    Pfisher
+        Combined P-value
+
+    Examples
+    --------
+    >>> df = hnet.import_example('sprinkler')
+    >>> model = hnet.fit(df)
+    >>> rules = hnet.combined_rules(model)
+
+    """
+    if model.get('simmatP') is None:
+        raise Exception('[HNET.combined_rules] Error: Input requires the result from the hnet.fit() function.')
+
+    df_rules = pd.DataFrame(index=np.arange(0, model['simmatP'].shape[0]), columns=['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
+    df_rules['consequents'] = model['simmatP'].index.values
+
+    for i in tqdm(range(0, model['simmatP'].shape[0]), disable=(True if verbose==0 else False)):
+        idx=np.where(model['simmatP'].iloc[i, :]<1)[0]
+        # Remove self
+        idx=np.setdiff1d(idx, i)
+        # Store rules
+        df_rules['antecedents'].iloc[i] = list(model['simmatP'].iloc[i, idx].index)
+        df_rules['antecedents_labx'].iloc[i] = model['labx'][idx]
+        # Combine pvalues
+        df_rules['Pfisher'].iloc[i] = combine_pvalues(model['simmatP'].iloc[i, idx].values, method='fisher')[1]
+
+    # Keep only lines with pvalues
+    df_rules.dropna(how='any', subset=['Pfisher'], inplace=True)
+    # Sort
+    df_rules.sort_values(by=['Pfisher'], ascending=True, inplace=True)
+    df_rules.reset_index(inplace=True, drop=True)
+    # Return
+    return(df_rules)
 
 
 # %% Compute significance
@@ -315,9 +433,9 @@ def _prob_ranksums(datac, yc, specificity=None):
     out['P']=P
     out['logP']=np.log(P)
     out['zscore']=zscore
-    out['popsize']=len(yc)
-    out['total_target_samples']=np.sum(yc == True)
-    out['total_other_samples']=np.sum(yc == False)
+    out['popsize_M']=len(yc)
+    out['nr_succes_pop_n']=np.sum(yc == True)
+    out['nr_not_succes_pop_n']=np.sum(yc == False)
     out['dtype']='numerical'
 
     if np.isnan(zscore) is False and np.sign(zscore)>0:
@@ -340,15 +458,18 @@ def _prob_ranksums(datac, yc, specificity=None):
 # %% Hypergeometric test
 def _prob_hypergeo(datac, yc):
     """Compute hypergeometric Pvalue.
+
+    Description
+    -----------
     Suppose you have a lot of 100 floppy disks (M), and you know that 20 of them are defective (n).
     What is the prbability of drawing zero to 2 floppy disks (N=2), if you select 10 at random (N).
     P=hypergeom.sf(2,100,20,10)
 
     """
-    P=np.nan
-    logP=np.nan
-    M = len(yc)  # Population size: Total number of objects, eg total number of genes; 10000
-    n = np.sum(datac)  # Number of successes in populatoin, known in pathway, eg 2000
+    P = np.nan
+    logP = np.nan
+    M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
+    n = np.sum(datac)  # Number of successes in population, known in pathway, eg 2000
     N = np.sum(yc)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
     X = np.sum(np.logical_and(yc, datac)) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
 
@@ -380,43 +501,6 @@ def _logscale(simmat_padj):
     adjmatLog[adjmatLog == np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
     adjmatLog[adjmatLog == -0] = 0
     return(adjmatLog)
-
-
-# %% Extract combined rules from structure_learning
-def combined_rules(model, verbose=3):
-    """Association testing and combining Pvalues using fishers-method.
-
-
-    Parameters
-    ----------
-    model : The output of .fit()
-
-    Returns
-    -------
-    None.
-
-    """
-    assert model.get('simmatP') is not None, print('[HNET.combined_rules] Error: Input requires the result from the hnet.fit() function.')
-    df_rules = pd.DataFrame(index=np.arange(0, model['simmatP'].shape[0]), columns=['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
-    df_rules['consequents'] = model['simmatP'].index.values
-
-    for i in tqdm(range(0, model['simmatP'].shape[0]), disable=(True if verbose==0 else False)):
-        idx=np.where(model['simmatP'].iloc[i, :]<1)[0]
-        # Remove self
-        idx=np.setdiff1d(idx, i)
-        # Store rules
-        df_rules['antecedents'].iloc[i] = list(model['simmatP'].iloc[i, idx].index)
-        df_rules['antecedents_labx'].iloc[i] = model['labx'][idx]
-        # Combine pvalues
-        df_rules['Pfisher'].iloc[i] = combine_pvalues(model['simmatP'].iloc[i, idx].values, method='fisher')[1]
-
-    # Keep only lines with pvalues
-    df_rules.dropna(how='any', subset=['Pfisher'], inplace=True)
-    # Sort
-    df_rules.sort_values(by=['Pfisher'], ascending=True, inplace=True)
-    df_rules.reset_index(inplace=True, drop=True)
-
-    return(df_rules)
 
 
 # %% Add columns
@@ -555,15 +639,15 @@ def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
             # If any combinations is found, add to dataframe
             if len(cmbn_labX)>0:
                 if verbose>=3: print('[HNET] Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
-                out_hot  = pd.concat([out_hot, pd.DataFrame(data=cmbn_hot, columns=cmbn_labH).astype(int)], axis=1)
+                out_hot = pd.concat([out_hot, pd.DataFrame(data=cmbn_hot, columns=cmbn_labH).astype(int)], axis=1)
                 out_labo = np.append(out_labo, cmbn_labO, axis=0)
-                out_labx = out_labx+cmbn_labX
+                out_labx = out_labx + cmbn_labX
             else:
                 if verbose>=3: print('[HNET] No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
                 break
 
         # Add to one-hot dataframe
-        Xhot  = out_hot
+        Xhot = out_hot
         Xlabo = out_labo
         Xlabx = out_labx
 

@@ -18,9 +18,9 @@ The first step is pre-processing the data set by feature typing. In this step we
 One-hot Enconding
 ''''''''''''''''''
 
-The second step is encoding the categoric values into a one-hot dense array. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k>1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array. 
+The second step is encoding the categoric values into a one-hot dense array. This is done using ``df2onehot``. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k>1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array. 
 
-``df2onehot``
+
 
 Statistics
 ''''''''''

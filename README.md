@@ -2,7 +2,7 @@
 [![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
-[![Downloads](https://pepy.tech/badge/hnet/week)](https://pepy.tech/project/hnet/week)
+[![Downloads](https://pepy.tech/badge/hnet/month)](https://pepy.tech/project/hnet/month)
 [![Donate Bitcoin](https://img.shields.io/badge/donate-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)
 
 This package detects associations in datasets across features with unknown function.

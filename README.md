@@ -14,7 +14,7 @@ This package detects associations in datasets across features with unknown funct
 
 ## Method overview
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig1.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="900" />
 </p>
 
 ## Contents
@@ -44,29 +44,16 @@ python setup.py install
 - Import hnet method
 
 ```python
-import hnet as hnet
+from hnet import hnet
 ```
 
 - Simple example for the sprinkler data set
 ```python
-# Import dataset
-df = pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/sprinkler.csv')
-# Fit
-out = hnet.fit(df)
-# Plot
-figNETW = hnet.plot(out)
-figHEAT = hnet.heatmap(out)
-figD3GR = hnet.d3graph(out)
-```
-<p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig2.png" width="900" />
-</p>
+Initialize hnet with default settings
+from hnet import hnet
 
-
-```python
-# Import titanic dataset
-# df=pd.read_csv('https://github.com/erdogant/hnet/blob/master/hnet/data/titanic_train.csv')
-df = pd.import_example()
+# Load example dataset
+df = hnet.import_example('sprinkler')
 
 # Print to screen
 print(df)
@@ -82,19 +69,34 @@ print(df)
 # 888          889         0       3  ...  23.4500   NaN         S
 # 889          890         1       1  ...  30.0000  C148         C
 # 890          891         0       3  ...   7.7500   NaN         Q
+```
 
-# Fit
-out = hnet.fit(df)
 
-# Make plots
-figNETW = hnet.plot(out)
-figHEAT = hnet.heatmap(out)
-figD3GR = hnet.d3graph(out)
+Structure learning on the titanic dataset
+```python
+hn = hnet()
+out = hn.fit_transform(df, return_dict=True)
+
+```
+<p align="center">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig2.png" width="900" />
+</p>
+
+
+```python
+# Plot static graph
+G_static = hn.plot(node_color='cluster')
+
+# Plot heatmap
+P_heatmap = hn.heatmap(cluster=True)
+
+# Plot dynamic graph
+G_dynamic = hn.d3graph(node_color='cluster')
 ```
 
 <p align="center">
   <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
-     <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
+     <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig4.png" width="900" />
   </a>
 </p>
 
@@ -104,7 +106,7 @@ figD3GR = hnet.d3graph(out)
 
 ### Performance
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig3.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
 </p>
 
 ### Citation

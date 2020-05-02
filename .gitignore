@@ -9,6 +9,7 @@ docs/old/
 
 # C extensions
 *.so
+*.pylint.d*
 
 # Distribution / packaging
 .Python

@@ -9,6 +9,7 @@ from hnet import hnet
 print(dir(hnet))
 
 # %%
+from hnet import hnet
 df = hnet.import_example('titanic')
 
 df = hnet.import_example('student')
@@ -19,7 +20,8 @@ df = hnet.import_example('sprinkler')
 # %% Run with default settings
 
 hn = hnet()
-
+df = hnet.import_example('titanic')
+# Structure learning
 hn.fit_transform(df)
 
 # %% Plot with clustering nodes

@@ -15,16 +15,17 @@ A natural way to study the relation between nodes in a network is to analyse the
 
 .. code-block:: python
 	
-	import hnet
+	from hnet import hnet
+	hn = hnet()
 
 	# Import example dataset
 	df = hnet.import_example('sprinkler')
 
 	# Learn the relationships
-	model = hnet.fit(df)
+	hn.fit_transform(df)
 
 	# Generate the interactive graph
-	G = hnet.d3graph(model)
+	G = hn.d3graph()
 
 
 **Network output**
@@ -41,16 +42,17 @@ The titanic data set contains a data structure that is often seen in real use ca
 
 .. code-block:: python
 	
-	import hnet
+	from hnet import hnet
+	hn = hnet()
 
 	# Import example dataset
 	df = hnet.import_example('titanic')
 
 	# Learn the relationships
-	model = hnet.fit(df)
+	hn.fit_transform(df)
 
 	# Generate the interactive graph
-	G = hnet.d3graph(model)
+	G = hn.d3graph()
 
 
 **Output looks as following**
@@ -104,20 +106,23 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
 
 .. code-block:: python
 
-	import hnet
+	from hnet import hnet
+
+	hn = hnet()
 
 	df = hnet.import_example()
 
-	model = hnet.fit(df)
+	hn.fit_transform(df)
 
-	G = hnet.plot(model)
+	G_static = hn.plot()
 
-	G = hnet.heatmap(model)
+	G = hn.heatmap()
 
-	G = hnet.d3graph(model)
+	G = hn.d3graph()
 
-	[scores, adjmat] = hnet.compare_networks(model['simmatLogP'], model['simmatLogP'])
+        import hnet
 
-	rules = hnet.combined_rules(model)
+	[scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
 
-	adjmatSymmetric = hnet.to_symmetric(model)
+	adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+

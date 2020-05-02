@@ -16,23 +16,27 @@ A quick example how to learn the structure on a given dataset.
 
 .. code:: python
 
+Initialize hnet with default settings
+
     # Import library
-    import hnet
+    from hnet import hnet
+    hn = hnet()
 
     # Import data:
-    df = hnet.import_example()
+    df = hnet.import_example('titanic')
 
     # Learn structure on the data
-    model = hnet.fit(df)
+    hn.fit_transform(df)
 
-    # Plot results
-    G = hnet.plot(model)
+    # Plot dynamic graph
+    G_dynamic = hn.d3graph()
 
+    # Plot static graph
+    
+    G_static = hn.plot()
+    
     # Plot heatmap
-    G = hnet.heatmap(model)
-
-    # Plot interactive plot
-    G = hnet.d3graph(model)
+    P_heatmap = hn.heatmap(cluster=True)
 
 
 Installation

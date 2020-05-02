@@ -40,10 +40,14 @@ Integration of d3graph in hnet
 
 .. code-block:: python
 
-  import hnet
+  from hnet import hnet
   df = hnet.import_example('sprinkler')
-  model = hnet.fit(df)
-  G = hnet.d3graph(model)
+
+  # Structure learning
+  hn.fit_transform(df)
+  
+  # Plot dynamic graph
+  G_dynamic = hn.d3graph()
 
 
 Each node contains a text-label, whereas the links of associated nodes can be highlighted when double clicked on the node of interest. Furthermore, each node involves a tooltip that can easily be adapted to display any of the underlying data. For deeper examination of the network, edges can be gradually broken on its weight using a slider. 
@@ -62,11 +66,14 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
 
 .. code-block:: python
 
+  from hnet import hnet
   df = hnet.import_example('sprinkler')
   
-  model = hnet.fit(df)
+  # Structure learning
+  hn.fit_transform(df)
 
-  G = hnet.heatmap(model)
+  # Plot heatmap
+  hn.heatmap(cluster=True)
 
 
 .. _schematic_overview:
@@ -84,6 +91,8 @@ Below is depicted a demonstration of comparing two networks that may have been t
 
 
 .. code-block:: python
+  
+  import hnet
 
+  # Examine differences between models
   [scores, adjmat] = hnet.compare_networks(adjmat1, adjmat2)
-

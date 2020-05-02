@@ -136,10 +136,18 @@ class hnet():
 
     Examples
     --------
-    >>> import hnet
+    >>> from hnet import hnet
+    >>> hn = hnet()
+    >>> # Load example dataset
     >>> df = hnet.import_example('sprinkler')
-    >>> model = hnet.fit(df)
-    >>> G = hnet.d3graph(model)
+    >>> Structure learning
+    >>> out = hn.fit_transform(df, return_dict=True)
+    >>> # Plot dynamic graph
+    >>> G_dynamic = hn.d3graph()
+    >>> # Plot static graph
+    >>> G_static = hn.plot()
+    >>> # Plot heatmap
+    >>> P_heatmap = hn.heatmap(cluster=True)
     """
 
     def __init__(self, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None):
@@ -157,7 +165,7 @@ class hnet():
         self.excl_background = excl_background
 
     def fit(self, df, verbose=3):
-        """The fit() function is for learning model parameters from training data.
+        """The fit() function is for pre-processing data based on the model parameters.
         """
         # Pre processing
         [df, df_onehot, dtypes] = _preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, verbose=verbose)
@@ -173,8 +181,7 @@ class hnet():
         return df, simmat_padj, simmat_labx, X_comb, X_labx, dtypes
 
     def transform(self, df, simmat_padj, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
-        """The transform function applies the values of the parameters on the actual data and gives the normalized value.
-        The fit_transform() function performs both in the same step. Note that the same value is got whether we perform in 2 steps or in a single step.
+        """The transform function learns structure on the preocessed data from the fit() function.
         """
         # Here we go! in parallel!
         # from multiprocessing import Pool
@@ -205,6 +212,7 @@ class hnet():
         ----------
         df : DataFrame, [NxM].
             N=rows->samples, and  M=columns->features.
+
            |    | f1| f2| f3|
            |----|---|---|---|
            | s1 | 0 | 0 | 1 |
@@ -476,19 +484,19 @@ class hnet():
         adjmatLog = self.simmatLogP.copy()
         # Set savepath and filename
         savepath = _path_correct(savepath, filename='hnet_heatmap', ext='.png')
-    
+
         try:
             savepath1=''
             if savepath is not None:
                 [getdir, getname, getext]=_path_split(savepath)
                 if getname=='': getname='heatmap'
                 savepath1 = os.path.join(getdir, getname + '_logP' + getext)
-    
+
             if cluster:
                 fig1=imagesc.cluster(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
             else:
                 fig1=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
-    
+
             if savepath is not None:
                 if verbose>=3: print('[HNET.heatmap] Saving figure..')
                 _ = savefig(fig1, savepath1, transp=True)
@@ -498,19 +506,19 @@ class hnet():
     # Extract combined rules from structure_learning
     def combined_rules(self, verbose=3):
         """Association testing and combining Pvalues using fishers-method.
-    
+
         Description
         -----------
         Multiple variables (antecedents) can be associated to a single variable (consequent).
         To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.
-    
+
         Parameters
         ----------
         model : dict
             The output of .fit()
         verbose : int, optional
             Print message to screen. The higher the number, the more details. The default is 3.
-    
+
         Returns
         -------
         pd.DataFrame()
@@ -524,11 +532,12 @@ class hnet():
             Specific label names that are the result of the antecedents.
         Pfisher
             Combined P-value
-    
+
         Examples
         --------
+        >>> from hnet import hnet
         >>> hn = hnet()
-        >>> df = hn.import_example('sprinkler')
+        >>> df = hnet.import_example('sprinkler')
         >>> hn.fit_transform(df)
         >>> hn.combined_rules()
         >>> print(hn.rules)
@@ -558,7 +567,22 @@ class hnet():
         # Return
         return(df_rules)
 
-    def import_example(data='titanic', verbose=3):
+    def import_example(self, data='titanic', verbose=3):
+        """Import example dataset from github source.
+    
+        Parameters
+        ----------
+        data : str, optional
+            Name of the dataset 'sprinkler' or 'titanic' or 'student'.
+        verbose : int, optional
+            Print message to screen. The default is 3.
+    
+        Returns
+        -------
+        pd.DataFrame()
+            Dataset containing mixed features.
+
+        """
         return import_example(data=data, verbose=verbose)
 
 # %% Import example dataset from github.
@@ -660,6 +684,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
 
     Examples
     --------
+    >>> import hnet
     >>> df = hnet.import_example('titanic')
     >>> y = df['Survived'].values
     >>> out = hnet.enrichment(df, y)

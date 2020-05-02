@@ -46,8 +46,8 @@ class hnet():
     Description
     -----------
     This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input data set **df**.
-    A multi-step process is performed which consisting 5 steps.
 
+    A multi-step process is performed which consisting 5 steps.
         1. Pre-processing: Typing and One-hot Enconding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).
         2. Combinations: Make smart combinations between features because many mutual exclusive classes do exists.
         3. Hypergeometric test: The final dense array is used to assess significance with the categoric features.
@@ -62,7 +62,7 @@ class hnet():
     alpha : float [0..1], default : 0.05.
         Significance to keep only edges with <=alhpa.
         0.05 : (default)
-        1    : (for all results)
+        1 : (for all results)
 
     y_min : [Integer], default : 10.
         Minimum number of samples in a group. Should be [samples>=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
@@ -148,10 +148,13 @@ class hnet():
     >>> G_static = hn.plot()
     >>> # Plot heatmap
     >>> P_heatmap = hn.heatmap(cluster=True)
+
     """
 
     def __init__(self, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None):
-        """Initialize distfit with user-defined parameters."""
+        """Initialize distfit with user-defined parameters.
+        
+        """
         if (alpha is None): alpha=1
         self.alpha = alpha
         self.y_min = y_min
@@ -166,6 +169,7 @@ class hnet():
 
     def fit(self, df, verbose=3):
         """The fit() function is for pre-processing data based on the model parameters.
+
         """
         # Pre processing
         [df, df_onehot, dtypes] = _preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, verbose=verbose)
@@ -182,6 +186,7 @@ class hnet():
 
     def transform(self, df, simmat_padj, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
         """The transform function learns structure on the preocessed data from the fit() function.
+
         """
         # Here we go! in parallel!
         # from multiprocessing import Pool
@@ -654,7 +659,6 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     Returns
     -------
     pd.DataFrame() with the following columns:
-
     category_label : str
         Label of the catagory.
     P :  float

@@ -19,7 +19,6 @@ This package detects associations in datasets across features with unknown funct
 
 ## Contents
 - [Installation](#-installation)
-- [Quick Start](#-quick-start)
 - [Contribute](#-contribute)
 - [Citation](#-citation)
 - [Maintainers](#-maintainers)
@@ -32,16 +31,6 @@ It is distributed under the Apache 2.0 license.
 ```
 pip install hnet
 ```
-* Alternatively, install hnet from the GitHub source:
-
-```bash
-git clone https://github.com/erdogant/hnet.git
-cd hnet
-python setup.py install
-```  
-
-## Quick Start
-- Import hnet method
 
 ```python
 from hnet import hnet
@@ -120,11 +109,8 @@ Please cite hnet in your publications if this is useful for your research. Here 
 }
 ```
 
-### Maintainers
-* Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
-
 ### Licence
 See [LICENSE](LICENSE) for details.
 
-### Donation
-* This work is created and maintained in my free time. If you wish to buy me a <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">Coffee</a> for this work, it is very appreciated.
+### Maintainer
+	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant/hnet)

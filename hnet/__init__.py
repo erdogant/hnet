@@ -1,14 +1,11 @@
+from hnet.hnet import  hnet
+
 from hnet.hnet import (
-    fit,
     enrichment,
-	plot,
-	heatmap,
-	d3graph,
-	combined_rules,
-	compare_networks,
-	to_symmetric,
-	import_example,
-)
+    compare_networks,
+    to_undirected,
+    import_example,
+    )
 
 from hnet.utils.adjmat_vec import (
     vec2adjmat,
@@ -17,7 +14,7 @@ from hnet.utils.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '0.1.8'
+__version__ = '1.0.0'
 
 # module level doc-string
 __doc__ = """
@@ -26,22 +23,38 @@ HNET - Graphical Hypergeometric networks.
 
 Description
 -----------
-Creation of networks from datasets with mixed datatypes and with unknown function. 
+Creation of networks from datasets with mixed datatypes and with unknown function.
 Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.
 HNet (graphical Hypergeometric Networks) is a method where associations across variables are tested for significance by statistical inference.
 The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 
-
-Example
+Examples
 -------
+Initialize hnet with default settings
+>>> from hnet import hnet
+>>> hn = hnet()
+>>> # Load example dataset
+>>> df = hnet.import_example('sprinkler')
 
->>> import hnet
->>> df = hnet.import_example('student')
->>> model = hnet.fit(df)
->>> G = hnet.plot(model)
->>> G = hnet.heatmap(model)
->>> G = hnet.d3graph(model)
->>> [scores, adjmat] = hnet.compare_networks(model['adjmat'], model['adjmat'])
->>> rules = hnet.combined_rules(model)
->>> adjmatSymmetric = hnet.to_symmetric(model)
+Structure learning
+>>> out = hn.fit_transform(df, return_dict=True)
+
+Plot results:
+>>> # Plot dynamic graph
+>>> G_dynamic = hn.d3graph()
+>>> # Plot static graph
+>>> G_static = hn.plot()
+>>> # Plot heatmap
+>>> P_heatmap = hn.heatmap(cluster=True)
+
+Examine differences between models
+>>> import hnet as hnet
+>>> [scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
+>>> adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+
+References
+----------
+* https://erdogant.github.io/hnet/
+* https://github.com/erdogant/hnet
+
 """

@@ -1,33 +1,58 @@
+import numpy as np
 import hnet
+print(dir(hnet))
 print(hnet.__version__)
+
+
+# %% Import class
+from hnet import hnet
 print(dir(hnet))
 
-
 # %%
-df = hnet.import_example('student')
-
 df = hnet.import_example('titanic')
+
+df = hnet.import_example('student')
 
 df = hnet.import_example('sprinkler')
 
 
-# %%
+# %% Run with default settings
 
-model = hnet.fit(df)
+hn = hnet()
 
-G = hnet.plot(model)
+hn.fit_transform(df)
 
-G = hnet.heatmap(model, cluster=True)
+# %% Plot with clustering nodes
 
-G = hnet.d3graph(model)
+# Plot dynamic graph
+G_dynamic = hn.d3graph(node_color='cluster')
 
-[scores, adjmat] = hnet.compare_networks(model['simmatLogP'], model['simmatLogP'])
+# Plot static graph
+G_static = hn.plot(node_color='cluster')
 
-rules = hnet.combined_rules(model)
+# Plot heatmap
+P_heatmap = hn.heatmap(cluster=True)
 
-adjmatSymmetric = hnet.to_symmetric(model)
+
+#%% Structure learning
+
+from hnet import hnet
+
+hn = hnet()
+# Structure learning
+out = hn.fit_transform(df, return_dict=True)
+
+# Import hnet functionalities
+import hnet
+# Examine differences between models
+[scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
+
+# Make undirected matrix
+adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+
 
 # %% Enrichment
+import hnet
 
 df = hnet.import_example('titanic')
 y = df['Survived'].values

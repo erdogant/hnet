@@ -1,4 +1,5 @@
 # HNET - Graphical Hypergeometric Networks
+
 [![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
@@ -13,7 +14,7 @@ This package detects associations in datasets across features with unknown funct
 
 ## Method overview
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig1.png" width="900" />
 </p>
 
 ## Contents
@@ -58,7 +59,7 @@ figHEAT = hnet.heatmap(out)
 figD3GR = hnet.d3graph(out)
 ```
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig2.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig2.png" width="900" />
 </p>
 
 
@@ -93,7 +94,7 @@ figD3GR = hnet.d3graph(out)
 
 <p align="center">
   <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
-     <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig4.png" width="900" />
+     <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig4.png" width="900" />
   </a>
 </p>
 
@@ -103,7 +104,7 @@ figD3GR = hnet.d3graph(out)
 
 ### Performance
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/manuscript/figs/fig3.png" width="900" />
 </p>
 
 ### Citation

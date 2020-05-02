@@ -219,7 +219,6 @@ class hnet():
             N=rows->samples, and  M=columns->features.
 
            |    | f1| f2| f3|
-           |----|---|---|---|
            | s1 | 0 | 0 | 1 |
            | s2 | 0 | 1 | 0 |
            | s3 | 1 | 1 | 0 |
@@ -1153,7 +1152,7 @@ def _path_correct(savepath, filename='fig', ext='.png'):
     savepath='./tmp/fig'
     savepath='./tmp/fig.png'
     savepath='fig.png'
-
+    
     """
     out=None
     if not isinstance(savepath, type(None)):

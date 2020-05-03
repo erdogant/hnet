@@ -110,11 +110,7 @@ class hnet():
         ['0.0']: To remove catagorical values with label 0
 
     verbose : Int, [0..5]. The higher the number, the more information is printed.
-        0: No
-        1: ERROR
-        2: WARN
-        3: INFO (default)
-        4: DEBUG
+        0: None,  1: ERROR,  2: WARN,  3: INFO (default),  4: DEBUG, 5 : TRACE
 
 
     Returns

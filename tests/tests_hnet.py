@@ -1,98 +1,161 @@
-# %% Tests
-
-# %%
 import numpy as np
 import pandas as pd
-# import hnet as hnet
-import hnet as hnet
-print(hnet.__version__)
+import hnet
 
-# %% Example with random categorical and numerical values
-nfeat = 100
-nobservations = 50
-df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-dtypes = np.array(['cat']*nobservations)
-dtypes[np.random.randint(0,2,nobservations)==1]='num'
-y = np.random.randint(0,2,nfeat)
+def test_import_example():
+    hn = hnet.hnet()
+    df = hn.import_example('sprinkler')
+    assert df.shape==(1000, 4)
+    df = hn.import_example('titanic')
+    assert df.shape==(891, 12)
+    df = hn.import_example('student')
+    assert df.shape==(649, 33)
+
+
+def test_hnet():
+    hn = hnet.hnet()
+    df = hn.import_example('sprinkler')
+
+    # Should start empty
+    assert hasattr(hn, 'results')==False
+
+    # Should contain results
+    hn.association_learning(df)
+    assert hasattr(hn, 'results')==True
+    
+    # Should contain the following keys
+    assert [*hn.results.keys()]==['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules']
+    
+    # Should have specified size
+    assert hn.results['simmatP'].shape==(7,7)
+    assert hn.results['simmatLogP'].shape==(7,7)
+        
+    # TEST INPUT PARAMTERS
+    hn = hnet.hnet(excl_background=['0.0'])
+    hn.association_learning(df)
+    assert hn.results['simmatP'].shape==(4,4)
+    
+    # TEST 2: Compute across all combinations : should be empty
+    nfeat = 100
+    nobservations = 50
+    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
+    dtypes = np.array(['cat']*nobservations)
+    dtypes[np.random.randint(0,2,nobservations)==1]='num'
+    y = np.random.randint(0,2,nfeat)
+
+    # Should be empty
+    hn = hnet.hnet(dtypes=dtypes)
+    hn.association_learning(df)
+    assert hn.results['simmatP'].shape==(0,0)
+
+
+def test_combined_rules():
+    hn = hnet.hnet()
+    df = hn.import_example('sprinkler')
+    hn.association_learning(df)
+    rules = hn.combined_rules()
+    # Check output
+    assert np.all(rules.values[0,0]==['Cloudy', 'Wet_Grass'])
+    assert rules.values[1,1]==hn.results['rules'].values[1,1]
+    # Check column names
+    assert np.all(rules.columns.values==['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
+
+
+def test_enrichment():
+    import hnet
+    # Example with random categorical and numerical values
+    nfeat = 100
+    nobservations = 50
+    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
+    dtypes = np.array(['cat']*nobservations)
+    dtypes[np.random.randint(0,2,nobservations)==1]='num'
+    y = np.random.randint(0,2,nfeat)
+
+    # TEST 1: Compute enrichment: should be empty
+    out = hnet.enrichment(df,y, dtypes=dtypes)
+    assert out.shape==(0,0)
+
+    # TEST 2: Example with 1 true positive column
+    nfeat=100
+    nobservations=50
+    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
+    y = np.random.randint(0,2,nfeat)
+    df['positive_one'] = y
+    dtypes = np.array(['cat']*(nobservations+1))
+    dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
+    dtypes[-1]='cat'
+    # Run model
+    out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
+    assert out.shape[0]==1
+    assert out.shape[1]>=11
+    
+    # No pvalue should give all resutls back
+    out = hnet.enrichment(df,y, alpha=1, dtypes=dtypes)
+    assert out.shape==(51, 13)
+
+    # TEST 3 : Example most simple manner with and without multiple test correction
+    nfeat=100
+    nobservations=50
+    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
+    y = np.random.randint(0,2,nfeat)
+    out = hnet.enrichment(df,y)
+    # With multiple testing : should be empty
+    assert out.shape==(0,0)
+    out = hnet.enrichment(df,y, multtest=None)
+    # Without multiple testing : should be something
+    assert out.shape[0]>=1
+    assert out.shape[1]>=11
+    
+    # TEST 4 : CHECK P_VALUE ORDER
+    hn = hnet.hnet()
+    df = hn.import_example('titanic')
+    out = hnet.enrichment(df, y=df['Survived'].values)
+    
+    # Check output column names
+    assert np.all(out.columns.values==['category_label', 'P', 'logP', 'overlap_X', 'popsize_M',
+       'nr_succes_pop_n', 'samplesize_N', 'dtype', 'y', 'category_name',
+       'Padj', 'zscore', 'nr_not_succes_pop_n'])
+    
+    # Check detected results
+    assert np.all(out['category_name'].values==['Survived', 'Pclass', 'Sex', 'SibSp', 'Fare', 'Embarked'])
+
 
 # %%
-out = hnet.enrichment(df,y, dtypes=dtypes)
+# df = hnet.import_example('titanic')
+# model = hnet.fit(df)
+# model = hnet.fit(df, k=10)
+# G = hnet.plot(model, dist_between_nodes=0.4, scale=2)
+# G = hnet.d3graph(model, savepath='c://temp/titanic3/')
 
-# %%
-out = hnet.fit(df,dtypes=dtypes)
+# # %%
+# import hnet.hnet as hnet
 
-# %% Example with 1 true positive column
-nfeat=100
-nobservations=50
-df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-y  = np.random.randint(0,2,nfeat)
-df['positive_one'] = y
-dtypes = np.array(['cat']*(nobservations+1))
-dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
-dtypes[-1]='cat'
-# Run model
-out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
+# df    = hnet.import_example('sprinkler')
+# out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
 
-# %% Example most simple manner with and without multiple test correction
-nfeat=100
-nobservations=50
-df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-y = np.random.randint(0,2,nfeat)
-out = hnet.enrichment(df,y)
-out = hnet.enrichment(df,y, multtest=None)
+# G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
+# G     = hnet.plot(out)
+# G     = hnet.plot(out, savepath='c://temp/sprinkler/')
 
-# %%
-df = hnet.import_example('titanic')
-model = hnet.enrichment(df, y=df['Survived'].values)
+# A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
+# A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
+# A     = hnet.heatmap(out)
 
-# %%
-model = hnet.fit(df)
-hnet.heatmap(model, cluster=True)
-rules = hnet.combined_rules(model)
+# A     = hnet.d3graph(out)
+# A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
 
-# %%
-df = hnet.import_example('titanic')
-model = hnet.fit(df)
-model = hnet.fit(df, k=10)
-G = hnet.plot(model, dist_between_nodes=0.4, scale=2)
-G = hnet.d3graph(model, savepath='c://temp/titanic3/')
+# # %%
+# df    = hnet.import_example('sprinkler')
+# out   = hnet.fit(df)
+# G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
+# G     = hnet.plot(out)
+# G     = hnet.plot(out, savepath='c://temp/sprinkler/')
+# A     = hnet.heatmap(out, cluster=False)
+# A     = hnet.heatmap(out, cluster=True)
+# A     = hnet.d3graph(out, savepath='c://temp/sprinkler/')
 
-# %%
-import hnet.hnet as hnet
-
-df    = hnet.import_example('sprinkler')
-out   = hnet.fit(df, alpha=0.05, multtest='holm', excl_background=['0.0'])
-
-G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
-G     = hnet.plot(out)
-G     = hnet.plot(out, savepath='c://temp/sprinkler/')
-
-A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=False)
-A     = hnet.heatmap(out, savepath='c://temp/sprinkler/', cluster=True)
-A     = hnet.heatmap(out)
-
-A     = hnet.d3graph(out)
-A     = hnet.d3graph(out, savepath='c://temp/sprinkler/', directed=False)
-
-# %%
-df    = hnet.import_example('sprinkler')
-out   = hnet.fit(df)
-G     = hnet.plot(out, dist_between_nodes=0.1, scale=2)
-G     = hnet.plot(out)
-G     = hnet.plot(out, savepath='c://temp/sprinkler/')
-A     = hnet.heatmap(out, cluster=False)
-A     = hnet.heatmap(out, cluster=True)
-A     = hnet.d3graph(out, savepath='c://temp/sprinkler/')
-
-# %%
-df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
-out   = hnet.fit(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
-G     = hnet.plot(out, dist_between_nodes=0.4, scale=2)
-A     = hnet.d3graph(out, savepath='c://temp/USA_2016_elections/')
-
-# %%
-df = hnet.import_example('titanic')
-out = hnet.fit(df)
-# out = hnet.fit(df, alpha=1, dropna=False)
-G = hnet.d3graph(out)
-
+# # %%
+# df    = pd.read_csv('../../../DATA/OTHER/elections/USA_2016_election_primary_results.zip')
+# out   = hnet.fit(df, alpha=0.05, multtest='holm', dtypes=['cat','','','','cat','cat','num','num'])
+# G     = hnet.plot(out, dist_between_nodes=0.4, scale=2)
+# A     = hnet.d3graph(out, savepath='c://temp/USA_2016_elections/')

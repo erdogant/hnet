@@ -18,11 +18,13 @@ df = hnet.import_example('sprinkler')
 
 
 # %% Run with default settings
+from hnet import hnet
 
 hn = hnet()
-df = hnet.import_example('titanic')
+# Load data
+df = hn.import_example('titanic')
 # Structure learning
-hn.fit_transform(df)
+hn.association_learning(df)
 
 # %% Plot with clustering nodes
 
@@ -36,13 +38,13 @@ G_static = hn.plot(node_color='cluster')
 P_heatmap = hn.heatmap(cluster=True)
 
 
-#%% Structure learning
+#%% Association learning
 
 from hnet import hnet
 
 hn = hnet()
 # Structure learning
-out = hn.fit_transform(df, return_dict=True)
+out = hn.fit_transform(df, return_as_dict=True)
 
 # Import hnet functionalities
 import hnet

@@ -198,22 +198,29 @@
 </pre></div>
 </div>
 <p>A quick example how to learn the structure on a given dataset.</p>
-<p>Initialize hnet with default settings</p>
-<blockquote>
-<div><p># Import library
-from hnet import hnet
-hn = hnet()</p>
-<p># Import data:
-df = hnet.import_example(‘titanic’)</p>
-<p># Learn structure on the data
-hn.fit_transform(df)</p>
-<p># Plot dynamic graph
-G_dynamic = hn.d3graph()</p>
-<p># Plot static graph</p>
-<p>G_static = hn.plot()</p>
-<p># Plot heatmap
-P_heatmap = hn.heatmap(cluster=True)</p>
-</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load library</span>
+<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Import library with default settings</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
+
+<span class="c1"># Import data:</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Learn structure on the data</span>
+<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Plot dynamic graph</span>
+<span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+
+<span class="c1"># Plot static graph</span>
+
+<span class="n">G_static</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="c1"># Plot heatmap</span>
+<span class="n">P_heatmap</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>

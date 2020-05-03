@@ -259,7 +259,7 @@ The input dataset is converted into a one-hot dense array based on automatic typ
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hnet</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
@@ -318,11 +318,7 @@ The default is 1.</p></li>
 False</p></li>
 <li><p><strong>excl_background</strong> (<em>String</em><em>, </em><em>String name to exclude from the background</em>) – None (default)
 [‘0.0’]: To remove catagorical values with label 0</p></li>
-<li><p><strong>verbose</strong> (<em>Int</em><em>, </em><em>[</em><em>0..5</em><em>]</em><em> The higher the number</em><em>, </em><em>the more information is printed.</em>) – 0: No
-1: ERROR
-2: WARN
-3: INFO (default)
-4: DEBUG</p></li>
+<li><p><strong>verbose</strong> (<em>Int</em><em>, </em><em>[</em><em>0..5</em><em>]</em><em> The higher the number</em><em>, </em><em>the more information is printed.</em>) – 0: None,  1: ERROR,  2: WARN,  3: INFO (default),  4: DEBUG, 5 : TRACE</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -341,9 +337,9 @@ False</p></li>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load example dataset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Structure</span> <span class="n">learning</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot dynamic graph</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot static graph</span>
@@ -353,15 +349,50 @@ False</p></li>
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="hnet.hnet.hnet.association_learning">
+<code class="sig-name descname">association_learning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">return_as_dict</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.association_learning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn the structure in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em><em>, </em><em>[</em><em>NxM</em><em>]</em><em></em>) – <p>N=rows-&gt;samples, and  M=columns-&gt;features.</p>
+<div class="line-block">
+<div class="line-block">
+<div class="line">| f1| f2| f3|</div>
+</div>
+<div class="line">s1 | 0 | 0 | 1 |</div>
+<div class="line">s2 | 0 | 1 | 0 |</div>
+<div class="line">s3 | 1 | 1 | 0 |</div>
+</div>
+</p></li>
+<li><p><strong>return_as_dict</strong> (<em>bool : default : False.</em>) – Return the results in a dictionary. Use this option if you want to export or save the results.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em> [</em><em>1-5</em><em>]</em><em>, </em><em>default: 3</em>) – Print information to screen. A higher number will print more.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>dict.</em></p></li>
+<li><p><strong>simmatP</strong> (<em>pd.DataFrame()</em>) – Adjacency matrix containing P-values between variable assocations.</p></li>
+<li><p><strong>simmatLogP</strong> (<em>pd.DataFrame()</em>) – -log10(P-value) of the simmatP.</p></li>
+<li><p><strong>labx</strong> (<em>list of str</em>) – Labels that are analyzed.</p></li>
+<li><p><strong>dtypes</strong> (<em>list of str</em>) – dtypes that are set for the labels.</p></li>
+<li><p><strong>counts</strong> (<em>list of str</em>) – Relative counts for the labels based on the number of successes in population.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hnet.hnet.hnet.combined_rules">
-<code class="sig-name descname">combined_rules</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.combined_rules" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">combined_rules</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">simmatP</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labx</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.combined_rules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Association testing and combining Pvalues using fishers-method.</p>
 <p>Multiple variables (antecedents) can be associated to a single variable (consequent).
 To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>dict</em>) – The output of .fit()</p></li>
+<li><p><strong>simmatP</strong> (<em>matrix</em>) – simmilarity matrix</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The higher the number, the more details. The default is 3.</p></li>
 </ul>
 </dd>
@@ -380,12 +411,18 @@ The columns are as following:</p></li>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span><span class="o">.</span><span class="n">combined_rules</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hnet.hnet.hnet.compute_associations">
+<code class="sig-name descname">compute_associations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">simmat_padj</span></em>, <em class="sig-param"><span class="n">simmat_labx</span></em>, <em class="sig-param"><span class="n">X_comb</span></em>, <em class="sig-param"><span class="n">X_labx</span></em>, <em class="sig-param"><span class="n">dtypes</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.compute_associations" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transform function learns structure on the preocessed data from the fit() function.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -400,7 +437,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<em>Object</em>) – The output of .fit_transform()</p></li>
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
 <li><p><strong>node_size_limits</strong> (<em>tuple</em>) – node sizes are scaled between [min,max] values. The default is [6,15].</p></li>
 <li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
 <li><p><strong>node_color</strong> (<em>None</em><em> or </em><em>'cluster' default : None</em>) – color nodes based on clustering or by label colors.</p></li>
@@ -421,47 +458,6 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 </dd></dl>
 
 <dl class="py method">
-<dt id="hnet.hnet.hnet.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>The fit() function is for pre-processing data based on the model parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="hnet.hnet.hnet.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">return_dict</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learn the structure in the data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em><em>, </em><em>[</em><em>NxM</em><em>]</em><em></em>) – <p>N=rows-&gt;samples, and  M=columns-&gt;features.</p>
-<div class="line-block">
-<div class="line-block">
-<div class="line">| f1| f2| f3|</div>
-</div>
-<div class="line">s1 | 0 | 0 | 1 |</div>
-<div class="line">s2 | 0 | 1 | 0 |</div>
-<div class="line">s3 | 1 | 1 | 0 |</div>
-</div>
-</p></li>
-<li><p><strong>return_dict</strong> (<em>bool : default : False.</em>) – Return the results in a dictionary. Use this option if you want to export or save the results.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em> [</em><em>1-5</em><em>]</em><em>, </em><em>default: 3</em>) – Print information to screen. A higher number will print more.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>dict.</em></p></li>
-<li><p><strong>simmatP</strong> (<em>pd.DataFrame()</em>) – Adjacency matrix containing P-values between variable assocations.</p></li>
-<li><p><strong>simmatLogP</strong> (<em>pd.DataFrame()</em>) – -log10(P-value) of the simmatP.</p></li>
-<li><p><strong>labx</strong> (<em>list of str</em>) – Labels that are analyzed.</p></li>
-<li><p><strong>dtypes</strong> (<em>list of str</em>) – dtypes that are set for the labels.</p></li>
-<li><p><strong>counts</strong> (<em>list of str</em>) – Relative counts for the labels based on the number of successes in population.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="hnet.hnet.hnet.heatmap">
 <code class="sig-name descname">heatmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cluster</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.heatmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot heatmap.</p>
@@ -469,7 +465,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<em>Object</em>) – The output of .fit_transform()</p></li>
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
 <li><p><strong>cluster</strong> (<em>Bool</em><em>, </em><em>optional</em>) – Cluster before making heatmap. The default is False.</p></li>
 <li><p><strong>figsize</strong> (<em>typle</em><em>, </em><em>optional</em>) – Figure size. The default is [15, 10].</p></li>
 <li><p><strong>savepath</strong> (<em>Bool</em><em>, </em><em>optional</em>) – saveingpath. The default is None.</p></li>
@@ -513,7 +509,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<em>Object</em>) – The output of .fit_transform()</p></li>
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
 <li><p><strong>scale</strong> (<em>int</em><em>, </em><em>optional</em>) – scale the network by blowing it up by scale. The default is 2.</p></li>
 <li><p><strong>dist_between_nodes</strong> (<em>float</em><em>, </em><em>optional</em>) – Distance between the nodes. Edges are sized based this value. The default is 0.4.</p></li>
 <li><p><strong>node_size_limits</strong> (<em>int</em><em>, </em><em>optional</em>) – Nodes are scaled between the Min and max size. The default is [25,500].</p></li>
@@ -539,9 +535,9 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 </dd></dl>
 
 <dl class="py method">
-<dt id="hnet.hnet.hnet.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">simmat_padj</span></em>, <em class="sig-param"><span class="n">simmat_labx</span></em>, <em class="sig-param"><span class="n">X_comb</span></em>, <em class="sig-param"><span class="n">X_labx</span></em>, <em class="sig-param"><span class="n">dtypes</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>The transform function learns structure on the preocessed data from the fit() function.</p>
+<dt id="hnet.hnet.hnet.prepocessing">
+<code class="sig-name descname">prepocessing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.prepocessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fit() function is for pre-processing data based on the model parameters.</p>
 </dd></dl>
 
 </dd></dl>

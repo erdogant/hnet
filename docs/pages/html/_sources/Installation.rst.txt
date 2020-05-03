@@ -16,10 +16,10 @@ A quick example how to learn the structure on a given dataset.
 
 .. code:: python
 
-Initialize hnet with default settings
-
-    # Import library
+    # Load library
     from hnet import hnet
+    
+    # Import library with default settings
     hn = hnet()
 
     # Import data:

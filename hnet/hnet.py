@@ -163,8 +163,8 @@ class hnet():
         self.excl_background = excl_background
 
     def prepocessing(self, df, verbose=3):
-        """The fit() function is for pre-processing data based on the model parameters."""
-        
+        """Pre-processing based on the model parameters."""
+
         # Pre processing
         [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, verbose=verbose)
         # Add combinations
@@ -471,12 +471,12 @@ class hnet():
         """
         adjmatLog = self.results['simmatLogP'].copy()
         # Set savepath and filename
-        savepath = _path_correct(savepath, filename='hnet_heatmap', ext='.png')
+        savepath = hnstats._path_correct(savepath, filename='hnet_heatmap', ext='.png')
 
         try:
             savepath1=''
             if savepath is not None:
-                [getdir, getname, getext]=_path_split(savepath)
+                [getdir, getname, getext]=hnstats._path_split(savepath)
                 if getname=='': getname='heatmap'
                 savepath1 = os.path.join(getdir, getname + '_logP' + getext)
 

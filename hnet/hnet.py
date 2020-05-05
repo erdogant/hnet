@@ -174,13 +174,13 @@ class hnet():
         # Get numerical columns
         colNum = df.columns[df.dtypes == 'float64'].values
         simmat_labx = np.append(X_labo, colNum).astype(str)
-        simmat_padj = pd.DataFrame(index=np.append(X_comb.columns, colNum).astype(str), columns=np.append(X_comb.columns, colNum).astype(str)).astype(float)
+        simmatP = pd.DataFrame(index=np.append(X_comb.columns, colNum).astype(str), columns=np.append(X_comb.columns, colNum).astype(str)).astype(float)
         # Return
-        return df, simmat_padj, simmat_labx, X_comb, X_labx, dtypes
+        return df, simmatP, simmat_labx, X_comb, X_labx, dtypes
 
-    def compute_associations(self, df, simmat_padj, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
-        """The transform function learns structure on the preocessed data from the fit() function.
-        """
+    def compute_associations(self, df, simmatP, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
+        """learns associations on the preocessed data."""
+
         # Here we go! in parallel!
         # from multiprocessing import Pool
         # nr_succes_pop_n=[]
@@ -191,17 +191,20 @@ class hnet():
         #     results = [result.get() for result in result_objs]
         #     print(len(results))
 
+        disable=(True if verbose==0 else False)
         count = 0
         nr_succes_pop_n = []
-        for i in tqdm(range(0, X_comb.shape[1]), disable=(True if verbose==0 else False)):
-            [nr_succes_i, simmat_padj, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
+
+        for i in tqdm(range(0, X_comb.shape[1]), disable=disable):
+            [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
+
         # Message
         if verbose>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
         # Post processing
-        [simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx] = hnstats._post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=3)
+        [simmatP, simmatLogP, simmat_labx, nr_succes_pop_n] = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=3)
         # Return
-        return simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx
+        return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
     def association_learning(self, df, return_as_dict=False, verbose=3):
         """Learn the structure in the data.
@@ -240,11 +243,11 @@ class hnet():
 
         df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df, verbose=verbose)
         # Here we go! Over all columns now
-        simmatP, nr_succes_pop_n, adjmatLog, labx = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes, verbose=verbose)
+        simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes, verbose=verbose)
         # Combine rules
         rules=self.combined_rules(simmatP, labx, verbose=0)
         # Store
-        self.results = _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules)
+        self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules)
         # Use this option for storage of your model
         if return_as_dict: return(self.results)
 
@@ -574,9 +577,9 @@ class hnet():
         return import_example(data=data, verbose=verbose)
 
 # %% Store results
-def _store(simmat_padj, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
+def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
     out = {}
-    out['simmatP'] = simmat_padj
+    out['simmatP'] = simmatP
     out['simmatLogP'] = adjmatLog
     out['labx'] = labx.astype(str)
     out['dtypes'] = np.array(list(zip(df.columns.values.astype(str), dtypes)))
@@ -823,7 +826,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 
 
 # %% Do the math
-def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, i, specificity, y_min, verbose=3):
+def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificity, y_min, verbose=3):
     count=0
     out=[]
     # Get response variable to test association
@@ -847,10 +850,10 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, i, specif
             colnames = catnames + '_' + dfout['category_label']
             colnames[idx] = catnames[idx].values
             # Add new column and index
-            [simmat_padj, simmat_labx] = hnstats._addcolumns(simmat_padj, colnames, simmat_labx, catnames)
+            [simmatP, simmat_labx] = hnstats._addcolumns(simmatP, colnames, simmat_labx, catnames)
             # Store values
-            [IA,IB]=ismember(simmat_padj.index.values.astype(str), colnames.values.astype(str))
-            simmat_padj.loc[colname, IA] = dfout['Padj'].iloc[IB].values
+            [IA,IB]=ismember(simmatP.index.values.astype(str), colnames.values.astype(str))
+            simmatP.loc[colname, IA] = dfout['Padj'].iloc[IB].values
             # Count nr. successes
             out = [colname, X_comb.iloc[:,i].sum() / X_comb.shape[0]]
             # showprogress
@@ -860,4 +863,4 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmat_padj, simmat_labx, i, specif
 
     if verbose>=4: print('')
     # Return
-    return(out, simmat_padj, simmat_labx)
+    return(out, simmatP, simmat_labx)

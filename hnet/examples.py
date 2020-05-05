@@ -1,3 +1,25 @@
+# %%
+import hnet
+
+import pandas as pd
+# df = pd.read_csv('D://stack//GITLAB//PROJECTS//portscans//portscans//data//portscan_export_maart.zip')
+df = pd.read_csv('D://stack//GITLAB//PROJECTS//portscans//portscans//data///portscan_export_april.zip')
+df['_time']=pd.to_datetime(df['_time'])
+df['dayname'] = df['_time'].dt.dayofweek
+# df['month'] = df['_time'].dt.month
+df['_time'].dt.strftime('%d-%m-%Y').values
+df['test_all_false'] = False
+df['test_false_and_true'] = False
+df['test_false_and_true'].iloc[0]=True
+
+from hnet import hnet
+hn = hnet(y_min=10)
+hn.association_learning(df)
+hn.plot()
+hn.heatmap(cluster=True)
+hn.d3graph()
+
+# %%
 import numpy as np
 import hnet
 print(dir(hnet))
@@ -15,7 +37,6 @@ df = hnet.import_example('titanic')
 df = hnet.import_example('student')
 
 df = hnet.import_example('sprinkler')
-
 
 # %% Run with default settings
 from hnet import hnet

@@ -63,10 +63,10 @@ class hnet():
         0.05 : (default)
         1 : (for all results)
 
-    y_min : [Integer], default : 10.
+    y_min : int [1..n], where n is the number of samples. default : 10.
         Minimum number of samples in a group. Should be [samples>=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
         10  (default)
-        None
+        None or 1
 
     k : int, [1..n] , default : 1.
         Number of combinatoric elements to create for the n features
@@ -148,10 +148,11 @@ class hnet():
 
     def __init__(self, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None):
         """Initialize distfit with user-defined parameters."""
-        
+
         if (alpha is None): alpha=1
+        if (y_min is None): y_min=1
         self.alpha = alpha
-        self.y_min = y_min
+        self.y_min = np.maximum(1,y_min)
         self.k = k
         self.multtest = multtest
         self.dtypes = dtypes

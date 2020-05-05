@@ -34,9 +34,7 @@ import wget
 import os
 import pandas as pd
 import numpy as np
-from pathlib import Path
 from tqdm import tqdm
-import itertools
 import matplotlib.pyplot as plt
 
 

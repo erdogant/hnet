@@ -9,6 +9,8 @@ from sklearn.preprocessing import MinMaxScaler
 
 import os
 import tempfile
+from pathlib import Path
+import itertools
 
 # %% Compute significance
 def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
@@ -254,10 +256,10 @@ def _cmbnN(Xhot, Xlabx, y_min, k):
 
 # %% Add columns
 def _addcolumns(simmat_padj, colnames, Xlabx, catnames):
-    I=np.isin(colnames.values.astype(str), simmat_padj.index.values)
-    if np.any(I):
-        newcols=list((colnames.values[I == False]).astype(str))
-        newcats=list((catnames[I == False]).astype(str))
+    Iloc = np.isin(colnames.values.astype(str), simmat_padj.index.values)
+    if np.any(Iloc):
+        newcols=list((colnames.values[Iloc == False]).astype(str))
+        newcats=list((catnames[Iloc == False]).astype(str))
 
         # Make new columns in dataframe
         for col, cat in zip(newcols, newcats):
@@ -364,7 +366,7 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
         [IA,_]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
         nr_succes_pop_n=nr_succes_pop_n[IA,:]
 
-    return(simmat_padj, nr_succes_pop_n, adjmatLog, simmat_labx)
+    return(simmat_padj, adjmatLog, simmat_labx, nr_succes_pop_n)
 
 
 # %% Scale weights
@@ -420,9 +422,16 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make onehot matrix for response variable y
     df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     dtypes = df_onehot['dtypes']
+
+    # Make sure its limited to the number of y_min
+    Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
+    df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
+    df_onehot['labx']=df_onehot['labx'][Iloc]
+
     # Some check before proceeding
-    assert (not df_onehot['onehot'].empty) or (not np.all(np.isin(dtypes, 'num'))), '[HNET] ALL data is excluded from the dataframe! There should be at least 1 categorical value!'
-    assert df.shape[1] == len(dtypes), '[HNET] DataFrame Shape and dtypes length does not match'
+    if (df_onehot['onehot'].empty) or (np.all(np.isin(dtypes, 'num'))): raise Exception('[hnet] >ALL data is excluded from the dataframe! There should be at least 1 categorical value!')
+    if df.shape[1] != len(dtypes): raise Exception('[hnet] >DataFrame Shape and dtypes length does not match.')
+
     # Make all integer
     df_onehot['onehot'] = df_onehot['onehot'].astype(int)
     # Return

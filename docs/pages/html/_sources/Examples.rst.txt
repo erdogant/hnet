@@ -3,13 +3,13 @@
 -------------------------------------
 
 Examples
-''''''''
+-----------------
 
 Lets load some datasets using :func:`urldetect.import_example` and demonstrate the usage of ``hnet`` in learning structures.
 
 
 Sprinkler dataset
------------------
+'''''''''''''''''''''
 
 A natural way to study the relation between nodes in a network is to analyse the presence or absence of node-links. The sprinkler data set contains four nodes and therefore ideal to demonstrate the working of ``hnet`` in inferring a network. Links between two nodes of a network can either be undirected or directed (directed edges are indicated with arrows). Notably, a directed edge does imply directionality between the two nodes whereas undirected does not.
 
@@ -22,7 +22,7 @@ A natural way to study the relation between nodes in a network is to analyse the
 	df = hnet.import_example('sprinkler')
 
 	# Learn the relationships
-	hn.fit_transform(df)
+	results = hn.association_learning(df)
 
 	# Generate the interactive graph
 	G = hn.d3graph()
@@ -36,7 +36,7 @@ A natural way to study the relation between nodes in a network is to analyse the
 
 
 Titanic dataset
----------------
+'''''''''''''''''''''
 
 The titanic data set contains a data structure that is often seen in real use cases (i.e., the presence of categorical, boolean, and continues variables per sample) which is therefore ideal to demonstrate the steps of ``hnet``, and the interpretability. The first step is the typing of the 12 input features, followed by one-hot encoding. This resulted in a total of 2634 one hot encoded features for which only 18 features had the minimum required of `y_min=10` samples.
 
@@ -49,7 +49,7 @@ The titanic data set contains a data structure that is often seen in real use ca
 	df = hnet.import_example('titanic')
 
 	# Learn the relationships
-	hn.fit_transform(df)
+	results = hn.association_learning(df)
 
 	# Generate the interactive graph
 	G = hn.d3graph()
@@ -112,13 +112,16 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
 
 	df = hnet.import_example()
 
-	hn.fit_transform(df)
+	results = hn.association_learning(df)
 
 	G_static = hn.plot()
 
 	G = hn.heatmap()
 
 	G = hn.d3graph()
+
+
+.. code-block:: python
 
         import hnet
 

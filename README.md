@@ -83,7 +83,7 @@ print(df)
 Structure learning on the titanic dataset
 ```python
 hn = hnet()
-out = hn.fit_transform(df)
+out = hn.association_learning(df)
 
 ```
 <p align="center">

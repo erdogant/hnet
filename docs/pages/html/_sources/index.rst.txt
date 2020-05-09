@@ -28,9 +28,9 @@ Content
 
 .. toctree::
   :maxdepth: 1
-  :caption: Datasets
+  :caption: Input/output
 
-  Datasets
+  input_output
 
 
 .. toctree::
@@ -52,13 +52,6 @@ Content
   :caption: Examples
 
   Examples
-
-
-.. toctree::
-  :maxdepth: 1
-  :caption: Graphic User Interface
-
-  GUI
 
 
 .. toctree::

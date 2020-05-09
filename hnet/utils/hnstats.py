@@ -18,7 +18,7 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
     # Run over all columns
     for i in range(0, df.shape[1]):
         if (i>0) and (verbose>=3): print('')
-        if verbose>=3: print('[HNET] Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
+        if verbose>=3: print('[hnet] >Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
         colname = df.columns[i]
 
         # Clean nan fields
@@ -29,11 +29,11 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
         uiy=uiy[uiy!='_other_']
 
         if len(uiy)==1 and (uiy=='0'):
-            if verbose>=4: print('[HNET] The response variable [y] has only one catagory; [0] which is seen as the negative class and thus ignored.')
+            if verbose>=4: print('[hnet] >The response variable [y] has only one catagory; [0] which is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
 
         if len(uiy)==2:
-            if verbose>=4: print('[HNET] The response variable [y] has two catagories, the catagory 0 is seen as the negative class and thus ignored.')
+            if verbose>=4: print('[hnet] >The response variable [y] has two catagories, the catagory 0 is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
             uiy=uiy[uiy!='False']
             uiy=uiy[uiy!='false']
@@ -153,7 +153,7 @@ def _logscale(simmat_padj):
 
 # %% Do multiple test correction
 def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
-    if verbose>=3: print('[HNET] Multiple test correction using %s' %(multtest))
+    if verbose>=3: print('[hnet] >Multiple test correction using %s' %(multtest))
     # Multiple test correction
     if not (isinstance(multtest, type(None))):
         # Make big row with all pvalues
@@ -172,7 +172,7 @@ def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
 # %% Do multiple test correction
 def _multipletestcorrection(out, multtest, verbose=3):
     # Always do a multiple test correction but do not use it in the filtering step if not desired
-    if verbose>=3: print('[HNET] Multiple test correction using %s' %(multtest))
+    if verbose>=3: print('[hnet] >Multiple test correction using %s' %(multtest))
 
     if out!=[]:
         # Get pvalues
@@ -207,12 +207,12 @@ def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
             [cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO] = _cmbnN(Xhot, Xlabx, y_min, k)
             # If any combinations is found, add to dataframe
             if len(cmbn_labX)>0:
-                if verbose>=3: print('[HNET] Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
+                if verbose>=3: print('[hnet] >Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
                 out_hot = pd.concat([out_hot, pd.DataFrame(data=cmbn_hot, columns=cmbn_labH).astype(int)], axis=1)
                 out_labo = np.append(out_labo, cmbn_labO, axis=0)
                 out_labx = out_labx + cmbn_labX
             else:
-                if verbose>=3: print('[HNET] No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
+                if verbose>=3: print('[hnet] >No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
                 break
 
         # Add to one-hot dataframe
@@ -280,7 +280,7 @@ def _remove_columns_without_dtype(df, dtypes, verbose=3):
             remcols=df.columns[Iloc].values
             df.drop(columns=remcols, inplace=True)
             dtypes=list(np.array(dtypes)[(Iloc==False)])
-            if verbose>=3: print('[HNET] %.0f columns are removed.' %(len(remcols)))
+            if verbose>=3: print('[hnet] >%.0f columns are removed.' %(len(remcols)))
 
         assert df.shape[1]==len(dtypes), 'Columns in df and dtypes should match! [hnet.remove_columns_without_dtype]'
 
@@ -300,7 +300,7 @@ def _drop_empty(df, Xlabx, verbose=3):
     for col in cols:
         if np.any(cols==col):
             if np.all(np.logical_and(df.loc[:, cols==col].isna().values.reshape(-1, 1), df.loc[rows==col, :].isna().values.reshape(-1, 1))):
-                if verbose>=3: print('[HNET] Dropping %s' %(col))
+                if verbose>=3: print('[hnet] >Dropping %s' %(col))
                 droplabel.append(col)
 
     # Remove labels from the original df
@@ -426,7 +426,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):
-        if verbose>=2: print('[hnet] WARNING> Features with y_min needs another round of filtering. Fixing it now..')
+        if verbose>=2: print('[hnet] >WARNING : Features with y_min needs another round of filtering. Fixing it now..')
         df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
         df_onehot['labx']=df_onehot['labx'][Iloc]
 

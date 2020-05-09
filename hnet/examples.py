@@ -24,7 +24,7 @@ hn = hnet()
 # Load data
 df = hn.import_example('titanic')
 # Structure learning
-hn.association_learning(df)
+out = hn.association_learning(df)
 
 # %% Plot with clustering nodes
 

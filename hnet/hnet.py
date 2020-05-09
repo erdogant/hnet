@@ -170,7 +170,7 @@ class hnet():
         # Add combinations
         [X_comb, X_labx, X_labo] = hnstats._make_n_combinations(df_onehot['onehot'], df_onehot['labx'], self.k, self.y_min, verbose=verbose)
         # Print some
-        if verbose>=3: print('[HNET] Structure learning across [%d] features.' %(X_comb.shape[1]))
+        if verbose>=3: print('[hnet] >Association learning across [%d] features.' %(X_comb.shape[1]))
         # Get numerical columns
         colNum = df.columns[df.dtypes == 'float64'].values
         simmat_labx = np.append(X_labo, colNum).astype(str)
@@ -200,7 +200,7 @@ class hnet():
             nr_succes_pop_n.append(nr_succes_i)
 
         # Message
-        if verbose>=3: print('[HNET] Total number of computations: [%.0d]' %(count))
+        if verbose>=3: print('[hnet] >Total number of computations: [%.0d]' %(count))
         # Post processing
         [simmatP, simmatLogP, simmat_labx, nr_succes_pop_n] = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=3)
         # Return
@@ -614,11 +614,11 @@ def import_example(data='titanic', verbose=3):
 
     # Check file exists.
     if not os.path.isfile(PATH_TO_DATA):
-        if verbose>=3: print('[hnet] Downloading example dataset from github source..')
+        if verbose>=3: print('[hnet] >Downloading example dataset from github source..')
         wget.download(url, curpath)
 
     # Import local dataset
-    if verbose>=3: print('[hnet] Import dataset [%s]' %(data))
+    if verbose>=3: print('[hnet] >Import dataset [%s]' %(data))
     df = pd.read_csv(PATH_TO_DATA)
     # Return
     return df
@@ -700,7 +700,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     config['multtest'] = multtest
     config['specificity'] = specificity
 
-    if config['verbose']>=3: print('[HNET] Start making fit..')
+    if config['verbose']>=3: print('[hnet] >Start making fit..')
     df.columns = df.columns.astype(str)
     # Set y as string
     y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
@@ -715,7 +715,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     # Make dataframe
     out = pd.DataFrame(out)
     # Return
-    if config['verbose']>=3: print('[HNET] Fin')
+    if config['verbose']>=3: print('[hnet] >Fin')
     return(out)
 
 
@@ -833,7 +833,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     colname=X_comb.columns[i]
     # Do something if response variable has more then 1 option
     if len(np.unique(y))>1:
-        if verbose>=4: print('[HNET] Working on [%s]' %(X_comb.columns[i]), end='')
+        if verbose>=4: print('[hnet] >Working on [%s]' %(X_comb.columns[i]), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit
@@ -857,7 +857,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             # showprogress
             if verbose>=4: print('[%g]' %(len(IB)), end='')
     else:
-        if verbose>=4: print('[HNET] Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+        if verbose>=4: print('[hnet] >Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
 
     if verbose>=4: print('')
     # Return

@@ -44,7 +44,7 @@ Integration of d3graph in hnet
   df = hnet.import_example('sprinkler')
 
   # Structure learning
-  hn.fit_transform(df)
+  hn.association_learning(df)
   
   # Plot dynamic graph
   G_dynamic = hn.d3graph()
@@ -70,7 +70,7 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
   df = hnet.import_example('sprinkler')
   
   # Structure learning
-  hn.fit_transform(df)
+  hn.association_learning(df)
 
   # Plot heatmap
   hn.heatmap(cluster=True)

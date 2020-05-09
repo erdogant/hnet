@@ -136,7 +136,7 @@ class hnet():
     >>> # Load example dataset
     >>> df = hn.import_example('sprinkler')
     >>> Structure learning
-    >>> out = hn.association_learning(df, return_dict=True)
+    >>> out = hn.association_learning(df)
     >>> # Plot dynamic graph
     >>> G_dynamic = hn.d3graph()
     >>> # Plot static graph

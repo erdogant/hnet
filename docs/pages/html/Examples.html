@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Front-end" href="GUI.html" />
+    <link rel="next" title="Coding quality" href="Coding quality.html" />
     <link rel="prev" title="Network Graphs" href="Plots.html" /> 
 </head>
 
@@ -90,19 +90,17 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Datasets</span></p>
+<p class="caption"><span class="caption-text">Input/output</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Algorithm</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html">Pre-processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistics">Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#hypergeometric-test">Hypergeometric test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#enrichment">Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -117,11 +115,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#titanic-dataset">Titanic dataset</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -205,7 +198,7 @@
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Generate the interactive graph</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
@@ -223,7 +216,7 @@
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Generate the interactive graph</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
@@ -272,15 +265,16 @@
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">()</span>
 
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="n">G_static</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">()</span>
 
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
-
-<span class="kn">import</span> <span class="nn">hnet</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
 
 <span class="p">[</span><span class="n">scores</span><span class="p">,</span> <span class="n">adjmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">compare_networks</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -298,7 +292,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="GUI.html" class="btn btn-neutral float-right" title="Front-end" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Coding quality.html" class="btn btn-neutral float-right" title="Coding quality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Plots.html" class="btn btn-neutral float-left" title="Network Graphs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

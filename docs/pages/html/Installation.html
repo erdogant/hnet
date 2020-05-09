@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Datasets" href="Datasets.html" />
+    <link rel="next" title="Import datasets" href="input_output.html" />
     <link rel="prev" title="Abstract" href="Abstract.html" /> 
 </head>
 
@@ -93,19 +93,17 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Datasets</span></p>
+<p class="caption"><span class="caption-text">Input/output</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Algorithm</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html">Pre-processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistics">Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#hypergeometric-test">Hypergeometric test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#enrichment">Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -116,11 +114,6 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -208,13 +201,12 @@
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
 
 <span class="c1"># Learn structure on the data</span>
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Plot dynamic graph</span>
 <span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
 
 <span class="c1"># Plot static graph</span>
-
 <span class="n">G_static</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="c1"># Plot heatmap</span>
@@ -227,7 +219,7 @@
 <div class="section" id="create-environment">
 <h2>Create environment<a class="headerlink" href="#create-environment" title="Permalink to this headline">¶</a></h2>
 <p>Example how to install <code class="docutils literal notranslate"><span class="pre">hnet</span></code> via <code class="docutils literal notranslate"><span class="pre">pip</span></code> in an isolated Python environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">env_hnet</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.6</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">env_hnet</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">env_hnet</span>
 </pre></div>
 </div>
@@ -250,7 +242,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Datasets.html" class="btn btn-neutral float-right" title="Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="input_output.html" class="btn btn-neutral float-right" title="Import datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Abstract.html" class="btn btn-neutral float-left" title="Abstract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

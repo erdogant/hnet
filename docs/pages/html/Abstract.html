@@ -90,19 +90,17 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Datasets</span></p>
+<p class="caption"><span class="caption-text">Input/output</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Algorithm</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html">Pre-processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistics">Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#hypergeometric-test">Hypergeometric test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#enrichment">Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -113,11 +111,6 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -191,23 +184,13 @@
 <div class="section" id="abstract">
 <h1>Abstract<a class="headerlink" href="#abstract" title="Permalink to this headline">¶</a></h1>
 <dl class="simple">
-<dt>Background</dt><dd><p>Real-world data sets often contain measurements with both continues and categorical values for the same sample.
-Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another.
-The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.</p>
+<dt>Background</dt><dd><p>Real-world data often contain measurements with both continuous and discrete values. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships between variables. The data understanding phase is an important step in the data-mining process, however, without making any assumptions on the data, the search space is super-exponential in the number of variables.</p>
 </dd>
-<dt>Result</dt><dd><p>We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference.
-The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
-HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables).
-To evaluate the accuracy of HNet, we used well known data sets, and generated data sets with known ground truth by Bayesian sampling.
-In addition, the performance of HNet for the same data sets is compared to Bayesian structure learning.</p>
+<dt>Methods</dt><dd><p>We propose graphical hypergeometric networks (HNet), a method to test associations across variables for significance using statistical inference. The aim is to determine a network using only the significant associations in order to shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets and in addition generated data sets with known ground truth. The performance of HNet is compared to Bayesian structure learning.</p>
 </dd>
-<dt>Conclusions</dt><dd><p>We demonstrate that HNet showed high accuracy and performance in the detection of node links.
-In the case of the Alarm data set we can demonstrate an average MCC score 0.33 + 0.0002 (P&lt;1x10-6), whereas Bayesian structure learning showed an average MCC score of 0.52 + 0.006 (P&lt;1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (P=0.49).
-Although Bayesian structure learning showed slightly better results, HNet overcomes some of the limitations of existing methods as it processes raw unstructured data sets, it allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.</p>
+<dt>Results</dt><dd><p>We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate on average an MCC score of 0.33 + 0.0002 (P&lt;1x10-6), whereas Bayesian structure learning resulted in an average MCC score of 0.52 + 0.006 (P&lt;1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (P=0.49).</p>
 </dd>
-<dt>Availability</dt><dd><p>The HNet library is built using Python v3.7 and contains various functionalities for pre-processing, setting dtypes, creating a one hot combinatoric array, associating testing, and interactive network creation. Code for HNet is available at <a class="reference external" href="https://github.com/erdogant/hnet">https://github.com/erdogant/hnet</a> or by: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">hnet</span></code>, whereas for d3graph is available at <a class="reference external" href="https://github.com/erdogant/d3graph">https://github.com/erdogant/d3graph</a> or by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">d3graph</span></code>. Examples and detailed documentation for installation can be found on github.</p>
-</dd>
-<dt>Key words</dt><dd><p>hypergeometric test, structure learning, networks, unstructured data.</p>
+<dt>Conclusions</dt><dd><p>HNet can process raw unstructured data sets, allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.</p>
 </dd>
 </dl>
 </div>

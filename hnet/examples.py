@@ -44,7 +44,7 @@ from hnet import hnet
 
 hn = hnet()
 # Structure learning
-out = hn.fit_transform(df, return_as_dict=True)
+out = hn.association_learning(df)
 
 # Import hnet functionalities
 import hnet
@@ -61,3 +61,15 @@ import hnet
 df = hnet.import_example('titanic')
 y = df['Survived'].values
 out = hnet.enrichment(df, y)
+
+# %% Sklearn examples
+import pandas as pd
+from hnet import hnet
+
+from sklearn.datasets import fetch_kddcup99
+df = fetch_kddcup99(return_X_y=False)
+df = pd.DataFrame(data=df['data'])
+df.columns = df.columns.astype(str)
+hn = hnet()
+out = hn.association_learning(df)
+

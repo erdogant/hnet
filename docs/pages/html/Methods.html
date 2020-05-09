@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Network Graphs" href="Plots.html" />
-    <link rel="prev" title="Datasets" href="Datasets.html" /> 
+    <link rel="prev" title="Import datasets" href="input_output.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,19 +90,23 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Datasets</span></p>
+<p class="caption"><span class="caption-text">Input/output</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Algorithm</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pre-processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#one-hot-enconding">One-hot Enconding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#statistics">Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#hypergeometric-test">Hypergeometric test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#enrichment">Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#statistical-inference">Statistical inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hypergeometric-test">Hypergeometric test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-testing">Multiple testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrichment">Enrichment</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -113,11 +117,6 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -200,35 +199,65 @@
 <h1>One-hot Enconding<a class="headerlink" href="#one-hot-enconding" title="Permalink to this headline">¶</a></h1>
 <p>The second step is encoding the categoric values into a one-hot dense array. This is done using <code class="docutils literal notranslate"><span class="pre">df2onehot</span></code>. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k&gt;1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array.</p>
 </div>
-<div class="section" id="statistics">
-<h1>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="statistical-inference">
+<h1>Statistical inference<a class="headerlink" href="#statistical-inference" title="Permalink to this headline">¶</a></h1>
 <p>Each feature is examined on enrichment compared to another in the function <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a>. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2).</p>
-<div class="figure align-default">
-<img alt="_images/eq_1_2.png" src="_images/eq_1_2.png" />
-</div>
-</div>
+<table class="docutils align-center" id="id1">
+<caption><span class="caption-text">Equation 1 and 2</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_1_2.png"><img alt="eq_1_2" src="_images/eq_1_2.png" style="width: 408.5px; height: 174.0px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
 <div class="section" id="hypergeometric-test">
-<h1>Hypergeometric test<a class="headerlink" href="#hypergeometric-test" title="Permalink to this headline">¶</a></h1>
+<h2>Hypergeometric test<a class="headerlink" href="#hypergeometric-test" title="Permalink to this headline">¶</a></h2>
 <p>To assess significance with the categoric features (Xcategoric), the final dense array is tested for over-representation of successes in sample Xi by means of the hypergeometric distribution. The hypergeometric P-value between feature Xi and feature Xcj, is calculated as the probability of randomly drawing x or more successes from the population in n total draws with population size N containing K successes. For any Xi and Xcj, Pc(i,j) is computed as depicted in eq.3.</p>
-<div class="figure align-default">
-<img alt="_images/eq_3.png" src="_images/eq_3.png" />
-</div>
+<table class="docutils align-center" id="id2">
+<caption><span class="caption-text">Equation 3</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_3.png"><img alt="eq_3" src="_images/eq_3.png" style="width: 520.0px; height: 82.0px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="wilcoxon-ranksum">
-<h1>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Permalink to this headline">¶</a></h1>
-<p>To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.
-All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
-<div class="figure align-default">
-<img alt="_images/eq_4.png" src="_images/eq_4.png" />
+<h2>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Permalink to this headline">¶</a></h2>
+<p>To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.</p>
 </div>
+<div class="section" id="multiple-testing">
+<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Permalink to this headline">¶</a></h2>
+<p>All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
+<table class="docutils align-center" id="id3">
+<caption><span class="caption-text">Equation 4</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_4.png"><img alt="eq_4" src="_images/eq_4.png" style="width: 321.0px; height: 68.5px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
 <p>The last step in HNet (Figure 1F) is declaring significance for node-links. An edge is called significant under alpha is 0.05 by default. The edge-weight is computed as depicted in equation 5.</p>
-<div class="figure align-default">
-<img alt="_images/eq_5.png" src="_images/eq_5.png" />
-</div>
+<table class="docutils align-center" id="id4">
+<caption><span class="caption-text">Equation 5</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_5.png"><img alt="eq_5" src="_images/eq_5.png" style="width: 352.5px; height: 60.5px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
 <p>The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices. The adjacency matrix can then be examined as a network representation using d3graph.</p>
 </div>
 <div class="section" id="enrichment">
-<h1>Enrichment<a class="headerlink" href="#enrichment" title="Permalink to this headline">¶</a></h1>
+<h2>Enrichment<a class="headerlink" href="#enrichment" title="Permalink to this headline">¶</a></h2>
 <p>An example of calculating hte enrichment is demonstrated below for a single response variable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
 
@@ -281,6 +310,7 @@ All tested edge probabilities between pairs of vertices, either categoric-catego
 </div>
 <p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a></p>
 </div>
+</div>
 
 
            </div>
@@ -293,7 +323,7 @@ All tested edge probabilities between pairs of vertices, either categoric-catego
         <a href="Plots.html" class="btn btn-neutral float-right" title="Network Graphs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Datasets.html" class="btn btn-neutral float-left" title="Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="input_output.html" class="btn btn-neutral float-left" title="Import datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

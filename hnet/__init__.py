@@ -37,7 +37,7 @@ Initialize hnet with default settings
 >>> df = hnet.import_example('sprinkler')
 
 Structure learning
->>> out = hn.fit_transform(df, return_dict=True)
+>>> out = hn.association_learning(df)
 
 Plot results:
 >>> # Plot dynamic graph

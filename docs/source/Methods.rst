@@ -22,52 +22,82 @@ The second step is encoding the categoric values into a one-hot dense array. Thi
 
 
 
-Statistics
-''''''''''
+Statistical inference
+''''''''''''''''''''''''''''''
 
 Each feature is examined on enrichment compared to another in the function :func:`hnet.hnet.enrichment`. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2). 
 
-.. eq_1_2:
+.. |eq_1_2| image:: ../figs/other/eq_1_2.png
+    :scale: 50%
 
-.. figure:: ../figs/other/eq_1_2.png
+.. table:: Equation 1 and 2
+   :align: center
+
+   +---------+
+   ||eq_1_2| |
+   +---------+
 
 
 
 Hypergeometric test
-'''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
 To assess significance with the categoric features (Xcategoric), the final dense array is tested for over-representation of successes in sample Xi by means of the hypergeometric distribution. The hypergeometric P-value between feature Xi and feature Xcj, is calculated as the probability of randomly drawing x or more successes from the population in n total draws with population size N containing K successes. For any Xi and Xcj, Pc(i,j) is computed as depicted in eq.3.
 
-.. eq_3:
+.. |eq_3| image:: ../figs/other/eq_3.png
+    :scale: 50%
 
-.. figure:: ../figs/other/eq_3.png
+.. table:: Equation 3
+   :align: center
+
+   +---------+
+   |  |eq_3| |
+   +---------+
 
 
 
 Wilcoxon Ranksum
-''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
 To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.
+
+Multiple testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+
 All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods. 
 
-.. eq_4:
 
-.. figure:: ../figs/other/eq_4.png
+.. |eq_4| image:: ../figs/other/eq_4.png
+    :scale: 50%
+
+.. table:: Equation 4
+   :align: center
+
+   +---------+
+   |  |eq_4| |
+   +---------+
 
 
 The last step in HNet (Figure 1F) is declaring significance for node-links. An edge is called significant under alpha is 0.05 by default. The edge-weight is computed as depicted in equation 5.
 
 
-.. eq_5:
+.. |eq_5| image:: ../figs/other/eq_5.png
+    :scale: 50%
 
-.. figure:: ../figs/other/eq_5.png
+.. table:: Equation 5
+   :align: center
+
+   +---------+
+   |  |eq_5| |
+   +---------+
+
 
 
 The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices. The adjacency matrix can then be examined as a network representation using d3graph.
 
 
 Enrichment
-''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
 An example of calculating hte enrichment is demonstrated below for a single response variable.
 

@@ -90,19 +90,17 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Datasets</span></p>
+<p class="caption"><span class="caption-text">Input/output</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Algorithm</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html">Pre-processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistics">Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#hypergeometric-test">Hypergeometric test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#enrichment">Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul class="current">
@@ -116,11 +114,6 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Graphic User Interface</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html">Front-end</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GUI.html#back-end">Back-end</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -249,7 +242,7 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 
 <span class="c1"># Structure learning</span>
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Plot dynamic graph</span>
 <span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
@@ -266,7 +259,7 @@ Below is depicted a demonstration of plotting the results of <code class="docuti
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 
 <span class="c1"># Structure learning</span>
-<span class="n">hn</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
 <span class="c1"># Plot heatmap</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

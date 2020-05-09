@@ -26,13 +26,12 @@ A quick example how to learn the structure on a given dataset.
     df = hnet.import_example('titanic')
 
     # Learn structure on the data
-    hn.fit_transform(df)
+    results = hn.association_learning(df)
 
     # Plot dynamic graph
     G_dynamic = hn.d3graph()
 
     # Plot static graph
-    
     G_static = hn.plot()
     
     # Plot heatmap
@@ -49,7 +48,7 @@ Example how to install ``hnet`` via ``pip`` in an isolated Python environment:
 
 .. code-block:: python
 
-    conda create -n env_hnet python=3.6
+    conda create -n env_hnet python=3.7
     conda activate env_hnet
 
 

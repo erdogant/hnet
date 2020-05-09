@@ -6,11 +6,10 @@
 [![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-blue)](https://erdogant.github.io/hnet/)
 
-# Star it if you like it!
+### Star it if you like it!
 
 From a personal perpsective I developed ``HNet``, a method to detects associations in datasets across features with unknown function.
-In the last decade I worked on many data science projects across various domains. Some projects were small, others very complex and extensive 
-but the common theme was always is to determine the value of the data with respect to the questions that is asked.
+In the last decade I worked on many data science projects across various domains. Some projects were small, others very complex and extensive but the common theme was always is to determine the value of the data with respect to the questions that is asked.
 
 Real-world data often contain measurements with both continuous and discrete values.
 Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps,

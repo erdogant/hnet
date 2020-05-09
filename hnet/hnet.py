@@ -415,7 +415,7 @@ class hnet():
         # pos = nx.spring_layout(G, weight='edge_weights', k=config['dist_between_nodes'], scale=config['scale'], iterations=config['iterations'])
         # Boot-up figure
         if showfig or (not isinstance(config['savepath'], type(None))):
-            [fig, ax]=plt.subplots(figsize=figsize)
+            [fig, ax] = plt.subplots(figsize=figsize)
             options = {
                 # 'node_color': 'grey',
                 'arrowsize': 12,
@@ -436,9 +436,9 @@ class hnet():
 
         # Return
         Gout = {}
-        Gout['G']=G
-        Gout['labx']=labx
-        Gout['pos']=pos
+        Gout['G'] = G
+        Gout['labx'] = labx
+        Gout['pos'] = pos
         return(Gout)
 
     # Make plot of the structure_learning

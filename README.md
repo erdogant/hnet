@@ -6,11 +6,30 @@
 [![Downloads](https://pepy.tech/badge/hnet/month)](https://pepy.tech/project/hnet/month)
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-blue)](https://erdogant.github.io/hnet/)
 
-This package detects associations in datasets across features with unknown function.
+** Star it if you like it!**
 
-* **Background** Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
-* **Result** We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference. The aim is to determine a network with significant associations that can shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets, and generated data sets with known ground truth by Bayesian sampling. In addition, the performance of HNet for the same data sets is compared to Bayesian structure learning.
-* **Conclusions** We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate an average MCC score 0.33 + 0.0002 (P<1x10-6), whereas Bayesian structure learning showed an average MCC score of 0.52 + 0.006 (P<1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (P=0.49). Although Bayesian structure learning showed slightly better results, HNet overcomes some of the limitations of existing methods as it processes raw unstructured data sets, it allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.
+From a personal perpsective I developed ``HNet``, a method to detects associations in datasets across features with unknown function.
+In the last decade I worked on many data science projects across various domains. Some projects were small, others very complex and extensive 
+but the common theme was always is to determine the value of the data with respect to the questions that is asked.
+
+Real-world data often contain measurements with both continuous and discrete values.
+Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps,
+and it remains a challenge to describe the relationships between variables.
+The data understanding phase is crucial to the data-mining process, however, without making any assumptions on the data,
+the search space is super-exponential in the number of variables. A thorough data understanding phase is therefore not common practice.
+
+Methods
+    * We propose graphical hypergeometric networks (``HNet``), a method to test associations across variables for significance using statistical inference. The aim is to determine a network using only the significant associations in order to shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets and generated data sets with known ground truth. In addition, the performance of HNet is compared to Bayesian structure learning.
+
+Results
+    * We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate on average an MCC score of 0.33 + 0.0002 (P<1x10-6), whereas Bayesian structure learning resulted in an average MCC score of 0.52 + 0.006 (P<1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (P=0.49). 
+
+Conclusions
+    * HNet overcomes processes raw unstructured data sets, it allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.
+
+Key words
+    * hypergeometric test, structure learning, networks, unstructured data. 
+
 
 ## Method overview
 <p align="center">
@@ -64,7 +83,7 @@ print(df)
 Structure learning on the titanic dataset
 ```python
 hn = hnet()
-out = hn.fit_transform(df, return_dict=True)
+out = hn.fit_transform(df)
 
 ```
 <p align="center">
@@ -109,8 +128,6 @@ Please cite hnet in your publications if this is useful for your research. Here 
 }
 ```
 
-### Licence
-See [LICENSE](LICENSE) for details.
-
 ### Maintainer
-	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant/hnet)
+	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
+	Contributions are welcome.

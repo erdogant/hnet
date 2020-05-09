@@ -6,8 +6,12 @@ overall over de notaties:
 
 
 Figuur 1c:
-ik zou denk ik de variabelen x_i-x_j nummers geven. de subscripts i en j worden vaak gebruikt in hiërarchische modellen om de parameters van het model mee aan te duiden. ik zou ze denk ik eerder X_cat1, X_cat2, X_cat..., X_catN where N denotes the total number of categorical variables of zoiets. noemen. En je bepruikt ook super en subscript door elkaar. ik zou alles subscript maken. ook bij combinations zou ik dit gebruiken. dus X_c1, X_c..., X_cN. 
+ik zou denk ik de variabelen x_i-x_j nummers geven. de subscripts i en j worden vaak gebruikt in hiërarchische modellen om de parameters van het model mee aan te duiden. 
+ik zou ze denk ik eerder X_cat1, X_cat2, X_cat..., X_catN where N denotes the total number of categorical variables of zoiets. noemen. En je bepruikt ook super en subscript door elkaar. 
+ik zou alles subscript maken. ook bij combinations zou ik dit gebruiken. dus X_c1, X_c..., X_cN. 
 note: voor de verwarring met de c's kun je ook categorical veranderen in discrete... dan heb de X_d voor de discrete variables en X_c voor de combinatory variables...
 
 Figure 2c: 
-In deze figuur is niet expliciet duidelijk gemaakt dat in het geval van de >1000 samples de grijze edges ook worden gedetecteerd. het kan nu ook worden gelezen als dat twee aparte categorieën. Het lijkt mij logisch dat de grijze edges zowel bij de >100 als bij de >1000 worden gedetecteerd. of was dit niet het geval? 
+In deze figuur is niet expliciet duidelijk gemaakt dat in het geval van de >1000 samples de grijze edges ook worden gedetecteerd.
+het kan nu ook worden gelezen als dat twee aparte categorieën.
+Het lijkt mij logisch dat de grijze edges zowel bij de >100 als bij de >1000 worden gedetecteerd. of was dit niet het geval? 

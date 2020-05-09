@@ -191,7 +191,7 @@ class hnet():
         #     results = [result.get() for result in result_objs]
         #     print(len(results))
 
-        disable=(True if verbose==0 else False)
+        disable = (True if verbose==0 else False)
         count = 0
         nr_succes_pop_n = []
 
@@ -206,7 +206,7 @@ class hnet():
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
-    def association_learning(self, df, return_as_dict=False, verbose=3):
+    def association_learning(self, df, verbose=3):
         """Learn the structure in the data.
 
         Parameters
@@ -219,8 +219,6 @@ class hnet():
            | s2 | 0 | 1 | 0 |
            | s3 | 1 | 1 | 0 |
 
-        return_as_dict : bool : default : False.
-            Return the results in a dictionary. Use this option if you want to export or save the results.
         verbose : int [1-5], default: 3
             Print information to screen. A higher number will print more.
 
@@ -245,14 +243,14 @@ class hnet():
         # Here we go! Over all columns now
         simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes, verbose=verbose)
         # Combine rules
-        rules=self.combined_rules(simmatP, labx, verbose=0)
+        rules = self.combined_rules(simmatP, labx, verbose=0)
         # Store
         self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules)
         # Use this option for storage of your model
-        if return_as_dict: return(self.results)
+        return self.results
 
     # Make network d3
-    def d3graph(self, node_size_limits=[6,15], savepath=None, node_color=None, directed=True, showfig=True):
+    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, showfig=True):
         """Interactive network creator.
 
         Description
@@ -311,7 +309,7 @@ class hnet():
         # Make network
         Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, width=1500, height=800, collision=0.1, node_color=labx, directed=directed, showfig=showfig)
         # Return
-        Gout['labx']=labx
+        Gout['labx'] = labx
         return(Gout)
 
     # Make network plot
@@ -358,14 +356,14 @@ class hnet():
             Coordinates of the node postions.
 
         """
-        config=dict()
-        config['scale']=scale
-        config['node_color']=node_color
-        config['dist_between_nodes']=dist_between_nodes
-        config['node_size_limits']=node_size_limits
-        config['layout']=layout
-        config['iterations']=50
-        config['dpi']=dpi
+        config = dict()
+        config['scale'] = scale
+        config['node_color'] = node_color
+        config['dist_between_nodes'] = dist_between_nodes
+        config['node_size_limits'] = node_size_limits
+        config['layout'] = layout
+        config['iterations'] = 50
+        config['dpi'] = dpi
 
         # Set savepath and filename
         config['savepath'] = hnstats._path_correct(savepath, filename='hnet_network', ext='.png')
@@ -379,7 +377,7 @@ class hnet():
         adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values, data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT), columns=adjmatLog.columns)
 
         # Set size for node
-        [IA, IB]=ismember(self.results['simmatLogP'].columns, self.results['counts'][:, 0])
+        [IA, IB] = ismember(self.results['simmatLogP'].columns, self.results['counts'][:, 0])
         node_size = np.repeat(node_size_limits[0], len(self.results['simmatLogP'].columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB, 1], node_size_limits)
 

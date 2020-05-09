@@ -2,6 +2,8 @@
 #conda activate env_HNET
 #conda install spyder
 
+wget
+
 matplotlib
 numpy
 pandas
@@ -11,7 +13,6 @@ seaborn
 community
 python-louvain
 statsmodels
-d3graph
 
 tqdm
 community
@@ -21,5 +22,7 @@ sklearn
 ismember
 imagesc
 df2onehot
+classeval
+d3graph
 
 # pip install dash dash-renderer dash-html-components dash-core-components

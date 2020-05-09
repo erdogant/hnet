@@ -425,8 +425,10 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
 
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
-    df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
-    df_onehot['labx']=df_onehot['labx'][Iloc]
+    if np.any(Iloc==False):
+        if verbose>=2: print('[hnet] WARNING> Features with y_min needs another round of filtering. Fixing it now..')
+        df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
+        df_onehot['labx']=df_onehot['labx'][Iloc]
 
     # Some check before proceeding
     if (df_onehot['onehot'].empty) or (np.all(np.isin(dtypes, 'num'))): raise Exception('[hnet] >ALL data is excluded from the dataframe! There should be at least 1 categorical value!')

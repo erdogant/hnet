@@ -119,10 +119,10 @@ G_dynamic = hn.d3graph(node_color='cluster')
 ### Citation
 Please cite hnet in your publications if this is useful for your research. Here is an example BibTeX entry:
 ```BibTeX
-@misc{erdogant2019hnet,
+@misc{erdogant2020hnet,
   title={hnet},
   author={Erdogan Taskesen},
-  year={2019},
+  year={2020},
   howpublished={\url{https://github.com/erdogant/hnet}},
 }
 ```

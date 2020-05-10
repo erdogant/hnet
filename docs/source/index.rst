@@ -74,10 +74,10 @@ Citing *hnet*
 ----------------
 Here is an example BibTeX entry:
 
-@misc{erdogant2019hnet,
+@misc{erdogant2020hnet,
   title={hnet},
   author={Erdogan Taskesen},
-  year={2019},
+  year={2020},
   howpublished={\url{https://github.com/erdogant/hnet}}}
 
 

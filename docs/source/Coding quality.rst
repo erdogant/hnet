@@ -5,8 +5,8 @@
 Coding quality
 '''''''''''''''''''''
 
-We value software quality. Higher quality software has fewer defects, better security, and better performance, which leads to happier users who can work more effectively.
-Code reviews are an effective method for improving software quality. McConnell (2004) suggests that unit testing finds approximately 25% of defects, function testing 35%, integration testing 45%, and code review 55-60%. 
+Higher quality software has fewer defects, better security, and better performance, which leads to happier users who can work more effectively.
+Code reviews are an effective method for improving software quality. McConnell (2004) suggests that unit testing finds approximately 25% of defects, function testing 35%, integration testing 45%, and code review 55-60%.
 While that means that none of these methods are good enough on their own, and that they should be combined, clearly code review is an essential tool here.
 
 This library is therefore developed with several techniques, such as coding styling, low complexity, docstrings, reviews, and unit tests.
@@ -22,11 +22,7 @@ The file structure of the generated package looks like:
 .. code-block:: bash
 
     path/to/hnet/
-    ├── .editorconfig
     ├── .gitignore
-    ├── .pre-commit-config.yml
-    ├── .prospector.yml
-    ├── CHANGELOG.rst
     ├── docs
     │   ├── conf.py
     │   ├── index.rst
@@ -40,7 +36,6 @@ The file structure of the generated package looks like:
     │   └── hnet.py
     ├── README.md
     ├── requirements.txt
-    ├── setup.cfg
     ├── setup.py
     └── tests
         ├── __init__.py

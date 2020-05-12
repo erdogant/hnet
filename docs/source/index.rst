@@ -60,26 +60,32 @@ Content
 
   Coding quality
   hnet.hnet
+  arXiv
 
 
 
-Source code and issue tracker
+Code and paper
 ------------------------------
 
-Available on Github, `erdogant/hnet <https://github.com/erdogant/hnet/>`_.
-Please report bugs, issues and feature extensions there.
+Please cite ``hnet`` in your publications if this is useful for your research.
 
+* arXiv: `arXiv <https://arxiv.org/abs/2005.04679>`_
+* Paper: `Paper <https://arxiv.org/pdf/2005.04679>`_
+* Github: `erdogant/hnet <https://github.com/erdogant/hnet/>`_
+* Please report bugs, issues and feature extensions on the github page.
 
-Citing *hnet*
-----------------
-Here is an example BibTeX entry:
+Here is the BibTeX entry:
 
-@misc{erdogant2020hnet,
-  title={hnet},
-  author={Erdogan Taskesen},
-  year={2020},
-  howpublished={\url{https://github.com/erdogant/hnet}}}
+.. code-block:: python
 
+	@misc{taskesen2020hnet,
+	    title={HNet: Graphical Hypergeometric Networks},
+	    author={Erdogan Taskesen},
+	    year={2020},
+	    eprint={2005.04679},
+	    archivePrefix={arXiv},
+	    primaryClass={cs.LG}
+	}
 
 
 Indices and tables

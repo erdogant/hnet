@@ -41,8 +41,8 @@ A quick example how to learn the structure on a given dataset.
 Installation
 ''''''''''''
 
-Create environment
-------------------
+**Create environment**
+
 
 Example how to install ``hnet`` via ``pip`` in an isolated Python environment:
 

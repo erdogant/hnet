@@ -116,16 +116,27 @@ G_dynamic = hn.d3graph(node_color='cluster')
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
 </p>
 
+
 ### Citation
-Please cite hnet in your publications if this is useful for your research. Here is an example BibTeX entry:
-```BibTeX
-@misc{erdogant2020hnet,
-  title={hnet},
-  author={Erdogan Taskesen},
-  year={2020},
-  howpublished={\url{https://github.com/erdogant/hnet}},
-}
-```
+Please cite ``hnet`` in your publications if this is useful for your research.
+
+* arXiv: `arXiv <https://arxiv.org/abs/2005.04679>`_
+* Paper: `Paper <https://arxiv.org/pdf/2005.04679>`_
+* Github: `erdogant/hnet <https://github.com/erdogant/hnet/>`_
+* Please report bugs, issues and feature extensions on the github page.
+
+Here is the BibTeX entry:
+
+.. code-block:: python
+
+	@misc{taskesen2020hnet,
+	    title={HNet: Graphical Hypergeometric Networks},
+	    author={Erdogan Taskesen},
+	    year={2020},
+	    eprint={2005.04679},
+	    archivePrefix={arXiv},
+	    primaryClass={cs.LG}
+	}
 
 ### Maintainer
 	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)

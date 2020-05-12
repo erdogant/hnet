@@ -50,34 +50,29 @@ It is distributed under the Apache 2.0 license.
 pip install hnet
 ```
 
+- Simple example for the Titanic data set
 ```python
+# Load library
 from hnet import hnet
-```
-
-- Simple example for the sprinkler data set
-```python
 # Initialize hnet with default settings
 from hnet import hnet
 # Load example dataset
-df = hnet.import_example('sprinkler')
-```
-
-```python
+df = hnet.import_example('titanic')
 # Print to screen
 print(df)
-#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
-# 0              1         0       3  ...   7.2500   NaN         S
-# 1              2         1       1  ...  71.2833   C85         C
-# 2              3         1       3  ...   7.9250   NaN         S
-# 3              4         1       1  ...  53.1000  C123         S
-# 4              5         0       3  ...   8.0500   NaN         S
-# ..           ...       ...     ...  ...      ...   ...       ...
-# 886          887         0       2  ...  13.0000   NaN         S
-# 887          888         1       1  ...  30.0000   B42         S
-# 888          889         0       3  ...  23.4500   NaN         S
-# 889          890         1       1  ...  30.0000  C148         C
-# 890          891         0       3  ...   7.7500   NaN         Q
 ```
+	#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
+	# 0              1         0       3  ...   7.2500   NaN         S
+	# 1              2         1       1  ...  71.2833   C85         C
+	# 2              3         1       3  ...   7.9250   NaN         S
+	# 3              4         1       1  ...  53.1000  C123         S
+	# 4              5         0       3  ...   8.0500   NaN         S
+	# ..           ...       ...     ...  ...      ...   ...       ...
+	# 886          887         0       2  ...  13.0000   NaN         S
+	# 887          888         1       1  ...  30.0000   B42         S
+	# 888          889         0       3  ...  23.4500   NaN         S
+	# 889          890         1       1  ...  30.0000  C148         C
+	# 890          891         0       3  ...   7.7500   NaN         Q
 
 
 Structure learning on the titanic dataset
@@ -87,13 +82,13 @@ hn = hnet()
 out = hn.association_learning(df)
 
 # Plot static graph
-G_static = hn.plot(node_color='cluster')
+G_static = hn.plot()
 
 # Plot heatmap
 P_heatmap = hn.heatmap(cluster=True)
 
 # Plot dynamic graph
-G_dynamic = hn.d3graph(node_color='cluster')
+G_dynamic = hn.d3graph()
 ```
 
 <p align="center">

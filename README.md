@@ -128,8 +128,6 @@ Please cite ``hnet`` in your publications if this is useful for your research.
 
 Here is the BibTeX entry:
 
-.. code-block:: python
-
 	@misc{taskesen2020hnet,
 	    title={HNet: Graphical Hypergeometric Networks},
 	    author={Erdogan Taskesen},

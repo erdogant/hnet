@@ -118,13 +118,13 @@ G_dynamic = hn.d3graph(node_color='cluster')
 
 
 ### Citation
+
 Please cite ``hnet`` in your publications if this is useful for your research.
 
 * [arXiv](https://arxiv.org/abs/2005.04679)
-* [Article](https://arxiv.org/pdf/2005.04679)
+* [Article in pdf](https://arxiv.org/pdf/2005.04679)
 * [Sphinx](https://erdogant.github.io/hnet)
 * [Github](https://github.com/erdogant/hnet)
-* Please report bugs, issues and feature extensions on the github page.
 
 Here is the BibTeX entry:
 

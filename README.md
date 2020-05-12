@@ -81,17 +81,11 @@ print(df)
 
 
 Structure learning on the titanic dataset
+
 ```python
 hn = hnet()
 out = hn.association_learning(df)
 
-```
-<p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig2.png" width="900" />
-</p>
-
-
-```python
 # Plot static graph
 G_static = hn.plot(node_color='cluster')
 

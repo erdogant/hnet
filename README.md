@@ -56,12 +56,13 @@ from hnet import hnet
 
 - Simple example for the sprinkler data set
 ```python
-Initialize hnet with default settings
+# Initialize hnet with default settings
 from hnet import hnet
-
 # Load example dataset
 df = hnet.import_example('sprinkler')
+```
 
+```python
 # Print to screen
 print(df)
 #      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked

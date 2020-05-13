@@ -1,5 +1,5 @@
-Copyright 2019 Erdogan Taskesen
-HNet - Graphical Hypergeometric Networks. Detection of associations for datasets with mixed datatypes with unknown function.
+Copyright 1 August 2019 Erdogan Taskesen
+HNet - Graphical Hypergeometric Networks.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

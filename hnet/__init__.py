@@ -1,4 +1,4 @@
-from hnet.hnet import  hnet
+from hnet.hnet import hnet
 
 from hnet.hnet import (
     enrichment,
@@ -14,7 +14,7 @@ from hnet.utils.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 # module level doc-string
 __doc__ = """

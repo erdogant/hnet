@@ -62,6 +62,32 @@ df = hnet.import_example('titanic')
 y = df['Survived'].values
 out = hnet.enrichment(df, y)
 
+from hnet import hnet
+dtypes=['', 'cat', 'cat', '', 'cat', 'num', 'cat', 'cat', 'cat', 'num', 'cat', 'cat']
+hn = hnet(black_list=['Survived','Embarked','Fare','CABIN'], dtypes=dtypes)
+df = hn.import_example('titanic')
+out = hn.association_learning(df)
+
+# %% White list and black list examples
+hn = hnet(black_list=['Survived','Embarked','Fare','CABIN'])
+dtypes=['', 'cat', 'cat', '', 'cat', 'num', 'cat', 'cat', 'cat', 'num', 'cat', 'cat']
+df = hn.import_example('titanic')
+out = hn.association_learning(df)
+
+hn = hnet(white_list=['Survived','Embarked','Fare','Cabin'], dtypes=['num','cat','cat','cat'])
+df = hn.import_example('titanic')
+out = hn.association_learning(df)
+
+hn = hnet(white_list=['Survived','Embarked','Fare','Cabin'])
+df = hn.import_example('titanic')
+out = hn.association_learning(df)
+# hn.d3graph()
+
+hn = hnet(black_list=['Survived','Embarked','Fare','CABIN'])
+df = hn.import_example('titanic')
+out = hn.association_learning(df)
+
+
 # %% Sklearn examples
 import pandas as pd
 from hnet import hnet

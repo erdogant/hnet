@@ -73,6 +73,10 @@ class hnet():
         Number of combinatoric elements to create for the n features
         The default is 1.
 
+    perc_min_num : float, Force column (int or float) to be numerical if unique non-zero values are above percentage.
+        None
+        0.8 (default)
+
     multtest : String, default : 'holm'.
          None            : No multiple Test
         'bonferroni'     : one-step correction
@@ -97,10 +101,6 @@ class hnet():
             'medium' : (default) 'high' or 'low' are included with 1 decimal behind the comma.
             'high' : 'high' or 'low' are included with 3 decimal behind the comma.
 
-    perc_min_num : float, Force column (int or float) to be numerical if unique non-zero values are above percentage.
-        None
-        0.8 (default)
-
     dropna : Bool, [True,False] Drop rows/columns in adjacency matrix that showed no significance
         True (default)
         False
@@ -109,15 +109,16 @@ class hnet():
         None (default)
         ['0.0']: To remove catagorical values with label 0
 
-    verbose : Int, [0..5]. The higher the number, the more information is printed.
-        0: None,  1: ERROR,  2: WARN,  3: INFO (default),  4: DEBUG, 5 : TRACE
+    black_list : List or None (default : None)
+        If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
+
+    white_list : List or None (default : None)
+        If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
 
 
     Returns
     -------
-    dict
-        The output is a dictionary containing the following keys:
-
+    dict : The output is a dictionary containing the following keys:
     simmatP : pd.DataFrame()
         Adjacency matrix containing P-values between variable assocations.
     simmatLogP :  pd.DataFrame()
@@ -147,13 +148,18 @@ class hnet():
 
     """
 
-    def __init__(self, alpha=0.05, y_min=10, k=1, multtest='holm', dtypes='pandas', specificity='medium', perc_min_num=0.8, dropna=True, excl_background=None):
+    def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):
         """Initialize distfit with user-defined parameters."""
 
         if (alpha is None): alpha=1
         if (y_min is None): y_min=1
+        if isinstance(white_list, str): white_list=[white_list]
+        if isinstance(black_list, str): black_list=[black_list]
+        if (white_list is not None) and len(white_list)==0: white_list=None
+        if (black_list is not None) and len(black_list)==0: black_list=None
+        # Store in object
         self.alpha = alpha
-        self.y_min = np.maximum(1,y_min)
+        self.y_min = np.maximum(1, y_min)
         self.k = k
         self.multtest = multtest
         self.dtypes = dtypes
@@ -162,12 +168,14 @@ class hnet():
         self.dropna = dropna
         self.fillna = True
         self.excl_background = excl_background
+        self.white_list = white_list
+        self.black_list = black_list
 
     def prepocessing(self, df, verbose=3):
         """Pre-processing based on the model parameters."""
 
         # Pre processing
-        [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, verbose=verbose)
+        [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, white_list=self.white_list, black_list=self.black_list, verbose=verbose)
         # Add combinations
         [X_comb, X_labx, X_labo] = hnstats._make_n_combinations(df_onehot['onehot'], df_onehot['labx'], self.k, self.y_min, verbose=verbose)
         # Print some

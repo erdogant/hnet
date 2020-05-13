@@ -11,6 +11,29 @@ def test_import_example():
     df = hn.import_example('student')
     assert df.shape==(649, 33)
 
+def test_association_learning():
+    from hnet import hnet
+    # TEST WHITE LIST
+    white_list=['Survived','Embarked','Fare','Cabin']
+    hn = hnet(white_list=white_list)
+    df = hn.import_example('titanic')
+    out = hn.association_learning(df)
+    assert np.all(np.isin(np.unique(out['labx']), white_list))
+
+    # TEST WHITE LIST WITH DTYPES
+    dtypes=['num','cat','cat','cat']
+    hn = hnet(white_list=['Survived','Embarked','Fare','Cabin'], dtypes=dtypes)
+    df = hn.import_example('titanic')
+    out = hn.association_learning(df)
+    assert np.all(out['dtypes'][:,1]==dtypes)
+
+    # TEST BLACK LIST
+    black_list=['Survived','Embarked','Fare','Cabin','Age','Ticket','PassengerId','Name']
+    hn = hnet(black_list=black_list)
+    df = hn.import_example('titanic')
+    out = hn.association_learning(df)
+    assert np.all(np.setdiff1d(df.columns, black_list)==['Parch', 'Pclass', 'Sex', 'SibSp'])
+
 
 def test_hnet():
     hn = hnet.hnet()

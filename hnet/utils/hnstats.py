@@ -414,11 +414,44 @@ def _path_correct(savepath, filename='fig', ext='.png'):
     return(out)
 
 
+# %%
+def _white_black_list(df, dtypes, white_list, black_list):
+    # Keep only variables that are in white_list.
+    if white_list is not None:
+        white_list = [x.lower() for x in white_list]
+        Iloc = np.isin(df.columns.str.lower(), white_list)
+        df = df.loc[:,Iloc]
+
+    # Exclude variables that are in black_list.
+    if black_list is not None:
+        black_list = [x.lower() for x in black_list]
+        Iloc = ~np.isin(df.columns.str.lower(), black_list)
+        df = df.loc[:,Iloc]
+        # Remove also in dtypes
+        if not isinstance(dtypes, str):
+            if len(dtypes)!=len(Iloc):
+                raise Exception('[hnet] >ERROR : dtypes should have same length as the input datafame! dtypes willbe automatically black listed too. Or do not specify dtypes.')
+            else:
+                dtypes = np.array(dtypes)[Iloc]
+
+    # Check dtypes because things can have changed because of the white/black list
+    if not isinstance(dtypes, str):
+        if (white_list is not None) and len(dtypes)!=df.shape[1]:
+            raise Exception('[hnet] >ERROR : dtypes should have same length as the white_list! Or do not specify dtypes.')
+        if len(dtypes)!=df.shape[1]:
+            raise Exception('[hnet] >ERROR : dtypes should have same length as your dataframe or white_list')
+    
+    if df.shape[1]<=1: raise Exception('[hnet] >ERROR : only %d variables are remaining. A minimum of 2 would be nice.' %(df.shape[1]))
+    return df, dtypes
+
+
 # %% Preprocessing
-def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, verbose=3):
+def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
     df.columns = df.columns.astype(str)
     df.reset_index(drop=True, inplace=True)
-
+    
+    # Filter on white_list and black_list
+    df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
     [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y

@@ -417,6 +417,8 @@ def _path_correct(savepath, filename='fig', ext='.png'):
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, verbose=3):
     df.columns = df.columns.astype(str)
+    df.reset_index(drop=True, inplace=True)
+
     # Remove columns without dtype
     [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y

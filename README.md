@@ -6,9 +6,9 @@
 [![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-blue)](https://erdogant.github.io/hnet/)
 
-### Star it if you like it!
+	Star it if you like it!
 
-From a personal perpsective I developed ``HNet``, a method to detects associations in datasets across features with unknown function.
+On  a personal note I developed ``HNet``, a method to learn associations in datasets across features with unknown function.
 In the last decade I worked on many data science projects across various domains. Some projects were small, others very complex and extensive but the common theme was always is to determine the value of the data with respect to the questions that is asked.
 
 Real-world data often contain measurements with both continuous and discrete values.
@@ -19,11 +19,11 @@ the search space is super-exponential in the number of variables. A thorough dat
 
 **Methods**
 
-We propose graphical hypergeometric networks (``HNet``), a method to test associations across variables for significance using statistical inference. The aim is to determine a network using only the significant associations in order to shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets and generated data sets with known ground truth. In addition, the performance of HNet is compared to Bayesian structure learning.
+We propose graphical hypergeometric networks (``HNet``), a method to test associations across variables for significance using statistical inference. The aim is to determine a network using only the significant associations in order to shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets and generated data sets with known ground truth. In addition, the performance of HNet is compared to Bayesian association learning.
 
 **Results**
 
-We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate on average an MCC score of 0.33 + 0.0002 (*P*<1x10-6), whereas Bayesian structure learning resulted in an average MCC score of 0.52 + 0.006 (*P*<1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (*P*=0.49). 
+We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate on average an MCC score of 0.33 + 0.0002 (*P*<1x10-6), whereas Bayesian association learning resulted in an average MCC score of 0.52 + 0.006 (*P*<1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (*P*=0.49). 
 
 **Conclusions**
 
@@ -50,55 +50,45 @@ It is distributed under the Apache 2.0 license.
 pip install hnet
 ```
 
+- Simple example for the Titanic data set
 ```python
+# Load library
 from hnet import hnet
-```
-
-- Simple example for the sprinkler data set
-```python
-Initialize hnet with default settings
+# Initialize hnet with default settings
 from hnet import hnet
-
 # Load example dataset
-df = hnet.import_example('sprinkler')
-
+df = hnet.import_example('titanic')
 # Print to screen
 print(df)
-#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
-# 0              1         0       3  ...   7.2500   NaN         S
-# 1              2         1       1  ...  71.2833   C85         C
-# 2              3         1       3  ...   7.9250   NaN         S
-# 3              4         1       1  ...  53.1000  C123         S
-# 4              5         0       3  ...   8.0500   NaN         S
-# ..           ...       ...     ...  ...      ...   ...       ...
-# 886          887         0       2  ...  13.0000   NaN         S
-# 887          888         1       1  ...  30.0000   B42         S
-# 888          889         0       3  ...  23.4500   NaN         S
-# 889          890         1       1  ...  30.0000  C148         C
-# 890          891         0       3  ...   7.7500   NaN         Q
 ```
+	#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
+	# 0              1         0       3  ...   7.2500   NaN         S
+	# 1              2         1       1  ...  71.2833   C85         C
+	# 2              3         1       3  ...   7.9250   NaN         S
+	# 3              4         1       1  ...  53.1000  C123         S
+	# 4              5         0       3  ...   8.0500   NaN         S
+	# ..           ...       ...     ...  ...      ...   ...       ...
+	# 886          887         0       2  ...  13.0000   NaN         S
+	# 887          888         1       1  ...  30.0000   B42         S
+	# 888          889         0       3  ...  23.4500   NaN         S
+	# 889          890         1       1  ...  30.0000  C148         C
+	# 890          891         0       3  ...   7.7500   NaN         Q
 
 
-Structure learning on the titanic dataset
+Association learning on the titanic dataset
+
 ```python
 hn = hnet()
 out = hn.association_learning(df)
 
-```
-<p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig2.png" width="900" />
-</p>
-
-
-```python
 # Plot static graph
-G_static = hn.plot(node_color='cluster')
+G_static = hn.plot()
 
 # Plot heatmap
 P_heatmap = hn.heatmap(cluster=True)
 
 # Plot dynamic graph
-G_dynamic = hn.d3graph(node_color='cluster')
+G_dynamic = hn.d3graph()
 ```
 
 <p align="center">
@@ -118,16 +108,15 @@ G_dynamic = hn.d3graph(node_color='cluster')
 
 
 ### Citation
+
 Please cite ``hnet`` in your publications if this is useful for your research.
 
-* arXiv: `arXiv <https://arxiv.org/abs/2005.04679>`_
-* Paper: `Paper <https://arxiv.org/pdf/2005.04679>`_
-* Github: `erdogant/hnet <https://github.com/erdogant/hnet/>`_
-* Please report bugs, issues and feature extensions on the github page.
+* [arXiv](https://arxiv.org/abs/2005.04679)
+* [Article in pdf](https://arxiv.org/pdf/2005.04679)
+* [Sphinx](https://erdogant.github.io/hnet)
+* [Github](https://github.com/erdogant/hnet)
 
 Here is the BibTeX entry:
-
-.. code-block:: python
 
 	@misc{taskesen2020hnet,
 	    title={HNet: Graphical Hypergeometric Networks},

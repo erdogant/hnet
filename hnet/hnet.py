@@ -18,6 +18,7 @@ import imagesc
 import df2onehot
 
 # Local utils
+import hnet.utils.picklefast as picklefast
 from hnet.utils.savefig import savefig
 import hnet.utils.network as network
 import hnet.utils.hnstats as hnstats
@@ -573,6 +574,88 @@ class hnet():
 
         """
         return import_example(data=data, verbose=verbose)
+
+    # Save model
+    def save(self, filepath='hnet_model.pkl', overwrite=False, verbose=3):
+        """Save learned model in pickle file.
+
+        Parameters
+        ----------
+        filepath : str, (default: 'hnet_model.pkl')
+            Pathname to store pickle files.
+        overwrite : bool, (default=False)
+            Overwite file if exists.
+        verbose : int, optional
+            Show message. A higher number gives more informatie. The default is 3.
+
+        Returns
+        -------
+        bool : [True, False]
+            Status whether the file is saved.
+
+        """
+        if (filepath is None) or (filepath==''):
+            filepath = 'hnet_model.pkl'
+        if filepath[-4:] != '.pkl':
+            filepath = filepath + '.pkl'
+        # Store data
+        storedata = {}
+        storedata['results'] = self.results
+        storedata['alpha'] = self.alpha
+        storedata['k'] = self.k
+        storedata['y_min'] = self.y_min
+        storedata['multtest'] = self.multtest
+        storedata['dtypes'] = self.dtypes
+        storedata['specificity'] = self.specificity
+        storedata['perc_min_num'] = self.perc_min_num
+        storedata['dropna'] = self.dropna
+        storedata['fillna'] = self.fillna
+        storedata['excl_background'] = self.excl_background
+        # Save
+        status = picklefast.save(filepath, storedata, overwrite=overwrite, verbose=verbose)
+        if verbose>=3: print('[hnet] >Saving.. %s' %(status))
+        # return
+        return status
+
+    # Load model.
+    def load(self, filepath='hnet_model.pkl', verbose=3):
+        """Load learned model.
+
+        Parameters
+        ----------
+        filepath : str
+            Pathname to stored pickle files.
+        verbose : int, optional
+            Show message. A higher number gives more information. The default is 3.
+
+        Returns
+        -------
+        Object.
+
+        """
+        if (filepath is None) or (filepath==''):
+            filepath = 'hnet_model.pkl'
+        if filepath[-4:]!='.pkl':
+            filepath = filepath + '.pkl'
+        # Load
+        storedata = picklefast.load(filepath, verbose=verbose)
+        # Store in self.
+        if storedata is not None:
+            self.results = storedata['results']
+            self.alpha = storedata['alpha']
+            self.k = storedata['k']
+            self.y_min = storedata['y_min']
+            self.multtest = storedata['multtest']
+            self.dtypes = storedata['dtypes']
+            self.specificity = storedata['specificity']
+            self.perc_min_num = storedata['perc_min_num']
+            self.dropna = storedata['dropna']
+            self.fillna = storedata['fillna']
+            self.excl_background = storedata['excl_background']
+            if verbose>=3: print('[hnet] >Loading succesfull!')
+        else:
+            if verbose>=2: print('[hnet] >WARNING: Could not load data.')
+
 
 # %% Store results
 def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):

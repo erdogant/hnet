@@ -446,4 +446,8 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
 def _tempdir(savepath):
     if savepath is None:
         savepath = os.path.join(tempfile.gettempdir(), '')
+    else:
+        savepath = os.path.join(savepath, '')
+    os.makedirs(savepath, exist_ok=True)
+
     return(savepath)

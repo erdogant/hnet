@@ -540,7 +540,7 @@ class hnet():
         df_rules['consequents'] = simmatP.index.values
 
         for i in tqdm(range(0, simmatP.shape[0]), disable=(True if verbose==0 else False)):
-            idx=np.where(simmatP.iloc[i, :]<1)[0]
+            idx=np.where(simmatP.iloc[i,:]<1)[0]
             # Remove self
             idx=np.setdiff1d(idx, i)
             # Store rules
@@ -789,6 +789,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
     # Determine dtypes for columns
     [df, dtypes] = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
+    
+    # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+
     # Compute fit
     out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
     # Multiple test correction

@@ -41,6 +41,7 @@ Integration of d3graph in hnet
 .. code-block:: python
 
   from hnet import hnet
+  # Load example
   df = hnet.import_example('sprinkler')
 
   # Structure learning
@@ -67,6 +68,8 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
 .. code-block:: python
 
   from hnet import hnet
+
+  # Load example
   df = hnet.import_example('sprinkler')
   
   # Structure learning

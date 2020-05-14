@@ -190,7 +190,7 @@
   <hr class="docutils" id="code-directive" />
 <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>Lets load some datasets using <code class="xref py py-func docutils literal notranslate"><span class="pre">urldetect.import_example()</span></code> and demonstrate the usage of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in learning structures.</p>
+<p>Lets load some datasets using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code> and demonstrate the usage of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in learning structures.</p>
 <div class="section" id="sprinkler-dataset">
 <h2>Sprinkler dataset<a class="headerlink" href="#sprinkler-dataset" title="Permalink to this headline">¶</a></h2>
 <p>A natural way to study the relation between nodes in a network is to analyse the presence or absence of node-links. The sprinkler data set contains four nodes and therefore ideal to demonstrate the working of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in inferring a network. Links between two nodes of a network can either be undirected or directed (directed edges are indicated with arrows). Notably, a directed edge does imply directionality between the two nodes whereas undirected does not.</p>
@@ -198,7 +198,7 @@
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -216,7 +216,7 @@
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -266,7 +266,7 @@
 
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">()</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 

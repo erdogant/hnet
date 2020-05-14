@@ -106,7 +106,7 @@ An example of calculating hte enrichment is demonstrated below for a single resp
   import hnet
   
   # Example dataset
-  df = hnet.import_example('titanic')
+  df = hn.import_example('titanic')
 
   # Set response variable y
   y = df['Survived'].values

@@ -5,7 +5,7 @@
 Examples
 -----------------
 
-Lets load some datasets using :func:`urldetect.import_example` and demonstrate the usage of ``hnet`` in learning structures.
+Lets load some datasets using :func:`hnet.import_example` and demonstrate the usage of ``hnet`` in learning structures.
 
 
 Sprinkler dataset
@@ -19,7 +19,7 @@ A natural way to study the relation between nodes in a network is to analyse the
 	hn = hnet()
 
 	# Import example dataset
-	df = hnet.import_example('sprinkler')
+	df = hn.import_example('sprinkler')
 
 	# Learn the relationships
 	results = hn.association_learning(df)
@@ -46,7 +46,7 @@ The titanic data set contains a data structure that is often seen in real use ca
 	hn = hnet()
 
 	# Import example dataset
-	df = hnet.import_example('titanic')
+	df = hn.import_example('titanic')
 
 	# Learn the relationships
 	results = hn.association_learning(df)
@@ -110,7 +110,7 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
 
 	hn = hnet()
 
-	df = hnet.import_example()
+	df = hn.import_example()
 
 	results = hn.association_learning(df)
 

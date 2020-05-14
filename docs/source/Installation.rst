@@ -23,7 +23,7 @@ A quick example how to learn the structure on a given dataset.
     hn = hnet()
 
     # Import data:
-    df = hnet.import_example('titanic')
+    df = hn.import_example('titanic')
 
     # Learn structure on the data
     results = hn.association_learning(df)

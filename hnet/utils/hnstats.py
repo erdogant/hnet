@@ -144,25 +144,29 @@ def _prob_hypergeo(datac, yc):
 # %% Make logscale
 def _logscale(simmat_padj):
     # Set minimum amount
-    simmat_padj[simmat_padj==0]=1e-323
-    adjmatLog=(-np.log10(simmat_padj)).copy()
-    adjmatLog[adjmatLog == -np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
-    adjmatLog[adjmatLog == np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
-    adjmatLog[adjmatLog == -0] = 0
+    if np.any(~np.isnan(simmat_padj.values.ravel())):
+        simmat_padj[simmat_padj==0]=1e-323
+        adjmatLog=(-np.log10(simmat_padj)).copy()
+        adjmatLog[adjmatLog == -np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
+        adjmatLog[adjmatLog == np.inf] = np.nanmax(adjmatLog[adjmatLog != np.inf])
+        adjmatLog[adjmatLog == -0] = 0
+    else:
+        adjmatLog = simmat_padj.copy()
     return(adjmatLog)
 
 # %% Do multiple test correction
 def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
     if verbose>=3: print('[hnet] >Multiple test correction using %s' %(multtest))
     # Multiple test correction
-    if not (isinstance(multtest, type(None))):
+    if multtest is not None:
         # Make big row with all pvalues
-        tmpP=adjmat.values.ravel()
+        tmpP = adjmat.values.ravel()
         # Find not nans
         Iloc = ~np.isnan(tmpP)
-        Padj=np.zeros_like(tmpP) * np.nan
+        Padj = np.zeros_like(tmpP) * np.nan
         # Do multiple test correction on only the tested ones
-        Padj[Iloc]=multitest.multipletests(tmpP[Iloc], method=multtest)[1]
+        if np.any(Iloc):
+            Padj[Iloc]=multitest.multipletests(tmpP[Iloc], method=multtest)[1]
         # Rebuild adjmatrix
         adjmat = pd.DataFrame(data=Padj.reshape(adjmat.shape), columns=adjmat.columns, index=adjmat.index)
 
@@ -181,8 +185,8 @@ def _multipletestcorrection(out, multtest, verbose=3):
         Praw[Iloc] = 1
 
         # Multiple test correction
-        if (isinstance(multtest, type(None))):
-            Padj=Praw
+        if multtest is None:
+            Padj = Praw
         else:
             # Padj=np.zeros_like(Praw)*np.nan
             Padj=multitest.multipletests(Praw, method=multtest)[1]
@@ -338,6 +342,7 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
     nr_succes_pop_n=np.array(nr_succes_pop_n)
     nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:,0]))
 
+    if verbose>=5: print(simmat_padj)
     # Multiple test correction
     simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, multtest, verbose=verbose)
     # Remove variables for which both rows and columns are empty

@@ -207,11 +207,12 @@ class hnet():
         for i in tqdm(range(0, X_comb.shape[1]), disable=disable):
             [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
+            count = count + simmatP.shape[0]
 
         # Message
         if verbose>=3: print('[hnet] >Total number of computations: [%.0d]' %(count))
         # Post processing
-        [simmatP, simmatLogP, simmat_labx, nr_succes_pop_n] = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=3)
+        [simmatP, simmatLogP, simmat_labx, nr_succes_pop_n] = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
@@ -548,9 +549,9 @@ class hnet():
         df_rules['consequents'] = simmatP.index.values
 
         for i in tqdm(range(0, simmatP.shape[0]), disable=(True if verbose==0 else False)):
-            idx=np.where(simmatP.iloc[i,:]<1)[0]
+            idx = np.where(simmatP.iloc[i,:]<1)[0]
             # Remove self
-            idx=np.setdiff1d(idx, i)
+            idx = np.setdiff1d(idx,i)
             # Store rules
             df_rules['antecedents'].iloc[i] = list(simmatP.iloc[i, idx].index)
             df_rules['antecedents_labx'].iloc[i] = labx[idx]

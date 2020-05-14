@@ -6,7 +6,7 @@
 Pre-processing
 ''''''''''''''
 
-To detect significant edge probabilities between pairs of vertices (node-links) given a data set, ``hnet`` consists a multi-step process that are described below. 
+To detect significant edge probabilities between pairs of vertices (node-links) given a data set, ``hnet`` consists a multi-step process that are described below.
 
 
 Typing
@@ -18,7 +18,7 @@ The first step is pre-processing the data set by feature typing. In this step we
 One-hot Enconding
 ''''''''''''''''''
 
-The second step is encoding the categoric values into a one-hot dense array. This is done using ``df2onehot``. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k>1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array. 
+The second step is encoding the categoric values into a one-hot dense array. This is done using ``df2onehot``. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k>1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array.
 
 
 
@@ -158,3 +158,38 @@ The output is a dataframe for which each row describes the feature and the colum
 
 
 As can been seen from the results, the most significant feature is *Survived* as shown in the `category_name` and `P` value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: :func:`hnet.hnet.enrichment`
+
+
+black/white list
+''''''''''''''''''''''''''''''
+
+Input variables (column names) can be black or white listed in the model.
+When variables are black listed, they are excluded from the search and the resulting model will not contain any of those edges. If variables are white listed, the search is limited to only those edges. The resulting model will then only contain edges that are in white_list.
+
+**White list example**
+
+.. code-block:: python
+
+  from hnet import hnet
+  hn = hnet(white_list=['Survived', 'Pclass', 'Age', 'SibSp'])
+  
+  # Load data
+  df = hn.import_example('titanic')
+  
+  # Association learning
+  out = hn.association_learning(df)
+
+
+**Black list example**
+
+.. code-block:: python
+
+  from hnet import hnet
+  hn = hnet(black_list=['Survived', 'Pclass', 'Age', 'SibSp'])
+  
+  # Load data
+  df = hn.import_example('titanic')
+  
+  # Association learning
+  out = hn.association_learning(df)
+

@@ -129,3 +129,51 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
 
 	adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
 
+
+black and white listing
+''''''''''''''''''''''''''''''
+
+Input variables (column names) can be black or white listed in the model.
+
+**White list example**
+
+.. code-block:: python
+
+  from hnet import hnet
+
+  # White list the underneath variables
+  hn = hnet(white_list=['Survived', 'Pclass', 'Age', 'SibSp'])
+  
+  # Load data
+  df = hn.import_example('titanic')
+  
+  # Association learning
+  out = hn.association_learning(df)
+
+  # [hnet] >Association learning across [10] categories.
+  # 100%|---------| 10/10 [00:01<00:00,  7.27it/s]
+  # [hnet] >Total number of computations: [171]
+  # [hnet] >Multiple test correction using holm
+  # [hnet] >Dropping Age
+
+
+**Black list example**
+
+.. code-block:: python
+
+  from hnet import hnet
+
+  # Black list the underneath variables
+  hn = hnet(black_list=['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp'])
+  
+  # Load data
+  df = hn.import_example('titanic')
+  
+  # Association learning
+  out = hn.association_learning(df)
+
+  # [hnet] >Association learning across [7] categories.
+  # 100%|---------| 7/7 [00:11<00:00,  1.62s/it]
+  # [hnet] >Total number of computations: [1182]
+  # [hnet] >Multiple test correction using holm
+  # [hnet] >Dropping Fare

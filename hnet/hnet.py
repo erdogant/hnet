@@ -107,7 +107,7 @@ class hnet():
 
     excl_background : String, String name to exclude from the background
         None (default)
-        ['0.0']: To remove catagorical values with label 0
+        ['0.0']: To remove categorical values with label 0
 
     black_list : List or None (default : None)
         If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
@@ -178,8 +178,6 @@ class hnet():
         [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, white_list=self.white_list, black_list=self.black_list, verbose=verbose)
         # Add combinations
         [X_comb, X_labx, X_labo] = hnstats._make_n_combinations(df_onehot['onehot'], df_onehot['labx'], self.k, self.y_min, verbose=verbose)
-        # Print some
-        if verbose>=3: print('[hnet] >Association learning across [%d] features.' %(X_comb.shape[1]))
         # Get numerical columns
         colNum = df.columns[df.dtypes == 'float64'].values
         simmat_labx = np.append(X_labo, colNum).astype(str)
@@ -199,6 +197,9 @@ class hnet():
         #         nr_succes_pop_n.append(result)
         #     results = [result.get() for result in result_objs]
         #     print(len(results))
+
+        # Print some
+        if verbose>=3: print('[hnet] >Association learning across [%d] categories.' %(X_comb.shape[1]))
 
         disable = (True if verbose==0 else False)
         count = 0
@@ -523,7 +524,7 @@ class hnet():
         antecedents_labx
             Generic label name.
         antecedents
-            Specific label names in the 'from' catagory.
+            Specific label names in the 'from' category.
         consequents
             Specific label names that are the result of the antecedents.
         Pfisher
@@ -747,7 +748,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     -------
     pd.DataFrame() with the following columns:
     category_label : str
-        Label of the catagory.
+        Label of the category.
     P :  float
         Pvalue of the hypergeometric test or Wilcoxon Ranksum.
     logP :  float

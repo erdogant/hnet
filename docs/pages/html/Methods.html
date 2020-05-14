@@ -107,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#enrichment">Enrichment</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#black-white-list">black/white list</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -310,6 +311,33 @@
 <img alt="_images/output_enrichment.png" src="_images/output_enrichment.png" />
 </div>
 <p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a></p>
+</div>
+</div>
+<div class="section" id="black-white-list">
+<h1>black/white list<a class="headerlink" href="#black-white-list" title="Permalink to this headline">¶</a></h1>
+<p>Input variables (column names) can be black or white listed in the model.
+When variables are black listed, they are excluded from the search and the resulting model will not contain any of those edges. If variables are white listed, the search is limited to only those edges. The resulting model will then only contain edges that are in white_list.</p>
+<p><strong>White list example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+
+<span class="c1"># Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Association learning</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Black list example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+
+<span class="c1"># Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Association learning</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 

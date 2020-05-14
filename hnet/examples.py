@@ -102,6 +102,22 @@ df = hn.import_example('titanic')
 out = hn.association_learning(df)
 
 
+# %% Run with blacklist
+from hnet import hnet
+hn = hnet(black_list=['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp'])
+# Load data
+df = hn.import_example('titanic')
+# Structure learning
+out = hn.association_learning(df)
+
+# %% Run with whitelist
+from hnet import hnet
+hn = hnet(white_list=['Survived', 'Pclass', 'Age', 'SibSp'])
+# Load data
+df = hn.import_example('titanic')
+# Structure learning
+out = hn.association_learning(df)
+
 # %% Sklearn examples
 import pandas as pd
 from hnet import hnet

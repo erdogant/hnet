@@ -101,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#black-white-list">black/white list</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -235,7 +236,7 @@ The input dataset is converted into a one-hot dense array based on automatic typ
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>pd.DataFrame() with the following columns</em></p></li>
-<li><p><strong>category_label</strong> (<em>str</em>) – Label of the catagory.</p></li>
+<li><p><strong>category_label</strong> (<em>str</em>) – Label of the category.</p></li>
 <li><p><strong>P</strong> (<em>float</em>) – Pvalue of the hypergeometric test or Wilcoxon Ranksum.</p></li>
 <li><p><strong>logP</strong> (<em>float</em>) – -log10(Pvalue) of the hypergeometric test or Wilcoxon Ranksum.</p></li>
 <li><p><strong>Padj</strong> (<em>float</em>) – Adjusted P-value.</p></li>
@@ -263,7 +264,7 @@ The input dataset is converted into a one-hot dense array based on automatic typ
 
 <dl class="py class">
 <dt id="hnet.hnet.hnet">
-<em class="property">class </em><code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">hnet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">y_min</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">multtest</span><span class="o">=</span><span class="default_value">'holm'</span></em>, <em class="sig-param"><span class="n">dtypes</span><span class="o">=</span><span class="default_value">'pandas'</span></em>, <em class="sig-param"><span class="n">specificity</span><span class="o">=</span><span class="default_value">'medium'</span></em>, <em class="sig-param"><span class="n">perc_min_num</span><span class="o">=</span><span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">dropna</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">excl_background</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">hnet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">y_min</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">perc_min_num</span><span class="o">=</span><span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">multtest</span><span class="o">=</span><span class="default_value">'holm'</span></em>, <em class="sig-param"><span class="n">dtypes</span><span class="o">=</span><span class="default_value">'pandas'</span></em>, <em class="sig-param"><span class="n">specificity</span><span class="o">=</span><span class="default_value">'medium'</span></em>, <em class="sig-param"><span class="n">dropna</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">excl_background</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>HNET - Graphical Hypergeometric networks.</p>
 <p>This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input data set <strong>df</strong>.</p>
 <dl class="simple">
@@ -289,6 +290,8 @@ The adjacency matrix can then be examined as a network representation using d3gr
 None or 1</p></li>
 <li><p><strong>k</strong> (<em>int</em><em>, </em><em>[</em><em>1..n</em><em>] </em><em>, </em><em>default : 1.</em>) – Number of combinatoric elements to create for the n features
 The default is 1.</p></li>
+<li><p><strong>perc_min_num</strong> (<em>float</em><em>, </em><em>Force column</em><em> (</em><em>int</em><em> or </em><em>float</em><em>) </em><em>to be numerical if unique non-zero values are above percentage.</em>) – None
+0.8 (default)</p></li>
 <li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>default : 'holm'.</em>) – None            : No multiple Test
 ‘bonferroni’     : one-step correction
 ‘sidak’          : one-step correction
@@ -307,18 +310,17 @@ The default is 1.</p></li>
 ‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group.
 ‘medium’ : (default) ‘high’ or ‘low’ are included with 1 decimal behind the comma.
 ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
-<li><p><strong>perc_min_num</strong> (<em>float</em><em>, </em><em>Force column</em><em> (</em><em>int</em><em> or </em><em>float</em><em>) </em><em>to be numerical if unique non-zero values are above percentage.</em>) – None
-0.8 (default)</p></li>
 <li><p><strong>dropna</strong> (<em>Bool</em><em>, </em><em>[</em><em>True</em><em>,</em><em>False</em><em>] </em><em>Drop rows/columns in adjacency matrix that showed no significance</em>) – True (default)
 False</p></li>
 <li><p><strong>excl_background</strong> (<em>String</em><em>, </em><em>String name to exclude from the background</em>) – None (default)
-[‘0.0’]: To remove catagorical values with label 0</p></li>
-<li><p><strong>verbose</strong> (<em>Int</em><em>, </em><em>[</em><em>0..5</em><em>]</em><em> The higher the number</em><em>, </em><em>the more information is printed.</em>) – 0: None,  1: ERROR,  2: WARN,  3: INFO (default),  4: DEBUG, 5 : TRACE</p></li>
+[‘0.0’]: To remove categorical values with label 0</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>dict</em> – The output is a dictionary containing the following keys:</p></li>
+<li><p><strong>dict</strong> (<em>The output is a dictionary containing the following keys:</em>)</p></li>
 <li><p><strong>simmatP</strong> (<em>pd.DataFrame()</em>) – Adjacency matrix containing P-values between variable assocations.</p></li>
 <li><p><strong>simmatLogP</strong> (<em>pd.DataFrame()</em>) – -log10(P-value) of the simmatP.</p></li>
 <li><p><strong>labx</strong> (<em>list of str</em>) – Labels that are analyzed.</p></li>
@@ -395,7 +397,7 @@ To test the significance of combined associations we used fishers-method. The st
 <li><p><em>pd.DataFrame()</em> – Dataset containing antecedents and consequents. The strongest connection will be sorted on top.
 The columns are as following:</p></li>
 <li><p><em>antecedents_labx</em> – Generic label name.</p></li>
-<li><p><em>antecedents</em> – Specific label names in the ‘from’ catagory.</p></li>
+<li><p><em>antecedents</em> – Specific label names in the ‘from’ category.</p></li>
 <li><p><em>consequents</em> – Specific label names that are the result of the antecedents.</p></li>
 <li><p><em>Pfisher</em> – Combined P-value</p></li>
 </ul>
@@ -496,6 +498,26 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 </dd></dl>
 
 <dl class="py method">
+<dt id="hnet.hnet.hnet.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="o">=</span><span class="default_value">'hnet_model.pkl'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load learned model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em>) – Pathname to stored pickle files.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Show message. A higher number gives more information. The default is 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="hnet.hnet.hnet.plot">
 <code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">dist_between_nodes</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">node_size_limits</span><span class="o">=</span><span class="default_value">[25, 500]</span></em>, <em class="sig-param"><span class="n">node_color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'fruchterman_reingold'</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">250</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make plot static network plot of the model results.</p>
@@ -532,6 +554,27 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <dt id="hnet.hnet.hnet.prepocessing">
 <code class="sig-name descname">prepocessing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.prepocessing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pre-processing based on the model parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hnet.hnet.hnet.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="o">=</span><span class="default_value">'hnet_model.pkl'</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save learned model in pickle file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em><em>, </em><em>(</em><em>default: 'hnet_model.pkl'</em><em>)</em>) – Pathname to store pickle files.</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>(</em><em>default=False</em><em>)</em>) – Overwite file if exists.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Show message. A higher number gives more informatie. The default is 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>bool</strong> – Status whether the file is saved.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[True, False]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

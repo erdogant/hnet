@@ -101,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#black-white-list">black/white list</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -113,6 +114,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sprinkler-dataset">Sprinkler dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#titanic-dataset">Titanic dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#black-and-white-listing">black and white listing</a></li>
 </ul>
 </li>
 </ul>
@@ -280,6 +282,48 @@
 <span class="p">[</span><span class="n">scores</span><span class="p">,</span> <span class="n">adjmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">compare_networks</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">adjmat_undirected</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatLogP&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="black-and-white-listing">
+<h2>black and white listing<a class="headerlink" href="#black-and-white-listing" title="Permalink to this headline">¶</a></h2>
+<p>Input variables (column names) can be black or white listed in the model.</p>
+<p><strong>White list example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># White list the underneath variables</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+
+<span class="c1"># Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Association learning</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># [hnet] &gt;Association learning across [10] categories.</span>
+<span class="c1"># 100%|---------| 10/10 [00:01&lt;00:00,  7.27it/s]</span>
+<span class="c1"># [hnet] &gt;Total number of computations: [171]</span>
+<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
+<span class="c1"># [hnet] &gt;Dropping Age</span>
+</pre></div>
+</div>
+<p><strong>Black list example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Black list the underneath variables</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+
+<span class="c1"># Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Association learning</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># [hnet] &gt;Association learning across [7] categories.</span>
+<span class="c1"># 100%|---------| 7/7 [00:11&lt;00:00,  1.62s/it]</span>
+<span class="c1"># [hnet] &gt;Total number of computations: [1182]</span>
+<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
+<span class="c1"># [hnet] &gt;Dropping Fare</span>
 </pre></div>
 </div>
 </div>

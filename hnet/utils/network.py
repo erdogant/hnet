@@ -388,13 +388,13 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     adjmat_true = adjmat_true.loc[IArow,IAcol]
     adjmat_pred = adjmat_pred.iloc[IBrow,IBcol]
 
-    # Make sure it is boolean adjmat
-    adjmat_true = adjmat_true>0
-    adjmat_pred = adjmat_pred>0
-
     # Check whether order is correct
     if not np.all(adjmat_true.columns.values==adjmat_pred.columns.values): raise Exception('Column order of both input values could not be matched')
     if not np.all(adjmat_true.index.values==adjmat_pred.index.values): raise Exception('Row order of both input values could not be matched')
+
+    # Make sure it is boolean adjmat
+    adjmat_true = adjmat_true>0
+    adjmat_pred = adjmat_pred>0
 
     # Get edges
     y_true = adjmat_true.stack().reset_index()[0].values
@@ -405,6 +405,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     #bayes.plot(out_bayes['adjmat'], pos=G['pos'])
 
     # Setup graph
+    # adjmat_diff = adjmat_true - adjmat_pred
     adjmat_diff = adjmat_true.astype(int)
     adjmat_diff[(adjmat_true.astype(int) - adjmat_pred.astype(int))<0]=2
     adjmat_diff[(adjmat_true.astype(int) - adjmat_pred.astype(int))>0]=-1

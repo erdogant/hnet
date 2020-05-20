@@ -5,7 +5,7 @@
 Import datasets
 ---------------
 
-HNet learns the structure from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. 
+HNet learns the association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. 
 
 We decided to use the DataFrame of ``pandas`` as the input data type for ``hnet``. 
 The columns represent the variables or features containing continues/categorical values. The rows are the samples.

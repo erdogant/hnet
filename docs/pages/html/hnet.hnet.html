@@ -204,10 +204,17 @@ The columns and rows between both matrices are matched if not ordered similarly.
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
+<dd class="field-even"><p><ul>
 <li><p><em>tuple</em> – Output contains a tuple of two elements, the score of matching adjacency matrix and adjacency matrix differences.</p></li>
 <li><p><strong>scores</strong> (<em>dict</em>) – Contains extensive number of keys with various scoring values.</p></li>
-<li><p><strong>adjmat_diff</strong> (<em>pd.DataFrame()</em>) – Differences between the two output matrices. Zero means no difference whereas value &gt;0 does.</p></li>
+<li><dl class="simple">
+<dt><strong>adjmat_diff</strong> (<em>pd.DataFrame()</em>) –  Difference of the input network compared to the second.</dt><dd><p>0 = No edge
+1 = No difference between networks
+2 = Addition of edge in the first input network compared to the second</p>
+</dd>
+</dl>
+<p>-1 = Depliction of edge in the first netwwork compared to the second</p>
+</li>
 </ul>
 </p>
 </dd>
@@ -306,7 +313,7 @@ The default is 1.</p></li>
 <li><p><strong>dtypes</strong> (<em>list of str</em><em>, </em><em>default : 'pandas'.</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
 [‘cat’,’cat’,’num’,’’,’cat’,…]
 ‘pandas’ (default)</p></li>
-<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>Configure how numerical data labels are stored. Setting this variable can be of use in the 'structure_learning' function for the creation of a network</em><em> (</em><em>[</em><em>None</em><em>] </em><em>will glue most numerical labels together whereas</em><em> [</em><em>high</em><em>] </em><em>mostly will not</em><em>)</em><em></em>) – None : No additional information in the labels
+<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network</em><em> (</em><em>[</em><em>None</em><em>] </em><em>will glue most numerical labels together whereas</em><em> [</em><em>high</em><em>] </em><em>mostly will not</em><em>)</em><em></em>) – None : No additional information in the labels
 ‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group.
 ‘medium’ : (default) ‘high’ or ‘low’ are included with 1 decimal behind the comma.
 ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
@@ -335,7 +342,7 @@ False</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load example dataset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Structure</span> <span class="n">learning</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">association</span> <span class="n">Learning</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot dynamic graph</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
@@ -348,7 +355,7 @@ False</p></li>
 <dl class="py method">
 <dt id="hnet.hnet.hnet.association_learning">
 <code class="sig-name descname">association_learning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.association_learning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learn the structure in the data.</p>
+<dd><p>Learn the associations in the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

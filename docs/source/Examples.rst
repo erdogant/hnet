@@ -5,7 +5,7 @@
 Examples
 -----------------
 
-Lets load some datasets using :func:`hnet.import_example` and demonstrate the usage of ``hnet`` in learning structures.
+Lets load some datasets using :func:`hnet.import_example` and demonstrate the usage of ``hnet`` in learning Associations.
 
 
 Sprinkler dataset
@@ -87,7 +87,7 @@ The titanic data set contains a data structure that is often seen in real use ca
 	# [DF2ONEHOT] Working on Embarked.....[4]
 	# [DF2ONEHOT] Total onehot features: 19
 	#
-	# [HNET] Structure learning across [19] features.
+	# [HNET] Association learning across [19] features.
 	# [HNET] Total number of computations: [0]
 	# [HNET] Multiple test correction using holm
 	# [HNET] Dropping Age

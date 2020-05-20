@@ -1,19 +1,4 @@
 # %%
-# %%
-# import pandas as pd
-# from hnet import hnet
-
-# df2019 = pd.read_excel('D://GITLAB/PROJECTS/futurelab/leno/data/Trainingsaanvragen 20200506 2019 juli - 2019 dec.xlsx')
-# # # df2019 = pd.read_excel('../data/Trainingsaanvragen 20200506 2019 juli - 2019 dec.xlsx')
-# Iloc = ~df2019.columns.str.contains('datum')
-# df2019 = df2019.loc[:,Iloc]
-
-# white_list=['Naam klant','Normaal tarief','Ingezet persoonlijk budget']
-# hn2019 = hnet()
-# out2019 = hn2019.association_learning(df2019, verbose=3)
-
-
-# %%
 import numpy as np
 import hnet
 print(dir(hnet))
@@ -55,15 +40,18 @@ P_heatmap = hn.heatmap(cluster=True)
 #%% Association learning
 
 from hnet import hnet
+df = hnet.import_example('titanic')
 
-hn = hnet()
+hn1 = hnet(y_min=50)
+hn2 = hnet()
 # Structure learning
-out = hn.association_learning(df)
+out1 = hn1.association_learning(df)
+out2 = hn2.association_learning(df)
 
 # Import hnet functionalities
 import hnet
 # Examine differences between models
-[scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
+[scores, adjmat] = hnet.compare_networks(out1['simmatLogP'], out2['simmatLogP'], showfig=True)
 
 # Make undirected matrix
 adjmat_undirected = hnet.to_undirected(out['simmatLogP'])

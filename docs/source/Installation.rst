@@ -12,7 +12,7 @@ Installing ``hnet``
     pip install hnet
 
 
-A quick example how to learn the structure on a given dataset.
+A quick example how to learn the association on a given dataset.
 
 .. code:: python
 
@@ -25,7 +25,7 @@ A quick example how to learn the structure on a given dataset.
     # Import data:
     df = hn.import_example('titanic')
 
-    # Learn structure on the data
+    # Learn association on the data
     results = hn.association_learning(df)
 
     # Plot dynamic graph

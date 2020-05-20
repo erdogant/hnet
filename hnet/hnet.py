@@ -39,7 +39,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 
-# %% Structure learning across all variables
+# %% Association learning across all variables
 class hnet():
     """HNET - Graphical Hypergeometric networks.
 
@@ -95,7 +95,7 @@ class hnet():
         ['cat','cat','num','','cat',...]
         'pandas' (default)
 
-    specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'structure_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
+    specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
             None : No additional information in the labels
             'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
             'medium' : (default) 'high' or 'low' are included with 1 decimal behind the comma.
@@ -137,7 +137,7 @@ class hnet():
     >>> hn = hnet()
     >>> # Load example dataset
     >>> df = hn.import_example('sprinkler')
-    >>> Structure learning
+    >>> association Learning
     >>> out = hn.association_learning(df)
     >>> # Plot dynamic graph
     >>> G_dynamic = hn.d3graph()
@@ -218,7 +218,7 @@ class hnet():
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
     def association_learning(self, df, verbose=3):
-        """Learn the structure in the data.
+        """Learn the associations in the data.
 
         Parameters
         ----------
@@ -452,7 +452,7 @@ class hnet():
         Gout['pos'] = pos
         return(Gout)
 
-    # Make plot of the structure_learning
+    # Make plot of the association_learning
     def heatmap(self, cluster=False, figsize=[15,10], savepath=None, verbose=3):
         """Plot heatmap.
 
@@ -500,7 +500,7 @@ class hnet():
         except:
             print('[HNET.heatmap] Error: Heatmap failed. Try cluster=False')
 
-    # Extract combined rules from structure_learning
+    # Extract combined rules from association_learning
     def combined_rules(self, simmatP=None, labx=None, verbose=3):
         """Association testing and combining Pvalues using fishers-method.
 
@@ -906,7 +906,11 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     scores : dict
         Contains extensive number of keys with various scoring values.
     adjmat_diff : pd.DataFrame()
-        Differences between the two output matrices. Zero means no difference whereas value >0 does.
+        Difference of the input network compared to the second.
+        0 = No edge
+        1 = No difference between networks
+        2 = Addition of edge in the first input network compared to the second
+       -1 = Depliction of edge in the first netwwork compared to the second
 
     """
     [scores, adjmat_diff] = network.compare_networks(adjmat_true,

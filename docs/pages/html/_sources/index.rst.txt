@@ -7,7 +7,7 @@ Real-world data sets often contain measurements with both continues and categori
 
 We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference. 
 
-HNet learns the structure from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
+HNet learns the Association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 
 
 Content

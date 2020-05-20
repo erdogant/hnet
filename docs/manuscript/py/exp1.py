@@ -40,7 +40,7 @@ modelTrue['G'] = bayes.plot(modelTrue)
 #%% Sampling using the DAG to create dataframe
 df = bayes.sampling(modelTrue, n=arg['n_sampling'])
 
-#%% Structure learning hnets
+#%% Association learning hnets
 start = time.time()
 out_hnets = hnet.main(df, multtest=arg['multtest'], alpha=arg['alpha'], drop_empty=False, excl_background=['0.0'])
 runtime = time.time()-start

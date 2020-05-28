@@ -454,7 +454,7 @@ def _white_black_list(df, dtypes, white_list, black_list):
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
     df.columns = df.columns.astype(str)
     df.reset_index(drop=True, inplace=True)
-    
+
     # Filter on white_list and black_list
     df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
@@ -489,3 +489,31 @@ def _tempdir(savepath):
     os.makedirs(savepath, exist_ok=True)
 
     return(savepath)
+
+
+# %% Filter adjacency matrix
+def _filter_adjmat(simmatLogP, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
+    # Filter on white_list and black_list
+    if min_edges is not None:
+        simmatBOOL = simmatLogP.copy()>0
+        if np.all(simmatBOOL.columns==simmatBOOL.index.values):
+            Iloc = np.logical_or(simmatBOOL.sum(axis=0)>min_edges, simmatBOOL.sum(axis=1)>min_edges).values
+            if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
+            simmatLogP = simmatLogP.loc[Iloc,Iloc]
+
+    if threshold is not None:
+        if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
+        simmatLogP[simmatLogP<threshold]=0
+    if white_list is not None:
+        Irow = np.isin(simmatLogP.index.values, white_list)
+        Icol = np.isin(simmatLogP.columns, white_list)
+        if verbose>=3: print('[hnet] >Number of variables after white listing: [%d]' %(sum(Irow)))
+        simmatLogP = simmatLogP.iloc[Irow,Icol]
+    if black_list is not None:
+        Irow = ~np.isin(simmatLogP.index.values, black_list)
+        Icol = ~np.isin(simmatLogP.columns, black_list)
+        if verbose>=3: print('[hnet] >Number of variables after black listing: [%d]' %(sum(Irow)))
+        simmatLogP = simmatLogP.iloc[Irow, Icol]
+
+    return simmatLogP
+

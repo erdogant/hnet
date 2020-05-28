@@ -11,6 +11,7 @@ print(dir(hnet))
 
 # %%
 from hnet import hnet
+
 df = hnet.import_example('titanic')
 
 df = hnet.import_example('student')
@@ -36,8 +37,20 @@ G_static = hn.plot(node_color='cluster')
 # Plot heatmap
 P_heatmap = hn.heatmap(cluster=True)
 
+# %%
+import matplotlib.pyplot as plt
+P = hn.results['simmatLogP'].values.ravel()
+P = P[P>0]
 
-#%% Association learning
+plt.figure(figsize=(15,10))
+plt.hist(P, bins=50)
+plt.grid(True)
+plt.xlabel('-log10(P)')
+plt.ylabel('Frequency')
+plt.title('P-value Associaties')
+
+
+# %% Association learning
 
 from hnet import hnet
 df = hnet.import_example('titanic')

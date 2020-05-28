@@ -261,7 +261,7 @@ class hnet():
         return self.results
 
     # Make network d3
-    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, showfig=True):
+    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, width=2000, height=2000, showfig=True, verbose=3):
         """Interactive network creator.
 
         Description
@@ -284,6 +284,12 @@ class hnet():
             color nodes based on clustering or by label colors.
         directed : bool, optional
             Create network using directed edges (arrows). The default is True.
+        threshold : int (default : None)
+            Associations are filtered based on the -log10(P) > threshold
+        black_list : List or None (default : None)
+            If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
+        white_list : List or None (default : None)
+            If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
         showfig : bool, optional
             Plot figure to screen. The default is True.
 
@@ -298,27 +304,30 @@ class hnet():
             labels of the nodes.
 
         """
+        if verbose>=3: print('[hnet] >Building d3graph..')
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
-
-        [IA,IB] = ismember(self.results['simmatLogP'].columns, self.results['counts'][:,0])
-        node_size = np.repeat(node_size_limits[0], len(self.results['simmatLogP'].columns))
+        # Filter adjacency matrix on blacklist/whitelist and/or threshold
+        simmatLogP = hnstats._filter_adjmat(self.results['simmatLogP'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        
+        [IA,IB] = ismember(simmatLogP.columns, self.results['counts'][:,0])
+        node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB,1], node_size_limits)
-
+        
         # Make undirected network
-        if directed:
-            simmatLogP=self.results['simmatLogP']
-        else:
-            simmatLogP = to_undirected(self.results['simmatLogP'], method='logp')
+        if not directed:
+            simmatLogP = to_undirected(Padjmat, method='logp')
 
         # Color node using network-clustering
         if node_color=='cluster':
             labx = self.plot(node_color='cluster', showfig=False)['labx']
         else:
-            labx = label_encoder.fit_transform(self.results['labx'])
+            IA,_ = ismember(self.results['simmatLogP'].columns, simmatLogP.columns)
+            labx = label_encoder.fit_transform(self.results['labx'][IA])
 
         # Make network
-        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, width=1500, height=800, collision=0.1, node_color=labx, directed=directed, showfig=showfig)
+        if verbose>=3: print('[hnet] >Creating output html..')
+        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, width=width, height=height, collision=0.1, node_color=labx, directed=directed, showfig=showfig)
         # Return
         Gout['labx'] = labx
         return(Gout)
@@ -704,6 +713,8 @@ def import_example(data='titanic', verbose=3):
 
     curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
     PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
+    if not os.path.isdir(curpath):
+        os.mkdir(curpath)
 
     # Check file exists.
     if not os.path.isfile(PATH_TO_DATA):
@@ -843,6 +854,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
     if np.sum(np.isin(adjmat.index.values, adjmat.columns.values))!=np.max(adjmat.shape):
         raise Exception('Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!')
 
+    if config['verbose']>=3: print('[hnet] >Make adjacency matrix undirected..')
     progressbar=(True if verbose==0 else False)
     columns=adjmat.columns.values
     index=adjmat.index.values

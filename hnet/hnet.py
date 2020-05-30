@@ -261,7 +261,7 @@ class hnet():
         return self.results
 
     # Make network d3
-    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, width=2000, height=2000, showfig=True, verbose=3):
+    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
         """Interactive network creator.
 
         Description
@@ -282,16 +282,20 @@ class hnet():
             Save the figure in specified path.
         node_color : None or 'cluster' default : None
             color nodes based on clustering or by label colors.
-        directed : bool, optional
-            Create network using directed edges (arrows). The default is True.
+        directed : bool, default is True.
+            Create network using directed edges (arrows).
         threshold : int (default : None)
-            Associations are filtered based on the -log10(P) > threshold
+            Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
         black_list : List or None (default : None)
             If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
         white_list : List or None (default : None)
             If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
+        min_edges : int (default : None)
+            Edges are only shown if a node has at least min_edges.
         showfig : bool, optional
             Plot figure to screen. The default is True.
+        figsize : tuple, optional
+            Size of the figure in the browser, [height,width]. The default is [1500,1500].
 
         Returns
         -------
@@ -304,36 +308,40 @@ class hnet():
             labels of the nodes.
 
         """
+        status = self._check_results()
+        if not status: return None
+
         if verbose>=3: print('[hnet] >Building d3graph..')
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP = hnstats._filter_adjmat(self.results['simmatLogP'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
-        
+        simmatLogP, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+
         [IA,IB] = ismember(simmatLogP.columns, self.results['counts'][:,0])
         node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB,1], node_size_limits)
-        
+
         # Make undirected network
         if not directed:
-            simmatLogP = to_undirected(Padjmat, method='logp')
+            simmatLogP = to_undirected(simmatLogP, method='logp')
 
         # Color node using network-clustering
         if node_color=='cluster':
-            labx = self.plot(node_color='cluster', showfig=False)['labx']
+            labx = self.plot(node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
         else:
-            IA,_ = ismember(self.results['simmatLogP'].columns, simmatLogP.columns)
-            labx = label_encoder.fit_transform(self.results['labx'][IA])
+            # IA,_ = ismember(self.results['simmatLogP'].columns, simmatLogP.columns)
+            # labx = label_encoder.fit_transform(self.results['labx'][IA])
+            labx = label_encoder.fit_transform(labx)
 
         # Make network
         if verbose>=3: print('[hnet] >Creating output html..')
-        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, width=width, height=height, collision=0.1, node_color=labx, directed=directed, showfig=showfig)
+        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, height=figsize[0], width=figsize[1], collision=0.1, node_color=labx, directed=directed, showfig=showfig)
         # Return
         Gout['labx'] = labx
         return(Gout)
 
     # Make network plot
-    def plot(self, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], node_color=None, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250, showfig=True):
+    def plot(self, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], directed=True, node_color=None, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
         """Make plot static network plot of the model results.
 
         Description
@@ -352,6 +360,8 @@ class hnet():
             Nodes are scaled between the Min and max size. The default is [25,500].
         node_color : str, None or 'cluster' default is None
             color nodes based on clustering or by label colors.
+        directed : bool, default is True.
+            Create network using directed edges (arrows).
         savepath : str, optional
             Save the figure in specified path.
         figsize : tuple, optional
@@ -362,6 +372,14 @@ class hnet():
             layouts from networkx can be used. The default is 'fruchterman_reingold'.
         dpi : int, optional
             resolution of the figure. The default is 250.
+        threshold : int (default : None)
+            Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
+        black_list : List or None (default : None)
+            If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
+        white_list : List or None (default : None)
+            If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
+        min_edges : int (default : None)
+            Edges are only shown if a node has at least min_edges.
         showfig : bool, optional
             Plot figure to screen. The default is True.
 
@@ -376,6 +394,10 @@ class hnet():
             Coordinates of the node postions.
 
         """
+        status = self._check_results()
+        if not status: return None
+        
+        if verbose>=3: print('[hnet] >Building network graph..')
         config = dict()
         config['scale'] = scale
         config['node_color'] = node_color
@@ -387,9 +409,10 @@ class hnet():
 
         # Set savepath and filename
         config['savepath'] = hnstats._path_correct(savepath, filename='hnet_network', ext='.png')
-
         # Get adjmat
-        adjmatLog = self.results['simmatLogP'].copy()
+        # adjmatLog = self.results['simmatLogP'].copy()
+        # Filter adjacency matrix on blacklist/whitelist and/or threshold
+        adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
 
         # Set weights for edges
         adjmatLogWEIGHT = adjmatLog.copy()
@@ -397,14 +420,29 @@ class hnet():
         adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values, data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT), columns=adjmatLog.columns)
 
         # Set size for node
-        [IA, IB] = ismember(self.results['simmatLogP'].columns, self.results['counts'][:, 0])
-        node_size = np.repeat(node_size_limits[0], len(self.results['simmatLogP'].columns))
+        [IA, IB] = ismember(adjmatLog.columns, self.results['counts'][:, 0])
+        node_size = np.repeat(node_size_limits[0], len(adjmatLog.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB, 1], node_size_limits)
 
         # Make new graph (G) and add properties to nodes
-        G = nx.DiGraph(directed=True)
+        if not directed:
+            adjmatLog = to_undirected(adjmatLog, method='logp')
+            G = nx.Graph()
+        else:
+            G = nx.DiGraph(directed=True)
+
+        # Color node using network-clustering
+        # if node_color=='cluster':
+            # _, labx = network.cluster(G.to_undirected())
+        # else:
+            # labx = self.results['labx']
+        # Make sure the labx are correct if previously black/white list filtering was performed
+        # IA,_ = ismember(self.results['simmatLogP'].columns, adjmatLog.columns)
+        # labx = label_encoder.fit_transform(labx[IA])
+        labx = label_encoder.fit_transform(labx)
+
         for i in range(0, adjmatLog.shape[0]):
-            G.add_node(adjmatLog.index.values[i], node_size=node_size[i], node_label=self.results['labx'][i])
+            G.add_node(adjmatLog.index.values[i], node_size=node_size[i], node_label=labx[i])
         # Add properties to edges
         np.fill_diagonal(adjmatLog.values, 0)
         for i in range(0, adjmatLog.shape[0]):
@@ -419,11 +457,11 @@ class hnet():
         edge_weights = np.array([G[u][v]['weight'] for u,v in edges])
         edge_weights = MinMaxScaler(feature_range=(0.5, 8)).fit_transform(edge_weights.reshape(-1, 1)).flatten()
 
-        # Cluster
+        # # Cluster
         if node_color=='cluster':
             _, labx = network.cluster(G.to_undirected())
         else:
-            labx = label_encoder.fit_transform(self.results['labx'])
+            labx = label_encoder.fit_transform(labx)
 
         # G = nx.DiGraph() # Directed graph
         # Layout
@@ -462,7 +500,7 @@ class hnet():
         return(Gout)
 
     # Make plot of the association_learning
-    def heatmap(self, cluster=False, figsize=[15,10], savepath=None, verbose=3):
+    def heatmap(self, cluster=False, figsize=[15,10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
         """Plot heatmap.
 
         Description
@@ -479,6 +517,14 @@ class hnet():
             Figure size. The default is [15, 10].
         savepath : Bool, optional
             saveingpath. The default is None.
+        threshold : int (default : None)
+            Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
+        black_list : List or None (default : None)
+            If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
+        white_list : List or None (default : None)
+            If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
+        min_edges : int (default : None)
+            Edges are only shown if a node has at least min_edges.
         verbose : int, optional
             Verbosity. The default is 3.
 
@@ -487,7 +533,12 @@ class hnet():
         None.
 
         """
-        adjmatLog = self.results['simmatLogP'].copy()
+        status = self._check_results()
+        if not status: return None
+
+        # adjmatLog = self.results['simmatLogP'].copy()
+        # Filter adjacency matrix on blacklist/whitelist and/or threshold
+        adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
         # Set savepath and filename
         savepath = hnstats._path_correct(savepath, filename='hnet_heatmap', ext='.png')
 
@@ -675,6 +726,18 @@ class hnet():
         else:
             if verbose>=2: print('[hnet] >WARNING: Could not load data.')
 
+    # Check results
+    def _check_results(self, verbose=3):
+        status = True
+        if not hasattr(self, 'results'):
+            if verbose>=3: print('[hnet] >Nothing to plot. Try to run hnet with first with: hn.association_learning()')
+            status = False
+        elif self.results['simmatLogP'].empty:
+            if verbose>=3: print('[hnet] >Nothing to plot. No associations were detected.')
+            status = False
+
+        return status
+
 
 # %% Store results
 def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
@@ -854,7 +917,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
     if np.sum(np.isin(adjmat.index.values, adjmat.columns.values))!=np.max(adjmat.shape):
         raise Exception('Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!')
 
-    if config['verbose']>=3: print('[hnet] >Make adjacency matrix undirected..')
+    if verbose>=3: print('[hnet] >Make adjacency matrix undirected..')
     progressbar=(True if verbose==0 else False)
     columns=adjmat.columns.values
     index=adjmat.index.values

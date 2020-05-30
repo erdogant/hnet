@@ -420,18 +420,20 @@ def _path_correct(savepath, filename='fig', ext='.png'):
 
 
 # %%
-def _white_black_list(df, dtypes, white_list, black_list):
+def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
     # Keep only variables that are in white_list.
     if white_list is not None:
         white_list = [x.lower() for x in white_list]
         Iloc = np.isin(df.columns.str.lower(), white_list)
         df = df.loc[:,Iloc]
+        if verbose>=3: print('[hnet] >Keeping ony features in the white list..')
 
     # Exclude variables that are in black_list.
     if black_list is not None:
         black_list = [x.lower() for x in black_list]
         Iloc = ~np.isin(df.columns.str.lower(), black_list)
         df = df.loc[:,Iloc]
+        if verbose>=3: print('[hnet] >Removing features from the black list..')
         # Remove also in dtypes
         if not isinstance(dtypes, str):
             if len(dtypes)!=len(Iloc):
@@ -445,8 +447,8 @@ def _white_black_list(df, dtypes, white_list, black_list):
             raise Exception('[hnet] >ERROR : dtypes should have same length as the white_list! Or do not specify dtypes.')
         if len(dtypes)!=df.shape[1]:
             raise Exception('[hnet] >ERROR : dtypes should have same length as your dataframe or white_list')
-    
-    if df.shape[1]<=1: raise Exception('[hnet] >ERROR : only %d variables are remaining. A minimum of 2 would be nice.' %(df.shape[1]))
+
+    if df.shape[1]<=1: print('[hnet] >Warning : After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
     return df, dtypes
 
 
@@ -492,7 +494,7 @@ def _tempdir(savepath):
 
 
 # %% Filter adjacency matrix
-def _filter_adjmat(simmatLogP, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
+def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
     # Filter on white_list and black_list
     if min_edges is not None:
         simmatBOOL = simmatLogP.copy()>0
@@ -500,6 +502,7 @@ def _filter_adjmat(simmatLogP, threshold=None, min_edges=None, white_list=None, 
             Iloc = np.logical_or(simmatBOOL.sum(axis=0)>min_edges, simmatBOOL.sum(axis=1)>min_edges).values
             if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
             simmatLogP = simmatLogP.loc[Iloc,Iloc]
+            labx = labx[Iloc]
 
     if threshold is not None:
         if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
@@ -509,11 +512,13 @@ def _filter_adjmat(simmatLogP, threshold=None, min_edges=None, white_list=None, 
         Icol = np.isin(simmatLogP.columns, white_list)
         if verbose>=3: print('[hnet] >Number of variables after white listing: [%d]' %(sum(Irow)))
         simmatLogP = simmatLogP.iloc[Irow,Icol]
+        labx = labx[Irow]
     if black_list is not None:
         Irow = ~np.isin(simmatLogP.index.values, black_list)
         Icol = ~np.isin(simmatLogP.columns, black_list)
         if verbose>=3: print('[hnet] >Number of variables after black listing: [%d]' %(sum(Irow)))
         simmatLogP = simmatLogP.iloc[Irow, Icol]
+        labx = labx[Irow]
 
-    return simmatLogP
+    return simmatLogP, labx
 

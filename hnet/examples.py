@@ -130,3 +130,48 @@ df.columns = df.columns.astype(str)
 hn = hnet()
 out = hn.association_learning(df)
 
+# %%
+from hnet import hnet
+import pandas as pd
+
+df = pd.read_csv('D://PY//DATA//OTHER//marketing_data_online_retail_small.csv', sep=';')
+hn1 = hnet()
+results1 = hn1.association_learning(df)
+hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/marketing_data_online_retail_small/')
+# hn1.plot()
+# hn1.d3graph()
+# hn1.heatmap()
+
+df = pd.read_csv('D://PY//DATA//OTHER//waterpump//train_set_values.zip', sep=',')
+hn2 = hnet(black_list=['date_recorded','id'])
+results2 = hn2.association_learning(df)
+hn2.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/waterpump/')
+# hn2.plot()
+# hn2.d3graph()
+# hn2.heatmap()
+
+df = pd.read_csv('D://PY//DATA//CLASSIF//FIFA 2018 Statistics.csv', sep=',')
+hn3 = hnet()
+results3 = hn3.association_learning(df)
+hn3.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/fifa_2018/')
+# hn3.plot()
+# hn3.heatmap()
+
+# df = pd.read_csv('D://PY//DATA//CANCER//cancer_xy.csv', sep=',')
+# hn4 = hnet(black_list=['x','y','PC1','PC2'])
+# results4 = hn4.association_learning(df)
+# hn4.plot()
+# hn4.plot(node_color='cluster', directed=True)
+# hn4.plot(node_color='cluster', directed=False)
+# hn4.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/cancer_d3graph/')
+# hn4.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/cancer_d3graph_color/', node_color='cluster')
+# hn4.d3graph(node_color='cluster', directed=False)
+# hn4.d3graph(node_color='cluster', directed=True)
+# hn4.heatmap()
+
+# hn3.plot()
+# hn3.plot(directed=False, black_list=['Man of the Match_No'], node_color='cluster')
+# hn3.plot(directed=True, black_list=['Man of the Match_No'], node_color='cluster')
+# hn3.plot(directed=True, black_list=['Man of the Match_No'])
+# hn3.d3graph(directed=False, black_list=['Man of the Match_No'])
+# hn3.heatmap(black_list=['Man of the Match_No'])

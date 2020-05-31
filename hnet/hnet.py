@@ -90,10 +90,10 @@ class hnet():
         'fdr_tsbh'       : two stage fdr correction (non-negative)
         'fdr_tsbky'      : two stage fdr correction (non-negative)
 
-    dtypes : list of str, default : 'pandas'.
+    dtypes : list of str, (default : 'pandas')
         list strings, example: ['cat','num',''] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped.
-        ['cat','cat','num','','cat',...]
-        'pandas' (default)
+        'pandas' (default),
+        ['cat','cat','num','','cat']
 
     specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
             None : No additional information in the labels
@@ -792,7 +792,8 @@ def import_example(data='titanic', verbose=3):
         url='https://erdogant.github.io/datasets/FIFA_2018.zip'
     elif data=='waterpump':
         url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
-
+    elif data=='retail':
+        url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
 
     curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
     PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))

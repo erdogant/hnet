@@ -757,7 +757,7 @@ def import_example(data='titanic', verbose=3):
     Parameters
     ----------
     data : str, optional
-        Name of the dataset 'sprinkler' or 'titanic' or 'student'.
+        Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
     verbose : int, optional
         Print message to screen. The default is 3.
 
@@ -773,6 +773,13 @@ def import_example(data='titanic', verbose=3):
         url='https://erdogant.github.io/datasets/titanic_train.zip'
     elif data=='student':
         url='https://erdogant.github.io/datasets/student_train.zip'
+    elif data=='cancer':
+        url='https://erdogant.github.io/datasets/cancer_dataset.zip'
+    elif data=='fifa':
+        url='https://erdogant.github.io/datasets/FIFA_2018.zip'
+    elif data=='waterpump':
+        url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
+
 
     curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
     PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
@@ -781,7 +788,7 @@ def import_example(data='titanic', verbose=3):
 
     # Check file exists.
     if not os.path.isfile(PATH_TO_DATA):
-        if verbose>=3: print('[hnet] >Downloading example dataset from github source..')
+        if verbose>=3: print('[hnet] >Downloading [%s] dataset from github source..' %(data))
         wget.download(url, curpath)
 
     # Import local dataset

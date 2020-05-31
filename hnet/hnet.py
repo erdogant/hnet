@@ -258,6 +258,7 @@ class hnet():
         # Store
         self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules)
         # Use this option for storage of your model
+        if verbose>=3: print('[hnet] >Fin.')
         return self.results
 
     # Make network d3
@@ -316,7 +317,11 @@ class hnet():
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
         simmatLogP, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
-
+        # Check whether anything has remained
+        if simmatLogP.values.flatten().sum()==0:
+            if verbose>=3: print('[hnet] >Nothing to plot.')
+            return None
+        
         [IA,IB] = ismember(simmatLogP.columns, self.results['counts'][:,0])
         node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB,1], node_size_limits)
@@ -413,6 +418,10 @@ class hnet():
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
         adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        # Check whether anything has remained
+        if adjmatLog.values.flatten().sum()==0:
+            if verbose>=3: print('[hnet] >Nothing to plot.')
+            return None
 
         # Set weights for edges
         adjmatLogWEIGHT = adjmatLog.copy()
@@ -539,6 +548,10 @@ class hnet():
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
         adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        if adjmatLog.values.flatten().sum()==0:
+            if verbose>=3: print('[hnet] >Nothing to plot.')
+            return None
+
         # Set savepath and filename
         savepath = hnstats._path_correct(savepath, filename='hnet_heatmap', ext='.png')
 

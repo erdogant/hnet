@@ -495,7 +495,9 @@ def _tempdir(savepath):
 
 # %% Filter adjacency matrix
 def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
-    # Filter on white_list and black_list
+    # if (white_list is not None) and (len(white_list)<=1): raise Exception('[hnet] >ERROR: white_list should contain at least 2 input variables.')
+
+    # Filter on minimum number of edges
     if min_edges is not None:
         simmatBOOL = simmatLogP.copy()>0
         if np.all(simmatBOOL.columns==simmatBOOL.index.values):
@@ -504,21 +506,32 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
             simmatLogP = simmatLogP.loc[Iloc,Iloc]
             labx = labx[Iloc]
 
+    # Filter on threshold
     if threshold is not None:
         if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
         simmatLogP[simmatLogP<threshold]=0
+
+
+    # Filter on white_list
     if white_list is not None:
         Irow = np.isin(simmatLogP.index.values, white_list)
         Icol = np.isin(simmatLogP.columns, white_list)
-        if verbose>=3: print('[hnet] >Number of variables after white listing: [%d]' %(sum(Irow)))
+        Ilabx = np.isin(labx, white_list)
+        Irow = np.logical_or(Irow, Ilabx)
+        Icol = np.logical_or(Icol, Ilabx)
+        if verbose>=3: print('[hnet] >Number of variables at input: [%d], and after white listing: [%d]' %(len(Irow), sum(Irow)))
         simmatLogP = simmatLogP.iloc[Irow,Icol]
         labx = labx[Irow]
+
+    # Filter on white_list
     if black_list is not None:
-        Irow = ~np.isin(simmatLogP.index.values, black_list)
-        Icol = ~np.isin(simmatLogP.columns, black_list)
-        if verbose>=3: print('[hnet] >Number of variables after black listing: [%d]' %(sum(Irow)))
-        simmatLogP = simmatLogP.iloc[Irow, Icol]
-        labx = labx[Irow]
+        Irow = np.isin(simmatLogP.index.values, black_list)
+        Icol = np.isin(simmatLogP.columns, black_list)
+        Ilabx = np.isin(labx, black_list)
+        Irow = np.logical_or(Irow, Ilabx)
+        Icol = np.logical_or(Icol, Ilabx)
+        if verbose>=3: print('[hnet] >Number of variables at input: [%d], and after black listing: [%d]' %(len(Irow), sum(~Irow)))
+        simmatLogP = simmatLogP.iloc[~Irow, ~Icol]
+        labx = labx[~Irow]
 
     return simmatLogP, labx
-

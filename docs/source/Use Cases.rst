@@ -1,0 +1,353 @@
+.. _code_directive:
+
+-------------------------------------
+
+
+Use Cases
+-----------------
+
+HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.
+
+    Your goal can be for example::
+        1. Explore the complex associations between your variables using interactive networks.
+        2. Determine an explanation for your clusters by enrichment.
+        3. Transform your feature space and build a dissimilarity matrix that can be used for further analysis.
+
+
+Cancer dataset
+'''''''''''''''''''''
+
+The cancer data set contains only a few columns but can result in an enormous complexity in their cross-relationships.
+To unravel the associations between the variables, and gain insights, we can easily run ``hnet``. This dataset already contains tsne and PCA coordinates that we do not use. We will black list those to prevent being modeled.
+
+.. code-block:: python
+	
+	# Import
+	import hnet
+	
+	# Import example dataset
+	df = hnet.import_example('cancer')
+	
+	# Print
+	print(df.head())
+
+	
+.. table::
+
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |    |   tsneX |   tsneY |   age | sex    |   survival_months |   death_indicator | labx   |     PC1 |      PC2 |
+    +====+=========+=========+=======+========+===================+===================+========+=========+==========+
+    |  0 | 37.2043 | 24.1628 |    58 | male   |           44.5175 |                 0 | acc    | 49.2335 | 14.4965  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  1 | 37.0931 | 23.4236 |    44 | female |           55.0965 |                 0 | acc    | 46.328  | 14.4645  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  2 | 36.8063 | 23.4449 |    23 | female |           63.8029 |                 1 | acc    | 46.5679 | 13.4801  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  3 | 38.0679 | 24.4118 |    30 | male   |           11.9918 |                 0 | acc    | 63.6247 |  1.87406 |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  4 | 36.7912 | 21.7153 |    29 | female |           79.77   |                 1 | acc    | 41.7467 | 37.5336  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+
+     
+.. code-block:: python
+	
+	# Import
+	from hnet import hnet
+	
+	# Initialize
+	hn = hnet(black_list=['tsneX','tsneY','PC1','PC2'])
+
+	# Learn the relationships
+	results = hn.association_learning(df)
+
+
+**Output looks as following**
+
+.. code-block:: python
+
+    # [hnet] >Removing features from the black list..
+    # [DTYPES] Auto detecting dtypes
+    # [DTYPES] [age]             > [float]->[num] [74]
+    # [DTYPES] [sex]             > [obj]  ->[cat] [2]
+    # [DTYPES] [survival_months] > [force]->[num] [1591]
+    # [DTYPES] [death_indicator] > [float]->[num] [2]
+    # [DTYPES] [labx]            > [obj]  ->[cat] [19]
+    # [DTYPES] Setting dtypes in dataframe
+    # [DF2ONEHOT] Working on age
+    # [DF2ONEHOT] Working on sex.....[3]
+    # [DF2ONEHOT] Working on survival_months
+    # [DF2ONEHOT] Working on labx.....[19]
+    # [DF2ONEHOT] Total onehot features: 22
+    # [hnet] >Association learning across [22] categories.
+    # 100%|██████████| 22/22 [00:07<00:00,  2.77it/s]
+    # [hnet] >Total number of computations: [969]
+    # [hnet] >Multiple test correction using holm
+    # [hnet] >Dropping age
+    # [hnet] >Dropping survival_months
+    # [hnet] >Dropping death_indicator
+    # [hnet] >Fin.
+
+
+**Antecedents and Consequents**
+
+If A implies C, then A is called the antecedent and C is called the consequent.
+For the cancer data set we computed the antecedent and its consequent.
+Here we can see that the strongest antecedents are BRCA: Breast cancer, CESC: Cervical squamous cell carcinoma, and OV: Ovarian Cancer, implies to the gender Female.
+A Fishers Pvalue is detected of 0 (because of floating precision error.)
+The second most significant hit is that females, and death indicator=1 implies to Breast cancer cases.
+
+.. code-block:: python
+	
+	# Import example dataset
+	print(hn.results['rules'])
+
+
+.. table::
+
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    |    | antecedents                                                                                                              | consequents   |      Pfisher |
+    +====+==========================================================================================================================+===============+==============+
+    |  0 | ['labx_brca', 'labx_cesc', 'labx_ov', 'age_low_58', 'survival_months_low_13.8']                                          | sex_female    | 0            |
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    |  1 | ['sex_female', 'death_indicator_low_1']                                                                                  | labx_brca     | 4.05787e-210 |
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    |  2 | ['sex_male', 'death_indicator_low_1']                                                                                    | labx_prad     | 3.73511e-104 |
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    |  3 | ['sex_female', 'death_indicator_low_0', 'survival_months_low_29']                                                        | labx_ov       | 4.24764e-100 |
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    |  4 | ['labx_blca', 'labx_coad', 'labx_hnsc', 'labx_kirc', 'labx_kirp', 'labx_prad', 'age_low_61', 'survival_months_low_10.8'] | sex_male      | 7.99303e-93  |
+    +----+--------------------------------------------------------------------------------------------------------------------------+---------------+--------------+
+    
+
+.. code-block:: python
+
+	# Generate the interactive graph.
+	G = hn.d3graph()
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/cancer/defaults/index.html" height="600px" width="100%", frameBorder="0"></iframe>
+
+
+.. code-block:: python
+
+	# Generate the interactive graph but color on clusters.
+	G = hn.d3graph(node_color='cluster')
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/cancer/node_color/index.html" height="600px" width="100%", frameBorder="0"></iframe>
+
+
+.. code-block:: python
+
+	# Filter using white_list
+	G = hn.d3graph(node_color='cluster', white_list=['labx','survival_months'])
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe>
+
+
+Fifa dataset
+'''''''''''''''''''''
+
+The Fifa data set is from 2018 and contains many variables. By default, many variables would be converted to categorical values which may not be the ideal choice.
+We will set the dtypes manually to make sure each variable has the correct dtype.
+
+.. code-block:: python
+
+	# Import
+	import hnet
+
+	# Import example dataset
+	df = hnet.import_example('fifa')
+	
+	# Print
+	print(df.head())
+
+.. table::
+
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+    |    | Date       | Team         | Opponent     |   Goal Scored |   Ball Possession % |   Attempts |   On-Target |   Off-Target |   Blocked |   Corners |   Offsides |   Free Kicks |   Saves |   Pass Accuracy % |   Passes |   Distance Covered (Kms) |   Fouls Committed |   Yellow Card |   Yellow & Red |   Red | Man of the Match   |   1st Goal | Round       | PSO   |   Goals in PSO |   Own goals |   Own goal Time |
+    +====+============+==============+==============+===============+=====================+============+=============+==============+===========+===========+============+==============+=========+===================+==========+==========================+===================+===============+================+=======+====================+============+=============+=======+================+=============+=================+
+    |  0 | 14-06-2018 | Russia       | Saudi Arabia |             5 |                  40 |         13 |           7 |            3 |         3 |         6 |          3 |           11 |       0 |                78 |      306 |                      118 |                22 |             0 |              0 |     0 | Yes                |         12 | Group Stage | No    |              0 |         nan |             nan |
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+    |  1 | 14-06-2018 | Saudi Arabia | Russia       |             0 |                  60 |          6 |           0 |            3 |         3 |         2 |          1 |           25 |       2 |                86 |      511 |                      105 |                10 |             0 |              0 |     0 | No                 |        nan | Group Stage | No    |              0 |         nan |             nan |
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+    |  2 | 15-06-2018 | Egypt        | Uruguay      |             0 |                  43 |          8 |           3 |            3 |         2 |         0 |          1 |            7 |       3 |                78 |      395 |                      112 |                12 |             2 |              0 |     0 | No                 |        nan | Group Stage | No    |              0 |         nan |             nan |
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+    |  3 | 15-06-2018 | Uruguay      | Egypt        |             1 |                  57 |         14 |           4 |            6 |         4 |         5 |          1 |           13 |       3 |                86 |      589 |                      111 |                 6 |             0 |              0 |     0 | Yes                |         89 | Group Stage | No    |              0 |         nan |             nan |
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+    |  4 | 15-06-2018 | Morocco      | Iran         |             0 |                  64 |         13 |           3 |            6 |         4 |         5 |          0 |           14 |       2 |                86 |      433 |                      101 |                22 |             1 |              0 |     0 | No                 |        nan | Group Stage | No    |              0 |           1 |              90 |
+    +----+------------+--------------+--------------+---------------+---------------------+------------+-------------+--------------+-----------+-----------+------------+--------------+---------+-------------------+----------+--------------------------+-------------------+---------------+----------------+-------+--------------------+------------+-------------+-------+----------------+-------------+-----------------+
+
+     
+.. code-block:: python
+	
+	# Import
+	from hnet import hnet
+	
+	# Initialize
+	hn = hnet(dtypes=['None', 'cat', 'cat', 'cat', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'cat', 'num'])
+
+	# Learn the relationships
+	results = hn.association_learning(df)
+
+
+**Output looks as following**
+
+.. code-block:: python
+
+    # [DTYPES] Setting dtypes in dataframe
+    # [DTYPES] [Date] [list] is used in dtyping!
+    # [DF2ONEHOT] Working on Date.....[25]
+    # [DF2ONEHOT] Working on Team.....[32]
+    # [DF2ONEHOT] Working on Opponent.....[32]
+    # [DF2ONEHOT] Working on Goal Scored.....[7]
+    # [DF2ONEHOT] Working on Ball Possession %
+    # [DF2ONEHOT] Working on Attempts
+    # [DF2ONEHOT] Working on On-Target
+    # [DF2ONEHOT] Working on Off-Target
+    # [DF2ONEHOT] Working on Blocked
+    # [DF2ONEHOT] Working on Corners
+    # [DF2ONEHOT] Working on Offsides
+    # [DF2ONEHOT] Working on Free Kicks
+    # [DF2ONEHOT] Working on Saves
+    # [DF2ONEHOT] Working on Pass Accuracy %
+    # [DF2ONEHOT] Working on Passes
+    # [DF2ONEHOT] Working on Distance Covered (Kms)
+    # [DF2ONEHOT] Working on Fouls Committed.....[21]
+    # [DF2ONEHOT] Working on Yellow Card.....[7]
+    # [DF2ONEHOT] Working on Yellow & Red.....[2]
+    # [DF2ONEHOT] Working on Red.....[2]
+    #   0%|          | 0/24 [00:00<?, ?it/s][DF2ONEHOT] Working on Man of the Match.....[2]
+    # [DF2ONEHOT] Working on 1st Goal.....[57]
+    # [DF2ONEHOT] Working on Round.....[6]
+    # [DF2ONEHOT] Working on PSO.....[2]
+    # [DF2ONEHOT] Working on Goals in PSO.....[4]
+    # [DF2ONEHOT] Working on Own goals.....[2]
+    # [DF2ONEHOT] Working on Own goal Time
+    # [DF2ONEHOT] Total onehot features: 24
+    # [hnet] >Association learning across [24] categories.
+    # 100%|██████████| 24/24 [00:22<00:00,  1.08it/s]
+    # [hnet] >Total number of computations: [5240]
+    # [hnet] >Multiple test correction using holm
+    # [hnet] >Dropping 1st Goal
+    # [hnet] >Dropping Own goals
+    # [hnet] >Dropping Own goal Time
+    # [hnet] >Fin.
+
+
+**Antecedents and Consequents**
+
+The conclusions are mostly about who/what was not doing so well during the matches.
+So a lot of information can be used for improvement of matches. So if you are not **the man of the match**, you will likely have **0 goals**. 
+It seems that football is not so complicated after all ;)
+
+.. code-block:: python
+	
+	# Import example dataset
+	print(hn.results['rules'])
+
+
+.. table::
+
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+
+    |    | antecedents_labx                                  | antecedents                                                               | consequents         |     Pfisher |
+    +====+===================================================+===========================================================================+=====================+=============+
+    |  1 | ['Round' 'Goals in PSO' 'Distance Covered (Kms)'] | ['Round_Group Stage', 'Goals in PSO_0', 'Distance Covered (Kms)_low_104'] | PSO_No              | 7.60675e-11 |
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+
+    |  2 | ['Round' 'PSO' 'Distance Covered (Kms)']          | ['Round_Group Stage', 'PSO_No', 'Distance Covered (Kms)_low_104']         | Goals in PSO_0      | 7.60675e-11 |
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+
+    |  3 | ['Man of the Match']                              | ['Man of the Match_No']                                                   | Goal Scored_0       | 1.68161e-06 |
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+
+    |  4 | ['Goal Scored']                                   | ['Goal Scored_0']                                                         | Man of the Match_No | 1.68161e-06 |
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+
+    |  5 | ['PSO' 'Goals in PSO']                            | ['PSO_No', 'Goals in PSO_0']                                              | Round_Group Stage   | 0.00195106  |
+    +----+---------------------------------------------------+---------------------------------------------------------------------------+---------------------+-------------+ 
+
+Create the network graph. Im not entirely sure what to say about this. Draw your own conclusions ;)
+
+.. code-block:: python
+
+	# Generate the interactive graph.
+	G = hn.d3graph()
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe>
+
+
+Cluster enrichment
+'''''''''''''''''''''
+
+In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
+In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.
+
+.. code-block:: bash
+	
+	# For easy colourmap creation
+	pip install colourmap
+	# For cluster evaluation
+	pip install clusteval
+
+.. code-block:: python
+	
+	# Import
+	import hnet
+
+	# Import example dataset
+	df = hnet.import_example('cancer')
+
+	# Print
+	print(df.head())
+
+.. table::
+
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |    |   tsneX |   tsneY |   age | sex    |   survival_months |   death_indicator | labx   |     PC1 |      PC2 |
+    +====+=========+=========+=======+========+===================+===================+========+=========+==========+
+    |  0 | 37.2043 | 24.1628 |    58 | male   |           44.5175 |                 0 | acc    | 49.2335 | 14.4965  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  1 | 37.0931 | 23.4236 |    44 | female |           55.0965 |                 0 | acc    | 46.328  | 14.4645  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  2 | 36.8063 | 23.4449 |    23 | female |           63.8029 |                 1 | acc    | 46.5679 | 13.4801  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  3 | 38.0679 | 24.4118 |    30 | male   |           11.9918 |                 0 | acc    | 63.6247 |  1.87406 |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+    |  4 | 36.7912 | 21.7153 |    29 | female |           79.77   |                 1 | acc    | 41.7467 | 37.5336  |
+    +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
+
+
+.. code-block:: python
+
+    # Import
+    import matplotlib.pyplot as plt
+    import colourmap
+    
+    # Create colors for the cancer labels
+    c = colourmap.fromlist(df['labx'])[0]
+
+    # Make scatter plot
+    plt.figure(figsize=(15,10))
+    plt.scatter(df['tsneX'],df['tsneY'], c=c, s=5)
+    plt.grid(True)
+    plt.title('cancer dataset')
+	
+
+.. _cancer_scatter:
+
+.. figure:: ../figs/other/cancer_scatter.png
+
+
+.. code-block:: python
+	
+	# Import
+	from hnet import hnet
+	
+	# Initialize
+	hn = hnet(black_list=['tsneX','tsneY','PC1','PC2'])
+
+	# Learn the relationships
+	results = hn.association_learning(df)

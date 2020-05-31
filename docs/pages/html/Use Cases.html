@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Use Cases &mdash; hnet hnet documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Coding quality" href="Coding quality.html" />
+    <link rel="prev" title="Examples" href="Examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hnet
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Background</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Abstract.html">Abstract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abstract.html#schematic-overview">Schematic overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Input/output</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html">Import datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_output.html#output-variables">Output variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Algorithm</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html">Pre-processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#black-white-listing">black/white listing</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Plots</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html">Network Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#comparing-networks">Comparing networks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cancer-dataset">Cancer dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fifa-dataset">Fifa dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cluster-enrichment">Cluster enrichment</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Code Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Coding quality.html">Coding quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arXiv.html">arXiv</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hnet</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Use Cases</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Use Cases.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <hr class="docutils" id="code-directive" />
+<div class="section" id="use-cases">
+<h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
+<p>HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Your goal can be for example::</dt><dd><ol class="arabic simple">
+<li><p>Explore the complex associations between your variables using interactive networks.</p></li>
+<li><p>Determine an explanation for your clusters by enrichment.</p></li>
+<li><p>Transform your feature space and build a dissimilarity matrix that can be used for further analysis.</p></li>
+</ol>
+</dd>
+</dl>
+</div></blockquote>
+<div class="section" id="cancer-dataset">
+<h2>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline">¶</a></h2>
+<p>The cancer data set contains only a few columns but can result in an enormous complexity in their cross-relationships.
+To unravel the associations between the variables, and gain insights, we can easily run <code class="docutils literal notranslate"><span class="pre">hnet</span></code>. This dataset already contains tsne and PCA coordinates that we do not use. We will black list those to prevent being modeled.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
+
+<span class="c1"># Import example dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;cancer&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 8%" />
+<col style="width: 9%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>tsneX</p></th>
+<th class="head"><p>tsneY</p></th>
+<th class="head"><p>age</p></th>
+<th class="head"><p>sex</p></th>
+<th class="head"><p>survival_months</p></th>
+<th class="head"><p>death_indicator</p></th>
+<th class="head"><p>labx</p></th>
+<th class="head"><p>PC1</p></th>
+<th class="head"><p>PC2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>37.2043</p></td>
+<td><p>24.1628</p></td>
+<td><p>58</p></td>
+<td><p>male</p></td>
+<td><p>44.5175</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>49.2335</p></td>
+<td><p>14.4965</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>37.0931</p></td>
+<td><p>23.4236</p></td>
+<td><p>44</p></td>
+<td><p>female</p></td>
+<td><p>55.0965</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>46.328</p></td>
+<td><p>14.4645</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>36.8063</p></td>
+<td><p>23.4449</p></td>
+<td><p>23</p></td>
+<td><p>female</p></td>
+<td><p>63.8029</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>46.5679</p></td>
+<td><p>13.4801</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>38.0679</p></td>
+<td><p>24.4118</p></td>
+<td><p>30</p></td>
+<td><p>male</p></td>
+<td><p>11.9918</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>63.6247</p></td>
+<td><p>1.87406</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>36.7912</p></td>
+<td><p>21.7153</p></td>
+<td><p>29</p></td>
+<td><p>female</p></td>
+<td><p>79.77</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>41.7467</p></td>
+<td><p>37.5336</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Initialize</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">,</span><span class="s1">&#39;PC1&#39;</span><span class="p">,</span><span class="s1">&#39;PC2&#39;</span><span class="p">])</span>
+
+<span class="c1"># Learn the relationships</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output looks as following</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># [hnet] &gt;Removing features from the black list..</span>
+<span class="c1"># [DTYPES] Auto detecting dtypes</span>
+<span class="c1"># [DTYPES] [age]             &gt; [float]-&gt;[num] [74]</span>
+<span class="c1"># [DTYPES] [sex]             &gt; [obj]  -&gt;[cat] [2]</span>
+<span class="c1"># [DTYPES] [survival_months] &gt; [force]-&gt;[num] [1591]</span>
+<span class="c1"># [DTYPES] [death_indicator] &gt; [float]-&gt;[num] [2]</span>
+<span class="c1"># [DTYPES] [labx]            &gt; [obj]  -&gt;[cat] [19]</span>
+<span class="c1"># [DTYPES] Setting dtypes in dataframe</span>
+<span class="c1"># [DF2ONEHOT] Working on age</span>
+<span class="c1"># [DF2ONEHOT] Working on sex.....[3]</span>
+<span class="c1"># [DF2ONEHOT] Working on survival_months</span>
+<span class="c1"># [DF2ONEHOT] Working on labx.....[19]</span>
+<span class="c1"># [DF2ONEHOT] Total onehot features: 22</span>
+<span class="c1"># [hnet] &gt;Association learning across [22] categories.</span>
+<span class="c1"># 100%|██████████| 22/22 [00:07&lt;00:00,  2.77it/s]</span>
+<span class="c1"># [hnet] &gt;Total number of computations: [969]</span>
+<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
+<span class="c1"># [hnet] &gt;Dropping age</span>
+<span class="c1"># [hnet] &gt;Dropping survival_months</span>
+<span class="c1"># [hnet] &gt;Dropping death_indicator</span>
+<span class="c1"># [hnet] &gt;Fin.</span>
+</pre></div>
+</div>
+<p><strong>Antecedents and Consequents</strong></p>
+<p>If A implies C, then A is called the antecedent and C is called the consequent.
+For the cancer data set we computed the antecedent and its consequent.
+Here we can see that the strongest antecedents are BRCA: Breast cancer, CESC: Cervical squamous cell carcinoma, and OV: Ovarian Cancer, implies to the gender Female.
+A Fishers Pvalue is detected of 0 (because of floating precision error.)
+The second most significant hit is that females, and death indicator=1 implies to Breast cancer cases.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import example dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 79%" />
+<col style="width: 10%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>antecedents</p></th>
+<th class="head"><p>consequents</p></th>
+<th class="head"><p>Pfisher</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>[‘labx_brca’, ‘labx_cesc’, ‘labx_ov’, ‘age_low_58’, ‘survival_months_low_13.8’]</p></td>
+<td><p>sex_female</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>[‘sex_female’, ‘death_indicator_low_1’]</p></td>
+<td><p>labx_brca</p></td>
+<td><p>4.05787e-210</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>[‘sex_male’, ‘death_indicator_low_1’]</p></td>
+<td><p>labx_prad</p></td>
+<td><p>3.73511e-104</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>[‘sex_female’, ‘death_indicator_low_0’, ‘survival_months_low_29’]</p></td>
+<td><p>labx_ov</p></td>
+<td><p>4.24764e-100</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>[‘labx_blca’, ‘labx_coad’, ‘labx_hnsc’, ‘labx_kirc’, ‘labx_kirp’, ‘labx_prad’, ‘age_low_61’, ‘survival_months_low_10.8’]</p></td>
+<td><p>sex_male</p></td>
+<td><p>7.99303e-93</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph.</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/d3graph/cancer/defaults/index.html" height="600px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph but color on clusters.</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/d3graph/cancer/node_color/index.html" height="600px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter using white_list</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">,</span><span class="s1">&#39;survival_months&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe></div>
+<div class="section" id="fifa-dataset">
+<h2>Fifa dataset<a class="headerlink" href="#fifa-dataset" title="Permalink to this headline">¶</a></h2>
+<p>The Fifa data set is from 2018 and contains many variables. By default, many variables would be converted to categorical values which may not be the ideal choice.
+We will set the dtypes manually to make sure each variable has the correct dtype.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
+
+<span class="c1"># Import example dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;fifa&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 1%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 7%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Date</p></th>
+<th class="head"><p>Team</p></th>
+<th class="head"><p>Opponent</p></th>
+<th class="head"><p>Goal Scored</p></th>
+<th class="head"><p>Ball Possession %</p></th>
+<th class="head"><p>Attempts</p></th>
+<th class="head"><p>On-Target</p></th>
+<th class="head"><p>Off-Target</p></th>
+<th class="head"><p>Blocked</p></th>
+<th class="head"><p>Corners</p></th>
+<th class="head"><p>Offsides</p></th>
+<th class="head"><p>Free Kicks</p></th>
+<th class="head"><p>Saves</p></th>
+<th class="head"><p>Pass Accuracy %</p></th>
+<th class="head"><p>Passes</p></th>
+<th class="head"><p>Distance Covered (Kms)</p></th>
+<th class="head"><p>Fouls Committed</p></th>
+<th class="head"><p>Yellow Card</p></th>
+<th class="head"><p>Yellow &amp; Red</p></th>
+<th class="head"><p>Red</p></th>
+<th class="head"><p>Man of the Match</p></th>
+<th class="head"><p>1st Goal</p></th>
+<th class="head"><p>Round</p></th>
+<th class="head"><p>PSO</p></th>
+<th class="head"><p>Goals in PSO</p></th>
+<th class="head"><p>Own goals</p></th>
+<th class="head"><p>Own goal Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>14-06-2018</p></td>
+<td><p>Russia</p></td>
+<td><p>Saudi Arabia</p></td>
+<td><p>5</p></td>
+<td><p>40</p></td>
+<td><p>13</p></td>
+<td><p>7</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>6</p></td>
+<td><p>3</p></td>
+<td><p>11</p></td>
+<td><p>0</p></td>
+<td><p>78</p></td>
+<td><p>306</p></td>
+<td><p>118</p></td>
+<td><p>22</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>Yes</p></td>
+<td><p>12</p></td>
+<td><p>Group Stage</p></td>
+<td><p>No</p></td>
+<td><p>0</p></td>
+<td><p>nan</p></td>
+<td><p>nan</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>14-06-2018</p></td>
+<td><p>Saudi Arabia</p></td>
+<td><p>Russia</p></td>
+<td><p>0</p></td>
+<td><p>60</p></td>
+<td><p>6</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>25</p></td>
+<td><p>2</p></td>
+<td><p>86</p></td>
+<td><p>511</p></td>
+<td><p>105</p></td>
+<td><p>10</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>No</p></td>
+<td><p>nan</p></td>
+<td><p>Group Stage</p></td>
+<td><p>No</p></td>
+<td><p>0</p></td>
+<td><p>nan</p></td>
+<td><p>nan</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>15-06-2018</p></td>
+<td><p>Egypt</p></td>
+<td><p>Uruguay</p></td>
+<td><p>0</p></td>
+<td><p>43</p></td>
+<td><p>8</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>7</p></td>
+<td><p>3</p></td>
+<td><p>78</p></td>
+<td><p>395</p></td>
+<td><p>112</p></td>
+<td><p>12</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>No</p></td>
+<td><p>nan</p></td>
+<td><p>Group Stage</p></td>
+<td><p>No</p></td>
+<td><p>0</p></td>
+<td><p>nan</p></td>
+<td><p>nan</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>15-06-2018</p></td>
+<td><p>Uruguay</p></td>
+<td><p>Egypt</p></td>
+<td><p>1</p></td>
+<td><p>57</p></td>
+<td><p>14</p></td>
+<td><p>4</p></td>
+<td><p>6</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>1</p></td>
+<td><p>13</p></td>
+<td><p>3</p></td>
+<td><p>86</p></td>
+<td><p>589</p></td>
+<td><p>111</p></td>
+<td><p>6</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>Yes</p></td>
+<td><p>89</p></td>
+<td><p>Group Stage</p></td>
+<td><p>No</p></td>
+<td><p>0</p></td>
+<td><p>nan</p></td>
+<td><p>nan</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>15-06-2018</p></td>
+<td><p>Morocco</p></td>
+<td><p>Iran</p></td>
+<td><p>0</p></td>
+<td><p>64</p></td>
+<td><p>13</p></td>
+<td><p>3</p></td>
+<td><p>6</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>0</p></td>
+<td><p>14</p></td>
+<td><p>2</p></td>
+<td><p>86</p></td>
+<td><p>433</p></td>
+<td><p>101</p></td>
+<td><p>22</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>No</p></td>
+<td><p>nan</p></td>
+<td><p>Group Stage</p></td>
+<td><p>No</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>90</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Initialize</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">])</span>
+
+<span class="c1"># Learn the relationships</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output looks as following</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># [DTYPES] Setting dtypes in dataframe</span>
+<span class="c1"># [DTYPES] [Date] [list] is used in dtyping!</span>
+<span class="c1"># [DF2ONEHOT] Working on Date.....[25]</span>
+<span class="c1"># [DF2ONEHOT] Working on Team.....[32]</span>
+<span class="c1"># [DF2ONEHOT] Working on Opponent.....[32]</span>
+<span class="c1"># [DF2ONEHOT] Working on Goal Scored.....[7]</span>
+<span class="c1"># [DF2ONEHOT] Working on Ball Possession %</span>
+<span class="c1"># [DF2ONEHOT] Working on Attempts</span>
+<span class="c1"># [DF2ONEHOT] Working on On-Target</span>
+<span class="c1"># [DF2ONEHOT] Working on Off-Target</span>
+<span class="c1"># [DF2ONEHOT] Working on Blocked</span>
+<span class="c1"># [DF2ONEHOT] Working on Corners</span>
+<span class="c1"># [DF2ONEHOT] Working on Offsides</span>
+<span class="c1"># [DF2ONEHOT] Working on Free Kicks</span>
+<span class="c1"># [DF2ONEHOT] Working on Saves</span>
+<span class="c1"># [DF2ONEHOT] Working on Pass Accuracy %</span>
+<span class="c1"># [DF2ONEHOT] Working on Passes</span>
+<span class="c1"># [DF2ONEHOT] Working on Distance Covered (Kms)</span>
+<span class="c1"># [DF2ONEHOT] Working on Fouls Committed.....[21]</span>
+<span class="c1"># [DF2ONEHOT] Working on Yellow Card.....[7]</span>
+<span class="c1"># [DF2ONEHOT] Working on Yellow &amp; Red.....[2]</span>
+<span class="c1"># [DF2ONEHOT] Working on Red.....[2]</span>
+<span class="c1">#   0%|          | 0/24 [00:00&lt;?, ?it/s][DF2ONEHOT] Working on Man of the Match.....[2]</span>
+<span class="c1"># [DF2ONEHOT] Working on 1st Goal.....[57]</span>
+<span class="c1"># [DF2ONEHOT] Working on Round.....[6]</span>
+<span class="c1"># [DF2ONEHOT] Working on PSO.....[2]</span>
+<span class="c1"># [DF2ONEHOT] Working on Goals in PSO.....[4]</span>
+<span class="c1"># [DF2ONEHOT] Working on Own goals.....[2]</span>
+<span class="c1"># [DF2ONEHOT] Working on Own goal Time</span>
+<span class="c1"># [DF2ONEHOT] Total onehot features: 24</span>
+<span class="c1"># [hnet] &gt;Association learning across [24] categories.</span>
+<span class="c1"># 100%|██████████| 24/24 [00:22&lt;00:00,  1.08it/s]</span>
+<span class="c1"># [hnet] &gt;Total number of computations: [5240]</span>
+<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
+<span class="c1"># [hnet] &gt;Dropping 1st Goal</span>
+<span class="c1"># [hnet] &gt;Dropping Own goals</span>
+<span class="c1"># [hnet] &gt;Dropping Own goal Time</span>
+<span class="c1"># [hnet] &gt;Fin.</span>
+</pre></div>
+</div>
+<p><strong>Antecedents and Consequents</strong></p>
+<p>The conclusions are mostly about who/what was not doing so well during the matches.
+So a lot of information can be used for improvement of matches. So if you are not <strong>the man of the match</strong>, you will likely have <strong>0 goals</strong>.
+It seems that football is not so complicated after all ;)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import example dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 2%" />
+<col style="width: 31%" />
+<col style="width: 46%" />
+<col style="width: 13%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>antecedents_labx</p></th>
+<th class="head"><p>antecedents</p></th>
+<th class="head"><p>consequents</p></th>
+<th class="head"><p>Pfisher</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>[‘Round’ ‘Goals in PSO’ ‘Distance Covered (Kms)’]</p></td>
+<td><p>[‘Round_Group Stage’, ‘Goals in PSO_0’, ‘Distance Covered (Kms)_low_104’]</p></td>
+<td><p>PSO_No</p></td>
+<td><p>7.60675e-11</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>[‘Round’ ‘PSO’ ‘Distance Covered (Kms)’]</p></td>
+<td><p>[‘Round_Group Stage’, ‘PSO_No’, ‘Distance Covered (Kms)_low_104’]</p></td>
+<td><p>Goals in PSO_0</p></td>
+<td><p>7.60675e-11</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>[‘Man of the Match’]</p></td>
+<td><p>[‘Man of the Match_No’]</p></td>
+<td><p>Goal Scored_0</p></td>
+<td><p>1.68161e-06</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>[‘Goal Scored’]</p></td>
+<td><p>[‘Goal Scored_0’]</p></td>
+<td><p>Man of the Match_No</p></td>
+<td><p>1.68161e-06</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>[‘PSO’ ‘Goals in PSO’]</p></td>
+<td><p>[‘PSO_No’, ‘Goals in PSO_0’]</p></td>
+<td><p>Round_Group Stage</p></td>
+<td><p>0.00195106</p></td>
+</tr>
+</tbody>
+</table>
+<p>Create the network graph. Im not entirely sure what to say about this. Draw your own conclusions ;)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph.</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe></div>
+<div class="section" id="cluster-enrichment">
+<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline">¶</a></h2>
+<p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
+In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For easy colourmap creation</span>
+pip install colourmap
+<span class="c1"># For cluster evaluation</span>
+pip install clusteval
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
+<span class="c1"># Import example dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;cancer&#39;</span><span class="p">)</span>
+<span class="c1"># Print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 8%" />
+<col style="width: 9%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>tsneX</p></th>
+<th class="head"><p>tsneY</p></th>
+<th class="head"><p>age</p></th>
+<th class="head"><p>sex</p></th>
+<th class="head"><p>survival_months</p></th>
+<th class="head"><p>death_indicator</p></th>
+<th class="head"><p>labx</p></th>
+<th class="head"><p>PC1</p></th>
+<th class="head"><p>PC2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>37.2043</p></td>
+<td><p>24.1628</p></td>
+<td><p>58</p></td>
+<td><p>male</p></td>
+<td><p>44.5175</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>49.2335</p></td>
+<td><p>14.4965</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>37.0931</p></td>
+<td><p>23.4236</p></td>
+<td><p>44</p></td>
+<td><p>female</p></td>
+<td><p>55.0965</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>46.328</p></td>
+<td><p>14.4645</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>36.8063</p></td>
+<td><p>23.4449</p></td>
+<td><p>23</p></td>
+<td><p>female</p></td>
+<td><p>63.8029</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>46.5679</p></td>
+<td><p>13.4801</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>38.0679</p></td>
+<td><p>24.4118</p></td>
+<td><p>30</p></td>
+<td><p>male</p></td>
+<td><p>11.9918</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>63.6247</p></td>
+<td><p>1.87406</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>36.7912</p></td>
+<td><p>21.7153</p></td>
+<td><p>29</p></td>
+<td><p>female</p></td>
+<td><p>79.77</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>41.7467</p></td>
+<td><p>37.5336</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">colourmap</span>
+
+<span class="c1"># Create colors for the cancer labels</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">colourmap</span><span class="o">.</span><span class="n">fromlist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Make scatter plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;cancer dataset&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="cancer-scatter">
+<img alt="_images/cancer_scatter.png" src="_images/cancer_scatter.png" />
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Initialize</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">,</span><span class="s1">&#39;PC1&#39;</span><span class="p">,</span><span class="s1">&#39;PC2&#39;</span><span class="p">])</span>
+
+<span class="c1"># Learn the relationships</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Coding quality.html" class="btn btn-neutral float-right" title="Coding quality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Erdogan Taskesen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

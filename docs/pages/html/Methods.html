@@ -107,7 +107,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#enrichment">Enrichment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#black-white-list">black/white list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#black-white-listing">black/white listing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#white-listing">White listing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#black-listing">Black listing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#black-listing-in-plot">Black listing in plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#white-listing-in-plot">White listing in plot</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -118,6 +124,7 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use Cases.html">Use Cases</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul>
@@ -313,11 +320,12 @@
 <p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a></p>
 </div>
 </div>
-<div class="section" id="black-white-list">
-<h1>black/white list<a class="headerlink" href="#black-white-list" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="black-white-listing">
+<h1>black/white listing<a class="headerlink" href="#black-white-listing" title="Permalink to this headline">¶</a></h1>
 <p>Input variables (column names) can be black or white listed in the model.
 When variables are black listed, they are excluded from the search and the resulting model will not contain any of those edges. If variables are white listed, the search is limited to only those edges. The resulting model will then only contain edges that are in white_list.</p>
-<p><strong>White list example</strong></p>
+<div class="section" id="white-listing">
+<h2>White listing<a class="headerlink" href="#white-listing" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 
@@ -328,7 +336,9 @@ When variables are black listed, they are excluded from the search and the resul
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Black list example</strong></p>
+</div>
+<div class="section" id="black-listing">
+<h2>Black listing<a class="headerlink" href="#black-listing" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 
@@ -338,6 +348,54 @@ When variables are black listed, they are excluded from the search and the resul
 <span class="c1"># Association learning</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
+</div>
+<p>It can sometimes be desired to remove even more variables from the network plot to reduce complexity or to focus on specific associations.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Four methods of filtering</dt><dd><p>black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).
+white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).
+threshold : Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).
+min_edges : Nodes are only shown if it contains at least a minimum number of edges.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="black-listing-in-plot">
+<h2>Black listing in plot<a class="headerlink" href="#black-listing-in-plot" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will remove the node Age and SibSp.</span>
+
+<span class="c1"># d3graph</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="c1"># Plot</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="c1"># Heatmap</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="white-listing-in-plot">
+<h2>White listing in plot<a class="headerlink" href="#white-listing-in-plot" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and SibSp</span>
+
+<span class="c1"># d3graph</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="c1"># Plot</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="c1"># Heatmap</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>White list example in plot</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and Age</span>
+
+<span class="c1"># d3graph</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="c1"># Plot</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="c1"># Heatmap</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </div>
 </div>
 

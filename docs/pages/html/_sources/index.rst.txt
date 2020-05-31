@@ -52,6 +52,7 @@ Content
   :caption: Examples
 
   Examples
+  Use Cases
 
 
 .. toctree::

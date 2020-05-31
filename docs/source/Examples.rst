@@ -88,7 +88,6 @@ The titanic data set contains a data structure that is often seen in real use ca
 	# [DF2ONEHOT] Total onehot features: 19
 	#
 	# [HNET] Association learning across [19] features.
-	# [HNET] Total number of computations: [0]
 	# [HNET] Multiple test correction using holm
 	# [HNET] Dropping Age
 	# [HNET] Dropping Fare
@@ -177,3 +176,6 @@ Input variables (column names) can be black or white listed in the model.
   # [hnet] >Total number of computations: [1182]
   # [hnet] >Multiple test correction using holm
   # [hnet] >Dropping Fare
+
+
+

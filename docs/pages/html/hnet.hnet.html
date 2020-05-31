@@ -101,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#typing">Typing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#one-hot-enconding">One-hot Enconding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Methods.html#black-white-list">black/white list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Methods.html#black-white-listing">black/white listing</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
@@ -112,6 +112,7 @@
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use Cases.html">Use Cases</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Code Documentation</span></p>
 <ul class="current">
@@ -310,9 +311,9 @@ The default is 1.</p></li>
 ‘fdr_by’         : Benjamini/Yekutieli (negative)
 ‘fdr_tsbh’       : two stage fdr correction (non-negative)
 ‘fdr_tsbky’      : two stage fdr correction (non-negative)</p></li>
-<li><p><strong>dtypes</strong> (<em>list of str</em><em>, </em><em>default : 'pandas'.</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
-[‘cat’,’cat’,’num’,’’,’cat’,…]
-‘pandas’ (default)</p></li>
+<li><p><strong>dtypes</strong> (<em>list of str</em><em>, </em><em>(</em><em>default : 'pandas'</em><em>)</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
+‘pandas’ (default),
+[‘cat’,’cat’,’num’,’’,’cat’]</p></li>
 <li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network</em><em> (</em><em>[</em><em>None</em><em>] </em><em>will glue most numerical labels together whereas</em><em> [</em><em>high</em><em>] </em><em>mostly will not</em><em>)</em><em></em>) – None : No additional information in the labels
 ‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group.
 ‘medium’ : (default) ‘high’ or ‘low’ are included with 1 decimal behind the comma.
@@ -430,7 +431,7 @@ The columns are as following:</p></li>
 
 <dl class="py method">
 <dt id="hnet.hnet.hnet.d3graph">
-<code class="sig-name descname">d3graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_size_limits</span><span class="o">=</span><span class="default_value">[6, 15]</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">node_color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3graph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">d3graph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_size_limits</span><span class="o">=</span><span class="default_value">[6, 15]</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">node_color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_edges</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">1500, 1500</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interactive network creator.</p>
 <p>This function creates a interactive and stand-alone network that is build on d3 javascript.
 d3graph is integrated into hnet and uses the -log10(P-value) adjacency matrix.
@@ -444,8 +445,13 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <li><p><strong>node_size_limits</strong> (<em>tuple</em>) – node sizes are scaled between [min,max] values. The default is [6,15].</p></li>
 <li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
 <li><p><strong>node_color</strong> (<em>None</em><em> or </em><em>'cluster' default : None</em>) – color nodes based on clustering or by label colors.</p></li>
-<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>optional</em>) – Create network using directed edges (arrows). The default is True.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
 <li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure in the browser, [height,width]. The default is [1500,1500].</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -462,7 +468,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 
 <dl class="py method">
 <dt id="hnet.hnet.hnet.heatmap">
-<code class="sig-name descname">heatmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cluster</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.heatmap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">heatmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cluster</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_edges</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.heatmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot heatmap.</p>
 <p>A heatmap can be of use when the results becomes too large to plot in a network.</p>
 <dl class="field-list simple">
@@ -472,6 +478,10 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <li><p><strong>cluster</strong> (<em>Bool</em><em>, </em><em>optional</em>) – Cluster before making heatmap. The default is False.</p></li>
 <li><p><strong>figsize</strong> (<em>typle</em><em>, </em><em>optional</em>) – Figure size. The default is [15, 10].</p></li>
 <li><p><strong>savepath</strong> (<em>Bool</em><em>, </em><em>optional</em>) – saveingpath. The default is None.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity. The default is 3.</p></li>
 </ul>
 </dd>
@@ -526,7 +536,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 
 <dl class="py method">
 <dt id="hnet.hnet.hnet.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">dist_between_nodes</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">node_size_limits</span><span class="o">=</span><span class="default_value">[25, 500]</span></em>, <em class="sig-param"><span class="n">node_color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'fruchterman_reingold'</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">250</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">dist_between_nodes</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">node_size_limits</span><span class="o">=</span><span class="default_value">[25, 500]</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">node_color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">[15, 10]</span></em>, <em class="sig-param"><span class="n">pos</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'fruchterman_reingold'</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">250</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_edges</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make plot static network plot of the model results.</p>
 <p>The results of hnet can be vizualized in several manners, one of them is a static network plot.</p>
 <dl class="field-list simple">
@@ -537,11 +547,16 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <li><p><strong>dist_between_nodes</strong> (<em>float</em><em>, </em><em>optional</em>) – Distance between the nodes. Edges are sized based this value. The default is 0.4.</p></li>
 <li><p><strong>node_size_limits</strong> (<em>int</em><em>, </em><em>optional</em>) – Nodes are scaled between the Min and max size. The default is [25,500].</p></li>
 <li><p><strong>node_color</strong> (<em>str</em><em>, </em><em>None</em><em> or </em><em>'cluster' default is None</em>) – color nodes based on clustering or by label colors.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
 <li><p><strong>savepath</strong> (<em>str</em><em>, </em><em>optional</em>) – Save the figure in specified path.</p></li>
 <li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure, [height,width]. The default is [15,10].</p></li>
 <li><p><strong>pos</strong> (<em>list</em><em>, </em><em>optional</em>) – list with coordinates to orientate the nodes.</p></li>
 <li><p><strong>layout</strong> (<em>str</em><em>, </em><em>optional</em>) – layouts from networkx can be used. The default is ‘fruchterman_reingold’.</p></li>
 <li><p><strong>dpi</strong> (<em>int</em><em>, </em><em>optional</em>) – resolution of the figure. The default is 250.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
 <li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
 </ul>
 </dd>
@@ -593,7 +608,7 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the dataset ‘sprinkler’ or ‘titanic’ or ‘student’.</p></li>
+<li><p><strong>data</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The default is 3.</p></li>
 </ul>
 </dd>

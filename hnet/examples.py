@@ -131,10 +131,47 @@ hn = hnet()
 out = hn.association_learning(df)
 
 # %%
+
+    # [hnet] >Removing features from the black list..
+    # [DTYPES] Auto detecting dtypes
+    # [DTYPES] [age]             > [float]->[num] [74]
+    # [DTYPES] [sex]             > [obj]  ->[cat] [2]
+    # [DTYPES] [survival_months] > [force]->[num] [1591]
+    # [DTYPES] [death_indicator] > [float]->[num] [2]
+    # [DTYPES] [labx]            > [obj]  ->[cat] [19]
+    # [DTYPES] Setting dtypes in dataframe
+    # [DF2ONEHOT] Working on age
+    # [DF2ONEHOT] Working on sex.....[3]
+    # [DF2ONEHOT] Working on survival_months
+    #   0%|          | 0/22 [00:00<?, ?it/s]
+    # [DF2ONEHOT] Working on labx.....[19]
+    # [DF2ONEHOT] Total onehot features: 22
+    # [hnet] >Association learning across [22] categories.
+    # 100%|██████████| 22/22 [00:07<00:00,  2.77it/s]
+    # [hnet] >Total number of computations: [969]
+    # [hnet] >Multiple test correction using holm
+    # [hnet] >Dropping age
+    # [hnet] >Dropping survival_months
+    # [hnet] >Dropping death_indicator
+    # [hnet] >Fin.
+
+
+
+# %%
 from hnet import hnet
 import pandas as pd
+from tabulate import tabulate
 
-df = pd.read_csv('D://PY//DATA//OTHER//marketing_data_online_retail_small.csv', sep=';')
+
+df = hn.import_example('cancer')
+hn = hnet(black_list=['tsneX','tsneY','PC1','PC2'])
+results = hn.association_learning(df)
+hn.d3graph(black_list=['sex'])
+out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
+print(tabulate(df.head(), tablefmt="grid", headers="keys"))
+
+# %% Small retail
+df = hn.import_example('retail')
 hn1 = hnet()
 results1 = hn1.association_learning(df)
 hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/marketing_data_online_retail_small/')
@@ -142,32 +179,37 @@ hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/market
 # hn1.d3graph()
 # hn1.heatmap()
 
-df = pd.read_csv('D://PY//DATA//OTHER//waterpump//train_set_values.zip', sep=',')
-hn2 = hnet(black_list=['date_recorded','id'])
+# %%
+
+df = hn.import_example('waterpump')
+hn2 = hnet(black_list=['id','longitude','latitude'])
 results2 = hn2.association_learning(df)
 hn2.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/waterpump/')
 # hn2.plot()
 # hn2.d3graph()
 # hn2.heatmap()
 
-df = pd.read_csv('D://PY//DATA//CLASSIF//FIFA 2018 Statistics.csv', sep=',')
-hn3 = hnet()
+# df['id'].head().values
+
+# %%
+df = hn.import_example('fifa')
+
+
+hn3 = hnet(dtypes=['None', 'cat', 'cat', 'cat', 'num',
+       'num', 'num', 'num', 'num', 'num', 'num',
+       'num', 'num', 'num', 'num',
+       'num', 'cat', 'cat',
+       'cat', 'cat', 'cat', 'cat', 'cat', 'cat',
+       'cat', 'cat', 'num'])
+
 results3 = hn3.association_learning(df)
-hn3.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/fifa_2018/')
+hn3.d3graph()
+# hn3.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/fifa_2018/')
 # hn3.plot()
 # hn3.heatmap()
 
-# df = pd.read_csv('D://PY//DATA//CANCER//cancer_xy.csv', sep=',')
-# hn4 = hnet(black_list=['x','y','PC1','PC2'])
-# results4 = hn4.association_learning(df)
-# hn4.plot()
-# hn4.plot(node_color='cluster', directed=True)
-# hn4.plot(node_color='cluster', directed=False)
-# hn4.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/cancer_d3graph/')
-# hn4.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/cancer_d3graph_color/', node_color='cluster')
-# hn4.d3graph(node_color='cluster', directed=False)
-# hn4.d3graph(node_color='cluster', directed=True)
-# hn4.heatmap()
+out = tabulate(hn3.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
+print(tabulate(df.head(), tablefmt="grid", headers="keys"))
 
 # hn3.plot()
 # hn3.plot(directed=False, black_list=['Man of the Match_No'], node_color='cluster')

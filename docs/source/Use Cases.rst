@@ -318,7 +318,7 @@ In this example, I will load an cancer data set with pre-computed t-SNE coordina
     +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
 
 For demonstration purposes, we make a scatter plot with the True cancer labels to show that cancer labels are associated with the clusters.
-In many use-cases you want to determine which variables fit best with the computed cluster labels.
+In many use-cases, your scatterplot would not be colored because you do not know yet which variables fit best the cluster labels.
 
 .. code-block:: python
 
@@ -330,11 +330,10 @@ In many use-cases you want to determine which variables fit best with the comput
     scatterd(df['tsneX'],df['tsneY'], title='Cancer dataset.')
 
 
-.. |fig1| image:: ../figs/other/cancer_scatter.png
-    :scale: 90%
+.. |fig1| image:: ../figs/other/cancer_scatter_no_color.png
 
-.. |fig2| image:: ../figs/other/cancer_scatter_no_color.png
-    :scale: 90%
+.. |fig2| image:: ../figs/other/cancer_scatter.png
+
 
 .. table:: tSNE scatter plot of Cancer patients.
    :align: center
@@ -344,20 +343,24 @@ In many use-cases you want to determine which variables fit best with the comput
    +---------+---------+
 
 
-Step 1 is to compute the cluster labels based on the tSNE coordinates. 
+Step 1 is to compute the cluster labels based on the tSNE coordinates. We readily have these coordinates computed and can be extracted from the dataframe.
 Step 2 is to compute the enrichment of the variables (meta-data) with the cluster labels.
 
 .. code-block:: python
 	
 	# Import
 	import sklearn
-	import hnet
 	
 	# Determine cluster labels
 	dbscan = sklearn.cluster.DBSCAN(eps=2)
 	labx = dbscan.fit_predict(df[['tsneX','tsneY']])
 	print('Number of detected clusters: %d' %(len(np.unique(labx))))
 	# Number of detected clusters: 22
+
+.. code-block:: python
+	
+	# Import
+	import hnet
 
 	# Enrichment of clusterlabels with the meta-data
 	# results = hnet.enrichment(df[['age', 'sex', 'survival_months', 'death_indicator','labx']], labx)
@@ -386,10 +389,10 @@ Step 2 is to compute the enrichment of the variables (meta-data) with the cluste
 	print(results)
 
 
-When we look at the results, we see in the first column the *category_label*. These are the metadata variables *df* that we gave as an input.
-The second columns: *P* stands for P-value, which is the computed significance of the catagory_label with the target variable *y*. In our case these are are the cluster labels *labx*.
+When we look at the results (table below), we see in the first column the *category_label*. These are the metadata variables of the dataframe *df* that we gave as an input.
+The second columns: *P* stands for P-value, which is the computed significance of the catagory_label with the target variable *y*. In this case, target variable *y* are are the cluster labels *labx*.
 A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
-Note that the target labels in *y* can be seen more then once. This means that certain *y* are enriched for multiple variables. In our case this can occur because we may need to better estimate the cluster labels.
+Note that the target labels in *y* can be significantly enriched more then once. This means that certain *y* are enriched for multiple variables. This may occur because we may need to better estimate the cluster labels or its a mixed group or something else.
 
 .. table::
 
@@ -447,7 +450,7 @@ Note that the target labels in *y* can be seen more then once. This means that c
     | 24 | kich             | 1.2301e-06   |   -13.6084 |           3 |        4674 |                66 |              7 | categorical |   9 | labx            | 0.00048466   |
     +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
 
-Lets compute for each cluster (y), the most significantly enriched category label.
+Lets compute for each cluster label *y*, the most significantly enriched category label.
 
 .. code-block:: python
 
@@ -462,20 +465,21 @@ Lets compute for each cluster (y), the most significantly enriched category labe
 
 	# Scatterplot of the cluster numbers
 	scatterd(df['tsneX'],df['tsneY'], label=labx, fontcolor=[0,0,0])
+
 	# Scatterplot of the significantly enriched cancer labels
 	scatterd(df['tsneX'],df['tsneY'], label=enriched_label.values.ravel(), fontcolor=[0,0,0], cmap='Set2', title='Significantly enriched cancer labels')
 
 
-.. |fig1| image:: ../figs/other/cancer_clusters.png
-    :scale: 90%
+.. |fig3| image:: ../figs/other/cancer_clusters.png
 
-.. |fig2| image:: ../figs/other/cancer_clusters_enriched.png
-    :scale: 90%
+.. |fig4| image:: ../figs/other/cancer_clusters_enriched.png
 
 .. table:: Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.
    :align: center
 
    +---------+---------+
-   | |fig1|  | |fig2|  |
+   | |fig3|  | |fig4|  |
    +---------+---------+
-   
+
+
+It can bee seen that the most significantly enriched cancer labels for the clusters do represent the true labels very well.

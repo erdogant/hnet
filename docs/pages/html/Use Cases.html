@@ -741,10 +741,10 @@ It seems that football is not so complicated after all ;)</p>
 <h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline">¶</a></h2>
 <p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
 In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For easy colourmap creation</span>
-pip install colourmap
-<span class="c1"># For cluster evaluation</span>
-pip install clusteval
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For cluster evaluation</span>
+pip install sklearn
+<span class="c1"># For easy plotting</span>
+pip install scatterd
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -839,33 +839,462 @@ pip install clusteval
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># Import</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">colourmap</span>
-
-<span class="c1"># Create colors for the cancer labels</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">colourmap</span><span class="o">.</span><span class="n">fromlist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-
+<p>For demonstration purposes, we make a scatter plot with the True cancer labels to show that cancer labels are associated with the clusters.
+In many use-cases, your scatterplot would not be colored because you do not know yet which variables fit best the cluster labels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">scatterd</span> <span class="kn">import</span> <span class="n">scatterd</span>
 <span class="c1"># Make scatter plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;cancer dataset&#39;</span><span class="p">)</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset with True labels&#39;</span><span class="p">)</span>
+<span class="c1"># Make scatter plot wihtout colors</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-default" id="cancer-scatter">
-<img alt="_images/cancer_scatter.png" src="_images/cancer_scatter.png" />
+<table class="docutils align-center" id="id1">
+<caption><span class="caption-text">tSNE scatter plot of Cancer patients.</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><img alt="fig1" src="_images/cancer_scatter_no_color.png" /></p></td>
+<td><p><img alt="fig2" src="_images/cancer_scatter.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<p>Step 1 is to compute the cluster labels based on the tSNE coordinates. We readily have these coordinates computed and can be extracted from the dataframe.
+Step 2 is to compute the enrichment of the variables (meta-data) with the cluster labels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+
+<span class="c1"># Determine cluster labels</span>
+<span class="n">dbscan</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">labx</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of detected clusters: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labx</span><span class="p">))))</span>
+<span class="c1"># Number of detected clusters: 22</span>
+</pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
-<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
 
-<span class="c1"># Initialize</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">,</span><span class="s1">&#39;PC1&#39;</span><span class="p">,</span><span class="s1">&#39;PC2&#39;</span><span class="p">])</span>
+<span class="c1"># Enrichment of clusterlabels with the meta-data</span>
+<span class="c1"># results = hnet.enrichment(df[[&#39;age&#39;, &#39;sex&#39;, &#39;survival_months&#39;, &#39;death_indicator&#39;,&#39;labx&#39;]], labx)</span>
 
-<span class="c1"># Learn the relationships</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># [hnet] &gt;Start making fit..</span>
+<span class="c1"># [df2onehot] &gt;Auto detecting dtypes</span>
+<span class="c1"># [df2onehot] &gt;[age]                     &gt; [float] &gt; [num] [74]</span>
+<span class="c1"># [df2onehot] &gt;[sex]                     &gt; [obj]   &gt; [cat] [2]</span>
+<span class="c1"># [df2onehot] &gt;[survival_months] &gt; [force] &gt; [num] [1591]</span>
+<span class="c1"># [df2onehot] &gt;[death_indicator] &gt; [float] &gt; [num] [2]</span>
+<span class="c1"># [df2onehot] &gt;[labx]                    &gt; [obj]   &gt; [cat] [19]</span>
+<span class="c1"># [df2onehot] &gt;</span>
+<span class="c1"># [df2onehot] &gt;Setting dtypes in dataframe</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] age......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [cat] sex......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] survival_months......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] death_indicator......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [cat] labx......................</span>
+<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
+<span class="c1"># [hnet] &gt;Fin</span>
+
+<span class="c1"># For demonstration purposes I will only do the true cancer label column.</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;labx&#39;</span><span class="p">]],</span> <span class="n">labx</span><span class="p">)</span>
+
+<span class="c1"># Examine the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>When we look at the results (table below), we see in the first column the <em>category_label</em>. These are the metadata variables of the dataframe <em>df</em> that we gave as an input.
+The second columns: <em>P</em> stands for P-value, which is the computed significance of the catagory_label with the target variable <em>y</em>. In this case, target variable <em>y</em> are are the cluster labels <em>labx</em>.
+A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
+Note that the target labels in <em>y</em> can be significantly enriched more then once. This means that certain <em>y</em> are enriched for multiple variables. This may occur because we may need to better estimate the cluster labels or its a mixed group or something else.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 3%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>category_label</p></th>
+<th class="head"><p>P</p></th>
+<th class="head"><p>logP</p></th>
+<th class="head"><p>overlap_X</p></th>
+<th class="head"><p>popsize_M</p></th>
+<th class="head"><p>nr_succes_pop_n</p></th>
+<th class="head"><p>samplesize_N</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>y</p></th>
+<th class="head"><p>category_name</p></th>
+<th class="head"><p>Padj</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>1.27018e-153</p></td>
+<td><p>-352.056</p></td>
+<td><p>71</p></td>
+<td><p>4674</p></td>
+<td><p>77</p></td>
+<td><p>72</p></td>
+<td><p>categorical</p></td>
+<td><p>0</p></td>
+<td><p>labx</p></td>
+<td><p>5.15692e-151</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>dlbc</p></td>
+<td><p>3.22319e-51</p></td>
+<td><p>-116.261</p></td>
+<td><p>24</p></td>
+<td><p>4674</p></td>
+<td><p>27</p></td>
+<td><p>48</p></td>
+<td><p>categorical</p></td>
+<td><p>1</p></td>
+<td><p>labx</p></td>
+<td><p>1.29572e-48</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>kirc</p></td>
+<td><p>4.73559e-219</p></td>
+<td><p>-502.711</p></td>
+<td><p>218</p></td>
+<td><p>4674</p></td>
+<td><p>259</p></td>
+<td><p>398</p></td>
+<td><p>categorical</p></td>
+<td><p>10</p></td>
+<td><p>labx</p></td>
+<td><p>1.94633e-216</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>kirp</p></td>
+<td><p>2.12553e-166</p></td>
+<td><p>-381.475</p></td>
+<td><p>177</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>398</p></td>
+<td><p>categorical</p></td>
+<td><p>10</p></td>
+<td><p>labx</p></td>
+<td><p>8.65091e-164</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>kirc</p></td>
+<td><p>8.16897e-20</p></td>
+<td><p>-43.9514</p></td>
+<td><p>15</p></td>
+<td><p>4674</p></td>
+<td><p>259</p></td>
+<td><p>17</p></td>
+<td><p>categorical</p></td>
+<td><p>11</p></td>
+<td><p>labx</p></td>
+<td><p>3.24308e-17</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>kirp</p></td>
+<td><p>1.26634e-20</p></td>
+<td><p>-45.8156</p></td>
+<td><p>18</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>26</p></td>
+<td><p>categorical</p></td>
+<td><p>12</p></td>
+<td><p>labx</p></td>
+<td><p>5.04005e-18</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>blca</p></td>
+<td><p>5.65247e-217</p></td>
+<td><p>-497.929</p></td>
+<td><p>157</p></td>
+<td><p>4674</p></td>
+<td><p>265</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>13</p></td>
+<td><p>labx</p></td>
+<td><p>2.31751e-214</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>kirp</p></td>
+<td><p>4.18004e-14</p></td>
+<td><p>-30.8059</p></td>
+<td><p>9</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>10</p></td>
+<td><p>categorical</p></td>
+<td><p>14</p></td>
+<td><p>labx</p></td>
+<td><p>1.6553e-11</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>lgg</p></td>
+<td><p>0</p></td>
+<td><p>-1571.11</p></td>
+<td><p>500</p></td>
+<td><p>4674</p></td>
+<td><p>504</p></td>
+<td><p>501</p></td>
+<td><p>categorical</p></td>
+<td><p>15</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>lihc</p></td>
+<td><p>0</p></td>
+<td><p>-841.979</p></td>
+<td><p>220</p></td>
+<td><p>4674</p></td>
+<td><p>231</p></td>
+<td><p>222</p></td>
+<td><p>categorical</p></td>
+<td><p>16</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>luad</p></td>
+<td><p>0</p></td>
+<td><p>-1172.91</p></td>
+<td><p>397</p></td>
+<td><p>4674</p></td>
+<td><p>427</p></td>
+<td><p>419</p></td>
+<td><p>categorical</p></td>
+<td><p>17</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>ov</p></td>
+<td><p>0</p></td>
+<td><p>-963.047</p></td>
+<td><p>256</p></td>
+<td><p>4674</p></td>
+<td><p>262</p></td>
+<td><p>258</p></td>
+<td><p>categorical</p></td>
+<td><p>18</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>brca</p></td>
+<td><p>0</p></td>
+<td><p>-846.29</p></td>
+<td><p>745</p></td>
+<td><p>4674</p></td>
+<td><p>761</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>cesc</p></td>
+<td><p>1.49892e-49</p></td>
+<td><p>-112.422</p></td>
+<td><p>172</p></td>
+<td><p>4674</p></td>
+<td><p>205</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>5.99569e-47</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>hnsc</p></td>
+<td><p>1.9156e-212</p></td>
+<td><p>-487.498</p></td>
+<td><p>463</p></td>
+<td><p>4674</p></td>
+<td><p>474</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>7.83481e-210</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>lusc</p></td>
+<td><p>6.20884e-51</p></td>
+<td><p>-115.606</p></td>
+<td><p>159</p></td>
+<td><p>4674</p></td>
+<td><p>182</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>2.48975e-48</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>prad</p></td>
+<td><p>0</p></td>
+<td><p>-1241.55</p></td>
+<td><p>356</p></td>
+<td><p>4674</p></td>
+<td><p>360</p></td>
+<td><p>357</p></td>
+<td><p>categorical</p></td>
+<td><p>20</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>laml</p></td>
+<td><p>4.39155e-312</p></td>
+<td><p>-716.927</p></td>
+<td><p>166</p></td>
+<td><p>4674</p></td>
+<td><p>167</p></td>
+<td><p>167</p></td>
+<td><p>categorical</p></td>
+<td><p>3</p></td>
+<td><p>labx</p></td>
+<td><p>1.80932e-309</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>paad</p></td>
+<td><p>2.14906e-54</p></td>
+<td><p>-123.575</p></td>
+<td><p>19</p></td>
+<td><p>4674</p></td>
+<td><p>20</p></td>
+<td><p>21</p></td>
+<td><p>categorical</p></td>
+<td><p>4</p></td>
+<td><p>labx</p></td>
+<td><p>8.6822e-52</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>cesc</p></td>
+<td><p>1.11451e-28</p></td>
+<td><p>-64.364</p></td>
+<td><p>21</p></td>
+<td><p>4674</p></td>
+<td><p>205</p></td>
+<td><p>24</p></td>
+<td><p>categorical</p></td>
+<td><p>5</p></td>
+<td><p>labx</p></td>
+<td><p>4.44688e-26</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>coad</p></td>
+<td><p>1.16815e-193</p></td>
+<td><p>-444.244</p></td>
+<td><p>122</p></td>
+<td><p>4674</p></td>
+<td><p>134</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>6</p></td>
+<td><p>labx</p></td>
+<td><p>4.76605e-191</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>read</p></td>
+<td><p>4.83245e-52</p></td>
+<td><p>-118.159</p></td>
+<td><p>33</p></td>
+<td><p>4674</p></td>
+<td><p>34</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>6</p></td>
+<td><p>labx</p></td>
+<td><p>1.94748e-49</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>coad</p></td>
+<td><p>3.71058e-13</p></td>
+<td><p>-28.6224</p></td>
+<td><p>7</p></td>
+<td><p>4674</p></td>
+<td><p>134</p></td>
+<td><p>8</p></td>
+<td><p>categorical</p></td>
+<td><p>7</p></td>
+<td><p>labx</p></td>
+<td><p>1.46568e-10</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>kich</p></td>
+<td><p>5.97831e-124</p></td>
+<td><p>-283.732</p></td>
+<td><p>59</p></td>
+<td><p>4674</p></td>
+<td><p>66</p></td>
+<td><p>65</p></td>
+<td><p>categorical</p></td>
+<td><p>8</p></td>
+<td><p>labx</p></td>
+<td><p>2.42122e-121</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>kich</p></td>
+<td><p>1.2301e-06</p></td>
+<td><p>-13.6084</p></td>
+<td><p>3</p></td>
+<td><p>4674</p></td>
+<td><p>66</p></td>
+<td><p>7</p></td>
+<td><p>categorical</p></td>
+<td><p>9</p></td>
+<td><p>labx</p></td>
+<td><p>0.00048466</p></td>
+</tr>
+</tbody>
+</table>
+<p>Lets compute for each cluster label <em>y</em>, the most significantly enriched category label.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scatterd</span> <span class="kn">import</span> <span class="n">scatterd</span>
+
+<span class="c1"># Import</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)[</span><span class="s1">&#39;logP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]</span>
+<span class="n">enriched_label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">labx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">enriched_label</span> <span class="o">=</span> <span class="n">enriched_label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;category_label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="c1"># Scatterplot of the cluster numbers</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labx</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Scatterplot of the significantly enriched cancer labels</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">enriched_label</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Significantly enriched cancer labels&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-center" id="id2">
+<caption><span class="caption-text">Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><img alt="fig3" src="_images/cancer_clusters.png" /></p></td>
+<td><p><img alt="fig4" src="_images/cancer_clusters_enriched.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<p>It can bee seen that the most significantly enriched cancer labels for the clusters do represent the true labels very well.</p>
 </div>
 </div>
 

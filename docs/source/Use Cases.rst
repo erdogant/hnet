@@ -287,19 +287,17 @@ In this example, I will load an cancer data set with pre-computed t-SNE coordina
 
 .. code-block:: bash
 	
-	# For easy colourmap creation
-	pip install colourmap
 	# For cluster evaluation
-	pip install clusteval
+	pip install sklearn
+	# For easy plotting
+	pip install scatterd
 
 .. code-block:: python
 	
 	# Import
 	import hnet
-
 	# Import example dataset
 	df = hnet.import_example('cancer')
-
 	# Print
 	print(df.head())
 
@@ -319,35 +317,165 @@ In this example, I will load an cancer data set with pre-computed t-SNE coordina
     |  4 | 36.7912 | 21.7153 |    29 | female |           79.77   |                 1 | acc    | 41.7467 | 37.5336  |
     +----+---------+---------+-------+--------+-------------------+-------------------+--------+---------+----------+
 
+For demonstration purposes, we make a scatter plot with the True cancer labels to show that cancer labels are associated with the clusters.
+In many use-cases you want to determine which variables fit best with the computed cluster labels.
 
 .. code-block:: python
 
     # Import
-    import matplotlib.pyplot as plt
-    import colourmap
-    
-    # Create colors for the cancer labels
-    c = colourmap.fromlist(df['labx'])[0]
-
+    from scatterd import scatterd
     # Make scatter plot
-    plt.figure(figsize=(15,10))
-    plt.scatter(df['tsneX'],df['tsneY'], c=c, s=5)
-    plt.grid(True)
-    plt.title('cancer dataset')
-	
+    scatterd(df['tsneX'],df['tsneY'], label=df['labx'], cmap='Set2', fontcolor=[0,0,0], title='Cancer dataset with True labels')
+    # Make scatter plot wihtout colors
+    scatterd(df['tsneX'],df['tsneY'], title='Cancer dataset.')
 
-.. _cancer_scatter:
 
-.. figure:: ../figs/other/cancer_scatter.png
+.. |fig1| image:: ../figs/other/cancer_scatter.png
+    :scale: 90%
 
+.. |fig2| image:: ../figs/other/cancer_scatter_no_color.png
+    :scale: 90%
+
+.. table:: tSNE scatter plot of Cancer patients.
+   :align: center
+
+   +---------+---------+
+   | |fig1|  | |fig2|  |
+   +---------+---------+
+
+
+Step 1 is to compute the cluster labels based on the tSNE coordinates. 
+Step 2 is to compute the enrichment of the variables (meta-data) with the cluster labels.
 
 .. code-block:: python
 	
 	# Import
-	from hnet import hnet
+	import sklearn
+	import hnet
 	
-	# Initialize
-	hn = hnet(black_list=['tsneX','tsneY','PC1','PC2'])
+	# Determine cluster labels
+	dbscan = sklearn.cluster.DBSCAN(eps=2)
+	labx = dbscan.fit_predict(df[['tsneX','tsneY']])
+	print('Number of detected clusters: %d' %(len(np.unique(labx))))
+	# Number of detected clusters: 22
 
-	# Learn the relationships
-	results = hn.association_learning(df)
+	# Enrichment of clusterlabels with the meta-data
+	# results = hnet.enrichment(df[['age', 'sex', 'survival_months', 'death_indicator','labx']], labx)
+
+	# [hnet] >Start making fit..
+	# [df2onehot] >Auto detecting dtypes
+	# [df2onehot] >[age]			 > [float] > [num] [74]
+	# [df2onehot] >[sex]			 > [obj]   > [cat] [2]
+	# [df2onehot] >[survival_months] > [force] > [num] [1591]
+	# [df2onehot] >[death_indicator] > [float] > [num] [2]
+	# [df2onehot] >[labx]			 > [obj]   > [cat] [19]
+	# [df2onehot] >
+	# [df2onehot] >Setting dtypes in dataframe
+	# [hnet] >Analyzing [num] age......................
+	# [hnet] >Analyzing [cat] sex......................
+	# [hnet] >Analyzing [num] survival_months......................
+	# [hnet] >Analyzing [num] death_indicator......................
+	# [hnet] >Analyzing [cat] labx......................
+	# [hnet] >Multiple test correction using holm
+	# [hnet] >Fin
+	
+	# For demonstration purposes I will only do the true cancer label column.
+	results = hnet.enrichment(df[['labx']], labx)
+
+	# Examine the results
+	print(results)
+
+
+When we look at the results, we see in the first column the *category_label*. These are the metadata variables *df* that we gave as an input.
+The second columns: *P* stands for P-value, which is the computed significance of the catagory_label with the target variable *y*. In our case these are are the cluster labels *labx*.
+A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
+Note that the target labels in *y* can be seen more then once. This means that certain *y* are enriched for multiple variables. In our case this can occur because we may need to better estimate the cluster labels.
+
+.. table::
+
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |    | category_label   |            P |       logP |   overlap_X |   popsize_M |   nr_succes_pop_n |   samplesize_N | dtype       |   y | category_name   |         Padj |
+    +====+==================+==============+============+=============+=============+===================+================+=============+=====+=================+==============+
+    |  0 | acc              | 1.27018e-153 |  -352.056  |          71 |        4674 |                77 |             72 | categorical |   0 | labx            | 5.15692e-151 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  1 | dlbc             | 3.22319e-51  |  -116.261  |          24 |        4674 |                27 |             48 | categorical |   1 | labx            | 1.29572e-48  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  2 | kirc             | 4.73559e-219 |  -502.711  |         218 |        4674 |               259 |            398 | categorical |  10 | labx            | 1.94633e-216 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  3 | kirp             | 2.12553e-166 |  -381.475  |         177 |        4674 |               219 |            398 | categorical |  10 | labx            | 8.65091e-164 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  4 | kirc             | 8.16897e-20  |   -43.9514 |          15 |        4674 |               259 |             17 | categorical |  11 | labx            | 3.24308e-17  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  5 | kirp             | 1.26634e-20  |   -45.8156 |          18 |        4674 |               219 |             26 | categorical |  12 | labx            | 5.04005e-18  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  6 | blca             | 5.65247e-217 |  -497.929  |         157 |        4674 |               265 |            161 | categorical |  13 | labx            | 2.31751e-214 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  7 | kirp             | 4.18004e-14  |   -30.8059 |           9 |        4674 |               219 |             10 | categorical |  14 | labx            | 1.6553e-11   |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  8 | lgg              | 0            | -1571.11   |         500 |        4674 |               504 |            501 | categorical |  15 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    |  9 | lihc             | 0            |  -841.979  |         220 |        4674 |               231 |            222 | categorical |  16 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 10 | luad             | 0            | -1172.91   |         397 |        4674 |               427 |            419 | categorical |  17 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 11 | ov               | 0            |  -963.047  |         256 |        4674 |               262 |            258 | categorical |  18 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 12 | brca             | 0            |  -846.29   |         745 |        4674 |               761 |           1653 | categorical |   2 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 13 | cesc             | 1.49892e-49  |  -112.422  |         172 |        4674 |               205 |           1653 | categorical |   2 | labx            | 5.99569e-47  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 14 | hnsc             | 1.9156e-212  |  -487.498  |         463 |        4674 |               474 |           1653 | categorical |   2 | labx            | 7.83481e-210 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 15 | lusc             | 6.20884e-51  |  -115.606  |         159 |        4674 |               182 |           1653 | categorical |   2 | labx            | 2.48975e-48  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 16 | prad             | 0            | -1241.55   |         356 |        4674 |               360 |            357 | categorical |  20 | labx            | 0            |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 17 | laml             | 4.39155e-312 |  -716.927  |         166 |        4674 |               167 |            167 | categorical |   3 | labx            | 1.80932e-309 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 18 | paad             | 2.14906e-54  |  -123.575  |          19 |        4674 |                20 |             21 | categorical |   4 | labx            | 8.6822e-52   |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 19 | cesc             | 1.11451e-28  |   -64.364  |          21 |        4674 |               205 |             24 | categorical |   5 | labx            | 4.44688e-26  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 20 | coad             | 1.16815e-193 |  -444.244  |         122 |        4674 |               134 |            161 | categorical |   6 | labx            | 4.76605e-191 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 21 | read             | 4.83245e-52  |  -118.159  |          33 |        4674 |                34 |            161 | categorical |   6 | labx            | 1.94748e-49  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 22 | coad             | 3.71058e-13  |   -28.6224 |           7 |        4674 |               134 |              8 | categorical |   7 | labx            | 1.46568e-10  |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 23 | kich             | 5.97831e-124 |  -283.732  |          59 |        4674 |                66 |             65 | categorical |   8 | labx            | 2.42122e-121 |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+    | 24 | kich             | 1.2301e-06   |   -13.6084 |           3 |        4674 |                66 |              7 | categorical |   9 | labx            | 0.00048466   |
+    +----+------------------+--------------+------------+-------------+-------------+-------------------+----------------+-------------+-----+-----------------+--------------+
+
+Lets compute for each cluster (y), the most significantly enriched category label.
+
+.. code-block:: python
+
+	from scatterd import scatterd
+
+	# Import
+	out = results.loc[results.groupby(by='y')['logP'].idxmin()]
+	enriched_label = pd.DataFrame(labx.astype(str))
+
+	for i in range(out.shape[0]):
+		enriched_label = enriched_label.replace(out['y'].iloc[i], out['category_label'].iloc[i])
+
+	# Scatterplot of the cluster numbers
+	scatterd(df['tsneX'],df['tsneY'], label=labx, fontcolor=[0,0,0])
+	# Scatterplot of the significantly enriched cancer labels
+	scatterd(df['tsneX'],df['tsneY'], label=enriched_label.values.ravel(), fontcolor=[0,0,0], cmap='Set2', title='Significantly enriched cancer labels')
+
+
+.. |fig1| image:: ../figs/other/cancer_clusters.png
+    :scale: 90%
+
+.. |fig2| image:: ../figs/other/cancer_clusters_enriched.png
+    :scale: 90%
+
+.. table:: Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.
+   :align: center
+
+   +---------+---------+
+   | |fig1|  | |fig2|  |
+   +---------+---------+
+   

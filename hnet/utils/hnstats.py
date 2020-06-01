@@ -511,7 +511,6 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
         simmatLogP[simmatLogP<threshold]=0
 
-
     # Filter on white_list
     if white_list is not None:
         Irow = np.isin(simmatLogP.index.values, white_list)

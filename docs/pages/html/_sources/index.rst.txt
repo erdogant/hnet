@@ -9,6 +9,13 @@ We propose graphical hypergeometric networks (HNet), a method where associations
 
 HNet learns the Association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 
+HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.
+
+    Your goal can be for example:
+        1. Explore the complex associations between your variables.
+        2. Explain your clusters by enrichment of the meta-data.
+        3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
+
 
 Content
 =======

@@ -8,11 +8,12 @@ Use Cases
 
 HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.
 
-    Your goal can be for example::
-        1. Explore the complex associations between your variables using interactive networks.
-        2. Determine an explanation for your clusters by enrichment.
-        3. Transform your feature space and build a dissimilarity matrix that can be used for further analysis.
+    Your goal can be for example:
+        1. Explore the complex associations between your variables.
+        2. Explain your clusters by enrichment of the meta-data.
+        3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
 
+Here we will explore various data sets for the goals *1*, *2* and *3*.
 
 Cancer dataset
 '''''''''''''''''''''
@@ -242,7 +243,8 @@ We will set the dtypes manually to make sure each variable has the correct dtype
 **Antecedents and Consequents**
 
 The conclusions are mostly about who/what was not doing so well during the matches.
-So a lot of information can be used for improvement of matches. So if you are not **the man of the match**, you will likely have **0 goals**. 
+A lot of information seems relevant for improvement of matches. As an example, if you are **not the man of the match**, you will likely have **0 goals**. 
+Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
 It seems that football is not so complicated after all ;)
 
 .. code-block:: python
@@ -277,6 +279,164 @@ Create the network graph. Im not entirely sure what to say about this. Draw your
 .. raw:: html
 
    <iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe>
+
+
+Census Income dataset
+'''''''''''''''''''''''''''''''''''
+
+The adult dataset is to determine whether income exceeds $50K/yr based on census data. Also known as "Census Income" dataset.
+This dataset is Multivariate (categorical, and integer variables), contains in total 48842 instances, missing values, and is located in the archives of [UCI](https://archive.ics.uci.edu/ml/).
+
+Lets find out what we can learn from this data set using ``HNet``.
+
+.. code-block:: python
+    
+    # Import
+    import hnet
+    
+    # Download directly from the archives of UCI using the url location
+    df = hnet.import_example(url='https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
+    # There are no column names so attach it.
+    df.columns=['age','workclass','fnlwgt','education','education-num','marital-status','occupation','relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','earnings']
+    # Examine the results by eye
+	print(df.head())
+
+.. table::
+
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+    |    |   age | workclass        |   fnlwgt | education   |   education-num | marital-status     | occupation        | relationship   | race   | sex    |   capital-gain |   capital-loss |   hours-per-week | native-country   | earnings   |
+    +====+=======+==================+==========+=============+=================+====================+===================+================+========+========+================+================+==================+==================+============+
+    |  0 |    50 | Self-emp-not-inc |    83311 | Bachelors   |              13 | Married-civ-spouse | Exec-managerial   | Husband        | White  | Male   |              0 |              0 |               13 | United-States    | <=50K      |
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+    |  1 |    38 | Private          |   215646 | HS-grad     |               9 | Divorced           | Handlers-cleaners | Not-in-family  | White  | Male   |              0 |              0 |               40 | United-States    | <=50K      |
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+    |  2 |    53 | Private          |   234721 | 11th        |               7 | Married-civ-spouse | Handlers-cleaners | Husband        | Black  | Male   |              0 |              0 |               40 | United-States    | <=50K      |
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+    |  3 |    28 | Private          |   338409 | Bachelors   |              13 | Married-civ-spouse | Prof-specialty    | Wife           | Black  | Female |              0 |              0 |               40 | Cuba             | <=50K      |
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+    |  4 |    37 | Private          |   284582 | Masters     |              14 | Married-civ-spouse | Exec-managerial   | Wife           | White  | Female |              0 |              0 |               40 | United-States    | <=50K      |
+    +----+-------+------------------+----------+-------------+-----------------+--------------------+-------------------+----------------+--------+--------+----------------+----------------+------------------+------------------+------------+
+
+
+.. code-block:: python
+
+    # Import hnet
+    from hnet import hnet
+
+    # Set a few variables to float to make sure that these are processed as numeric values.
+    cols_as_float = ['age','hours-per-week','capital-loss','capital-gain']
+    df[cols_as_float] = df[cols_as_float].astype(float)
+
+    # Black list one of the variables. (I do not now what it does and whether it should be numeric or categoric)
+    hn = hnet(black_list=['fnlwgt'])
+
+    # Learn the associations.
+    results = hn.association_learning(df)
+
+
+**Output looks as following**
+
+.. code-block:: python
+
+    # [hnet] >preprocessing : Column names are set to str. and spaces are trimmed.
+    # [hnet] >Removing features from the black list..
+    # [df2onehot] >Auto detecting dtypes
+    # [df2onehot] >[age]            > [float] > [num] [73]
+    # [df2onehot] >[workclass]      > [obj]   > [cat] [9]
+    # [df2onehot] >[education]      > [obj]   > [cat] [16]
+    # [df2onehot] >[education-num]  > [int]   > [cat] [16]
+    # [df2onehot] >[marital-status] > [obj]   > [cat] [7]
+    # [df2onehot] >[occupation]     > [obj]   > [cat] [15]
+    # [df2onehot] >[relationship]   > [obj]   > [cat] [6]
+    # [df2onehot] >[race]           > [obj]   > [cat] [5]
+    # [df2onehot] >[sex]            > [obj]   > [cat] [2]
+    # [df2onehot] >[capital-gain]   > [float] > [num] [119]
+    # [df2onehot] >[capital-loss]   > [float] > [num] [92]
+    # [df2onehot] >[hours-per-week] > [float] > [num] [94]
+    # [df2onehot] >[native-country] > [obj]   > [cat] [42]
+    # [df2onehot] >[earnings]       > [obj]   > [cat] [2]
+    # [df2onehot] >
+    # [df2onehot] >Setting dtypes in dataframe
+    # [df2onehot] >Working on age.............[float]
+    # [df2onehot] >Working on workclass.......[9]
+    # [df2onehot] >Working on education.......[16]
+    # [df2onehot] >Working on education-num...[16]
+    # [df2onehot] >Working on marital-status..[7]
+    # [df2onehot] >Working on occupation......[15]
+    # [df2onehot] >Working on relationship....[6]
+    # [df2onehot] >Working on race............[5]
+    # [df2onehot] >Working on sex.............[2]
+    # [df2onehot] >Working on capital-gain....[float]
+    # [df2onehot] >Working on capital-loss....[float]
+    # [df2onehot] >Working on hours-per-week..[float]
+    # [df2onehot] >Working on native-country..[42]
+    # [df2onehot] >Working on earnings........[2]
+    # [df2onehot] >
+    # [df2onehot] >Total onehot features: 117
+    #   0%|          | 0/117 [00:00<?, ?it/s][hnet] >Association learning across [117] categories.
+    # 100%|██████████| 117/117 [07:43<00:00,  3.96s/it]
+    # [hnet] >Total number of computations: [17773]
+    # [hnet] >Multiple test correction using holm
+    # [hnet] >Dropping age
+    # [hnet] >Dropping capital-gain
+    # [hnet] >Dropping capital-loss
+    # [hnet] >Dropping hours-per-week
+    # [hnet] >Fin.
+
+
+**Antecedents and Consequents**
+
+The conclusions are mostly about who/what was not doing so well during the matches.
+A lot of information seems relevant for improvement of matches. As an example, if you are **not the man of the match**, you will likely have **0 goals**. 
+Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
+It seems that football is not so complicated after all ;)
+
+.. code-block:: python
+	
+	# Import example dataset
+	print(hn.results['rules'])
+
+
+.. table::
+
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+    |    | antecedents_labx                                                         | antecedents                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | consequents              |   Pfisher |
+    +====+==========================================================================+======================================================================================================================================================================================================================================================================================================================================================================================================================================================================================+==========================+===========+
+    |  1 | ['workclass' 'education' 'occupation' 'occupation' 'occupation'          | ['workclass_ ?', 'education_ 10th', 'occupation_ ?', 'occupation_ Craft-repair', 'occupation_ Handlers-cleaners', 'occupation_ Machine-op-inspct', 'occupation_ Other-service', 'occupation_ Transport-moving', 'relationship_ Own-child', 'race_ Black', 'earnings_ <=50K', 'hours-per-week_low_40']                                                                                                                                                                                | education-num_6          |         0 |
+    |    |  'occupation' 'occupation' 'occupation' 'relationship' 'race' 'earnings' |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    |    |  'hours-per-week']                                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+    |  2 | ['workclass' 'workclass' 'education' 'marital-status' 'occupation'       | ['workclass_ ?', 'workclass_ Private', 'education_ 11th', 'marital-status_ Never-married', 'occupation_ ?', 'occupation_ Handlers-cleaners', 'occupation_ Other-service', 'occupation_ Transport-moving', 'relationship_ Own-child', 'earnings_ <=50K', 'hours-per-week_low_40', 'age_low_28']                                                                                                                                                                                       | education-num_7          |         0 |
+    |    |  'occupation' 'occupation' 'occupation' 'relationship' 'earnings'        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    |    |  'hours-per-week' 'age']                                                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+    |  3 | ['education' 'marital-status' 'occupation' 'relationship' 'earnings'     | ['education_ 12th', 'marital-status_ Never-married', 'occupation_ Other-service', 'relationship_ Own-child', 'earnings_ <=50K', 'hours-per-week_low_40', 'age_low_28']                                                                                                                                                                                                                                                                                                               | education-num_8          |         0 |
+    |    |  'hours-per-week' 'age']                                                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+    |  4 | ['workclass' 'education' 'marital-status' 'marital-status'               | ['workclass_ Private', 'education_ HS-grad', 'marital-status_ Divorced', 'marital-status_ Separated', 'marital-status_ Widowed', 'occupation_ Adm-clerical', 'occupation_ Craft-repair', 'occupation_ Farming-fishing', 'occupation_ Handlers-cleaners', 'occupation_ Machine-op-inspct', 'occupation_ Other-service', 'occupation_ Transport-moving', 'relationship_ Other-relative', 'relationship_ Unmarried', 'race_ Black', 'native-country_ United-States', 'earnings_ <=50K'] | education-num_9          |         0 |
+    |    |  'marital-status' 'occupation' 'occupation' 'occupation' 'occupation'    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    |    |  'occupation' 'occupation' 'occupation' 'relationship' 'relationship'    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    |    |  'race' 'native-country' 'earnings']                                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+    |  5 | ['workclass' 'education' 'education' 'education-num' 'education-num'     | ['workclass_ Local-gov', 'education_ Assoc-acdm', 'education_ HS-grad', 'education-num_12', 'education-num_9', 'occupation_ Adm-clerical', 'relationship_ Not-in-family', 'relationship_ Unmarried', 'sex_ Female', 'native-country_ United-States', 'earnings_ <=50K', 'age_low_42']                                                                                                                                                                                                | marital-status_ Divorced |         0 |
+    |    |  'occupation' 'relationship' 'relationship' 'sex' 'native-country'       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    |    |  'earnings' 'age']                                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                          |           |
+    +----+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------+-----------+
+
+
+This network is not super huge but it is possible to filter using threshold parameter and the minimum number of edges that a node must contain.
+
+.. code-block:: python
+
+	# Generate the interactive graph.
+	G = hn.d3graph()
+	# G = hn.d3graph(min_edges=2, threshold=100)
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/income/" height="600px" width="100%", frameBorder="0"></iframe>
+
+
 
 
 Cluster enrichment

@@ -42,8 +42,8 @@ Below is the titanic dataset that can be the input for ``hnet`` in its current f
 
 
 
-Import example dataset
-'''''''''''''''''''''''
+Import example datasets
+''''''''''''''''''''''''''
 
 Importing an example data set can be performed using :func:`hnet.import_example`. This function provides some example datasets such as **sprinkler**, **titanic**, **student**. 
 The titanic dataset is depiced above and the spinkler below.
@@ -140,6 +140,30 @@ Importing data from a csv file can be performed using ``pandas``:
     data = pd.read_csv('./pathname/to/file.csv')
 
 
+Import from url
+'''''''''''''''''''''''
+
+If your dataset is located on a particular website, it is possible to directly download the dataset.
+In the example below, we will download a dataset from the archives of [UCI](https://archive.ics.uci.edu/ml/).
+
+
+.. code:: python
+
+    # Import hnet
+    import hnet
+
+    # Download from url
+    df = hnet.import_example(url='https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
+
+    # Specify columns
+    df.columns=['age','workclass','fnlwgt','education','education-num','marital-status','occupation','relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','earnings']
+    
+    # Initialize
+    from hnet import hnet
+    hn = hnet(black_list=['fnlwgt'])
+    # Run HNet
+    results = hn.association_learning(df)
+    
 
 Import from sklearn
 '''''''''''''''''''''''

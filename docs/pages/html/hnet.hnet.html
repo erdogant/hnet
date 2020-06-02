@@ -496,13 +496,15 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 
 <dl class="py method">
 <dt id="hnet.hnet.hnet.import_example">
-<code class="sig-name descname">import_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">'titanic'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.import_example" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">import_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">'titanic'</span></em>, <em class="sig-param"><span class="n">url</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">','</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.import_example" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import example dataset from github source.</p>
+<p>Import one of the few datasets from github source or specify your own download url link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the dataset ‘sprinkler’ or ‘titanic’ or ‘student’.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The default is 3.</p></li>
+<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’, ‘retail’</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – url link to to dataset.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>(</em><em>default: 3</em><em>)</em>) – Print message to screen.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -603,13 +605,15 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 
 <dl class="py function">
 <dt id="hnet.hnet.import_example">
-<code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">import_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">'titanic'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.import_example" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">import_example</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">'titanic'</span></em>, <em class="sig-param"><span class="n">url</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">','</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.import_example" title="Permalink to this definition">¶</a></dt>
 <dd><p>Import example dataset from github source.</p>
+<p>Import one of the few datasets from github source or specify your own download url link.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The default is 3.</p></li>
+<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’, ‘retail’</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – url link to to dataset.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>(</em><em>default: 3</em><em>)</em>) – Print message to screen.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

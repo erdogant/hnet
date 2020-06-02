@@ -93,8 +93,9 @@
 <p class="caption"><span class="caption-text">Input/output</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Import datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#import-example-dataset">Import example dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-example-datasets">Import example datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#import-from-csv">Import from csv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-from-url">Import from url</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#import-from-sklearn">Import from sklearn</a></li>
 </ul>
 </li>
@@ -317,8 +318,8 @@ The columns represent the variables or features containing continues/categorical
 </tr>
 </tbody>
 </table>
-<div class="section" id="import-example-dataset">
-<h2>Import example dataset<a class="headerlink" href="#import-example-dataset" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="import-example-datasets">
+<h2>Import example datasets<a class="headerlink" href="#import-example-datasets" title="Permalink to this headline">¶</a></h2>
 <p>Importing an example data set can be performed using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code>. This function provides some example datasets such as <strong>sprinkler</strong>, <strong>titanic</strong>, <strong>student</strong>.
 The titanic dataset is depiced above and the spinkler below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
@@ -576,6 +577,27 @@ The titanic dataset is depiced above and the spinkler below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./pathname/to/file.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="import-from-url">
+<h2>Import from url<a class="headerlink" href="#import-from-url" title="Permalink to this headline">¶</a></h2>
+<p>If your dataset is located on a particular website, it is possible to directly download the dataset.
+In the example below, we will download a dataset from the archives of [UCI](<a class="reference external" href="https://archive.ics.uci.edu/ml/">https://archive.ics.uci.edu/ml/</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import hnet</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
+
+<span class="c1"># Download from url</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data&#39;</span><span class="p">)</span>
+
+<span class="c1"># Specify columns</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;workclass&#39;</span><span class="p">,</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">,</span><span class="s1">&#39;education&#39;</span><span class="p">,</span><span class="s1">&#39;education-num&#39;</span><span class="p">,</span><span class="s1">&#39;marital-status&#39;</span><span class="p">,</span><span class="s1">&#39;occupation&#39;</span><span class="p">,</span><span class="s1">&#39;relationship&#39;</span><span class="p">,</span><span class="s1">&#39;race&#39;</span><span class="p">,</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">,</span><span class="s1">&#39;capital-loss&#39;</span><span class="p">,</span><span class="s1">&#39;hours-per-week&#39;</span><span class="p">,</span><span class="s1">&#39;native-country&#39;</span><span class="p">,</span><span class="s1">&#39;earnings&#39;</span><span class="p">]</span>
+
+<span class="c1"># Initialize</span>
+<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">])</span>
+<span class="c1"># Run HNet</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -321,7 +321,7 @@ class hnet():
         if simmatLogP.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
             return None
-        
+
         [IA,IB] = ismember(simmatLogP.columns, self.results['counts'][:,0])
         node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB,1], node_size_limits)
@@ -640,23 +640,29 @@ class hnet():
         # Return
         return(df_rules)
 
-    def import_example(self, data='titanic', verbose=3):
+    def import_example(self, data='titanic', url=None, sep=',', verbose=3):
         """Import example dataset from github source.
-
+        
+        Description
+        -----------
+        Import one of the few datasets from github source or specify your own download url link.
+    
         Parameters
         ----------
-        data : str, optional
-            Name of the dataset 'sprinkler' or 'titanic' or 'student'.
-        verbose : int, optional
-            Print message to screen. The default is 3.
-
+        data : str
+            Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump', 'retail'
+        url : str
+            url link to to dataset.
+        verbose : int, (default: 3)
+            Print message to screen.
+    
         Returns
         -------
         pd.DataFrame()
             Dataset containing mixed features.
-
+    
         """
-        return import_example(data=data, verbose=verbose)
+        return import_example(data=data, url=url, sep=sep, verbose=verbose)
 
     # Save model
     def save(self, filepath='hnet_model.pkl', overwrite=False, verbose=3):
@@ -764,15 +770,21 @@ def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
     return out
 
 # %% Import example dataset from github.
-def import_example(data='titanic', verbose=3):
+def import_example(data='titanic', url=None, sep=',', verbose=3):
     """Import example dataset from github source.
+    
+    Description
+    -----------
+    Import one of the few datasets from github source or specify your own download url link.
 
     Parameters
     ----------
-    data : str, optional
-        Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
-    verbose : int, optional
-        Print message to screen. The default is 3.
+    data : str
+        Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump', 'retail'
+    url : str
+        url link to to dataset.
+    verbose : int, (default: 3)
+        Print message to screen.
 
     Returns
     -------
@@ -780,20 +792,27 @@ def import_example(data='titanic', verbose=3):
         Dataset containing mixed features.
 
     """
-    if data=='sprinkler':
-        url='https://erdogant.github.io/datasets/sprinkler.zip'
-    elif data=='titanic':
-        url='https://erdogant.github.io/datasets/titanic_train.zip'
-    elif data=='student':
-        url='https://erdogant.github.io/datasets/student_train.zip'
-    elif data=='cancer':
-        url='https://erdogant.github.io/datasets/cancer_dataset.zip'
-    elif data=='fifa':
-        url='https://erdogant.github.io/datasets/FIFA_2018.zip'
-    elif data=='waterpump':
-        url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
-    elif data=='retail':
-        url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
+    if url is None:
+        if data=='sprinkler':
+            url='https://erdogant.github.io/datasets/sprinkler.zip'
+        elif data=='titanic':
+            url='https://erdogant.github.io/datasets/titanic_train.zip'
+        elif data=='student':
+            url='https://erdogant.github.io/datasets/student_train.zip'
+        elif data=='cancer':
+            url='https://erdogant.github.io/datasets/cancer_dataset.zip'
+        elif data=='fifa':
+            url='https://erdogant.github.io/datasets/FIFA_2018.zip'
+        elif data=='waterpump':
+            url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
+        elif data=='retail':
+            url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
+    else:
+        data = wget.filename_from_url(url)
+
+    if url is None:
+        if verbose>=3: print('[hnet] >Nothing to download.')
+        return None
 
     curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
     PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
@@ -807,7 +826,7 @@ def import_example(data='titanic', verbose=3):
 
     # Import local dataset
     if verbose>=3: print('[hnet] >Import dataset [%s]' %(data))
-    df = pd.read_csv(PATH_TO_DATA)
+    df = pd.read_csv(PATH_TO_DATA, sep=sep)
     # Return
     return df
 

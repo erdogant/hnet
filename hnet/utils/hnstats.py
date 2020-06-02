@@ -499,19 +499,19 @@ def _tempdir(savepath):
 def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
     # if (white_list is not None) and (len(white_list)<=1): raise Exception('[hnet] >ERROR: white_list should contain at least 2 input variables.')
 
-    # Filter on minimum number of edges
-    if min_edges is not None:
-        simmatBOOL = simmatLogP.copy()>0
-        if np.all(simmatBOOL.columns==simmatBOOL.index.values):
-            Iloc = np.logical_or(simmatBOOL.sum(axis=0)>min_edges, simmatBOOL.sum(axis=1)>min_edges).values
-            if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
-            simmatLogP = simmatLogP.loc[Iloc,Iloc]
-            labx = labx[Iloc]
-
     # Filter on threshold
     if threshold is not None:
         if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
         simmatLogP[simmatLogP<threshold]=0
+
+    # Filter on minimum number of edges
+    if min_edges is not None:
+        simmatBOOL = simmatLogP.copy()>0
+        if np.all(simmatBOOL.columns==simmatBOOL.index.values):
+            Iloc = np.logical_or(simmatBOOL.sum(axis=0)>=min_edges, simmatBOOL.sum(axis=1)>=min_edges).values
+            if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
+            simmatLogP = simmatLogP.loc[Iloc,Iloc]
+            labx = labx[Iloc]
 
     # Filter on white_list
     if white_list is not None:

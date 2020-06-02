@@ -217,3 +217,10 @@ print(tabulate(df.head(), tablefmt="grid", headers="keys"))
 # hn3.plot(directed=True, black_list=['Man of the Match_No'])
 # hn3.d3graph(directed=False, black_list=['Man of the Match_No'])
 # hn3.heatmap(black_list=['Man of the Match_No'])
+
+# %%
+import pandas as pd
+df = pd.read_csv('D://PY/DATA/CLASSIF/paygrade_adult.zip')
+from hnet import hnet
+hn = hnet(black_list=['fnlwgt'])
+results = hn.association_learning(df)

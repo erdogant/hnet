@@ -224,3 +224,4 @@ df = pd.read_csv('D://PY/DATA/CLASSIF/paygrade_adult.zip')
 from hnet import hnet
 hn = hnet(black_list=['fnlwgt'])
 results = hn.association_learning(df)
+hn.d3graph(threshold=150)

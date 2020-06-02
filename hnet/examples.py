@@ -218,10 +218,21 @@ print(tabulate(df.head(), tablefmt="grid", headers="keys"))
 # hn3.d3graph(directed=False, black_list=['Man of the Match_No'])
 # hn3.heatmap(black_list=['Man of the Match_No'])
 
-# %%
-import pandas as pd
-df = pd.read_csv('D://PY/DATA/CLASSIF/paygrade_adult.zip')
+# %% Download dataset from url
+from tabulate import tabulate
+import hnet
+df = hnet.import_example(url='https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
+df.columns=['age','workclass','fnlwgt','education','education-num','marital-status','occupation','relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','earnings']
+cols_as_float = ['age','hours-per-week','capital-loss','capital-gain']
+df[cols_as_float]=df[cols_as_float].astype(float)
+
+print(tabulate(df.head(), tablefmt="grid", headers="keys"))
+
 from hnet import hnet
 hn = hnet(black_list=['fnlwgt'])
 results = hn.association_learning(df)
-hn.d3graph(threshold=150)
+
+out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
+
+hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
+hn.d3graph(min_edges=1)

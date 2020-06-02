@@ -454,7 +454,9 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
 
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
+    if verbose>=2: print('[hnet] >preprocessing : Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
+    df.columns = df.columns.str.strip()
     df.reset_index(drop=True, inplace=True)
 
     # Filter on white_list and black_list

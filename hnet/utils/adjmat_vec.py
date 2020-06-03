@@ -10,7 +10,7 @@ import numpy as np
 from ismember import ismember
 
 # %%  Convert adjacency matrix to vector
-def vec2adjmat(source, target, symmetric=True):
+def vec2adjmat(source, target, weight=None, symmetric=True):
     """Convert source and target into adjacency matrix.
 
     Parameters
@@ -19,6 +19,8 @@ def vec2adjmat(source, target, symmetric=True):
         The source node.
     target : list
         The target node.
+    weight : list of int
+        The Weights between the source-target values
     symmetric : bool, optional
         Make the adjacency matrix symmetric with the same number of rows as columns. The default is True.
 
@@ -32,11 +34,17 @@ def vec2adjmat(source, target, symmetric=True):
     >>> source=['Cloudy','Cloudy','Sprinkler','Rain']
     >>> target=['Sprinkler','Rain','Wet_Grass','Wet_Grass']
     >>> vec2adjmat(source, target)
+    >>> 
+    >>> weight=[1,2,1,3]
+    >>> vec2adjmat(source, target, weight=weight)
 
     """
+    if len(source)!=len(target): raise Exception('[hnet] >Source and Target should have equal elements.')
+    if weight is None: weight = [1]*len(source)
+    
     df = pd.DataFrame(np.c_[source, target], columns=['source','target'])
     # Make adjacency matrix
-    adjmat = pd.crosstab(df['source'], df['target'])
+    adjmat = pd.crosstab(df['source'], df['target'], values=weight, aggfunc='sum').fillna(0)
     # Get all unique nodes
     nodes = np.unique(list(adjmat.columns.values)+list(adjmat.index.values))
     # nodes = np.unique(np.c_[adjmat.columns.values, adjmat.index.values].flatten())

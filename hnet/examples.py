@@ -236,3 +236,12 @@ out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="
 
 hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
 hn.d3graph(min_edges=1)
+
+# %% Covid-19 dataset
+from hnet import hnet
+import pandas as pd
+df = pd.read_csv('D://covid19_us_county.zip')
+
+dtypes = ['', 'cat', 'cat', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num']
+hn = hnet(dtypes=dtypes)
+results = hn.association_learning(df)

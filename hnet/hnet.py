@@ -1046,7 +1046,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     y=X_comb.iloc[:,i].values.astype(str)
     # Get column name
     colname=X_comb.columns[i]
-    # Do something if response variable has more then 1 option
+    # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
         if verbose>=4: print('[hnet] >Working on [%s]' %(X_comb.columns[i]), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!

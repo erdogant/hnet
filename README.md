@@ -9,8 +9,9 @@
 
 	Star it if you like it!
 
-With ``HNet`` you can learn associations across features with unknown function.
-In the last decade I worked on many data science projects across various domains. Some projects were small, others very complex and extensive but the common theme was always is to determine the value of the data with respect to the questions that is asked.
+HNet (graphical Hypergeometric Networks) is a method where associations across variables are tested for significance by statistical inference.
+The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
+Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.
 
 Real-world data often contain measurements with both continuous and discrete values.
 Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps,
@@ -47,21 +48,23 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 * Install hnet from PyPI (recommended). Hnet is compatible with Python 3.6+ and runs on Linux, MacOS X and Windows. 
 It is distributed under the Apache 2.0 license.
 
-```
-pip install hnet
+```bash
+    pip install hnet
 ```
 
 - Simple example for the Titanic data set
+
 ```python
-# Load library
-from hnet import hnet
-# Initialize hnet with default settings
-from hnet import hnet
-# Load example dataset
-df = hnet.import_example('titanic')
-# Print to screen
-print(df)
+    # Load library
+    from hnet import hnet
+    # Initialize hnet with default settings
+    from hnet import hnet
+    # Load example dataset
+    df = hnet.import_example('titanic')
+    # Print to screen
+    print(df)
 ```
+
 	#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
 	# 0              1         0       3  ...   7.2500   NaN         S
 	# 1              2         1       1  ...  71.2833   C85         C
@@ -79,17 +82,17 @@ print(df)
 Association learning on the titanic dataset
 
 ```python
-hn = hnet()
-out = hn.association_learning(df)
-
-# Plot static graph
-G_static = hn.plot()
-
-# Plot heatmap
-P_heatmap = hn.heatmap(cluster=True)
-
-# Plot dynamic graph
-G_dynamic = hn.d3graph()
+    hn = hnet()
+    out = hn.association_learning(df)
+    
+    # Plot static graph
+    G_static = hn.plot()
+    
+    # Plot heatmap
+    P_heatmap = hn.heatmap(cluster=True)
+    
+    # Plot dynamic graph
+    G_dynamic = hn.d3graph()
 ```
 
 <p align="center">

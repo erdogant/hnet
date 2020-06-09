@@ -14,7 +14,7 @@ from hnet.utils.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.0.8'
+__version__ = '1.0.9'
 
 # module level doc-string
 __doc__ = """
@@ -29,32 +29,32 @@ HNet (graphical Hypergeometric Networks) is a method where associations across v
 The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 
 Examples
--------
-Initialize hnet with default settings
+--------
+>>> # Initialize hnet with default settings
 >>> from hnet import hnet
 >>> hn = hnet()
 >>> # Load example dataset
->>> df = hnet.import_example('sprinkler')
+>>> df = hn.import_example('titanic')
 
-Structure learning
+>>> # Structure learning
 >>> out = hn.association_learning(df)
 
-Plot results:
 >>> # Plot dynamic graph
->>> G_dynamic = hn.d3graph()
+>>> G = hn.d3graph()
 >>> # Plot static graph
->>> G_static = hn.plot()
+>>> G = hn.plot()
 >>> # Plot heatmap
->>> P_heatmap = hn.heatmap(cluster=True)
+>>> hn.heatmap(cluster=True)
 
-Examine differences between models
->>> import hnet as hnet
->>> [scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
+>>> # Examine differences between models
+>>> import hnet
+>>> scores, adjmat = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
 >>> adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
 
 References
 ----------
 * https://erdogant.github.io/hnet/
 * https://github.com/erdogant/hnet
+* https://arxiv.org/abs/2005.04679
 
 """

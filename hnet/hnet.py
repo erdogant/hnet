@@ -45,7 +45,7 @@ class hnet():
 
     Description
     -----------
-    This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input data set **df**.
+    This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input DataFrame.
 
     A multi-step process is performed which consisting 5 steps.
         1. Pre-processing: Typing and One-hot Enconding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).
@@ -59,59 +59,45 @@ class hnet():
 
     Parameters
     ----------
-    alpha : float [0..1], default : 0.05.
+    alpha : float [0..1], (default : 0.05)
         Significance to keep only edges with <=alhpa.
-        0.05 : (default)
         1 : (for all results)
-
-    y_min : int [1..n], where n is the number of samples. default : 10.
+    y_min : int [1..n], where n is the number of samples. (default : 10)
         Minimum number of samples in a group. Should be [samples>=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
-        10  (default)
-        None or 1
-
-    k : int, [1..n] , default : 1.
+        10, None, 1, etc
+    k : int, [1..n] , (default : 1)
         Number of combinatoric elements to create for the n features
-        The default is 1.
-
-    perc_min_num : float, Force column (int or float) to be numerical if unique non-zero values are above percentage.
-        None
-        0.8 (default)
-
-    multtest : String, default : 'holm'.
-         None            : No multiple Test
-        'bonferroni'     : one-step correction
-        'sidak'          : one-step correction
-        'holm-sidak'     : step down method using Sidak adjustments
-        'holm'           : step-down method using Bonferroni adjustments (default)
-        'simes-hochberg' : step-up method  (independent)
-        'hommel'         : closed method based on Simes tests (non-negative)
-        'fdr_bh'         : Benjamini/Hochberg  (non-negative)
-        'fdr_by'         : Benjamini/Yekutieli (negative)
-        'fdr_tsbh'       : two stage fdr correction (non-negative)
-        'fdr_tsbky'      : two stage fdr correction (non-negative)
-
+    perc_min_num : float, (default : 0.8)
+        Force column (int or float) to be numerical if unique non-zero values are above percentage.
+        Can also be None.
+    multtest : String, (default : 'holm')
+        None: No multiple Test,
+        'bonferroni': one-step correction,
+        'sidak': one-step correction,
+        'holm-sidak': step down method using Sidak adjustments,
+        'holm': step-down method using Bonferroni adjustments,
+        'simes-hochberg': step-up method  (independent),
+        'hommel': closed method based on Simes tests (non-negative),
+        'fdr_bh': Benjamini/Hochberg  (non-negative),
+        'fdr_by': Benjamini/Yekutieli (negative),
+        'fdr_tsbh': two stage fdr correction (non-negative),
+        'fdr_tsbky': two stage fdr correction (non-negative)
     dtypes : list of str, (default : 'pandas')
         list strings, example: ['cat','num',''] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped.
-        'pandas' (default),
-        ['cat','cat','num','','cat']
-
-    specificity : String, Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
-            None : No additional information in the labels
-            'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group.
-            'medium' : (default) 'high' or 'low' are included with 1 decimal behind the comma.
-            'high' : 'high' or 'low' are included with 3 decimal behind the comma.
-
-    dropna : Bool, [True,False] Drop rows/columns in adjacency matrix that showed no significance
-        True (default)
-        False
-
-    excl_background : String, String name to exclude from the background
-        None (default)
-        ['0.0']: To remove categorical values with label 0
-
+        Can also be of the form: ['cat','cat','num','','cat']
+    specificity : String, (default : 'medium')
+        Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
+        None : No additional information in the labels,
+        'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group,
+        'medium': 'high' or 'low' are included with 1 decimal behind the comma,
+        'high' : 'high' or 'low' are included with 3 decimal behind the comma.
+    dropna : Bool, [True,False] (Default : True)
+        Drop rows/columns in adjacency matrix that showed no significance
+    excl_background : String (default : None)
+        Name to exclude from the background.
+        Example: ['0.0']: To remove categorical values with label 0
     black_list : List or None (default : None)
         If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
-
     white_list : List or None (default : None)
         If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
 

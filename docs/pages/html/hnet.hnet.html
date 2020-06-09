@@ -274,7 +274,7 @@ The input dataset is converted into a one-hot dense array based on automatic typ
 <dt id="hnet.hnet.hnet">
 <em class="property">class </em><code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">hnet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">y_min</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">perc_min_num</span><span class="o">=</span><span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">multtest</span><span class="o">=</span><span class="default_value">'holm'</span></em>, <em class="sig-param"><span class="n">dtypes</span><span class="o">=</span><span class="default_value">'pandas'</span></em>, <em class="sig-param"><span class="n">specificity</span><span class="o">=</span><span class="default_value">'medium'</span></em>, <em class="sig-param"><span class="n">dropna</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">excl_background</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>HNET - Graphical Hypergeometric networks.</p>
-<p>This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input data set <strong>df</strong>.</p>
+<p>This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input DataFrame.</p>
 <dl class="simple">
 <dt>A multi-step process is performed which consisting 5 steps.</dt><dd><ol class="arabic simple">
 <li><p>Pre-processing: Typing and One-hot Enconding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).</p></li>
@@ -290,38 +290,34 @@ The adjacency matrix can then be examined as a network representation using d3gr
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>alpha</strong> (<em>float</em><em> [</em><em>0..1</em><em>]</em><em>, </em><em>default : 0.05.</em>) – Significance to keep only edges with &lt;=alhpa.
-0.05 : (default)
+<li><p><strong>alpha</strong> (<em>float</em><em> [</em><em>0..1</em><em>]</em><em>, </em><em>(</em><em>default : 0.05</em><em>)</em>) – Significance to keep only edges with &lt;=alhpa.
 1 : (for all results)</p></li>
-<li><p><strong>y_min</strong> (<em>int</em><em> [</em><em>1..n</em><em>]</em><em>, </em><em>where n is the number of samples. default : 10.</em>) – Minimum number of samples in a group. Should be [samples&gt;=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
-10  (default)
-None or 1</p></li>
-<li><p><strong>k</strong> (<em>int</em><em>, </em><em>[</em><em>1..n</em><em>] </em><em>, </em><em>default : 1.</em>) – Number of combinatoric elements to create for the n features
-The default is 1.</p></li>
-<li><p><strong>perc_min_num</strong> (<em>float</em><em>, </em><em>Force column</em><em> (</em><em>int</em><em> or </em><em>float</em><em>) </em><em>to be numerical if unique non-zero values are above percentage.</em>) – None
-0.8 (default)</p></li>
-<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>default : 'holm'.</em>) – None            : No multiple Test
-‘bonferroni’     : one-step correction
-‘sidak’          : one-step correction
-‘holm-sidak’     : step down method using Sidak adjustments
-‘holm’           : step-down method using Bonferroni adjustments (default)
-‘simes-hochberg’ : step-up method  (independent)
-‘hommel’         : closed method based on Simes tests (non-negative)
-‘fdr_bh’         : Benjamini/Hochberg  (non-negative)
-‘fdr_by’         : Benjamini/Yekutieli (negative)
-‘fdr_tsbh’       : two stage fdr correction (non-negative)
-‘fdr_tsbky’      : two stage fdr correction (non-negative)</p></li>
+<li><p><strong>y_min</strong> (<em>int</em><em> [</em><em>1..n</em><em>]</em><em>, </em><em>where n is the number of samples.</em><em> (</em><em>default : 10</em><em>)</em>) – Minimum number of samples in a group. Should be [samples&gt;=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
+10, None, 1, etc</p></li>
+<li><p><strong>k</strong> (<em>int</em><em>, </em><em>[</em><em>1..n</em><em>] </em><em>, </em><em>(</em><em>default : 1</em><em>)</em>) – Number of combinatoric elements to create for the n features</p></li>
+<li><p><strong>perc_min_num</strong> (<em>float</em><em>, </em><em>(</em><em>default : 0.8</em><em>)</em>) – Force column (int or float) to be numerical if unique non-zero values are above percentage.
+Can also be None.</p></li>
+<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'holm'</em><em>)</em>) – None: No multiple Test,
+‘bonferroni’: one-step correction,
+‘sidak’: one-step correction,
+‘holm-sidak’: step down method using Sidak adjustments,
+‘holm’: step-down method using Bonferroni adjustments,
+‘simes-hochberg’: step-up method  (independent),
+‘hommel’: closed method based on Simes tests (non-negative),
+‘fdr_bh’: Benjamini/Hochberg  (non-negative),
+‘fdr_by’: Benjamini/Yekutieli (negative),
+‘fdr_tsbh’: two stage fdr correction (non-negative),
+‘fdr_tsbky’: two stage fdr correction (non-negative)</p></li>
 <li><p><strong>dtypes</strong> (<em>list of str</em><em>, </em><em>(</em><em>default : 'pandas'</em><em>)</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
-‘pandas’ (default),
-[‘cat’,’cat’,’num’,’’,’cat’]</p></li>
-<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network</em><em> (</em><em>[</em><em>None</em><em>] </em><em>will glue most numerical labels together whereas</em><em> [</em><em>high</em><em>] </em><em>mostly will not</em><em>)</em><em></em>) – None : No additional information in the labels
-‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group.
-‘medium’ : (default) ‘high’ or ‘low’ are included with 1 decimal behind the comma.
+Can also be of the form: [‘cat’,’cat’,’num’,’’,’cat’]</p></li>
+<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'medium'</em><em>)</em>) – Configure how numerical data labels are stored. Setting this variable can be of use in the ‘association_learning’ function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
+None : No additional information in the labels,
+‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group,
+‘medium’: ‘high’ or ‘low’ are included with 1 decimal behind the comma,
 ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
-<li><p><strong>dropna</strong> (<em>Bool</em><em>, </em><em>[</em><em>True</em><em>,</em><em>False</em><em>] </em><em>Drop rows/columns in adjacency matrix that showed no significance</em>) – True (default)
-False</p></li>
-<li><p><strong>excl_background</strong> (<em>String</em><em>, </em><em>String name to exclude from the background</em>) – None (default)
-[‘0.0’]: To remove categorical values with label 0</p></li>
+<li><p><strong>dropna</strong> (<em>Bool</em><em>, </em><em>[</em><em>True</em><em>,</em><em>False</em><em>] </em><em>(</em><em>Default : True</em><em>)</em>) – Drop rows/columns in adjacency matrix that showed no significance</p></li>
+<li><p><strong>excl_background</strong> (<em>String</em><em> (</em><em>default : None</em><em>)</em>) – Name to exclude from the background.
+Example: [‘0.0’]: To remove categorical values with label 0</p></li>
 <li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
 <li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
 </ul>
@@ -678,13 +674,14 @@ Values above and below the diagnal are combined using the max or min value.</p>
 
 <dl class="py function">
 <dt id="hnet.utils.adjmat_vec.vec2adjmat">
-<code class="sig-prename descclassname">hnet.utils.adjmat_vec.</code><code class="sig-name descname">vec2adjmat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">symmetric</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.utils.adjmat_vec.vec2adjmat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hnet.utils.adjmat_vec.</code><code class="sig-name descname">vec2adjmat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">symmetric</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.utils.adjmat_vec.vec2adjmat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert source and target into adjacency matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<em>list</em>) – The source node.</p></li>
 <li><p><strong>target</strong> (<em>list</em>) – The target node.</p></li>
+<li><p><strong>weight</strong> (<em>list of int</em>) – The Weights between the source-target values</p></li>
 <li><p><strong>symmetric</strong> (<em>bool</em><em>, </em><em>optional</em>) – Make the adjacency matrix symmetric with the same number of rows as columns. The default is True.</p></li>
 </ul>
 </dd>
@@ -699,6 +696,9 @@ Values above and below the diagnal are combined using the max or min value.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Cloudy&#39;</span><span class="p">,</span><span class="s1">&#39;Cloudy&#39;</span><span class="p">,</span><span class="s1">&#39;Sprinkler&#39;</span><span class="p">,</span><span class="s1">&#39;Rain&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sprinkler&#39;</span><span class="p">,</span><span class="s1">&#39;Rain&#39;</span><span class="p">,</span><span class="s1">&#39;Wet_Grass&#39;</span><span class="p">,</span><span class="s1">&#39;Wet_Grass&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec2adjmat</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vec2adjmat</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

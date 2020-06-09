@@ -49,20 +49,20 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 It is distributed under the Apache 2.0 license.
 
 ```bash
-    pip install hnet
+pip install hnet
 ```
 
 - Simple example for the Titanic data set
 
 ```python
-    # Load library
-    from hnet import hnet
-    # Initialize hnet with default settings
-    from hnet import hnet
-    # Load example dataset
-    df = hnet.import_example('titanic')
-    # Print to screen
-    print(df)
+# Load library
+from hnet import hnet
+# Initialize hnet with default settings
+from hnet import hnet
+# Load example dataset
+df = hnet.import_example('titanic')
+# Print to screen
+print(df)
 ```
 
 	#      PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
@@ -82,17 +82,17 @@ It is distributed under the Apache 2.0 license.
 Association learning on the titanic dataset
 
 ```python
-    hn = hnet()
-    out = hn.association_learning(df)
-    
-    # Plot static graph
-    G_static = hn.plot()
-    
-    # Plot heatmap
-    P_heatmap = hn.heatmap(cluster=True)
-    
-    # Plot dynamic graph
-    G_dynamic = hn.d3graph()
+hn = hnet()
+out = hn.association_learning(df)
+
+# Plot static graph
+G_static = hn.plot()
+
+# Plot heatmap
+P_heatmap = hn.heatmap(cluster=True)
+
+# Plot dynamic graph
+G_dynamic = hn.d3graph()
 ```
 
 <p align="center">

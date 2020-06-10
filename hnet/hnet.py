@@ -803,7 +803,7 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
     curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
     PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
     if not os.path.isdir(curpath):
-        os.mkdir(curpath)
+        os.makedirs(curpath, exist_ok=True)
 
     # Check file exists.
     if not os.path.isfile(PATH_TO_DATA):

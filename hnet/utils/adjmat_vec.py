@@ -1,9 +1,9 @@
-# --------------------------------------------------------------------------
-# Name        : adjmat_vec.py
+# ---------------------------------
+# Name        : adjmatvec.py
 # Author      : E.Taskesen
 # Contact     : erdogant@gmail.com
-# Licence     : MIT
-# --------------------------------------------------------------------------
+# Licence     : See licences
+# ---------------------------------
 
 import pandas as pd
 import numpy as np

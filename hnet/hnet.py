@@ -389,7 +389,7 @@ class hnet():
         if not status: return None
         
         if verbose>=3: print('[hnet] >Building network graph..')
-        config = dict()
+        config = {}
         config['scale'] = scale
         config['node_color'] = node_color
         config['dist_between_nodes'] = dist_between_nodes
@@ -887,7 +887,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
 
     # DECLARATIONS
-    config = dict()
+    config = {}
     config['verbose'] = verbose
     config['alpha'] = alpha
     config['multtest'] = multtest
@@ -1014,7 +1014,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
        -1 = Depliction of edge in the first netwwork compared to the second
 
     """
-    [scores, adjmat_diff] = network.compare_networks(adjmat_true,
+    scores, adjmat_diff = network.compare_networks(adjmat_true,
                                                      adjmat_pred,
                                                      pos=pos,
                                                      showfig=showfig,
@@ -1049,9 +1049,9 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             colnames = catnames + '_' + dfout['category_label']
             colnames[idx] = catnames[idx].values
             # Add new column and index
-            [simmatP, simmat_labx] = hnstats._addcolumns(simmatP, colnames, simmat_labx, catnames)
+            simmatP, simmat_labx = hnstats._addcolumns(simmatP, colnames, simmat_labx, catnames)
             # Store values
-            [IA,IB]=ismember(simmatP.index.values.astype(str), colnames.values.astype(str))
+            IA, IB = ismember(simmatP.index.values.astype(str), colnames.values.astype(str))
             simmatP.loc[colname, IA] = dfout['Padj'].iloc[IB].values
             # Count nr. successes
             out = [colname, X_comb.iloc[:,i].sum() / X_comb.shape[0]]

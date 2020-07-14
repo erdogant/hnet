@@ -195,11 +195,12 @@ class hnet():
             [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
             count = count + simmatP.shape[0]
+            if verbose>=3: print('[hnet] >[%d] %s' %(i, nr_succes_i))
 
         # Message
         if verbose>=3: print('[hnet] >Total number of computations: [%.0d]' %(count))
         # Post processing
-        [simmatP, simmatLogP, simmat_labx, nr_succes_pop_n] = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
+        simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
@@ -1026,12 +1027,11 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 
 # %% Do the math
 def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificity, y_min, verbose=3):
-    count=0
-    out=[]
+    count = 0
     # Get response variable to test association
-    y=X_comb.iloc[:,i].values.astype(str)
+    y = X_comb.iloc[:,i].values.astype(str)
     # Get column name
-    colname=X_comb.columns[i]
+    colname = X_comb.columns[i]
     # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
         if verbose>=4: print('[hnet] >Working on [%s]' %(X_comb.columns[i]), end='')
@@ -1059,6 +1059,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             if verbose>=4: print('[%g]' %(len(IB)), end='')
     else:
         if verbose>=4: print('[hnet] >Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+        out = [colname, np.nan]
 
     if verbose>=4: print('')
     # Return

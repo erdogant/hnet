@@ -1,5 +1,4 @@
 # %%
-import numpy as np
 import hnet
 print(dir(hnet))
 print(hnet.__version__)
@@ -9,8 +8,28 @@ print(hnet.__version__)
 from hnet import hnet
 print(dir(hnet))
 
-# %% Import examples
+# %% Download dataset from url
+# from tabulate import tabulate
+import hnet
+df = hnet.import_example(url='https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')
+df.columns=['age','workclass','fnlwgt','education','education-num','marital-status','occupation','relationship','race','sex','capital-gain','capital-loss','hours-per-week','native-country','earnings']
+cols_as_float = ['age','hours-per-week','capital-loss','capital-gain']
+df[cols_as_float]=df[cols_as_float].astype(float)
+
+# print(tabulate(df.head(), tablefmt="grid", headers="keys"))
+
 from hnet import hnet
+hn = hnet(black_list=['fnlwgt'])
+results = hn.association_learning(df)
+
+# out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
+
+hn.d3graph()
+hn.d3graph(min_edges=5)
+# hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
+
+
+# %% Import examples
 
 df = hnet.import_example('titanic')
 
@@ -19,10 +38,10 @@ df = hnet.import_example('student')
 df = hnet.import_example('sprinkler')
 
 # %% Run with default settings
-from hnet import hnet
 hn = hnet()
 # Load data
-df = hn.import_example('titanic')
+# df = hn.import_example('titanic')
+df = hn.import_example('sprinkler')
 # Structure learning
 out = hn.association_learning(df)
 
@@ -53,12 +72,10 @@ plt.title('P-value Associaties')
 
 
 # %% Association learning
-
-from hnet import hnet
-df = hnet.import_example('titanic')
-
 hn1 = hnet(y_min=50)
 hn2 = hnet()
+# Data
+df = hn1.import_example('titanic')
 # Structure learning
 out1 = hn1.association_learning(df)
 out2 = hn2.association_learning(df)
@@ -132,32 +149,6 @@ df.columns = df.columns.astype(str)
 hn = hnet()
 out = hn.association_learning(df)
 
-# %%
-
-    # [hnet] >Removing features from the black list..
-    # [DTYPES] Auto detecting dtypes
-    # [DTYPES] [age]             > [float]->[num] [74]
-    # [DTYPES] [sex]             > [obj]  ->[cat] [2]
-    # [DTYPES] [survival_months] > [force]->[num] [1591]
-    # [DTYPES] [death_indicator] > [float]->[num] [2]
-    # [DTYPES] [labx]            > [obj]  ->[cat] [19]
-    # [DTYPES] Setting dtypes in dataframe
-    # [DF2ONEHOT] Working on age
-    # [DF2ONEHOT] Working on sex.....[3]
-    # [DF2ONEHOT] Working on survival_months
-    #   0%|          | 0/22 [00:00<?, ?it/s]
-    # [DF2ONEHOT] Working on labx.....[19]
-    # [DF2ONEHOT] Total onehot features: 22
-    # [hnet] >Association learning across [22] categories.
-    # 100%|██████████| 22/22 [00:07<00:00,  2.77it/s]
-    # [hnet] >Total number of computations: [969]
-    # [hnet] >Multiple test correction using holm
-    # [hnet] >Dropping age
-    # [hnet] >Dropping survival_months
-    # [hnet] >Dropping death_indicator
-    # [hnet] >Fin.
-
-
 
 # %%
 from hnet import hnet
@@ -228,7 +219,7 @@ df.columns=['age','workclass','fnlwgt','education','education-num','marital-stat
 cols_as_float = ['age','hours-per-week','capital-loss','capital-gain']
 df[cols_as_float]=df[cols_as_float].astype(float)
 
-print(tabulate(df.head(), tablefmt="grid", headers="keys"))
+# print(tabulate(df.head(), tablefmt="grid", headers="keys"))
 
 from hnet import hnet
 hn = hnet(black_list=['fnlwgt'])

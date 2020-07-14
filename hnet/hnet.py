@@ -187,7 +187,7 @@ class hnet():
         # Print some
         if verbose>=3: print('[hnet] >Association learning across [%d] categories.' %(X_comb.shape[1]))
 
-        disable = (True if verbose==0 else False)
+        disable = (True if (verbose==0 or verbose>3) else False)
         count = 0
         nr_succes_pop_n = []
 
@@ -195,7 +195,7 @@ class hnet():
             [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
             count = count + simmatP.shape[0]
-            if verbose>=3: print('[hnet] >[%d] %s' %(i, nr_succes_i))
+            if verbose>=4: print('[hnet] >[%d] %s' %(i, nr_succes_i))
 
         # Message
         if verbose>=3: print('[hnet] >Total number of computations: [%.0d]' %(count))

@@ -462,7 +462,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Filter on white_list and black_list
     df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
-    [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
+    df, dtypes = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
     df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     # Set the dtypes for the input dataframe

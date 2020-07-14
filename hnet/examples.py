@@ -1,4 +1,4 @@
-# %%
+verbose# %%
 import hnet
 print(dir(hnet))
 print(hnet.__version__)

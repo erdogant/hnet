@@ -9,7 +9,7 @@ print(hnet.__version__)
 from hnet import hnet
 print(dir(hnet))
 
-# %%
+# %% Import examples
 from hnet import hnet
 
 df = hnet.import_example('titanic')
@@ -27,6 +27,8 @@ df = hn.import_example('titanic')
 out = hn.association_learning(df)
 
 # %% Plot with clustering nodes
+G_static = hn.plot()
+G_dynamic = hn.d3graph()
 
 # Plot dynamic graph
 G_dynamic = hn.d3graph(node_color='cluster')

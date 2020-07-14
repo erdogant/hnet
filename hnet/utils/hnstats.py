@@ -337,10 +337,10 @@ def _nancleaning(datac, y):
 # %% Do the math
 def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest, fillna, dropna, verbose=3):
     # Clean label names by chaning X.0 into X
-    simmat_padj.columns=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
-    simmat_padj.index=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
-    nr_succes_pop_n=np.array(nr_succes_pop_n)
-    nr_succes_pop_n[:,0]=list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:,0]))
+    simmat_padj.columns = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
+    simmat_padj.index = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
+    nr_succes_pop_n = np.array(nr_succes_pop_n)
+    nr_succes_pop_n[:,0] = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:,0]))
 
     if verbose>=5: print(simmat_padj)
     # Multiple test correction
@@ -368,8 +368,8 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
         simmat_padj=simmat_padj.iloc[keepidx,keepidx]
         adjmatLog=adjmatLog.iloc[keepidx,keepidx]
         simmat_labx=simmat_labx[keepidx]
-        [IA,_]=ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
-        nr_succes_pop_n=nr_succes_pop_n[IA,:]
+        IA, _ = ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
+        nr_succes_pop_n = nr_succes_pop_n[IA,:]
 
     return(simmat_padj, adjmatLog, simmat_labx, nr_succes_pop_n)
 

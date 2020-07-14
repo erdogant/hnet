@@ -465,7 +465,8 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
     df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
-    dtypes = df_onehot['dtypes']
+    # Set the dtypes for the input dataframe
+    df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, is_list=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
 
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
@@ -481,7 +482,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make all integer
     df_onehot['onehot'] = df_onehot['onehot'].astype(int)
     # Return
-    return df, df_onehot, dtypes
+    return df, df_onehot, np.array(dtypes)
 
 
 # %% Tempdir

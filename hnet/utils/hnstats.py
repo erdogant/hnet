@@ -464,9 +464,9 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Remove columns without dtype
     [df, dtypes] = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
-    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
     # Set the dtypes for the input dataframe
-    df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, is_list=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
+    df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
 
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values

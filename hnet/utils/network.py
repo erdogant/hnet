@@ -81,7 +81,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import community
+from community import community_louvain
 import networkx as nx
 from sklearn.preprocessing import minmax_scale
 from sklearn.preprocessing import MinMaxScaler 
@@ -172,7 +172,7 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
 def cluster(G, verbose=3):
     if verbose>=3: print('[NETWORK.cluster] Clustering using best partition')
     # Partition
-    partition=community.best_partition(G)
+    partition=community_louvain.best_partition(G)
     # Set property to node
     nx.set_node_attributes(G, partition, 'clusterlabel')
     # Extract labels

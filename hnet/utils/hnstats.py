@@ -458,16 +458,31 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
     df.reset_index(drop=True, inplace=True)
+    
+    # Convert bool columns to integer values
+    if dtypes=='pandas':
+        Iloc = df.dtypes=='bool'
+        if np.any(Iloc):
+            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
+            excl_background='0.0'
+
 
     # Filter on white_list and black_list
     df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
     df, dtypes = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
     # Make onehot matrix for response variable y
-    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose+1)
     # Set the dtypes for the input dataframe
     df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
+    dtypes = np.array(dtypes)
 
+    # Set any bool to int
+    # Iloc = dtypes=='bool'
+    # if np.any(Iloc):
+    #     df.loc[:,Iloc] = df.loc[:,Iloc].astype('int').astype('str')
+    #     dtypes[Iloc]='cat'
+    
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):
@@ -482,7 +497,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make all integer
     df_onehot['onehot'] = df_onehot['onehot'].astype(int)
     # Return
-    return df, df_onehot, np.array(dtypes)
+    return df, df_onehot, dtypes
 
 
 # %% Tempdir

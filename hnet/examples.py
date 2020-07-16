@@ -5,6 +5,12 @@
 from hnet import hnet
 
 # %%
+import hnet
+df = hnet.import_example('sprinkler')
+out = hnet.enrichment(df.astype(int), y=df.iloc[:,0].values)
+print(out)
+
+# %%
 # Load data
 # df = hn.import_example('titanic')
 hn = hnet()
@@ -12,6 +18,7 @@ df = hn.import_example('sprinkler')
 
 hn = hnet()
 out2 = hn.association_learning(df.astype(bool))
+
 
 hn = hnet(excl_background='0.0')
 out1 = hn.association_learning(df)

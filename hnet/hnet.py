@@ -1046,7 +1046,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             # Column names
             idx = np.where(dfout['category_label'].isna())[0]
             catnames = dfout['category_name']
-            colnames = catnames + '_' + dfout['category_label']
+            colnames = catnames + '_' + dfout['category_label'].astype(str)
             colnames[idx] = catnames[idx].values
             # Add new column and index
             simmatP, simmat_labx = hnstats._addcolumns(simmatP, colnames, simmat_labx, catnames)

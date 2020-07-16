@@ -42,24 +42,29 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
         for j in range(0, len(uiy)):
             target = uiy[j]
             # Catagorical
-            if dtypes[i]=='cat':
-                datacOnehot=pd.get_dummies(datac)
+            if (dtypes[i]=='cat'):
+                datacOnehot = pd.get_dummies(datac)
                 # Remove background column if 2 columns of which 0.0 also there
                 if (datacOnehot.shape[1]==2) & (np.any(np.isin(datacOnehot.columns, '0.0'))):
                     datacOnehot.drop(labels=['0.0'], axis=1, inplace=True)
+                # Remove False background column if 2 columns and False
+                if (datacOnehot.shape[1]==2) & (np.any(np.isin(datacOnehot.columns, False))):
+                    datacOnehot.drop(labels=[False], axis=1, inplace=True)
                 # Run over all unique entities/cats in column for target vlue
                 for k in range(0, datacOnehot.shape[1]):
                     outtest = _prob_hypergeo(datacOnehot.iloc[:, k], yc==target)
                     outtest.update({'y': target})
                     outtest.update({'category_name': colname})
                     out.append(outtest)
-
-            # Numerical
-            if dtypes[i]=='num':
+            elif dtypes[i]=='num':
+                # Numerical
                 outtest = _prob_ranksums(datac, yc==target, specificity=specificity)
                 outtest.update({'y': target})
                 outtest.update({'category_name': colname})
                 out.append(outtest)
+            else:
+                if verbose>=2: print('[hnet] >Warning: Can not process dtype: [%s] <skipping>' %(dtypes[i]))
+                # raise Exception('[hnet] >dtype can not be of type [%s]' %(dtypes[i]))
             # Print dots
             if verbose>=3: print('.', end='')
 

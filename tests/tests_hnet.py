@@ -3,6 +3,7 @@ import pandas as pd
 import hnet
 
 def test_import_example():
+    import hnet
     hn = hnet.hnet()
     df = hn.import_example('sprinkler')
     assert df.shape==(1000, 4)
@@ -33,9 +34,32 @@ def test_association_learning():
     df = hn.import_example('titanic')
     out = hn.association_learning(df)
     assert np.all(np.setdiff1d(df.columns, black_list)==['Parch', 'Pclass', 'Sex', 'SibSp'])
+    
+    # TEST VARIOUS INPUT DTYPES
+    hn1 = hnet()
+    df = hn1.import_example('sprinkler')
+    out1 = hn1.association_learning(df.astype(bool))
+    hn2 = hnet(excl_background='0.0')
+    out2 = hn2.association_learning(df)
+    assert np.all(out1['simmatP']==out2['simmatP'])
+
+    # hn3 = hnet(excl_background='0.0')
+    # out3 = hn3.association_learning(df.astype(float).astype(str))
+    # assert np.all(out1['simmatP']==out3['simmatP'])
+
+    # hn = hnet(excl_background='False')
+    # out5 = hn.association_learning(df.astype(bool).astype(str))
+    
+    # hn = hnet(excl_background='0')
+    # out7 = hn.association_learning(df.astype(int).astype(str))
+    
+    # hn3 = hnet(excl_background='0')
+    # out3 = hn3.association_learning(df.astype(int))
+    
 
 
 def test_hnet():
+    import hnet
     hn = hnet.hnet()
     df = hn.import_example('sprinkler')
 

@@ -1,6 +1,34 @@
-import hnet
-print(dir(hnet))
-print(hnet.__version__)
+# import hnet
+# print(dir(hnet))
+# print(hnet.__version__)
+
+from hnet import hnet
+
+# %%
+# Load data
+# df = hn.import_example('titanic')
+hn = hnet()
+df = hn.import_example('sprinkler')
+
+hn = hnet()
+out2 = hn.association_learning(df.astype(bool))
+
+hn = hnet(excl_background='0.0')
+out1 = hn.association_learning(df)
+out3 = hn.association_learning(df.astype(int))
+hn.plot()
+
+hn = hnet(excl_background='False')
+out5 = hn.association_learning(df.astype(bool).astype(str))
+
+hn = hnet(excl_background='0')
+out7 = hn.association_learning(df.astype(int).astype(str))
+
+hn = hnet(excl_background='0.0')
+out6 = hn.association_learning(df.astype(float).astype(str))
+
+# Should raise exception
+out4 = hn.association_learning(df.astype(float))
 
 
 # %% Import class
@@ -29,6 +57,7 @@ hn.d3graph(min_edges=5)
 
 
 # %% Import examples
+import hnet
 
 df = hnet.import_example('titanic')
 
@@ -37,12 +66,14 @@ df = hnet.import_example('student')
 df = hnet.import_example('sprinkler')
 
 # %% Run with default settings
+from hnet import hnet
+
 hn = hnet()
 # Load data
 # df = hn.import_example('titanic')
 df = hn.import_example('sprinkler')
-# Structure learning
-out = hn.association_learning(df)
+# Association learning
+out = hn.association_learning(df.astype(bool))
 
 # %% Plot with clustering nodes
 G_static = hn.plot()
@@ -75,7 +106,7 @@ hn1 = hnet(y_min=50)
 hn2 = hnet()
 # Data
 df = hn1.import_example('titanic')
-# Structure learning
+# Association learning
 out1 = hn1.association_learning(df)
 out2 = hn2.association_learning(df)
 
@@ -126,7 +157,7 @@ from hnet import hnet
 hn = hnet(black_list=['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp'])
 # Load data
 df = hn.import_example('titanic')
-# Structure learning
+# Association learning
 out = hn.association_learning(df)
 
 # %% Run with whitelist
@@ -134,7 +165,7 @@ from hnet import hnet
 hn = hnet(white_list=['Survived', 'Pclass', 'Age', 'SibSp'])
 # Load data
 df = hn.import_example('titanic')
-# Structure learning
+# Association learning
 out = hn.association_learning(df)
 
 # %% Sklearn examples

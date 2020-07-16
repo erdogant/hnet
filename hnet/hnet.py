@@ -896,13 +896,19 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
 
     if config['verbose']>=3: print('[hnet] >Start making fit..')
     df.columns = df.columns.astype(str)
+
+    # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+
+    # Convert bool columns to integer values
+    if isinstance(dtypes, str):
+        Iloc = df.dtypes=='bool'
+        if np.any(Iloc):
+            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
+
     # Set y as string
     y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
     # Determine dtypes for columns
     [df, dtypes] = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
-    
-    # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
-
     # Compute fit
     out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
     # Multiple test correction

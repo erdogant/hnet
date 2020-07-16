@@ -1032,6 +1032,8 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     y = X_comb.iloc[:,i].values.astype(str)
     # Get column name
     colname = X_comb.columns[i]
+    # Default output is nan
+    out = [colname, np.nan]
     # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
         if verbose>=4: print('[hnet] >Working on [%s]' %(X_comb.columns[i]), end='')
@@ -1059,7 +1061,6 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             if verbose>=4: print('[%g]' %(len(IB)), end='')
     else:
         if verbose>=4: print('[hnet] >Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
-        out = [colname, np.nan]
 
     if verbose>=4: print('')
     # Return

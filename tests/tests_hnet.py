@@ -166,6 +166,13 @@ def test_enrichment():
     # Check detected results
     assert np.all(out['category_name'].values==['Survived', 'Pclass', 'Sex', 'SibSp', 'Fare', 'Embarked'])
 
+    # TEST FOR DTYPES FUNCTIONALITY
+    import hnet
+    df = hnet.import_example('sprinkler')
+    out1 = hnet.enrichment(df.astype(int), y=df.iloc[:,0].values)
+    out2 = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
+    assert np.all(out1.values==out2.values)
+
 
 # %%
 # df = hnet.import_example('titanic')

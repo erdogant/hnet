@@ -43,18 +43,21 @@ def test_association_learning():
     out2 = hn2.association_learning(df)
     assert np.all(out1['simmatP']==out2['simmatP'])
 
-    # hn3 = hnet(excl_background='0.0')
-    # out3 = hn3.association_learning(df.astype(float).astype(str))
-    # assert np.all(out1['simmatP']==out3['simmatP'])
+    hn3 = hnet(excl_background='0.0')
+    out3 = hn3.association_learning(df.astype(float).astype(str))
+    assert np.all(out1['simmatP']==out3['simmatP'])
 
-    # hn = hnet(excl_background='False')
-    # out5 = hn.association_learning(df.astype(bool).astype(str))
+    hn = hnet(excl_background='False')
+    out5 = hn.association_learning(df.astype(bool).astype(str))
+    # out5['simmatP']
     
-    # hn = hnet(excl_background='0')
-    # out7 = hn.association_learning(df.astype(int).astype(str))
+    hn = hnet(excl_background='0')
+    out7 = hn.association_learning(df.astype(int).astype(str))
+    assert np.all(out7['simmatP'].values==out5['simmatP'].values)
     
-    # hn3 = hnet(excl_background='0')
-    # out3 = hn3.association_learning(df.astype(int))
+    # hn8 = hnet(excl_background='0')
+    # out8 = hn3.association_learning(df.astype(int))
+    # assert np.all(out5['simmatP'].values==out8['simmatP'].values)
     
 
 

@@ -456,21 +456,33 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
     if df.shape[1]<=1: print('[hnet] >Warning : After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
     return df, dtypes
 
+# %%
+def _bool_processesing(df, dtypes, excl_background, verbose=3):
+    if isinstance(dtypes, str) | (np.any(dtypes=='bool')):
+        Iloc = ( (df.dtypes=='bool') | (dtypes=='bool') ).values
+        if np.any(Iloc):
+            if verbose>=3: print('[hnet] >Converting boolean values..')
+            # Set as int
+            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
+            # Remove the background values
+            excl_background='0.0'
+            if verbose>=4: print('[hnet] >Set  parameter: excl_background=%s' %(str(excl_background)))
+            if not isinstance(dtypes, str):
+                # Set dtypes as catagorical
+                dtypes = np.array(dtypes)
+                dtypes[dtypes=='bool']='cat'
+    # Return
+    return df, dtypes, excl_background
 
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
-    if verbose>=2: print('[hnet] >preprocessing : Column names are set to str. and spaces are trimmed.')
+    if verbose>=4: print('[hnet] >preprocessing : Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
     df.reset_index(drop=True, inplace=True)
     
     # Convert bool columns to integer values
-    if isinstance(dtypes, str):
-        Iloc = df.dtypes=='bool'
-        if np.any(Iloc):
-            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
-            excl_background='0.0'
-
+    df, dtypes, excl_background = _bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
     # Filter on white_list and black_list
     df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
@@ -481,12 +493,6 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
     dtypes = np.array(dtypes)
 
-    # Set any bool to int
-    # Iloc = dtypes=='bool'
-    # if np.any(Iloc):
-    #     df.loc[:,Iloc] = df.loc[:,Iloc].astype('int').astype('str')
-    #     dtypes[Iloc]='cat'
-    
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):

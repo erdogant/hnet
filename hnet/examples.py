@@ -1,14 +1,31 @@
 # import hnet
 # print(dir(hnet))
 # print(hnet.__version__)
-
+import numpy as np
 from hnet import hnet
+hn = hnet()
+df = hn.import_example('sprinkler')
+
+hn1 = hnet(dtypes=np.array(['bool']*df.shape[1]))
+out1 = hn1.association_learning(df.astype(bool))
+
+hn2 = hnet()
+out2 = hn2.association_learning(df.astype(bool))
 
 # %%
 import hnet
 df = hnet.import_example('sprinkler')
-out = hnet.enrichment(df.astype(int), y=df.iloc[:,0].values)
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
 print(out)
+
+
+import hnet
+dtypes = np.array(['bool']*df.shape[1])
+df = hnet.import_example('sprinkler')
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values, dtypes=dtypes)
+print(out)
+
+# %%
 
 # %%
 # Load data

@@ -59,6 +59,15 @@ def test_association_learning():
     # out8 = hn3.association_learning(df.astype(int))
     # assert np.all(out5['simmatP'].values==out8['simmatP'].values)
     
+    # TEST FOR BOOL VALUES
+    from hnet import hnet
+    hn = hnet()
+    df = hn.import_example('sprinkler')
+    hn1 = hnet(dtypes=np.array(['bool']*df.shape[1]))
+    hn1.association_learning(df.astype(bool))
+    hn2 = hnet()
+    hn2.association_learning(df.astype(bool))
+    assert np.all(hn1.results['simmatP'].values==hn2.results['simmatP'].values)
 
 
 def test_hnet():
@@ -166,12 +175,20 @@ def test_enrichment():
     # Check detected results
     assert np.all(out['category_name'].values==['Survived', 'Pclass', 'Sex', 'SibSp', 'Fare', 'Embarked'])
 
-    # TEST FOR DTYPES FUNCTIONALITY
+    # TEST FOR DTYPES INT VS BOOL
     import hnet
     df = hnet.import_example('sprinkler')
     out1 = hnet.enrichment(df.astype(int), y=df.iloc[:,0].values)
     out2 = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
     assert np.all(out1.values==out2.values)
+
+    # TEST FOR BOOL WITH AND WITHOUT DTYPE INPUT PARMETER
+    import hnet
+    df = hnet.import_example('sprinkler')
+    out1 = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
+    out2 = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values, dtypes=np.array(['bool']*df.shape[1]))
+    assert np.all(out1.values==out2.values)
+
 
 
 # %%

@@ -95,7 +95,7 @@ class hnet():
         Drop rows/columns in adjacency matrix that showed no significance
     excl_background : String (default : None)
         Name to exclude from the background.
-        Example: ['0.0']: To remove categorical values with label 0
+        Example: '0.0': To remove categorical values with label 0
     black_list : List or None (default : None)
         If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
     white_list : List or None (default : None)
@@ -818,7 +818,7 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
     return df
 
 # %% Compute fit
-def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', verbose=3):
+def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=3):
     """Enrichment analysis.
 
     Description
@@ -842,6 +842,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
         By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped. The default is 'pandas'.
     specificity : String, optional
         Configure how numerical data labels are stored.. The default is 'medium'.
+    excl_background : String (default : None)
+        Name to exclude from the background.
+        Example: ['0.0']: To remove categorical values with label 0
     verbose : int, optional
         Print message to screen. The higher the number, the more details. The default is 3.
 
@@ -899,16 +902,18 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
 
     # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
 
+    df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
+
     # Convert bool columns to integer values
-    if isinstance(dtypes, str):
-        Iloc = df.dtypes=='bool'
-        if np.any(Iloc):
-            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
+    # if isinstance(dtypes, str):
+    #     Iloc = df.dtypes=='bool'
+    #     if np.any(Iloc):
+    #         df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
 
     # Set y as string
     y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
     # Determine dtypes for columns
-    [df, dtypes] = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
+    df, dtypes = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
     # Compute fit
     out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
     # Multiple test correction

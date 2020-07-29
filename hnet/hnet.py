@@ -101,7 +101,6 @@ class hnet():
     white_list : List or None (default : None)
         If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
 
-
     Returns
     -------
     dict : The output is a dictionary containing the following keys:
@@ -115,7 +114,6 @@ class hnet():
         dtypes that are set for the labels.
     counts :  list of str
         Relative counts for the labels based on the number of successes in population.
-
 
     Examples
     --------
@@ -133,7 +131,6 @@ class hnet():
     >>> P_heatmap = hn.heatmap(cluster=True)
 
     """
-
     def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):
         """Initialize distfit with user-defined parameters."""
 

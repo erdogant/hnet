@@ -71,26 +71,26 @@ class hnet():
         Force column (int or float) to be numerical if unique non-zero values are above percentage.
         Can also be None.
     multtest : String, (default : 'holm')
-        None: No multiple Test,
-        'bonferroni': one-step correction,
-        'sidak': one-step correction,
-        'holm-sidak': step down method using Sidak adjustments,
-        'holm': step-down method using Bonferroni adjustments,
-        'simes-hochberg': step-up method  (independent),
-        'hommel': closed method based on Simes tests (non-negative),
-        'fdr_bh': Benjamini/Hochberg  (non-negative),
-        'fdr_by': Benjamini/Yekutieli (negative),
-        'fdr_tsbh': two stage fdr correction (non-negative),
-        'fdr_tsbky': two stage fdr correction (non-negative)
+        * None: No multiple Test,
+        * 'bonferroni': one-step correction,
+        * 'sidak': one-step correction,
+        * 'holm-sidak': step down method using Sidak adjustments,
+        * 'holm': step-down method using Bonferroni adjustments,
+        * 'simes-hochberg': step-up method  (independent),
+        * 'hommel': closed method based on Simes tests (non-negative),
+        * 'fdr_bh': Benjamini/Hochberg  (non-negative),
+        * 'fdr_by': Benjamini/Yekutieli (negative),
+        * 'fdr_tsbh': two stage fdr correction (non-negative),
+        * 'fdr_tsbky': two stage fdr correction (non-negative)
     dtypes : list of str, (default : 'pandas')
         list strings, example: ['cat','num',''] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [''] are skipped.
         Can also be of the form: ['cat','cat','num','','cat']
     specificity : String, (default : 'medium')
         Configure how numerical data labels are stored. Setting this variable can be of use in the 'association_learning' function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
-        None : No additional information in the labels,
-        'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group,
-        'medium': 'high' or 'low' are included with 1 decimal behind the comma,
-        'high' : 'high' or 'low' are included with 3 decimal behind the comma.
+        * None : No additional information in the labels,
+        * 'low' : 'high' or 'low' are included that represents significantly higher or lower assocations compared to the rest-group,
+        * 'medium': 'high' or 'low' are included with 1 decimal behind the comma,
+        * 'high' : 'high' or 'low' are included with 3 decimal behind the comma.
     dropna : Bool, [True,False] (Default : True)
         Drop rows/columns in adjacency matrix that showed no significance
     excl_background : String (default : None)
@@ -103,17 +103,17 @@ class hnet():
 
     Returns
     -------
-    dict : The output is a dictionary containing the following keys:
-    simmatP : pd.DataFrame()
-        Adjacency matrix containing P-values between variable assocations.
-    simmatLogP :  pd.DataFrame()
-        -log10(P-value) of the simmatP.
-    labx :  list of str
-        Labels that are analyzed.
-    dtypes :  list of str
-        dtypes that are set for the labels.
-    counts :  list of str
-        Relative counts for the labels based on the number of successes in population.
+    dict()
+        simmatP : pd.DataFrame()
+            Adjacency matrix containing P-values between variable assocations.
+        simmatLogP :  pd.DataFrame()
+            -log10(P-value) of the simmatP.
+        labx :  list of str
+            Labels that are analyzed.
+        dtypes :  list of str
+            dtypes that are set for the labels.
+        counts :  list of str
+            Relative counts for the labels based on the number of successes in population.
 
     Examples
     --------

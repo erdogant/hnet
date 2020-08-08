@@ -31,8 +31,8 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 
 **Documentation**
 
-API Documentation: https://erdogant.github.io/hnet/
-Article: https://arxiv.org/abs/2005.04679
+* API Documentation: https://erdogant.github.io/hnet/
+* Article: https://arxiv.org/abs/2005.04679
 
 ## Method overview
 <p align="center">

@@ -29,9 +29,10 @@ We demonstrate that HNet showed high accuracy and performance in the detection o
 
 HNet overcomes processes raw unstructured data sets, it allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.
 
-**API Documentation**
+**Documentation**
 
-An extented documentation can be found here: https://erdogant.github.io/hnet/
+* API Documentation: https://erdogant.github.io/hnet/
+* Article: https://arxiv.org/abs/2005.04679
 
 ## Method overview
 <p align="center">

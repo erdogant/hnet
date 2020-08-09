@@ -1048,7 +1048,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit
-        dfout = enrichment(df.loc[:,Iloc], y, y_min=y_min, alpha=1, multtest=None, dtypes=dtypes[Iloc], specificity=specificity, verbose=0)
+        dfout = enrichment(df.loc[:, Iloc], y, y_min=y_min, alpha=1, multtest=None, dtypes=dtypes[Iloc], specificity=specificity, verbose=0)
         # Count
         count=count + dfout.shape[0]
         # Match with dataframe and store
@@ -1064,7 +1064,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             IA, IB = ismember(simmatP.index.values.astype(str), colnames.values.astype(str))
             simmatP.loc[colname, IA] = dfout['Padj'].iloc[IB].values
             # Count nr. successes
-            out = [colname, X_comb.iloc[:,i].sum() / X_comb.shape[0]]
+            out = [colname, X_comb.iloc[:, i].sum() / X_comb.shape[0]]
             # showprogress
             if verbose>=4: print('[%g]' %(len(IB)), end='')
     else:

@@ -7,7 +7,9 @@
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-Green)](https://erdogant.github.io/hnet/)
 [![arXiv](https://img.shields.io/badge/arXiv-Docs-Green)](https://arxiv.org/abs/2005.04679)
 
-HNet (graphical Hypergeometric Networks) is a method where associations across variables are tested for significance by statistical inference.
+    Star it if you like it!
+
+HNet stands for graphical Hypergeometric Networks, which is a method where associations across variables are tested for significance by statistical inference.
 The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.
 

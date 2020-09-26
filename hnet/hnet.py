@@ -685,7 +685,7 @@ class hnet():
         storedata['fillna'] = self.fillna
         storedata['excl_background'] = self.excl_background
         # Save
-        status = picklefast.save(filepath, storedata, overwrite=overwrite, verbose=verbose)
+        status = pypickle.save(filepath, storedata, overwrite=overwrite, verbose=verbose)
         if verbose>=3: print('[hnet] >Saving.. %s' %(status))
         # return
         return status
@@ -711,7 +711,7 @@ class hnet():
         if filepath[-4:]!='.pkl':
             filepath = filepath + '.pkl'
         # Load
-        storedata = picklefast.load(filepath, verbose=verbose)
+        storedata = pypickle.load(filepath, verbose=verbose)
         # Store in self.
         if storedata is not None:
             self.results = storedata['results']
@@ -753,10 +753,11 @@ def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
     out['rules'] = rules
     return out
 
+
 # %% Import example dataset from github.
 def import_example(data='titanic', url=None, sep=',', verbose=3):
     """Import example dataset from github source.
-    
+
     Description
     -----------
     Import one of the few datasets from github source or specify your own download url link.
@@ -813,6 +814,7 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
     df = pd.read_csv(PATH_TO_DATA, sep=sep)
     # Return
     return df
+
 
 # %% Compute fit
 def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=3):

@@ -23,8 +23,7 @@ import plotly.graph_objs as go
 from colour import Color
 # Hnet
 import hnet as hnet
-import hnet.helpers.picklefast as picklefast
-
+import pypickle
 # progressbar
 # import tkinter as tk
 # from tkinter import ttk
@@ -587,7 +586,7 @@ def update_output(alpha_limit, node_name, dropdown_path, network_layout):
     # Load data
     if os.path.isfile(get_pklpath(dropdown_path)):
         print('Load picke file')
-        HNET_OUT=picklefast.load(get_pklpath(dropdown_path))
+        HNET_OUT=pypickle.load(get_pklpath(dropdown_path))
         # HNET_OUT=hnet_out
         #print(df['simmatLogP'])
 
@@ -703,12 +702,12 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
         print('STORE PICKLE')
         # progressbar['value']=progressbar['value']+1 # update bar
         # progressbar.update() # update gui
-        picklefast.save(pklpath, HNET_OUT)
+        pypickle.save(pklpath, HNET_OUT)
         #print('MAKE D3GRAPH')
         _ = hnet.plot_d3graph(HNET_OUT, savepath=savepath, showfig=False)
     else:
         print('dir exists, load stuff')
-        HNET_OUT=picklefast.load(pklpath)
+        HNET_OUT=pypickle.load(pklpath)
         
     # Open in browser
     if os.path.isfile(d3path):

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import GENERAL.picklefast as picklefast
+import pypickle
 
 #%% Load result-data
 arg=dict()
@@ -13,7 +13,7 @@ arg['DAG']=['alarm']
 
 #%%
 #loadname='hnet_'+arg['DAG'][0]+'_'+str(10000)+'.pkl'
-#out=picklefast.load(os.path.join('../PROJECTS/hnet/results/',loadname))
+#out=pypickle.load(os.path.join('../PROJECTS/hnet/results/',loadname))
 #out_hnets=out['out_hnets']
 #modelTrue=out['model_true']
 #out_bayes=out['out_bayes']
@@ -64,7 +64,7 @@ df_score=pd.DataFrame()
 dfScore=pd.DataFrame(columns=columns)
 for n_sampling in arg['n_sampling']:
     loadname='hnet_'+dagtype+'_'+str(n_sampling)+'.pkl'
-    d=picklefast.load(os.path.join('../PROJECTS/hnet/results/',loadname))
+    d=pypickle.load(os.path.join('../PROJECTS/hnet/results/',loadname))
 
     # F1-score
     tmpdf=d['df_method_comparison_scores']
@@ -225,7 +225,7 @@ out=[]
 
 for n_sampling in arg['n_sampling']:
     loadname='hnet_'+dagtype+'_'+str(n_sampling)+'.pkl'
-    d=picklefast.load(os.path.join('../PROJECTS/hnet/results/',loadname))
+    d=pypickle.load(os.path.join('../PROJECTS/hnet/results/',loadname))
     dict1={'bayes_runtime':d['arg']['bayes_runtime'],'hnet_runtime':d['arg']['hnet_runtime'], 'n_sampling':d['arg']['n_sampling']}
     if gettype=='directed':
         dict1.update(dict(zip('hnet_'+d['hnet_directed_bestmodel_args'].index.values, d['hnet_directed_bestmodel_args'].values)))

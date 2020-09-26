@@ -11,7 +11,7 @@ from tqdm import tqdm
 import STATS.bayes as bayes
 import NETWORKS.network as network
 import STATS.hnet as hnet
-import GENERAL.picklefast as picklefast
+import pypickle
 from STATS.hypotesting import hypotesting
 import time
 
@@ -227,7 +227,7 @@ out['hnet_undirected_bestmodel']=out_hnets['adjmat'][out_hnets['adjmat']>HNETGra
 
 #%% Save
 savename='hnet_'+arg['DAG']+'_'+str(arg['n_sampling'])+'.pkl'
-picklefast.save(os.path.join('../PROJECTS/hnet/results/',savename), out)
+pypickle.save(os.path.join('../PROJECTS/hnet/results/',savename), out)
 
 #%%
 print(arg)

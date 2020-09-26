@@ -39,8 +39,9 @@ Examples
 >>> # Structure learning
 >>> out = hn.association_learning(df)
 
->>> # Plot dynamic graph
+>>> # Plot dynamic graphs
 >>> G = hn.d3graph()
+>>> G = hn.d3heatmap()
 >>> # Plot static graph
 >>> G = hn.plot()
 >>> # Plot heatmap

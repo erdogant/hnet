@@ -1,6 +1,8 @@
-# import hnet
-# print(dir(hnet))
-# print(hnet.__version__)
+import hnet
+print(dir(hnet))
+print(hnet.__version__)
+
+# %%
 import numpy as np
 from hnet import hnet
 hn = hnet()
@@ -75,6 +77,7 @@ results = hn.association_learning(df)
 
 # out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
 
+hn.d3heatmap()
 hn.d3graph()
 hn.d3graph(min_edges=5)
 # hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
@@ -90,6 +93,13 @@ df = hnet.import_example('student')
 df = hnet.import_example('sprinkler')
 
 # %% Run with default settings
+import hnet
+df = hnet.import_example('titanic')
+from hnet import hnet
+hn = hnet()
+results = hn.association_learning(df)
+
+# %% Run with default settings
 from hnet import hnet
 
 hn = hnet()
@@ -97,7 +107,7 @@ hn = hnet()
 # df = hn.import_example('titanic')
 df = hn.import_example('sprinkler')
 # Association learning
-out = hn.association_learning(df.astype(bool))
+results = hn.association_learning(df.astype(bool))
 
 # %% Plot with clustering nodes
 G_static = hn.plot()
@@ -111,6 +121,9 @@ G_static = hn.plot(node_color='cluster')
 
 # Plot heatmap
 P_heatmap = hn.heatmap(cluster=True)
+
+# Plot heatmap
+paths = hn.d3heatmap()
 
 # %%
 import matplotlib.pyplot as plt
@@ -133,6 +146,7 @@ df = hn1.import_example('titanic')
 # Association learning
 out1 = hn1.association_learning(df)
 out2 = hn2.association_learning(df)
+
 
 # Import hnet functionalities
 import hnet

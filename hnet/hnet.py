@@ -13,12 +13,13 @@ warnings.filterwarnings("ignore")
 
 # Custom packages
 from d3graph import d3graph as d3graphs
+from d3heatmap import d3heatmap as d3
 from ismember import ismember
 import imagesc
 import df2onehot
 
 # Local utils
-import hnet.utils.picklefast as picklefast
+import pypickle
 from hnet.utils.savefig import savefig
 import hnet.utils.network as network
 import hnet.utils.hnstats as hnstats
@@ -37,7 +38,6 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
 
 # %% Association learning across all variables
 class hnet():
@@ -129,11 +129,10 @@ class hnet():
     >>> G_static = hn.plot()
     >>> # Plot heatmap
     >>> P_heatmap = hn.heatmap(cluster=True)
-
     """
+
     def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):
         """Initialize distfit with user-defined parameters."""
-
         if (alpha is None): alpha=1
         if (y_min is None): y_min=1
         if isinstance(white_list, str): white_list=[white_list]
@@ -156,7 +155,6 @@ class hnet():
 
     def prepocessing(self, df, verbose=3):
         """Pre-processing based on the model parameters."""
-
         # Pre processing
         [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, white_list=self.white_list, black_list=self.black_list, verbose=verbose)
         # Add combinations
@@ -169,8 +167,7 @@ class hnet():
         return df, simmatP, simmat_labx, X_comb, X_labx, dtypes
 
     def compute_associations(self, df, simmatP, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
-        """learns associations on the preocessed data."""
-
+        """Association learning on the processed data."""
         # Here we go! in parallel!
         # from multiprocessing import Pool
         # nr_succes_pop_n=[]
@@ -246,6 +243,79 @@ class hnet():
         return self.results
 
     # Make network d3
+    def d3heatmap(self, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
+        """Interactive heatmap creator.
+
+        Description
+        -----------
+        This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
+        d3heatmap is integrated into hnet and uses the -log10(P-value) adjacency matrix.
+        Each column and index name represents a node whereas values >0 in the matrix represents an edge.
+        Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
+        The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the generic label names.
+
+        Parameters
+        ----------
+        self : Object
+            The output of .association_learning()
+        savepath : str
+            Save the figure in specified path.
+        directed : bool, default is True.
+            Create network using directed edges (arrows).
+        threshold : int (default : None)
+            Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
+        black_list : List or None (default : None)
+            If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
+        white_list : List or None (default : None)
+            If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
+        min_edges : int (default : None)
+            Edges are only shown if a node has at least min_edges.
+        showfig : bool, optional
+            Plot figure to screen. The default is True.
+        figsize : tuple, optional
+            Size of the figure in the browser, [height,width]. The default is [1500,1500].
+
+        Returns
+        -------
+        dict : containing various results derived from network.
+        savepath : str
+            Save the figure in specified path.
+        labx : array-like
+            Cluster labels.
+
+        """
+        # Check results
+        status = self._check_results()
+        if not status: return None
+
+        # Filter adjacency matrix on blacklist/whitelist and/or threshold
+        simmatLogP, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        # Check whether anything has remained
+        if simmatLogP.values.flatten().sum()==0:
+            if verbose>=3: print('[hnet] >Nothing to plot.')
+            return None
+
+        # Make undirected network
+        if not directed:
+            simmatLogP = to_undirected(simmatLogP, method='logp')
+
+        # Cluster
+        labx = self.plot(node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+
+        if vmax is None:
+            vmax = np.max(np.max(simmatLogP)) / 10
+
+        # Make heatmap
+        if verbose>=3: print('[hnet] >Creating output html..')
+        paths = d3.heatmap(simmatLogP, clust=labx, title='Hnet d3heatmap', vmax=vmax, scale=True, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
+
+        # Return
+        results = {}
+        results['paths'] = paths
+        results['clust_labx'] = labx
+        return(results)
+
+    # Make network d3
     def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
         """Interactive network creator.
 
@@ -289,8 +359,8 @@ class hnet():
             Graph generated by networkx.
         savepath : str
             Save the figure in specified path.
-        labx : str
-            labels of the nodes.
+        labx : array-like
+            Cluster labels.
 
         """
         status = self._check_results()
@@ -305,10 +375,11 @@ class hnet():
         if simmatLogP.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
             return None
-
-        [IA,IB] = ismember(simmatLogP.columns, self.results['counts'][:,0])
+        
+        # Resizing nodes based on user-limits
+        IA, IB = ismember(simmatLogP.columns, self.results['counts'][:, 0])
         node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
-        node_size[IA] = hnstats._scale_weights(self.results['counts'][IB,1], node_size_limits)
+        node_size[IA] = hnstats._scale_weights(self.results['counts'][IB, 1], node_size_limits)
 
         # Make undirected network
         if not directed:
@@ -330,7 +401,7 @@ class hnet():
         return(Gout)
 
     # Make network plot
-    def plot(self, scale=2, dist_between_nodes=0.4, node_size_limits=[25,500], directed=True, node_color=None, savepath=None, figsize=[15,10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
+    def plot(self, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
         """Make plot static network plot of the model results.
 
         Description
@@ -385,7 +456,7 @@ class hnet():
         """
         status = self._check_results()
         if not status: return None
-        
+
         if verbose>=3: print('[hnet] >Building network graph..')
         config = {}
         config['scale'] = scale
@@ -413,7 +484,7 @@ class hnet():
         adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values, data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT), columns=adjmatLog.columns)
 
         # Set size for node
-        [IA, IB] = ismember(adjmatLog.columns, self.results['counts'][:, 0])
+        IA, IB = ismember(adjmatLog.columns, self.results['counts'][:, 0])
         node_size = np.repeat(node_size_limits[0], len(adjmatLog.columns))
         node_size[IA] = hnstats._scale_weights(self.results['counts'][IB, 1], node_size_limits)
 
@@ -439,15 +510,15 @@ class hnet():
         # Add properties to edges
         np.fill_diagonal(adjmatLog.values, 0)
         for i in range(0, adjmatLog.shape[0]):
-            idx=np.where(adjmatLog.iloc[i,:]>0)[0]
+            idx=np.where(adjmatLog.iloc[i, :]>0)[0]
             labels=adjmatLog.iloc[i, idx]
-            labelsWEIGHT=adjmatLogWEIGHT.iloc[i,idx]
+            labelsWEIGHT=adjmatLogWEIGHT.iloc[i, idx]
 
             for k in range(0, len(labels)):
                 G.add_edge(labels.index[k], adjmatLog.index[i], weight=labels.values[k].astype(int), capacity=labelsWEIGHT.values[k])
 
         edges = G.edges()
-        edge_weights = np.array([G[u][v]['weight'] for u,v in edges])
+        edge_weights = np.array([G[u][v]['weight'] for u, v in edges])
         edge_weights = MinMaxScaler(feature_range=(0.5, 8)).fit_transform(edge_weights.reshape(-1, 1)).flatten()
 
         # # Cluster
@@ -470,8 +541,8 @@ class hnet():
             options = {
                 # 'node_color': 'grey',
                 'arrowsize': 12,
-                'font_size':18,
-                'font_color':'black'}
+                'font_size': 18,
+                'font_color': 'black'}
             # Draw plot
             nx.draw(G, pos, with_labels=True, **options, node_size=node_size * 5, width=edge_weights, node_color=labx, cmap='Paired')
             # Plot weights
@@ -493,7 +564,7 @@ class hnet():
         return(Gout)
 
     # Make plot of the association_learning
-    def heatmap(self, cluster=False, figsize=[15,10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
+    def heatmap(self, cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
         """Plot heatmap.
 
         Description
@@ -552,10 +623,10 @@ class hnet():
                 fig1=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
 
             if savepath is not None:
-                if verbose>=3: print('[HNET.heatmap] Saving figure..')
+                if verbose>=3: print('[hnet] >Saving heatmap..')
                 _ = savefig(fig1, savepath1, transp=True)
         except:
-            print('[HNET.heatmap] Error: Heatmap failed. Try cluster=False')
+            print('[hnet] >Error: Heatmap failed. Try cluster=False')
 
     # Extract combined rules from association_learning
     def combined_rules(self, simmatP=None, labx=None, verbose=3):
@@ -598,7 +669,7 @@ class hnet():
 
         """
         if simmatP is None:
-            if self.results.get('simmatP',None) is None: raise Exception('[HNET.combined_rules] Error: Input requires the result from the association_learning() function.')
+            if self.results.get('simmatP', None) is None: raise Exception('[hnet] >Error: Input requires the result from the association_learning() function.')
             simmatP = self.results['simmatP']
         if labx is None:
             labx = self.results['labx']
@@ -607,9 +678,9 @@ class hnet():
         df_rules['consequents'] = simmatP.index.values
 
         for i in tqdm(range(0, simmatP.shape[0]), disable=(True if verbose==0 else False)):
-            idx = np.where(simmatP.iloc[i,:]<1)[0]
+            idx = np.where(simmatP.iloc[i, :]<1)[0]
             # Remove self
-            idx = np.setdiff1d(idx,i)
+            idx = np.setdiff1d(idx, i)
             # Store rules
             df_rules['antecedents'].iloc[i] = list(simmatP.iloc[i, idx].index)
             df_rules['antecedents_labx'].iloc[i] = labx[idx]
@@ -626,11 +697,11 @@ class hnet():
 
     def import_example(self, data='titanic', url=None, sep=',', verbose=3):
         """Import example dataset from github source.
-        
+
         Description
         -----------
         Import one of the few datasets from github source or specify your own download url link.
-    
+
         Parameters
         ----------
         data : str
@@ -639,12 +710,12 @@ class hnet():
             url link to to dataset.
         verbose : int, (default: 3)
             Print message to screen.
-    
+
         Returns
         -------
         pd.DataFrame()
             Dataset containing mixed features.
-    
+
         """
         return import_example(data=data, url=url, sep=sep, verbose=verbose)
 
@@ -1026,12 +1097,12 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 
     """
     scores, adjmat_diff = network.compare_networks(adjmat_true,
-                                                     adjmat_pred,
-                                                     pos=pos,
-                                                     showfig=showfig,
-                                                     width=width,
-                                                     height=height,
-                                                     verbose=verbose)
+                                                   adjmat_pred,
+                                                   pos=pos,
+                                                   showfig=showfig,
+                                                   width=width,
+                                                   height=height,
+                                                   verbose=verbose)
     return(scores, adjmat_diff)
 
 
@@ -1039,7 +1110,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificity, y_min, verbose=3):
     count = 0
     # Get response variable to test association
-    y = X_comb.iloc[:,i].values.astype(str)
+    y = X_comb.iloc[:, i].values.astype(str)
     # Get column name
     colname = X_comb.columns[i]
     # Default output is nan

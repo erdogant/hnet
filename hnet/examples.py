@@ -77,8 +77,8 @@ results = hn.association_learning(df)
 
 # out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
 
-hn.d3heatmap()
-hn.d3graph()
+hn.d3heatmap(figsize=(1000,1000))
+hn.d3graph(node_color='cluster')
 hn.d3graph(min_edges=5)
 # hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
 

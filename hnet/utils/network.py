@@ -96,7 +96,7 @@ def to_graph(adjmat, verbose=3):
     config['verbose'] = verbose
 
     adjmat = df2onehot.is_DataFrame(adjmat)
-    if config['verbose']>=3: print('[NETWORK.to_graph] Making graph')
+    if config['verbose']>=3: print('[hnet] >Making graph..')
     G=nx.from_pandas_adjacency(adjmat)
 
     return(G)
@@ -129,7 +129,7 @@ def adjmat2graph(adjmat):
     
 #%% Compute similarity matrix
 def compute_centrality(G, centrality='betweenness', verbose=3):
-    if verbose>=3: print('[NETWORK.compute_centrality] Computing centrality %s' %(centrality))
+    if verbose>=3: print('[hnet] >Computing centrality %s' %(centrality))
     
     if centrality=='betweenness':
         bb=nx.centrality.betweenness_centrality(G)
@@ -170,7 +170,7 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
 
 #%% compute clusters
 def cluster(G, verbose=3):
-    if verbose>=3: print('[NETWORK.cluster] Clustering using best partition')
+    if verbose>=3: print('[hnet] >Clustering using best partition')
     # Partition
     partition=community_louvain.best_partition(G)
     # Set property to node
@@ -259,7 +259,7 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     
     # Savefig
     if not isinstance(config['filename'], type(None)):
-        if verbose>=3: print('[NETWORK.plot] Saving figure')
+        if verbose>=3: print('[hnet] >Saving figure..')
         plt.savefig(config['filename'])
     
     return(fig)
@@ -447,6 +447,6 @@ def graphlayout(model, pos, scale=1, layout='fruchterman_reingold', verbose=3):
         else:
             pos = nx.spring_layout(model, scale=scale, iterations=50)
     else:
-        if verbose>=3: print('[NETWORK.graphlayout] Existing coordinates from <pos> are used.')
+        if verbose>=3: print('[hnet] >Existing coordinates from <pos> are used for the graphlayout.')
 
     return(pos)

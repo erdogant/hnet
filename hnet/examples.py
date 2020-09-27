@@ -306,3 +306,26 @@ df = pd.read_csv('D://covid19_us_county.zip')
 dtypes = ['', 'cat', 'cat', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num', 'num']
 hn = hnet(dtypes=dtypes)
 results = hn.association_learning(df)
+
+# %% Police shooting
+# https://github.com/washingtonpost/data-police-shootings
+
+# Read csv
+df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
+df['month'] = pd.to_datetime(df['date']).dt.month_name()
+
+# Import library
+from hnet import hnet
+# Initialize
+hn = hnet(black_list=['id', 'date'])
+# Association learning
+results = hn.association_learning(df)
+# Plot
+hn.d3graph(black_list=['latitude','longitude'])
+hn.d3graph(black_list=['latitude','longitude'], node_color='cluster', min_edges=2)
+
+# Heatmap dynamic
+hn.d3heatmap(scale=False, vmax=10, black_list=['latitude','longitude'], min_edges=2)
+hn.d3heatmap(scale=True, vmax=10, black_list=['latitude','longitude'], min_edges=2)
+# Heatmap static
+hn.heatmap(cluster=True, black_list=['latitude','longitude'], min_edges=2)

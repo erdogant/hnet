@@ -107,9 +107,10 @@ hn.d3heatmap()
 </p>
 
 
-* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph example</a> 
+* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph Titanic</a> 
 <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
-* <a href="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html">d3graph example</a> 
+
+* <a href="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html">d3heatmap Titanic</a> 
 <link rel="import" href="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html">
 
 ### Performance

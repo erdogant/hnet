@@ -243,7 +243,7 @@ class hnet():
         return self.results
 
     # Make network d3
-    def d3heatmap(self, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), scale=True, vmax=None, showfig=True, verbose=3):
+    def d3heatmap(self, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
         """Interactive heatmap creator.
 
         Description
@@ -307,7 +307,7 @@ class hnet():
 
         # Make heatmap
         if verbose>=3: print('[hnet] >Creating output html..')
-        paths = d3.heatmap(simmatLogP, clust=labx, title='Hnet d3heatmap', vmax=vmax, scale=scale, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
+        paths = d3.heatmap(simmatLogP, clust=labx, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
 
         # Return
         results = {}

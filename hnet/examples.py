@@ -325,8 +325,8 @@ hn.d3graph(black_list=['latitude','longitude'])
 hn.d3graph(black_list=['latitude','longitude'], node_color='cluster', min_edges=2)
 
 # Heatmap dynamic
-hn.d3heatmap(scale=False, vmax=10, black_list=['latitude','longitude'], min_edges=2)
-hn.d3heatmap(scale=True, vmax=10, black_list=['latitude','longitude'], min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], min_edges=2)
 
 # Heatmap static
 hn.heatmap(cluster=True, black_list=['latitude','longitude'], min_edges=2)

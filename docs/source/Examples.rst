@@ -100,6 +100,15 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
    <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/index.html" height="1000px" width="100%", frameBorder="0"></iframe>
 
 
+.. code-block:: python
+	
+	# Generate the interactive graph color on cluster label
+	G = hn.d3graph()
+
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe>
 
 
 
@@ -122,11 +131,37 @@ Exernal link: https://erdogant.github.io/docs/d3graph/titanic_example/index.html
 
 .. code-block:: python
 
-        import hnet
+    import hnet
 
 	[scores, adjmat] = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
 
 	adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+
+
+
+.. code-block:: python
+	
+	# Generate the interactive graph color on cluster label
+	G = hn.d3graph(node_color='cluster')
+
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe>
+ 
+Heatmap d3-javascript
+''''''''''''''''''''''''''''''
+
+
+.. code-block:: python
+	
+	# Generate the interactive heatmap
+	G = hn.d3heatmap()
+
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe>
 
 
 black and white listing

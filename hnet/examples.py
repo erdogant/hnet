@@ -27,7 +27,27 @@ df = hnet.import_example('sprinkler')
 out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values, dtypes=dtypes)
 print(out)
 
-# %%
+# %% Titanic case
+from hnet import hnet
+hn = hnet()
+df = hn.import_example('titanic')
+del df['PassengerId']
+del df['Name']
+results = hn.association_learning(df)
+
+# Static plot
+hn.plot()
+hn.plot(node_color='cluster')
+
+# Plot dynamic graph
+hn.d3graph(node_color='cluster', savepath='c://temp/titanic/titanic_d3graph.html')
+
+# Plot heatmap
+hn.heatmap(cluster=True)
+
+# Plot heatmap
+hn.d3heatmap(savepath='c://temp/titanic/titanic_heatmap.html')
+
 
 # %%
 # Load data

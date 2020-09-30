@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="arXiv" href="arXiv.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> hnet
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> hnet
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -107,6 +109,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html">Network Graphs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#comparing-networks">Comparing networks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
@@ -124,6 +127,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -162,7 +166,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>API References</li>
     
@@ -224,7 +228,7 @@ The columns and rows between both matrices are matched if not ordered similarly.
 
 <dl class="py function">
 <dt id="hnet.hnet.enrichment">
-<code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">enrichment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_min</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">multtest</span><span class="o">=</span><span class="default_value">'holm'</span></em>, <em class="sig-param"><span class="n">dtypes</span><span class="o">=</span><span class="default_value">'pandas'</span></em>, <em class="sig-param"><span class="n">specificity</span><span class="o">=</span><span class="default_value">'medium'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">hnet.hnet.</code><code class="sig-name descname">enrichment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_min</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">multtest</span><span class="o">=</span><span class="default_value">'holm'</span></em>, <em class="sig-param"><span class="n">dtypes</span><span class="o">=</span><span class="default_value">'pandas'</span></em>, <em class="sig-param"><span class="n">specificity</span><span class="o">=</span><span class="default_value">'medium'</span></em>, <em class="sig-param"><span class="n">excl_background</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enrichment analysis.</p>
 <p>Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
 The input dataset is converted into a one-hot dense array based on automatic typing <code class="docutils literal notranslate"><span class="pre">dtypes='pandas'</span></code> or user defined dtypes.</p>
@@ -238,6 +242,8 @@ The input dataset is converted into a one-hot dense array based on automatic typ
 <li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>optional</em>) – Multiple test correcton. The default is ‘holm’.</p></li>
 <li><p><strong>dtypes</strong> (<em>list of length df.columns</em><em>, </em><em>optional</em>) – By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped. The default is ‘pandas’.</p></li>
 <li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>optional</em>) – Configure how numerical data labels are stored.. The default is ‘medium’.</p></li>
+<li><p><strong>excl_background</strong> (<em>String</em><em> (</em><em>default : None</em><em>)</em>) – Name to exclude from the background.
+Example: [‘0.0’]: To remove categorical values with label 0</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The higher the number, the more details. The default is 3.</p></li>
 </ul>
 </dd>
@@ -297,41 +303,51 @@ The adjacency matrix can then be examined as a network representation using d3gr
 <li><p><strong>k</strong> (<em>int</em><em>, </em><em>[</em><em>1..n</em><em>] </em><em>, </em><em>(</em><em>default : 1</em><em>)</em>) – Number of combinatoric elements to create for the n features</p></li>
 <li><p><strong>perc_min_num</strong> (<em>float</em><em>, </em><em>(</em><em>default : 0.8</em><em>)</em>) – Force column (int or float) to be numerical if unique non-zero values are above percentage.
 Can also be None.</p></li>
-<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'holm'</em><em>)</em>) – None: No multiple Test,
-‘bonferroni’: one-step correction,
-‘sidak’: one-step correction,
-‘holm-sidak’: step down method using Sidak adjustments,
-‘holm’: step-down method using Bonferroni adjustments,
-‘simes-hochberg’: step-up method  (independent),
-‘hommel’: closed method based on Simes tests (non-negative),
-‘fdr_bh’: Benjamini/Hochberg  (non-negative),
-‘fdr_by’: Benjamini/Yekutieli (negative),
-‘fdr_tsbh’: two stage fdr correction (non-negative),
-‘fdr_tsbky’: two stage fdr correction (non-negative)</p></li>
+<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'holm'</em><em>)</em>) – <ul>
+<li><p>None: No multiple Test,</p></li>
+<li><p>’bonferroni’: one-step correction,</p></li>
+<li><p>’sidak’: one-step correction,</p></li>
+<li><p>’holm-sidak’: step down method using Sidak adjustments,</p></li>
+<li><p>’holm’: step-down method using Bonferroni adjustments,</p></li>
+<li><p>’simes-hochberg’: step-up method  (independent),</p></li>
+<li><p>’hommel’: closed method based on Simes tests (non-negative),</p></li>
+<li><p>’fdr_bh’: Benjamini/Hochberg  (non-negative),</p></li>
+<li><p>’fdr_by’: Benjamini/Yekutieli (negative),</p></li>
+<li><p>’fdr_tsbh’: two stage fdr correction (non-negative),</p></li>
+<li><p>’fdr_tsbky’: two stage fdr correction (non-negative)</p></li>
+</ul>
+</p></li>
 <li><p><strong>dtypes</strong> (<em>list of str</em><em>, </em><em>(</em><em>default : 'pandas'</em><em>)</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
 Can also be of the form: [‘cat’,’cat’,’num’,’’,’cat’]</p></li>
 <li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'medium'</em><em>)</em>) – Configure how numerical data labels are stored. Setting this variable can be of use in the ‘association_learning’ function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
-None : No additional information in the labels,
-‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group,
-‘medium’: ‘high’ or ‘low’ are included with 1 decimal behind the comma,
-‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
+* None : No additional information in the labels,
+* ‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group,
+* ‘medium’: ‘high’ or ‘low’ are included with 1 decimal behind the comma,
+* ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
 <li><p><strong>dropna</strong> (<em>Bool</em><em>, </em><em>[</em><em>True</em><em>,</em><em>False</em><em>] </em><em>(</em><em>Default : True</em><em>)</em>) – Drop rows/columns in adjacency matrix that showed no significance</p></li>
 <li><p><strong>excl_background</strong> (<em>String</em><em> (</em><em>default : None</em><em>)</em>) – Name to exclude from the background.
-Example: [‘0.0’]: To remove categorical values with label 0</p></li>
+Example: ‘0.0’: To remove categorical values with label 0</p></li>
 <li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
 <li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>dict</strong> (<em>The output is a dictionary containing the following keys:</em>)</p></li>
-<li><p><strong>simmatP</strong> (<em>pd.DataFrame()</em>) – Adjacency matrix containing P-values between variable assocations.</p></li>
-<li><p><strong>simmatLogP</strong> (<em>pd.DataFrame()</em>) – -log10(P-value) of the simmatP.</p></li>
-<li><p><strong>labx</strong> (<em>list of str</em>) – Labels that are analyzed.</p></li>
-<li><p><strong>dtypes</strong> (<em>list of str</em>) – dtypes that are set for the labels.</p></li>
-<li><p><strong>counts</strong> (<em>list of str</em>) – Relative counts for the labels based on the number of successes in population.</p></li>
-</ul>
+<dd class="field-even"><p><dl class="simple">
+<dt>simmatP<span class="classifier">pd.DataFrame()</span></dt><dd><p>Adjacency matrix containing P-values between variable assocations.</p>
+</dd>
+<dt>simmatLogP<span class="classifier">pd.DataFrame()</span></dt><dd><p>-log10(P-value) of the simmatP.</p>
+</dd>
+<dt>labx<span class="classifier">list of str</span></dt><dd><p>Labels that are analyzed.</p>
+</dd>
+<dt>dtypes<span class="classifier">list of str</span></dt><dd><p>dtypes that are set for the labels.</p>
+</dd>
+<dt>counts<span class="classifier">list of str</span></dt><dd><p>Relative counts for the labels based on the number of successes in population.</p>
+</dd>
+</dl>
 </p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -422,7 +438,7 @@ The columns are as following:</p></li>
 <dl class="py method">
 <dt id="hnet.hnet.hnet.compute_associations">
 <code class="sig-name descname">compute_associations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">simmatP</span></em>, <em class="sig-param"><span class="n">simmat_labx</span></em>, <em class="sig-param"><span class="n">X_comb</span></em>, <em class="sig-param"><span class="n">X_labx</span></em>, <em class="sig-param"><span class="n">dtypes</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.compute_associations" title="Permalink to this definition">¶</a></dt>
-<dd><p>learns associations on the preocessed data.</p>
+<dd><p>Association learning on the processed data.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -455,7 +471,41 @@ The network nodes and edges are adjusted in weight based on hte -log10(P-value),
 <li><p><strong>dict</strong> (<em>containing various results derived from network.</em>)</p></li>
 <li><p><strong>G</strong> (<em>graph</em>) – Graph generated by networkx.</p></li>
 <li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
-<li><p><strong>labx</strong> (<em>str</em>) – labels of the nodes.</p></li>
+<li><p><strong>labx</strong> (<em>array-like</em>) – Cluster labels.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="hnet.hnet.hnet.d3heatmap">
+<code class="sig-name descname">d3heatmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">savepath</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">white_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">black_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_edges</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">700, 700</span></em>, <em class="sig-param"><span class="n">vmax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">showfig</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3heatmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactive heatmap creator.</p>
+<p>This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
+d3heatmap is integrated into hnet and uses the -log10(P-value) adjacency matrix.
+Each column and index name represents a node whereas values &gt;0 in the matrix represents an edge.
+Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
+The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the generic label names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
+<li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
+<li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure in the browser, [height,width]. The default is [1500,1500].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>dict</strong> (<em>containing various results derived from network.</em>)</p></li>
+<li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
+<li><p><strong>labx</strong> (<em>array-like</em>) – Cluster labels.</p></li>
 </ul>
 </p>
 </dd>
@@ -725,11 +775,19 @@ Values above and below the diagnal are combined using the max or min value.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Erdogan Taskesen
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -740,7 +798,6 @@ Values above and below the diagnal are combined using the max or min value.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

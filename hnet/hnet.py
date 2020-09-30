@@ -307,7 +307,7 @@ class hnet():
 
         # Make heatmap
         if verbose>=3: print('[hnet] >Creating output html..')
-        paths = d3.heatmap(simmatLogP, clust=labx, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
+        paths = d3.heatmap(simmatLogP, clust=labx, path=savepath, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
 
         # Return
         results = {}

@@ -380,13 +380,39 @@ def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[2
     output_file("interactive_graphs.html")
     show(plot)
 
-#%% Comparison of two networks
+
+# %% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
+    """Compare two networks.
+
+    Parameters
+    ----------
+    adjmat_true : TYPE
+        Adjacency matrix 1.
+    adjmat_pred : TYPE
+        Adjacency matrix 2.
+    pos : list, optional
+        list with coordinates to orientate the nodes.
+    showfig : bool, optional
+        Plot figure to screen. The default is True.
+    width : int, optional
+        Width of the figure. The default is 15.
+    height : int, optional
+        Height of the figure. The default is 8.
+    verbose : int, optional
+        Verbosity. The default is 3.
+
+    Returns
+    -------
+    dict.
+        scores
+        adjmat_diff
+    """
     # Make sure columns and indices to match
-    [IArow,IBrow]=ismember(adjmat_true.index.values, adjmat_pred.index.values)
-    [IAcol,IBcol]=ismember(adjmat_true.columns.values, adjmat_pred.columns.values)
-    adjmat_true = adjmat_true.loc[IArow,IAcol]
-    adjmat_pred = adjmat_pred.iloc[IBrow,IBcol]
+    IArow, IBrow = ismember(adjmat_true.index.values, adjmat_pred.index.values)
+    IAcol, IBcol = ismember(adjmat_true.columns.values, adjmat_pred.columns.values)
+    adjmat_true = adjmat_true.loc[IArow, IAcol]
+    adjmat_pred = adjmat_pred.iloc[IBrow, IBcol]
 
     # Check whether order is correct
     if not np.all(adjmat_true.columns.values==adjmat_pred.columns.values): raise Exception('Column order of both input values could not be matched')
@@ -402,7 +428,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
 
     # Compute score
     scores = clf.confmatrix.eval(y_true, y_pred, verbose=verbose)
-    #bayes.plot(out_bayes['adjmat'], pos=G['pos'])
+    # bayes.plot(out_bayes['adjmat'], pos=G['pos'])
 
     # Setup graph
     # adjmat_diff = adjmat_true - adjmat_pred

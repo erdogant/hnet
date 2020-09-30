@@ -84,6 +84,28 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
 .. figure:: ../figs/other/sprinkler_heatmap_clustered.png
 
 
+Heatmap d3-javascript
+''''''''''''''''''''''''''''''
+
+A heatmap can also be created using d3-javascript, where each cell ij represents an edge from vertex i to vertex j.
+Given this two-dimensional representation of a graph, a natural visualization is to show the matrix!
+However, the effectiveness of a matrix diagram is heavily dependent on the order of rows and columns: if related nodes are placed closed to each other, it is easier to identify clusters and bridges.
+While path-following is harder in a matrix view than in a node-link diagram, matrices have other advantages.
+As networks get large and highly connected, node-link diagrams often devolve into giant hairballs of line crossings.
+Line crossings are impossible with matrix views. Matrix cells can also be encoded to show additional data; here color depicts clusters computed by a community-detection algorithm.
+ 
+Below is depicted a demonstration of plotting the results of ``hnet`` using a d3heatmap:
+
+.. code-block:: python
+	
+	# Generate the interactive heatmap
+	G = hn.d3heatmap()
+
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe>
+
 
 Comparing networks
 ''''''''''''''''''

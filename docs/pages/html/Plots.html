@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples" href="Examples.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> hnet
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> hnet
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +112,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#heatmap">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#comparing-networks">Comparing networks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
@@ -127,6 +130,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -165,7 +169,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Network Graphs</li>
     
@@ -275,6 +279,20 @@ Below is depicted a demonstration of plotting the results of <code class="docuti
 <img alt="_images/sprinkler_heatmap_clustered.png" src="_images/sprinkler_heatmap_clustered.png" />
 </div>
 </div>
+<div class="section" id="heatmap-d3-javascript">
+<h1>Heatmap d3-javascript<a class="headerlink" href="#heatmap-d3-javascript" title="Permalink to this headline">¶</a></h1>
+<p>A heatmap can also be created using d3-javascript, where each cell ij represents an edge from vertex i to vertex j.
+Given this two-dimensional representation of a graph, a natural visualization is to show the matrix!
+However, the effectiveness of a matrix diagram is heavily dependent on the order of rows and columns: if related nodes are placed closed to each other, it is easier to identify clusters and bridges.
+While path-following is harder in a matrix view than in a node-link diagram, matrices have other advantages.
+As networks get large and highly connected, node-link diagrams often devolve into giant hairballs of line crossings.
+Line crossings are impossible with matrix views. Matrix cells can also be encoded to show additional data; here color depicts clusters computed by a community-detection algorithm.</p>
+<p>Below is depicted a demonstration of plotting the results of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> using a d3heatmap:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive heatmap</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3heatmap</span><span class="p">()</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe></div>
 <div class="section" id="comparing-networks">
 <h1>Comparing networks<a class="headerlink" href="#comparing-networks" title="Permalink to this headline">¶</a></h1>
 <p>Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame. The columns and rows between both matrices are matched if not ordered similarly.</p>
@@ -307,11 +325,19 @@ Below is depicted a demonstration of plotting the results of <code class="docuti
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Erdogan Taskesen
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -322,7 +348,6 @@ Below is depicted a demonstration of plotting the results of <code class="docuti
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

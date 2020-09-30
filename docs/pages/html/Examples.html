@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Use Cases" href="Use Cases.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> hnet
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> hnet
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -107,6 +109,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html">Network Graphs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap">Heatmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#comparing-networks">Comparing networks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
@@ -114,6 +117,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sprinkler-dataset">Sprinkler dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#titanic-dataset">Titanic dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#black-and-white-listing">black and white listing</a></li>
 </ul>
 </li>
@@ -129,6 +133,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -167,7 +172,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Examples</li>
     
@@ -262,7 +267,11 @@
 </pre></div>
 </div>
 <p>Exernal link: <a class="reference external" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">https://erdogant.github.io/docs/d3graph/titanic_example/index.html</a></p>
-<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/index.html" height="1000px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/index.html" height="1000px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph color on cluster label</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
@@ -279,12 +288,23 @@
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
 
-<span class="p">[</span><span class="n">scores</span><span class="p">,</span> <span class="n">adjmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">compare_networks</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">scores</span><span class="p">,</span> <span class="n">adjmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">compare_networks</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">adjmat_undirected</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatLogP&#39;</span><span class="p">])</span>
+    <span class="n">adjmat_undirected</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatLogP&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph color on cluster label</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
+<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe></div>
+<div class="section" id="heatmap-d3-javascript">
+<h2>Heatmap d3-javascript<a class="headerlink" href="#heatmap-d3-javascript" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive heatmap</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3heatmap</span><span class="p">()</span>
+</pre></div>
+</div>
+<iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe></div>
 <div class="section" id="black-and-white-listing">
 <h2>black and white listing<a class="headerlink" href="#black-and-white-listing" title="Permalink to this headline">¶</a></h2>
 <p>Input variables (column names) can be black or white listed in the model.</p>
@@ -349,11 +369,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Erdogan Taskesen
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -364,7 +392,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

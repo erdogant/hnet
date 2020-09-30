@@ -89,8 +89,8 @@ def _prob_ranksums(datac, yc, specificity=None):
     out['logP']=np.log(P)
     out['zscore']=zscore
     out['popsize_M']=len(yc)
-    out['nr_succes_pop_n']=np.sum(yc == True)
-    out['nr_not_succes_pop_n']=np.sum(yc == False)
+    out['nr_succes_pop_n']=np.sum(yc==True)
+    out['nr_not_succes_pop_n']=np.sum(yc==False)
     out['dtype']='numerical'
 
     if np.isnan(zscore) is False and np.sign(zscore)>0:

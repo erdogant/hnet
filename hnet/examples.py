@@ -17,14 +17,13 @@ out2 = hn2.association_learning(df.astype(bool))
 # %%
 import hnet
 df = hnet.import_example('sprinkler')
-out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:, 0].values)
 print(out)
-
 
 import hnet
 dtypes = np.array(['bool']*df.shape[1])
 df = hnet.import_example('sprinkler')
-out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values, dtypes=dtypes)
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:, 0].values, dtypes=dtypes)
 print(out)
 
 # %% Titanic case

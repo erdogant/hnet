@@ -1,3 +1,5 @@
+"""Statistics that are used in hnet."""
+
 import df2onehot as df2onehot
 from ismember import ismember
 
@@ -11,6 +13,7 @@ import os
 import tempfile
 from pathlib import Path
 import itertools
+
 
 # %% Compute significance
 def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
@@ -146,6 +149,7 @@ def _prob_hypergeo(datac, yc):
 
     return(out)
 
+
 # %% Make logscale
 def _logscale(simmat_padj):
     # Set minimum amount
@@ -158,6 +162,7 @@ def _logscale(simmat_padj):
     else:
         adjmatLog = simmat_padj.copy()
     return(adjmatLog)
+
 
 # %% Do multiple test correction
 def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
@@ -178,6 +183,7 @@ def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
     # Return
     return(adjmat)
 
+
 # %% Do multiple test correction
 def _multipletestcorrection(out, multtest, verbose=3):
     # Always do a multiple test correction but do not use it in the filtering step if not desired
@@ -197,9 +203,10 @@ def _multipletestcorrection(out, multtest, verbose=3):
             Padj=multitest.multipletests(Praw, method=multtest)[1]
 
         for i in range(0, len(out)):
-            out[i].update({'Padj':Padj[i]})
+            out[i].update({'Padj': Padj[i]})
 
     return(out)
+
 
 # %% Add combinations
 def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
@@ -211,7 +218,7 @@ def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
         out_labo = Xlabo
         out_labx = list(map(lambda x: [x], Xlabx))
         # Run over all combinations
-        for k in np.arange(2,combK + 1):
+        for k in np.arange(2, combK + 1):
             # Make smart combinations because of mutual exclusive classes
             [cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO] = _cmbnN(Xhot, Xlabx, y_min, k)
             # If any combinations is found, add to dataframe
@@ -231,7 +238,7 @@ def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
 
     assert Xhot.shape[1]==len(Xlabx), print('one-hot matrix should have equal size with xlabels')
     assert Xhot.shape[1]==len(Xlabo), print('one-hot matrix should have equal size with olabels')
-    return(Xhot,Xlabx,Xlabo)
+    return(Xhot, Xlabx, Xlabo)
 
 
 # %% Add combinations
@@ -267,8 +274,8 @@ def _cmbnN(Xhot, Xlabx, y_min, k):
 def _addcolumns(simmat_padj, colnames, Xlabx, catnames):
     Iloc = np.isin(colnames.values.astype(str), simmat_padj.index.values)
     if np.any(Iloc):
-        newcols=list((colnames.values[Iloc == False]).astype(str))
-        newcats=list((catnames[Iloc == False]).astype(str))
+        newcols=list((colnames.values[Iloc==False]).astype(str))
+        newcats=list((catnames[Iloc==False]).astype(str))
 
         # Make new columns in dataframe
         for col, cat in zip(newcols, newcats):
@@ -319,6 +326,7 @@ def _drop_empty(df, Xlabx, verbose=3):
 
     return(dfO, Xlabx)
 
+
 # %% Setup columns in correct dtypes
 def _filter_significance(out, alpha, multtest):
     if isinstance(multtest, type(None)):
@@ -345,7 +353,7 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
     simmat_padj.columns = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
     simmat_padj.index = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
     nr_succes_pop_n = np.array(nr_succes_pop_n)
-    nr_succes_pop_n[:,0] = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:,0]))
+    nr_succes_pop_n[:, 0] = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:, 0]))
 
     if verbose>=5: print(simmat_padj)
     # Multiple test correction
@@ -369,12 +377,12 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
     if dropna:
         idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
         idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
-        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1,idx2))
-        simmat_padj=simmat_padj.iloc[keepidx,keepidx]
-        adjmatLog=adjmatLog.iloc[keepidx,keepidx]
+        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1, idx2))
+        simmat_padj=simmat_padj.iloc[keepidx, keepidx]
+        adjmatLog=adjmatLog.iloc[keepidx, keepidx]
         simmat_labx=simmat_labx[keepidx]
-        IA, _ = ismember(nr_succes_pop_n[:,0], simmat_padj.columns.values)
-        nr_succes_pop_n = nr_succes_pop_n[IA,:]
+        IA, _ = ismember(nr_succes_pop_n[:, 0], simmat_padj.columns.values)
+        nr_succes_pop_n = nr_succes_pop_n[IA, :]
 
     return(simmat_padj, adjmatLog, simmat_labx, nr_succes_pop_n)
 

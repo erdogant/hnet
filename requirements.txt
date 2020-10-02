@@ -24,5 +24,6 @@ imagesc
 df2onehot
 classeval
 d3graph
+pypickle
 
 # pip install dash dash-renderer dash-html-components dash-core-components

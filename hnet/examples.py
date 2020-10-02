@@ -328,24 +328,23 @@ results = hn.association_learning(df)
 
 # %% Police shooting
 # https://github.com/washingtonpost/data-police-shootings
+from hnet import hnet
 
 # Read csv
 df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
 df['month'] = pd.to_datetime(df['date']).dt.month_name()
 
-# Import library
-from hnet import hnet
 # Initialize
 hn = hnet(black_list=['id', 'date'])
 # Association learning
 results = hn.association_learning(df)
 # Plot
-hn.d3graph(black_list=['latitude','longitude'])
-hn.d3graph(black_list=['latitude','longitude'], node_color='cluster', min_edges=2)
+hn.d3graph(black_list=['latitude', 'longitude'])
+hn.d3graph(black_list=['latitude', 'longitude'], node_color='cluster', min_edges=2)
 
 # Heatmap dynamic
-hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], min_edges=2)
-hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
 
 # Heatmap static
-hn.heatmap(cluster=True, black_list=['latitude','longitude'], min_edges=2)
+hn.heatmap(cluster=True, black_list=['latitude', 'longitude'], min_edges=2)

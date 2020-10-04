@@ -17,6 +17,7 @@ from d3heatmap import d3heatmap as d3
 from ismember import ismember
 import imagesc
 import df2onehot
+import colourmap
 
 # Local utils
 import pypickle
@@ -93,8 +94,8 @@ class hnet():
         * 'high' : 'high' or 'low' are included with 3 decimal behind the comma.
     dropna : Bool, [True,False] (Default : True)
         Drop rows/columns in adjacency matrix that showed no significance
-    excl_background : String (default : None)
-        Name to exclude from the background.
+    excl_background : list or None, [0], [0, '0.0', 'male', ...],  (Default: None)
+        Remove values/strings that labeled as background. As an example, in a two-class approach with [0,1], the 0 is usually the background and not of interest.
         Example: '0.0': To remove categorical values with label 0
     black_list : List or None (default : None)
         If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
@@ -129,6 +130,8 @@ class hnet():
     >>> G_static = hn.plot()
     >>> # Plot heatmap
     >>> P_heatmap = hn.heatmap(cluster=True)
+    >>> # Plot feature importance
+    >>> hn.plot_feat_importance()
     """
 
     def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):
@@ -189,10 +192,13 @@ class hnet():
             [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
             count = count + simmatP.shape[0]
-            if verbose>=4: print('[hnet] >[%d] %s' %(i, nr_succes_i))
+            if verbose>=5: print('[hnet] >[%d] %s' %(i, nr_succes_i))
 
         # Message
-        if verbose>=3: print('[hnet] >Total number of computations: [%.0d]' %(count))
+        print_text = '[hnet] >Total number of performed computations: [%.0d]' %(count)
+        if verbose>=3: print('-' * len(print_text))
+        if verbose>=3: print(print_text)
+        if verbose>=3: print('-' * len(print_text))
         # Post processing
         simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
         # Return
@@ -230,17 +236,95 @@ class hnet():
 
         """
         if not isinstance(df, pd.DataFrame): raise Exception('Input data [df] must be of type pd.DataFrame()')
-
+        # Preprocessing
         df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df, verbose=verbose)
         # Here we go! Over all columns now
         simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes, verbose=verbose)
         # Combine rules
         rules = self.combined_rules(simmatP, labx, verbose=0)
+        # Feature importance
+        feat_importance = self._feat_importance(simmatLogP, labx, verbose=verbose)
         # Store
-        self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules)
+        self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance)
         # Use this option for storage of your model
         if verbose>=3: print('[hnet] >Fin.')
         return self.results
+
+    def _feat_importance(self, simmatLogP, labx, verbose=3):
+        """Compute feature importance."""
+        # Get unique labels
+        uilabx, counts = np.unique(labx, return_counts=True)
+        # Count the number of significant associations per generic label
+        Pcounts = []
+        Psum = []
+        for lab in uilabx:
+            Iloc = labx==lab
+            # Sum over significance per label
+            Psum.append(simmatLogP.iloc[Iloc, :].sum(axis=1).sum())
+            # Count number of significant catagory labels
+            Pcounts.append((simmatLogP.iloc[Iloc, :]>0).sum(axis=1).sum())
+
+        # Compute corrected Pvalue
+        Pcorr = (np.array(Psum) / np.array(Pcounts))
+        Pcorr[np.isnan(Pcorr)]=0
+        # Store
+        df_feat_importance = pd.DataFrame(data=np.c_[Pcounts, Psum, Pcorr], columns=['degree', 'Psum', 'Pcorr'])
+        df_feat_importance.index = uilabx
+        df_feat_importance.sort_values(by='Pcorr', ascending=False, inplace=True)
+        # Return
+        return df_feat_importance
+
+    # Make network d3
+    def plot_feat_importance(self, marker_size=5, top_n=10, figsize=(15, 8), verbose=3):
+        """Plot feature importance.
+
+        Parameters
+        ----------
+        marker_size : int, (default: 5)
+            Marker size in the scatter plot.
+        top_n : int, optional
+            Top n features are labelled in the plot. The default is 10.
+        figsize : tuple, optional
+            Size of the figure in the browser, [height,width]. The default is [1500,1500].
+        verbose : int, optional
+            Verbosity. The default is 3.
+
+        Returns
+        -------
+        None.
+
+        """
+        # Make plot counts significant associations per label
+        df = pd.DataFrame((self.results['simmatLogP']>0).sum(axis=1), columns=['Psum'])
+        df.reset_index(drop=False, inplace=True)
+        c = colourmap.fromlist(self.results['labx'])[0]
+        plt.figure(figsize=figsize)
+        plt.scatter(np.arange(0, len(df.values)), df['Psum'].values, color=c, s=marker_size)
+        plt.grid(True)
+        plt.xlabel('label')
+        plt.ylabel('Degree')
+        plt.title('Number of significant associations per label (degree)')
+        # Add the top n labels
+        top_n = np.minimum(top_n, self.results['feat_importance'].shape[0])
+        df = df.sort_values(by='Psum', ascending=False)[0:top_n]
+        for i in range(0, top_n):
+            plt.text(df.index[i], df['Psum'].iloc[i], df['index'].iloc[i])
+
+        # Plot the cataogires
+        plt.figure(figsize=figsize)
+        self.results['feat_importance']['degree'].plot(kind='bar', figsize=(15, 8))
+        plt.grid(True)
+        plt.xlabel('Catagories')
+        plt.ylabel('Total degree (significant associations)')
+        plt.title('Feature importance by the total degree per catagory.')
+
+        # Plot feature importance after normalization
+        plt.figure(figsize=figsize)
+        self.results['feat_importance']['Pcorr'].plot(kind='bar')
+        plt.grid(True)
+        plt.xlabel('Catagories')
+        plt.ylabel('Normalized significance')
+        plt.title('Feature importance after normalization (Psum/degree)')
 
     # Make network d3
     def d3heatmap(self, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
@@ -375,7 +459,7 @@ class hnet():
         if simmatLogP.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
             return None
-        
+
         # Resizing nodes based on user-limits
         IA, IB = ismember(simmatLogP.columns, self.results['counts'][:, 0])
         node_size = np.repeat(node_size_limits[0], len(simmatLogP.columns))
@@ -797,6 +881,8 @@ class hnet():
             self.fillna = storedata['fillna']
             self.excl_background = storedata['excl_background']
             if verbose>=3: print('[hnet] >Loading succesfull!')
+            # Return results
+            return self.results
         else:
             if verbose>=2: print('[hnet] >WARNING: Could not load data.')
 
@@ -814,7 +900,7 @@ class hnet():
 
 
 # %% Store results
-def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
+def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance):
     out = {}
     out['simmatP'] = simmatP
     out['simmatLogP'] = adjmatLog
@@ -822,6 +908,7 @@ def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules):
     out['dtypes'] = np.array(list(zip(df.columns.values.astype(str), dtypes)))
     out['counts'] = nr_succes_pop_n
     out['rules'] = rules
+    out['feat_importance'] = feat_importance
     return out
 
 

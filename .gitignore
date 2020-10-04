@@ -13,6 +13,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+hnet/gui/results/
 assets/
 DATA/
 results/

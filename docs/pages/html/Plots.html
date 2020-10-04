@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#heatmap">Heatmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#feature-importance">Feature importance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#comparing-networks">Comparing networks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
@@ -293,6 +294,40 @@ Line crossings are impossible with matrix views. Matrix cells can also be encode
 </pre></div>
 </div>
 <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe></div>
+<div class="section" id="feature-importance">
+<h1>Feature importance<a class="headerlink" href="#feature-importance" title="Permalink to this headline">¶</a></h1>
+<p>Feature importance can be plotted to analyze the involvement of the feature in the network.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+
+<span class="c1"># Load example</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+
+<span class="c1"># Association learning</span>
+<span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Plot heatmap</span>
+<span class="n">hn</span><span class="o">.</span><span class="n">plot_feat_importance</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The count of number of significance edges per node. We clearly see that <strong>Parch_2</strong> has the most significanly connected edges.
+The coloring of the nodes is based on the catagory label. As an example, all <strong>Parch</strong> classes are labeled orange. Note that quantitative nodes
+will have low/no significant edges.</p>
+<div class="figure align-default" id="feat-importance-labels">
+<img alt="_images/feat_imp_1.png" src="_images/feat_imp_1.png" />
+</div>
+<p>Instead of counting individual node labels (as depicted previously), we can also count the total number of edges for a specific catagory.
+Here we can clearly see that <strong>SibSp</strong> contains, in total, the most significant edges.</p>
+<div class="figure align-default" id="feat-importance-cat">
+<img alt="_images/feat_imp_2.png" src="_images/feat_imp_2.png" />
+</div>
+<p>In the next figure we demonstrate the feature importance by a normalized significance.
+The number of significant edges in the catagory labels is heavily influenced by the available labels.
+As an example <strong>SibSp</strong> contains, in total, the most significant edges but this may be because it also contains the most labels.
+In the following figure we correct for the number of labels per catagory.</p>
+<div class="figure align-default" id="feat-importance-norm">
+<img alt="_images/feat_imp_3.png" src="_images/feat_imp_3.png" />
+</div>
+</div>
 <div class="section" id="comparing-networks">
 <h1>Comparing networks<a class="headerlink" href="#comparing-networks" title="Permalink to this headline">¶</a></h1>
 <p>Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame. The columns and rows between both matrices are matched if not ordered similarly.</p>

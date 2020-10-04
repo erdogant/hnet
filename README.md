@@ -123,9 +123,9 @@ hn.d3heatmap()
 hn.plot_feat_importance(marker_size=50)
 ```
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_1.png" width="600" />
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_2.png" width="600" />
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_3.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_1.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_2.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_3.png" width="600" />
 </p>
 
 

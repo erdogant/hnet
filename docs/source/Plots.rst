@@ -107,6 +107,49 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a d3
    <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe>
 
 
+Feature importance
+'''''''''''''''''''''
+
+Feature importance can be plotted to analyze the involvement of the feature in the network.
+
+.. code-block:: python
+
+  from hnet import hnet
+
+  # Load example
+  df = hnet.import_example('titanic')
+  
+  # Association learning
+  hn.association_learning(df)
+
+  # Plot heatmap
+  hn.plot_feat_importance()
+
+The count of number of significance edges per node. We clearly see that **Parch_2** has the most significanly connected edges.
+The coloring of the nodes is based on the catagory label. As an example, all **Parch** classes are labeled orange. Note that quantitative nodes
+will have low/no significant edges.
+
+.. _feat_importance_labels:
+
+.. figure:: ../figs/other/feat_imp_1.png
+
+Instead of counting individual node labels (as depicted previously), we can also count the total number of edges for a specific catagory.
+Here we can clearly see that **SibSp** contains, in total, the most significant edges.
+
+.. _feat_importance_cat:
+
+.. figure:: ../figs/other/feat_imp_2.png
+
+In the next figure we demonstrate the feature importance by a normalized significance.
+The number of significant edges in the catagory labels is heavily influenced by the available labels.
+As an example **SibSp** contains, in total, the most significant edges but this may be because it also contains the most labels.
+In the following figure we correct for the number of labels per catagory.
+
+.. _feat_importance_norm:
+
+.. figure:: ../figs/other/feat_imp_3.png
+
+
 Comparing networks
 ''''''''''''''''''
 

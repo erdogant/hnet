@@ -3,8 +3,8 @@ import pandas as pd
 import hnet
 
 def test_import_example():
-    import hnet
-    hn = hnet.hnet()
+    from hnet import hnet
+    hn = hnet()
     df = hn.import_example('sprinkler')
     assert df.shape==(1000, 4)
     df = hn.import_example('titanic')
@@ -83,7 +83,7 @@ def test_hnet():
     assert hasattr(hn, 'results')==True
     
     # Should contain the following keys
-    assert [*hn.results.keys()]==['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules']
+    assert [*hn.results.keys()]==['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules', 'feat_importance']
     
     # Should have specified size
     assert hn.results['simmatP'].shape==(7,7)
@@ -109,7 +109,8 @@ def test_hnet():
 
 
 def test_combined_rules():
-    hn = hnet.hnet()
+    from hnet import hnet
+    hn = hnet()
     df = hn.import_example('sprinkler')
     hn.association_learning(df)
     rules = hn.combined_rules()

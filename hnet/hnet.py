@@ -21,9 +21,9 @@ import colourmap
 
 # Local utils
 import pypickle
-from hnet.utils.savefig import savefig
-import hnet.utils.network as network
-import hnet.utils.hnstats as hnstats
+from utils.savefig import savefig
+import utils.network as network
+import utils.hnstats as hnstats
 
 # Known libraries
 from scipy.stats import combine_pvalues
@@ -39,6 +39,8 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+
+# from functools import lru_cache
 
 # %% Association learning across all variables
 class hnet():
@@ -189,7 +191,7 @@ class hnet():
         nr_succes_pop_n = []
 
         for i in tqdm(range(0, X_comb.shape[1]), disable=disable):
-            [nr_succes_i, simmatP, simmat_labx] = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
+            nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
             nr_succes_pop_n.append(nr_succes_i)
             count = count + simmatP.shape[0]
             if verbose>=5: print('[hnet] >[%d] %s' %(i, nr_succes_i))
@@ -1058,14 +1060,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     df.columns = df.columns.astype(str)
 
     # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
-
     df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
-
-    # Convert bool columns to integer values
-    # if isinstance(dtypes, str):
-    #     Iloc = df.dtypes=='bool'
-    #     if np.any(Iloc):
-    #         df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
 
     # Set y as string
     y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])

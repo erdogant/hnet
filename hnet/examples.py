@@ -44,14 +44,13 @@ out2 = hn2.association_learning(df.astype(bool))
 # %%
 import hnet
 df = hnet.import_example('sprinkler')
-out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values)
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:, 0].values)
 print(out)
-
 
 import hnet
 dtypes = np.array(['bool']*df.shape[1])
 df = hnet.import_example('sprinkler')
-out = hnet.enrichment(df.astype(bool), y=df.iloc[:,0].values, dtypes=dtypes)
+out = hnet.enrichment(df.astype(bool), y=df.iloc[:, 0].values, dtypes=dtypes)
 print(out)
 
 
@@ -336,14 +335,12 @@ results = hn.association_learning(df)
 
 # %% Police shooting
 # https://github.com/washingtonpost/data-police-shootings
+from hnet import hnet
 
 # Read csv
 df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
 df['month'] = pd.to_datetime(df['date']).dt.month_name()
 df.head()
-
-# Import library
-from hnet import hnet
 
 # Initialize
 hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
@@ -354,99 +351,12 @@ results = hn.association_learning(df, verbose=4)
 # hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
 
 # Plot
-hn.d3graph(black_list=['latitude','longitude'], savepath='C://temp/New folder/data-police-shootings/d3graph/')
-hn.d3graph(black_list=['latitude','longitude'], savepath='C://temp/New folder/data-police-shootings/d3graph_edge2/', min_edges=2)
-hn.d3graph(black_list=['latitude','longitude'], node_color='cluster', savepath='C://temp/New folder/data-police-shootings/d3graph_edge2_cluster/', min_edges=2)
+hn.d3graph(black_list=['latitude', 'longitude'])
+hn.d3graph(black_list=['latitude', 'longitude'], node_color='cluster', min_edges=2)
 
 # Heatmap dynamic
-hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], savepath='C://temp/New folder/data-police-shootings/heatmap/d3heatmap.html')
-hn.d3heatmap(vmax=10, black_list=['latitude','longitude'], savepath='C://temp/New folder/data-police-shootings/heatmap/d3heatmap_edge2.html', min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
+hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
 
 # Heatmap static
-hn.heatmap(cluster=True, black_list=['latitude','longitude'], min_edges=2)
-
-# %%
-# results = hn.load('D://GITLAB/DATA/ongevallen/hnet.pkl')
-
-df = pd.read_csv('D://GITLAB/DATA/ongevallen/20200609-UDLS_dump_2019-0101-20200301.csv')
-gethours = pd.to_datetime(df['eindtijd']) - pd.to_datetime(df['starttijd'])
-df['minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['persoon_1_inschakeltijd']) - pd.to_datetime(df['persoon_1_ter_plaatse'])
-df['persoon_1_minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['persoon_2_inschakeltijd']) - pd.to_datetime(df['persoon_2_ter_plaatse'])
-df['persoon_2_minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['persoon_3_inschakeltijd']) - pd.to_datetime(df['persoon_3_ter_plaatse'])
-df['persoon_3_minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['persoon_4_inschakeltijd']) - pd.to_datetime(df['persoon_4_ter_plaatse'])
-df['persoon_4_minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['persoon_5_inschakeltijd']) - pd.to_datetime(df['persoon_5_ter_plaatse'])
-df['persoon_5_minutes'] = gethours.dt.components['minutes'].values
-gethours = pd.to_datetime(df['werkzaamheden_einde']) - pd.to_datetime(df['werkzaamheden_start'])
-df['werkzaamheden_minutes'] = gethours.dt.components['minutes'].values
-
-for i in range(1, 10):
-    stop = 'maatregel_' + str(i) + '_eindtijd'
-    start = 'maatregel_' + str(i) + '_starttijd'
-    label = 'maatregel_' + str(i) + '_minutes'
-    gethours = pd.to_datetime(df[stop]) - pd.to_datetime(df[start])
-    df[label] = gethours.dt.components['minutes'].values
-    del df[stop]
-    del df[start]
-    del df['maatregel_' + str(i) + '_beschrijving']
-    del df['maatregel_' + str(i) + '_rijstroken']
-
-# Import library
-from hnet import hnet
-# Initialize
-hn = hnet(excl_background=['nan'], black_list=['persoon_1_opmerkingen','persoon_2_opmerkingen','persoon_3_opmerkingen','persoon_4_opmerkingen','persoon_5_opmerkingen','persoon_5_afgebroken','persoon_4_afgebroken','persoon_3_afgebroken','persoon_2_afgebroken','persoon_1_afgebroken','werkzaamheden_geplande_start','werkzaamheden_start','werkzaamheden_einde','politie_opmerkingen','extractie_datum','persoon_1_eindtijd','persoon_2_eindtijd','persoon_3_eindtijd','persoon_4_eindtijd','persoon_5_eindtijd','cmi_ingeschakeld','cmi_opmerkingen','cmi','id', 'incidentid','incidentbeschrijving','geschatte_eindtijd','tijdstip_van_archiveren','starttijd','eindtijd','unieke_identificatie','locatie_tekstueel','locatie_tekstueel','persoon_1_inschakeltijd','persoon_1_ter_plaatse','persoon_2_inschakeltijd','persoon_2_ter_plaatse','persoon_3_inschakeltijd','persoon_3_ter_plaatse','persoon_4_inschakeltijd','persoon_4_ter_plaatse','persoon_5_inschakeltijd','persoon_5_ter_plaatse'])
-# Association learning
-results = hn.association_learning(df, verbose=4)
-# Save
-hn.save('D://GITLAB/DATA/ongevallen/hnet.pkl', overwrite=False)
-
-plt.figure()
-tmp=np.sort(hn.results['simmatLogP'].values.flatten())[::-1]
-plt.hist(tmp[tmp>1], bins=100)
-
-hn.plot()
-hn.heatmap()
-hn.d3graph(savepath='D://GITLAB/DATA/ongevallen/d3graph/', min_edges=5)
-hn.d3heatmap(savepath='D://GITLAB/DATA/ongevallen/d3heatmap/d3heatmap.html')
-
-# %% Plot summary results
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import colourmap
-
-results = hn.load('D://GITLAB/DATA/ongevallen/hnet.pkl')
-Iloc=~hn.results['simmatLogP'].columns.str.contains('nan')
-hn.results['simmatLogP'] = hn.results['simmatLogP'].loc[Iloc, Iloc]
-hn.results['labx'] = hn.results['labx'][Iloc]
-
-hn.plot_feat_importance(top_n=20)
-
-hn.d3graph(black_list=df_feat_importance.index[0:10].values, savepath='D://GITLAB/DATA/ongevallen/d3graph/', min_edges=5)
-hn.d3heatmap(black_list=df_feat_importance.index[0:10].values, savepath='D://GITLAB/DATA/ongevallen/d3heatmap/d3heatmap.html')
-
-hn.d3graph(black_list=['wegenwacht_ingeschakeld'], min_edges=5)
-hn.d3heatmap(black_list=df_feat_importance.index[0:10].values, savepath='D://GITLAB/DATA/ongevallen/d3heatmap/d3heatmap.html')
-
-# %%
-linewidth=0
-if hn.results['simmatLogP'].shape[0]<=100:
-    linewidth=0.05
-
-plt.figure(figsize=(10, 10))
-g = sns.heatmap(
-    hn.results['simmatLogP'],
-    square=True,
-    cbar_kws={'fraction' : 0.01},
-    cmap='OrRd',
-    linewidth=linewidth,
-    vmin=0,
-    vmax=np.minimum(hn.results['simmatLogP'].max().max(), 50),
-)
-
-# g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment='right')
-# g.set_yticklabels(g.get_yticklabels(), rotation=45, horizontalalignment='right')
+hn.heatmap(cluster=True, black_list=['latitude', 'longitude'], min_edges=2)

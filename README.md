@@ -46,19 +46,12 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="900" />
 </p>
 
-## Contents
-- [Installation](#-installation)
-- [Contribute](#-contribute)
-- [Citation](#-citation)
-- [Maintainers](#-maintainers)
-- [License](#-copyright)
-
 ## Installation
 * Install hnet from PyPI (recommended). Hnet is compatible with Python 3.6+ and runs on Linux, MacOS X and Windows. 
 It is distributed under the Apache 2.0 license.
 
 ```bash
-pip install hnet
+pip install -U hnet
 ```
 
 - Simple example for the Titanic data set
@@ -114,7 +107,7 @@ hn.d3heatmap()
 </p>
 
 
-* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph example</a> 
+* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph Titanic</a> 
 <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
 #### Performance

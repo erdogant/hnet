@@ -14,7 +14,7 @@ from hnet.utils.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.1.2'
+__version__ = '1.1.3'
 
 # module level doc-string
 __doc__ = """
@@ -46,6 +46,8 @@ Examples
 >>> G = hn.plot()
 >>> # Plot heatmap
 >>> hn.heatmap(cluster=True)
+>>> # Plot feature importance
+>>> hn.plot_feat_importance()
 
 >>> # Examine differences between models
 >>> import hnet

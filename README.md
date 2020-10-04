@@ -64,8 +64,6 @@ pip install hnet
 - Simple example for the Titanic data set
 
 ```python
-# Load library
-from hnet import hnet
 # Initialize hnet with default settings
 from hnet import hnet
 # Load example dataset
@@ -88,11 +86,12 @@ print(df)
 	# 890          891         0       3  ...   7.7500   NaN         Q
 
 
-Association learning on the titanic dataset
+#### Association learning on the titanic dataset
 
 ```python
+from hnet import hnet
 hn = hnet()
-out = hn.association_learning(df)
+results = hn.association_learning(df)
 
 # Plot static graph
 G_static = hn.plot()
@@ -101,7 +100,11 @@ G_static = hn.plot()
 P_heatmap = hn.heatmap(cluster=True)
 
 # Plot dynamic graph
-G_dynamic = hn.d3graph()
+hn.d3graph()
+
+# Plot dynamic graph
+hn.d3heatmap()
+
 ```
 
 <p align="center">
@@ -114,9 +117,22 @@ G_dynamic = hn.d3graph()
 * <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph example</a> 
 <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
-### Performance
+#### Performance
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
+</p>
+
+
+#### Feature importance
+
+```python
+# Plot feature importance
+hn.plot_feat_importance(marker_size=50)
+```
+<p align="center">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_1.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_2.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/feat_imp_3.png" width="600" />
 </p>
 
 

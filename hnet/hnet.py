@@ -343,7 +343,7 @@ class hnet():
         plt.grid(True)
         plt.xlabel('Catagories')
         plt.ylabel('Total degree (significant associations)')
-        plt.title('Feature importance by the total degree per category.')
+        plt.title('Total degree per category; the number of significant edges.')
 
         # Plot feature importance after normalization
         plt.figure(figsize=figsize)
@@ -351,10 +351,23 @@ class hnet():
         plt.grid(True)
         plt.xlabel('Catagories')
         plt.ylabel('Normalized significance')
-        plt.title('Feature importance after normalization (Psum/degree)')
+        plt.title('Feature importance after normalization. Per category: E(-log10(P) / E(significant edges per node)')
+
+    # Get adjacency matrix
+    def _get_adjmat(self, summarize):
+        """Retrieve data for catagories or labels."""
+        if summarize:
+            simmatP = self.results['simmatP_generic']
+            simmatLogP = self.results['simmatLogP_generic']
+            labx = self.results['simmatP_generic'].columns.values
+        else:
+            simmatP = self.results['simmatP']
+            simmatLogP = self.results['simmatLogP']
+            labx = self.results['labx']
+        return simmatP, simmatLogP, labx
 
     # Make network d3
-    def d3heatmap(self, modeltype='label', savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
+    def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
         """Interactive heatmap creator.
 
         Description
@@ -369,9 +382,10 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
-        modeltype : str
-            Show the results based on generic of specific associations.
-            'category', 'label'
+        summarize : bool, (default: False)
+            Show the results based on categoric or label-specific associations.
+            True: Summrize based on the categories
+            False: All associations across labels
         savepath : str
             Save the figure in specified path.
         directed : bool, default is True.
@@ -403,7 +417,7 @@ class hnet():
         status = self._check_results()
         if not status: return None
         # Retrieve data
-        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
+        _, simmatLogP, labx = self._get_adjmat(summarize)
 
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
         simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
@@ -417,7 +431,7 @@ class hnet():
             simmatLogP = to_undirected(simmatLogP, method='logp')
 
         # Cluster
-        labx = self.plot(modeltype=modeltype, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+        labx = self.plot(summarize=summarize, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
 
         if vmax is None:
             vmax = np.max(np.max(simmatLogP)) / 10
@@ -432,22 +446,8 @@ class hnet():
         results['clust_labx'] = labx
         return(results)
 
-    def _get_modeltype_data(self, modeltype):
-        """Retrieve data for catagories or labels."""
-        if modeltype=='category':
-            simmatP = self.results['simmatP_generic']
-            simmatLogP = self.results['simmatLogP_generic']
-            labx = self.results['simmatP_generic'].columns.values
-        elif modeltype=='label':
-            simmatP = self.results['simmatP']
-            simmatLogP = self.results['simmatLogP']
-            labx = self.results['labx']
-        else:
-            raise ValueError('[hnet] >Input parameter modeltype: [%s] does not exists.' %(modeltype))
-        return simmatP, simmatLogP, labx
-
     # Make network d3
-    def d3graph(self, modeltype='label', node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
+    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
         """Interactive network creator.
 
         Description
@@ -462,9 +462,10 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
-        modeltype : str
-            Show the results based on generic of specific associations.
-            'category', 'label'
+        summarize : bool, (default: False)
+            Show the results based on categoric or label-specific associations.
+            True: Summrize based on the categories
+            False: All associations across labels
         node_size_limits : tuple
             node sizes are scaled between [min,max] values. The default is [6,15].
         savepath : str
@@ -502,7 +503,7 @@ class hnet():
         status = self._check_results()
         if not status: return None
         # Retrieve data
-        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
+        _, simmatLogP, labx = self._get_adjmat(summarize)
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
@@ -523,7 +524,7 @@ class hnet():
 
         # Color node using network-clustering
         if node_color=='cluster':
-            labx = self.plot(modeltype=modeltype, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+            labx = self.plot(summarize=summarize, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
         else:
             labx = label_encoder.fit_transform(labx)
 
@@ -535,7 +536,7 @@ class hnet():
         return(Gout)
 
     # Make network plot
-    def plot(self, modeltype='label', scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
+    def plot(self, summarize=False, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
         """Make plot static network plot of the model results.
 
         Description
@@ -546,9 +547,10 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
-        modeltype : str
-            Show the results based on generic of specific associations.
-            'category', 'label'
+        summarize : bool, (default: False)
+            Show the results based on categoric or label-specific associations.
+            True: Summrize based on the categories
+            False: All associations across labels
         scale : int, optional
             scale the network by blowing it up by scale. The default is 2.
         dist_between_nodes : float, optional
@@ -596,7 +598,7 @@ class hnet():
         status = self._check_results()
         if not status: return None
         # Retrieve data
-        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
+        _, simmatLogP, labx = self._get_adjmat(summarize)
 
         config = {}
         config['scale'] = scale
@@ -704,7 +706,7 @@ class hnet():
         return(Gout)
 
     # Make plot of the association_learning
-    def heatmap(self, modeltype='label', cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
+    def heatmap(self, summarize=False, cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
         """Plot static heatmap.
 
         Description
@@ -715,9 +717,10 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
-        modeltype : str
-            Show the results based on generic of specific associations.
-            'category', 'label'
+        summarize : bool, (default: False)
+            Show the results based on categoric or label-specific associations.
+            True: Summrize based on the categories
+            False: All associations across labels
         cluster : Bool, optional
             Cluster before making heatmap. The default is False.
         figsize : typle, optional
@@ -744,7 +747,7 @@ class hnet():
         status = self._check_results()
         if not status: return None
         # Retrieve data
-        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
+        _, simmatLogP, labx = self._get_adjmat(summarize)
 
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold

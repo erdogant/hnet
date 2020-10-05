@@ -244,23 +244,23 @@ class hnet():
         rules = self.combined_rules(simmatP, labx, verbose=0)
         # Feature importance
         feat_importance = self._feat_importance(simmatLogP, labx, verbose=verbose)
-        # Compute associations for the generic catagories
-        GsimmatP, GsimmatLogP = self._compute_associations_generic(simmatP, labx, verbose=verbose)
+        # Compute associations for the catagories
+        GsimmatP, GsimmatLogP = self._compute_associations_cat(simmatP, labx, verbose=verbose)
         # Store
         self.results = _store(simmatP, simmatLogP, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance)
         # Use this option for storage of your model
         if verbose>=3: print('[hnet] >Fin.')
         return self.results
 
-    def _compute_associations_generic(self, simmatP, labx, verbose=3):
-        """Compute generic associations by fishers method."""
+    def _compute_associations_cat(self, simmatP, labx, verbose=3):
+        """Compute category associations by fishers method."""
         # Make some checks
         if not np.all(simmatP.columns==simmatP.index.values):
             raise ValueError('[hnet] >Error: Adjacency matrix [simmatP] does not have the same number of columns and index!')
         if not np.all(simmatP.shape[0]==len(labx)):
             raise ValueError('[hnet] >Error: The number of columns in [simmatP] does not match with the label [labx]!')
 
-        if verbose>=3: print('[hnet] >Computing generic association using fishers method..')
+        if verbose>=3: print('[hnet] >Computing category association using fishers method..')
         uilabx = np.unique(labx)
         adjmatP = np.ones((len(uilabx), len(uilabx)))
 
@@ -281,7 +281,7 @@ class hnet():
         """Compute feature importance."""
         # Get unique labels
         uilabx, counts = np.unique(labx, return_counts=True)
-        # Count the number of significant associations per generic label
+        # Count the number of significant associations per category
         Pcounts = []
         Psum = []
         for lab in uilabx:
@@ -357,9 +357,9 @@ class hnet():
     def _get_adjmat(self, summarize):
         """Retrieve data for catagories or labels."""
         if summarize:
-            simmatP = self.results['simmatP_generic']
-            simmatLogP = self.results['simmatLogP_generic']
-            labx = self.results['simmatP_generic'].columns.values
+            simmatP = self.results['simmatP_cat']
+            simmatLogP = self.results['simmatLogP_cat']
+            labx = self.results['simmatP_cat'].columns.values
         else:
             simmatP = self.results['simmatP']
             simmatLogP = self.results['simmatLogP']
@@ -376,7 +376,7 @@ class hnet():
         d3heatmap is integrated into hnet and uses the -log10(P-value) adjacency matrix.
         Each column and index name represents a node whereas values >0 in the matrix represents an edge.
         Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
-        The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the generic label names.
+        The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the category names.
 
         Parameters
         ----------
@@ -447,7 +447,7 @@ class hnet():
         return(results)
 
     # Make network d3
-    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
+    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, verbose=3):
         """Interactive network creator.
 
         Description
@@ -456,7 +456,7 @@ class hnet():
         d3graph is integrated into hnet and uses the -log10(P-value) adjacency matrix.
         Each column and index name represents a node whereas values >0 in the matrix represents an edge.
         Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
-        The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the generic label names.
+        The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the category names.
 
         Parameters
         ----------
@@ -530,7 +530,7 @@ class hnet():
 
         # Make network
         if verbose>=3: print('[hnet] >Creating output html..')
-        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=500, height=figsize[0], width=figsize[1], collision=0.1, node_color=labx, directed=directed, showfig=showfig)
+        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=charge, height=figsize[0], width=figsize[1], collision=0.1, node_color=labx, directed=directed, showfig=showfig)
         # Return
         Gout['labx'] = labx
         return(Gout)
@@ -706,7 +706,7 @@ class hnet():
         return(Gout)
 
     # Make plot of the association_learning
-    def heatmap(self, summarize=False, cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
+    def heatmap(self, summarize=False, cluster=False, figsize=[15, 15], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
         """Plot static heatmap.
 
         Description
@@ -969,8 +969,8 @@ def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n,
     out = {}
     out['simmatP'] = simmatP
     out['simmatLogP'] = adjmatLog
-    out['simmatP_generic'] = GsimmatP
-    out['simmatLogP_generic'] = GsimmatLogP
+    out['simmatP_cat'] = GsimmatP
+    out['simmatLogP_cat'] = GsimmatLogP
     out['labx'] = labx.astype(str)
     out['dtypes'] = np.array(list(zip(df.columns.values.astype(str), dtypes)))
     out['counts'] = nr_succes_pop_n

@@ -14,45 +14,30 @@ del df['PassengerId']
 del df['Name']
 results = hn.association_learning(df)
 
-# Plot dynamic graph
-hn.d3graph(modeltype='category')
-hn.d3graph(modeltype='label')
-
-# hn.d3graph(modeltype='catagory', node_color='cluster')
-# hn.d3graph(modeltype='label', node_color='cluster')
+# STATIC
+hn.heatmap(summarize=True, cluster=False)
+hn.plot(node_color='cluster')
 
 # Feature importance
 hn.plot_feat_importance(marker_size=50)
-
-# Static plot
-hn.plot()
-hn.plot(node_color='cluster')
-
-# Plot heatmap
-# hn.heatmap(modeltype='catagory', cluster=True)
-# hn.heatmap(modeltype='label', cluster=True)
-
-hn.heatmap(modeltype='category', cluster=False)
-hn.heatmap(modeltype='label', cluster=False)
-
-# Plot heatmap
-hn.d3heatmap(modeltype='category')
-hn.d3heatmap(modeltype='label')
-
 
 # %%
 from hnet import hnet
 hn = hnet()
 df = hn.import_example('sprinkler')
 
-hn1 = hnet(excl_background=['nan'], dtypes=np.array(['bool']*df.shape[1]))
-hn1 = hnet(excl_background=['nan', '0.0'], dtypes=np.array(['bool']*df.shape[1]))
-hn1 = hnet(excl_background='test', dtypes=np.array(['bool']*df.shape[1]))
 hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
 out1 = hn1.association_learning(df.astype(bool))
 
 hn2 = hnet()
 out2 = hn2.association_learning(df.astype(bool))
+
+
+hn2.d3graph(summarize=True)
+hn2.d3graph()
+
+hn2.heatmap(summarize=True, cluster=False)
+hn2.heatmap(cluster=True)
 
 # %%
 import hnet
@@ -71,6 +56,7 @@ print(out)
 # %%
 # Load data
 # df = hn.import_example('titanic')
+from hnet import hnet
 hn = hnet()
 df = hn.import_example('sprinkler')
 
@@ -84,16 +70,23 @@ out3 = hn.association_learning(df.astype(int))
 hn.plot()
 
 hn = hnet(excl_background='False')
-out5 = hn.association_learning(df.astype(bool).astype(str))
+hn.association_learning(df.astype(bool).astype(str))
+hn.plot(summarize=True)
 
 hn = hnet(excl_background='0')
 out7 = hn.association_learning(df.astype(int).astype(str))
+hn.plot(summarize=False)
+hn.plot(summarize=True)
 
 hn = hnet(excl_background='0.0')
 out6 = hn.association_learning(df.astype(float).astype(str))
+hn.plot(summarize=False)
+hn.plot(summarize=True)
 
 # Should raise exception
 out4 = hn.association_learning(df.astype(float))
+hn.plot(summarize=False)
+hn.plot(summarize=True)
 
 
 # %% Import class
@@ -351,34 +344,30 @@ results = hn.association_learning(df)
 import pandas as pd
 from hnet import hnet
 
-# Read csv
-df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
-df['month'] = pd.to_datetime(df['date']).dt.month_name()
-df.head()
+# Load results
+results = hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
 
-# Initialize
-hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
+# Run hnet
+if results is None:
+    # Read csv
+    df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
+    df['month'] = pd.to_datetime(df['date']).dt.month_name()
+    df.head()
+    # Initialize
+    hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
+    # Association learning
+    results = hn.association_learning(df, verbose=4)
+    # hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
 
-# Association learning
-results = hn.association_learning(df, verbose=4)
-# hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
-# hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
+# Plot dynamic graph
+hn.d3graph()
+hn.d3graph(black_list=['city'])
+hn.d3graph(black_list=['city', 'state'])
+hn.d3graph(summarize=True)
 
-hn.d3heatmap(modeltype='category')
-hn.d3heatmap(modeltype='label')
+# Plot heatmap
+hn.d3heatmap(summarize=True, vmax=2)
+hn.d3heatmap(black_list=['city', 'state', 'longitude', 'latitude'])
 
-#
-hn.d3graph(modeltype='catagory')
-hn.d3graph(modeltype='label')
-hn.d3graph(black_list=['latitude', 'longitude'], node_color='cluster', min_edges=2)
-
-# Plot
-hn.d3graph(black_list=['latitude', 'longitude'])
-hn.d3graph(black_list=['latitude', 'longitude'], node_color='cluster', min_edges=2)
-
-# Heatmap dynamic
-hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
-hn.d3heatmap(vmax=10, black_list=['latitude', 'longitude'], min_edges=2)
-
-# Heatmap static
-hn.heatmap(cluster=True, black_list=['latitude', 'longitude'], min_edges=2)
+# Feature importance
+hn.plot_feat_importance()

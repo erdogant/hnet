@@ -464,17 +464,26 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
     if df.shape[1]<=1: print('[hnet] >Warning : After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
     return df, dtypes
 
+
 # %%
 def _bool_processesing(df, dtypes, excl_background, verbose=3):
     if isinstance(dtypes, str) | (np.any(dtypes=='bool')):
-        Iloc = ( (df.dtypes=='bool') | (dtypes=='bool') ).values
+        Iloc = ((df.dtypes=='bool') | (dtypes=='bool')).values
         if np.any(Iloc):
             if verbose>=3: print('[hnet] >Converting boolean values..')
             # Set as int
-            df.loc[:,Iloc] = df.loc[:,Iloc].astype('int')
+            df.loc[:, Iloc] = df.loc[:, Iloc].astype('int')
             # Remove the background values
-            excl_background='0.0'
-            if verbose>=4: print('[hnet] >Set  parameter: excl_background=%s' %(str(excl_background)))
+            if (excl_background is None):
+                excl_background = ['0.0']
+            # Make list if required
+            if isinstance(excl_background, str):
+                excl_background = [excl_background]
+            # Append to background
+            excl_background = excl_background + ['0.0']
+            # Get only unique background
+            excl_background = np.unique(np.array(excl_background)).tolist()
+            if verbose>=3: print('[hnet] >Set parameter <excl_background> to: %s.' %(str(excl_background)))
             if not isinstance(dtypes, str):
                 # Set dtypes as catagorical
                 dtypes = np.array(dtypes)
@@ -482,13 +491,14 @@ def _bool_processesing(df, dtypes, excl_background, verbose=3):
     # Return
     return df, dtypes, excl_background
 
+
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
-    if verbose>=4: print('[hnet] >preprocessing : Column names are set to str. and spaces are trimmed.')
+    if verbose>=4: print('[hnet] >preprocessing: Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
     df.reset_index(drop=True, inplace=True)
-    
+
     # Convert bool columns to integer values
     df, dtypes, excl_background = _bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
     # Filter on white_list and black_list

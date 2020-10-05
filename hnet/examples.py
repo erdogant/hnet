@@ -35,7 +35,10 @@ from hnet import hnet
 hn = hnet()
 df = hn.import_example('sprinkler')
 
-hn1 = hnet(dtypes=np.array(['bool']*df.shape[1]))
+hn1 = hnet(excl_background=['nan'], dtypes=np.array(['bool']*df.shape[1]))
+hn1 = hnet(excl_background=['nan', '0.0'], dtypes=np.array(['bool']*df.shape[1]))
+hn1 = hnet(excl_background='test', dtypes=np.array(['bool']*df.shape[1]))
+hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
 out1 = hn1.association_learning(df.astype(bool))
 
 hn2 = hnet()
@@ -335,6 +338,7 @@ results = hn.association_learning(df)
 
 # %% Police shooting
 # https://github.com/washingtonpost/data-police-shootings
+import pandas as pd
 from hnet import hnet
 
 # Read csv

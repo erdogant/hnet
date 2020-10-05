@@ -35,8 +35,8 @@ In its simplest form, the input for d3graph is an adjacency matrix for which the
 
 
 
-Integration of d3graph in hnet
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+d3graph - Dynamic network
+''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
@@ -60,7 +60,7 @@ Each node contains a text-label, whereas the links of associated nodes can be hi
 
 
 Heatmap
-'''''''
+''''''''''
 
 A heatmap can be of use when the results becomes too large to plot in a network.
 Below is depicted a demonstration of plotting the results of ``hnet`` using a heatmap:
@@ -84,7 +84,7 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
 .. figure:: ../figs/other/sprinkler_heatmap_clustered.png
 
 
-Heatmap d3-javascript
+d3eatmap - Dynamic heatmap
 ''''''''''''''''''''''''''''''
 
 A heatmap can also be created using d3-javascript, where each cell ij represents an edge from vertex i to vertex j.
@@ -150,6 +150,47 @@ In the following figure we correct for the number of labels per catagory.
 .. figure:: ../figs/other/feat_imp_3.png
 
 
+Summarize to categories
+'''''''''''''''''''''''''
+
+If many associations are detected, a network plot can lead to a giant hairball, and a heatmap can become unreadable.
+A function in ``hnet`` is implemented to summarize the associations towards categories. This would lead to generic insights.
+As an example, in case of the **titanic** use-case, it will not describe wether **Parch 2** was associated with 4 **SibSp**
+but instead it will describe wether **Parch** was significantly associated with **SibSp**. This is computed by using *Fishers* method.
+
+.. code-block:: python
+
+  from hnet import hnet
+
+  # Load example
+  df = hnet.import_example('titanic')
+  
+  # Association learning
+  hn.association_learning(df)
+
+  # Plot Network
+  hn.d3graph(summarize=True)
+  hn.plot(summarize=True)
+
+  # Plot heatmap
+  hn.d3heatmap(summarize=True)
+  hn.heatmap(summarize=True)
+
+
+.. _static_heatmap_summarize:
+
+.. figure:: ../figs/other/titanic_summarize_static_heatmap.png
+
+
+raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap_summarize.html" height="1000px" width="100%", frameBorder="0"></iframe>
+
+.. raw:: html
+
+   <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_summarize.html" height="1000px" width="100%", frameBorder="0"></iframe>
+
+
 Comparing networks
 ''''''''''''''''''
 
@@ -164,3 +205,62 @@ Below is depicted a demonstration of comparing two networks that may have been t
 
   # Examine differences between models
   [scores, adjmat] = hnet.compare_networks(adjmat1, adjmat2)
+
+
+
+Black/White listing in plots
+'''''''''''''''''''''''''''''''''''
+
+It is sometimes desired to remove variables from the plot to reduce complexity or to focus on specific associations.
+
+Four methods of filtering are possible in ``hnet``
+
+    * black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).
+    * white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).
+    * threshold : Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
+    * min_edges : Nodes are only shown if it contains at least a minimum number of edges.
+
+
+Black listing in plot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  # In this example we will remove the node Age and SibSp.
+  
+  # d3graph
+  hn = hn.d3graph(black_list=['Age', 'SibSp'])
+  # Plot
+  hn = hn.plot(black_list=['Age', 'SibSp'])
+  # Heatmap
+  hn = hn.heatmap(black_list=['Age', 'SibSp'])
+
+
+White listing in plot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  # In this example we will keep only the node Survived and SibSp
+  
+  # d3graph
+  hn = hn.d3graph(white_list=['Survived', 'SibSp'])
+  # Plot
+  hn = hn.plot(white_list=['Survived', 'SibSp'])
+  # Heatmap
+  hn = hn.heatmap(white_list=['Survived', 'SibSp'])
+
+
+**White list example in plot**
+
+.. code-block:: python
+
+  # In this example we will keep only the node Survived and Age
+  
+  # d3graph
+  hn = hn.d3graph(white_list=['Survived', 'Age', 'Pclass'])
+  # Plot
+  hn = hn.plot(white_list=['Survived', 'Age', 'Pclass'])
+  # Heatmap
+  hn = hn.heatmap(white_list=['Survived', 'Age', 'Pclass'])
+

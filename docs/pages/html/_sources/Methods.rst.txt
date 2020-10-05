@@ -196,56 +196,9 @@ Black listing
   out = hn.association_learning(df)
 
 
-It can sometimes be desired to remove even more variables from the network plot to reduce complexity or to focus on specific associations.
+Four methods of filtering are possible in ``hnet``
 
-    Four methods of filtering
-        black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).
-        white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).
-        threshold : Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
-        min_edges : Nodes are only shown if it contains at least a minimum number of edges.
-
-
-Black listing in plot
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-  # In this example we will remove the node Age and SibSp.
-  
-  # d3graph
-  hn = hn.d3graph(black_list=['Age', 'SibSp'])
-  # Plot
-  hn = hn.plot(black_list=['Age', 'SibSp'])
-  # Heatmap
-  hn = hn.heatmap(black_list=['Age', 'SibSp'])
-
-
-White listing in plot
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-  # In this example we will keep only the node Survived and SibSp
-  
-  # d3graph
-  hn = hn.d3graph(white_list=['Survived', 'SibSp'])
-  # Plot
-  hn = hn.plot(white_list=['Survived', 'SibSp'])
-  # Heatmap
-  hn = hn.heatmap(white_list=['Survived', 'SibSp'])
-
-
-**White list example in plot**
-
-.. code-block:: python
-
-  # In this example we will keep only the node Survived and Age
-  
-  # d3graph
-  hn = hn.d3graph(white_list=['Survived', 'Age', 'Pclass'])
-  # Plot
-  hn = hn.plot(white_list=['Survived', 'Age', 'Pclass'])
-  # Heatmap
-  hn = hn.heatmap(white_list=['Survived', 'Age', 'Pclass'])
-
-
+    * black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).
+    * white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).
+    * threshold : Associations (edges) are filtered based on the -log10(P) > threshold. threshold should range between 0 and maximum value of -log10(P).
+    * min_edges : Nodes are only shown if it contains at least a minimum number of edges.

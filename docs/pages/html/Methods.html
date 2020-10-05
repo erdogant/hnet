@@ -112,18 +112,19 @@
 <li class="toctree-l1"><a class="reference internal" href="#black-white-listing">black/white listing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#white-listing">White listing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#black-listing">Black listing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#black-listing-in-plot">Black listing in plot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#white-listing-in-plot">White listing in plot</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Plots</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html">Network Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#d3graph-dynamic-network">d3graph - Dynamic network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap">Heatmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Plots.html#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#d3eatmap-dynamic-heatmap">d3eatmap - Dynamic heatmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#feature-importance">Feature importance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#summarize-to-categories">Summarize to categories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Plots.html#comparing-networks">Comparing networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plots.html#black-white-listing-in-plots">Black/White listing in plots</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -354,53 +355,15 @@ When variables are black listed, they are excluded from the search and the resul
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It can sometimes be desired to remove even more variables from the network plot to reduce complexity or to focus on specific associations.</p>
+<p>Four methods of filtering are possible in <code class="docutils literal notranslate"><span class="pre">hnet</span></code></p>
 <blockquote>
-<div><dl class="simple">
-<dt>Four methods of filtering</dt><dd><p>black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).
-white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).
-threshold : Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).
-min_edges : Nodes are only shown if it contains at least a minimum number of edges.</p>
-</dd>
-</dl>
+<div><ul class="simple">
+<li><p>black_list : Excluded nodes form the plot. The resulting plot will not contain this node(s).</p></li>
+<li><p>white_list : Only included the listed nodes in the plot. The resulting plot will be limited to the specified node(s).</p></li>
+<li><p>threshold : Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p>min_edges : Nodes are only shown if it contains at least a minimum number of edges.</p></li>
+</ul>
 </div></blockquote>
-</div>
-<div class="section" id="black-listing-in-plot">
-<h2>Black listing in plot<a class="headerlink" href="#black-listing-in-plot" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will remove the node Age and SibSp.</span>
-
-<span class="c1"># d3graph</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-<span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-<span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="white-listing-in-plot">
-<h2>White listing in plot<a class="headerlink" href="#white-listing-in-plot" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and SibSp</span>
-
-<span class="c1"># d3graph</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-<span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-<span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-<p><strong>White list example in plot</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and Age</span>
-
-<span class="c1"># d3graph</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
-<span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
-<span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
 </div>
 </div>
 

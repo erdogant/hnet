@@ -32,9 +32,11 @@ out1 = hn1.association_learning(df.astype(bool))
 hn2 = hnet()
 out2 = hn2.association_learning(df.astype(bool))
 
-
 hn2.d3graph(summarize=True)
 hn2.d3graph()
+
+hn2.d3heatmap(summarize=True)
+hn2.d3heatmap(summarize=False)
 
 hn2.heatmap(summarize=True, cluster=False)
 hn2.heatmap(cluster=True)
@@ -50,8 +52,6 @@ dtypes = np.array(['bool']*df.shape[1])
 df = hnet.import_example('sprinkler')
 out = hnet.enrichment(df.astype(bool), y=df.iloc[:, 0].values, dtypes=dtypes)
 print(out)
-
-
 
 # %%
 # Load data
@@ -357,7 +357,8 @@ if results is None:
     hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
     # Association learning
     results = hn.association_learning(df, verbose=4)
-    # hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
+    # Save
+    hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
 
 # Plot dynamic graph
 hn.d3graph()

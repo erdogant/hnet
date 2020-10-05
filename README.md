@@ -79,7 +79,7 @@ print(df)
 	# 890          891         0       3  ...   7.7500   NaN         Q
 
 
-#### Association learning on the titanic dataset
+#### Association learning on the titanic dataset.
 
 ```python
 from hnet import hnet
@@ -110,9 +110,41 @@ hn.d3heatmap()
 * <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph Titanic</a> 
 <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
-#### Performance
+
+#### Summarize results.
+
+Networks can become giant hairballs and heatmaps unreadable. You may want to see the general associations between the categories, instead of the label-associations.
+With the summarize functionality, the results will be summarized towards categories.
+
+```python
+
+# Import
+from hnet import hnet
+
+# Load example dataset
+df = hnet.import_example('titanic')
+
+# Initialize
+hn = hnet()
+
+# Association learning
+results = hn.association_learning(df)
+
+# Plot heatmap
+hn.heatmap(summarize=True, cluster=True)
+hn.d3heatmap(summarize=True)
+
+# Plot static graph
+hn.plot(summarize=True)
+hn.d3graph(summarize=True, charge=1000)
+
+```
+
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_heatmap.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_heatmap.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_graph.png" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_graph.png" width="600" />
 </p>
 
 
@@ -126,6 +158,14 @@ hn.plot_feat_importance(marker_size=50)
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_1.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_2.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_3.png" width="600" />
+</p>
+
+
+
+#### Performance
+
+<p align="center">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
 </p>
 
 

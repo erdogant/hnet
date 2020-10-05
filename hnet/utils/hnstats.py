@@ -67,7 +67,7 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
                 out.append(outtest)
             else:
                 if verbose>=2: print('[hnet] >Warning: Can not process dtype: [%s] <skipping>' %(dtypes[i]))
-                # raise Exception('[hnet] >dtype can not be of type [%s]' %(dtypes[i]))
+                # raise ValueError('[hnet] >dtype can not be of type [%s]' %(dtypes[i]))
             # Print dots
             if verbose>=3: print('.', end='')
 
@@ -450,16 +450,16 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
         # Remove also in dtypes
         if not isinstance(dtypes, str):
             if len(dtypes)!=len(Iloc):
-                raise Exception('[hnet] >ERROR : dtypes should have same length as the input datafame! dtypes willbe automatically black listed too. Or do not specify dtypes.')
+                raise ValueError('[hnet] >ERROR : dtypes should have same length as the input datafame! dtypes willbe automatically black listed too. Or do not specify dtypes.')
             else:
                 dtypes = np.array(dtypes)[Iloc]
 
     # Check dtypes because things can have changed because of the white/black list
     if not isinstance(dtypes, str):
         if (white_list is not None) and len(dtypes)!=df.shape[1]:
-            raise Exception('[hnet] >ERROR : dtypes should have same length as the white_list! Or do not specify dtypes.')
+            raise ValueError('[hnet] >ERROR : dtypes should have same length as the white_list! Or do not specify dtypes.')
         if len(dtypes)!=df.shape[1]:
-            raise Exception('[hnet] >ERROR : dtypes should have same length as your dataframe or white_list')
+            raise ValueError('[hnet] >ERROR : dtypes should have same length as your dataframe or white_list')
 
     if df.shape[1]<=1: print('[hnet] >Warning : After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
     return df, dtypes
@@ -519,8 +519,8 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
         df_onehot['labx']=df_onehot['labx'][Iloc]
 
     # Some check before proceeding
-    if (df_onehot['onehot'].empty) or (np.all(np.isin(dtypes, 'num'))): raise Exception('[hnet] >ALL data is excluded from the dataframe! There should be at least 1 categorical value!')
-    if df.shape[1] != len(dtypes): raise Exception('[hnet] >DataFrame Shape and dtypes length does not match.')
+    if (df_onehot['onehot'].empty) or (np.all(np.isin(dtypes, 'num'))): raise ValueError('[hnet] >ALL data is excluded from the dataframe! There should be at least 1 categorical value!')
+    if df.shape[1] != len(dtypes): raise ValueError('[hnet] >DataFrame Shape and dtypes length does not match.')
 
     # Make all integer
     df_onehot['onehot'] = df_onehot['onehot'].astype(int)
@@ -541,7 +541,7 @@ def _tempdir(savepath):
 
 # %% Filter adjacency matrix
 def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
-    # if (white_list is not None) and (len(white_list)<=1): raise Exception('[hnet] >ERROR: white_list should contain at least 2 input variables.')
+    # if (white_list is not None) and (len(white_list)<=1): raise ValueError('[hnet] >ERROR: white_list should contain at least 2 input variables.')
 
     # Filter on threshold
     if threshold is not None:

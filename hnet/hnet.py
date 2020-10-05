@@ -201,7 +201,6 @@ class hnet():
         if verbose>=3: print('-' * len(print_text))
         if verbose>=3: print(print_text)
         if verbose>=3: print('-' * len(print_text))
-
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
@@ -236,7 +235,7 @@ class hnet():
             Relative counts for the labels based on the number of successes in population.
 
         """
-        if not isinstance(df, pd.DataFrame): raise Exception('Input data [df] must be of type pd.DataFrame()')
+        if not isinstance(df, pd.DataFrame): raise ValueError('Input data [df] must be of type pd.DataFrame()')
         # Preprocessing
         df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df, verbose=verbose)
         # Here we go! Over all columns now
@@ -754,7 +753,7 @@ class hnet():
 
         """
         if simmatP is None:
-            if self.results.get('simmatP', None) is None: raise Exception('[hnet] >Error: Input requires the result from the association_learning() function.')
+            if self.results.get('simmatP', None) is None: raise ValueError('[hnet] >Error: Input requires the result from the association_learning() function.')
             simmatP = self.results['simmatP']
         if labx is None:
             labx = self.results['labx']
@@ -1104,7 +1103,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
 
     """
     if np.sum(np.isin(adjmat.index.values, adjmat.columns.values))!=np.max(adjmat.shape):
-        raise Exception('Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!')
+        raise ValueError('Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!')
 
     if verbose>=3: print('[hnet] >Make adjacency matrix undirected..')
     progressbar=(True if verbose==0 else False)

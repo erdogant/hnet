@@ -39,7 +39,7 @@ def vec2adjmat(source, target, weight=None, symmetric=True):
     >>> vec2adjmat(source, target, weight=weight)
 
     """
-    if len(source)!=len(target): raise Exception('[hnet] >Source and Target should have equal elements.')
+    if len(source)!=len(target): raise ValueError('[hnet] >Source and Target should have equal elements.')
     if weight is None: weight = [1]*len(source)
     
     df = pd.DataFrame(np.c_[source, target], columns=['source','target'])

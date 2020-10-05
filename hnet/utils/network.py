@@ -415,8 +415,8 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     adjmat_pred = adjmat_pred.iloc[IBrow, IBcol]
 
     # Check whether order is correct
-    if not np.all(adjmat_true.columns.values==adjmat_pred.columns.values): raise Exception('Column order of both input values could not be matched')
-    if not np.all(adjmat_true.index.values==adjmat_pred.index.values): raise Exception('Row order of both input values could not be matched')
+    if not np.all(adjmat_true.columns.values==adjmat_pred.columns.values): raise ValueError('Column order of both input values could not be matched')
+    if not np.all(adjmat_true.index.values==adjmat_pred.index.values): raise ValueError('Row order of both input values could not be matched')
 
     # Make sure it is boolean adjmat
     adjmat_true = adjmat_true>0

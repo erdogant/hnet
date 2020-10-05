@@ -514,7 +514,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):
-        if verbose>=2: print('[hnet] >WARNING : Features with y_min needs another round of filtering. Fixing it now..')
+        if verbose>=2: print('[hnet] >WARNING: Features with y_min needs another round of filtering. Fixing it now..')
         df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
         df_onehot['labx']=df_onehot['labx'][Iloc]
 

@@ -22,6 +22,7 @@ hn.plot(node_color='cluster')
 hn.plot_feat_importance(marker_size=50)
 
 hn.d3heatmap('c:/temp/titanic_summarize/')
+hn.d3graph('c:/temp/titanic_summarize_d3graph/')
 
 # %%
 from hnet import hnet

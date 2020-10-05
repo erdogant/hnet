@@ -33,10 +33,24 @@ In its simplest form, the input for d3graph is an adjacency matrix for which the
   | Node 4    | False  | False     | False  | False     |
   +-----------+--------+-----------+--------+-----------+
 
+Static graph
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+  from hnet import hnet
+  # Load example
+  df = hnet.import_example('sprinkler')
+
+  # Association learning
+  hn.association_learning(df)
+  
+  # Plot static graph
+  G_dynamic = hn.plot()
 
 
-d3graph - Dynamic network
-''''''''''''''''''''''''''''''
+Dynamic graph - d3graph
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -62,8 +76,16 @@ Each node contains a text-label, whereas the links of associated nodes can be hi
 Heatmap
 ''''''''''
 
-A heatmap can be of use when the results becomes too large to plot in a network.
-Below is depicted a demonstration of plotting the results of ``hnet`` using a heatmap:
+A heatmap can be of use when the network becomes a giant hairball.
+The effectiveness of a matrix diagram is heavily dependent on the order of rows and columns: if related nodes are placed closed to each other, it is easier to identify clusters and bridges.
+While path-following is harder in a matrix view than in a node-link diagram, matrices have other advantages.
+Matrix cells can also be encoded to show additional data; here color depicts clusters computed by a community-detection algorithm.
+
+
+Static heatmap
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Below is depicted a demonstration of plotting the results of ``hnet`` using a static heatmap:
 
 .. code-block:: python
 
@@ -84,17 +106,11 @@ Below is depicted a demonstration of plotting the results of ``hnet`` using a he
 .. figure:: ../figs/other/sprinkler_heatmap_clustered.png
 
 
-d3eatmap - Dynamic heatmap
-''''''''''''''''''''''''''''''
+Dynamic heatmap - d3heatmap
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A heatmap can also be created using d3-javascript, where each cell ij represents an edge from vertex i to vertex j.
-Given this two-dimensional representation of a graph, a natural visualization is to show the matrix!
-However, the effectiveness of a matrix diagram is heavily dependent on the order of rows and columns: if related nodes are placed closed to each other, it is easier to identify clusters and bridges.
-While path-following is harder in a matrix view than in a node-link diagram, matrices have other advantages.
-As networks get large and highly connected, node-link diagrams often devolve into giant hairballs of line crossings.
-Line crossings are impossible with matrix views. Matrix cells can also be encoded to show additional data; here color depicts clusters computed by a community-detection algorithm.
- 
-Below is depicted a demonstration of plotting the results of ``hnet`` using a d3heatmap:
+Here color depicts clusters computed by a community-detection algorithm. Below is depicted a demonstration of plotting the results of ``hnet`` using a d3heatmap:
 
 .. code-block:: python
 	
@@ -150,13 +166,13 @@ In the following figure we correct for the number of labels per catagory.
 .. figure:: ../figs/other/feat_imp_3.png
 
 
-Summarize to categories
+Summarize into categories
 '''''''''''''''''''''''''
 
 If many associations are detected, a network plot can lead to a giant hairball, and a heatmap can become unreadable.
-A function in ``hnet`` is implemented to summarize the associations towards categories. This would lead to generic insights.
-As an example, in case of the **titanic** use-case, it will not describe wether **Parch 2** was associated with 4 **SibSp**
-but instead it will describe wether **Parch** was significantly associated with **SibSp**. This is computed by using *Fishers* method.
+A function in ``hnet`` is to summarize the associations towards categories. This will result in generic insights.
+As an example: In case of the **titanic** use-case, it will not describe whether **Parch 2** was associated with **four SibSp**
+but it will describe whether **Parch** was significantly associated with **SibSp**. This is computed by using *Fishers* method.
 
 .. code-block:: python
 
@@ -182,13 +198,9 @@ but instead it will describe wether **Parch** was significantly associated with 
 .. figure:: ../figs/other/titanic_summarize_static_heatmap.png
 
 
-raw:: html
-
-   <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap_summarize.html" height="1000px" width="100%", frameBorder="0"></iframe>
-
 .. raw:: html
 
-   <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_summarize.html" height="1000px" width="100%", frameBorder="0"></iframe>
+   <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_summarize.html" height="500px" width="100%", frameBorder="0"></iframe>
 
 
 Comparing networks

@@ -83,7 +83,7 @@ def test_hnet():
     assert hasattr(hn, 'results')==True
     
     # Should contain the following keys
-    assert [*hn.results.keys()]==['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules', 'feat_importance']
+    assert [*hn.results.keys()]==['simmatP', 'simmatLogP', 'simmatP_cat', 'simmatLogP_cat', 'labx', 'dtypes', 'counts', 'rules', 'feat_importance']
     
     # Should have specified size
     assert hn.results['simmatP'].shape==(7,7)

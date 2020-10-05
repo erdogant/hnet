@@ -194,13 +194,14 @@ class hnet():
             nr_succes_pop_n.append(nr_succes_i)
             if verbose>=5: print('[hnet] >[%d] %s' %(i, nr_succes_i))
 
+        # Post processing
+        simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
         # Message
-        print_text = '[hnet] >Total number of associatons computed: [%.0d]' %(simmatP.shape[0] * simmatP.shape[1])
+        print_text = '[hnet] >Total number of associatons computed: [%.0d]' %((simmatP.shape[0] * simmatP.shape[1]) - simmatP.shape[0])
         if verbose>=3: print('-' * len(print_text))
         if verbose>=3: print(print_text)
         if verbose>=3: print('-' * len(print_text))
-        # Post processing
-        simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
+
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 

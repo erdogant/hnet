@@ -244,11 +244,38 @@ class hnet():
         rules = self.combined_rules(simmatP, labx, verbose=0)
         # Feature importance
         feat_importance = self._feat_importance(simmatLogP, labx, verbose=verbose)
+        # Compute associations for the generic catagories
+        GsimmatP, GsimmatLogP = self._compute_associations_generic(simmatP, labx, verbose=verbose)
         # Store
-        self.results = _store(simmatP, simmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance)
+        self.results = _store(simmatP, simmatLogP, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance)
         # Use this option for storage of your model
         if verbose>=3: print('[hnet] >Fin.')
         return self.results
+
+    def _compute_associations_generic(self, simmatP, labx, verbose=3):
+        """Compute generic associations by fishers method."""
+        # Make some checks
+        if not np.all(simmatP.columns==simmatP.index.values):
+            raise ValueError('[hnet] >Error: Adjacency matrix [simmatP] does not have the same number of columns and index!')
+        if not np.all(simmatP.shape[0]==len(labx)):
+            raise ValueError('[hnet] >Error: The number of columns in [simmatP] does not match with the label [labx]!')
+
+        if verbose>=3: print('[hnet] >Computing generic association using fishers method..')
+        uilabx = np.unique(labx)
+        adjmatP = np.ones((len(uilabx), len(uilabx)))
+
+        # Combine Pvalues for catagories based on fishers method
+        for labxC in tqdm(uilabx, disable=(True if verbose==0 else False)):
+            for labxR in uilabx:
+                Ic = labx==labxC
+                Ir = labx==labxR
+                adjmatP[uilabx==labxR, uilabx==labxC] = combine_pvalues(simmatP.loc[Ir, Ic].values.ravel(), method='fisher')[1]
+
+        # Store in dataframe
+        adjmatP = pd.DataFrame(data=adjmatP, index=uilabx, columns=uilabx)
+        adjmatlogP = -np.log10(adjmatP)
+        adjmatlogP[adjmatlogP<=0]=0
+        return adjmatP, adjmatlogP
 
     def _feat_importance(self, simmatLogP, labx, verbose=3):
         """Compute feature importance."""
@@ -261,7 +288,7 @@ class hnet():
             Iloc = labx==lab
             # Sum over significance per label
             Psum.append(simmatLogP.iloc[Iloc, :].sum(axis=1).sum())
-            # Count number of significant catagory labels
+            # Count number of significant category labels
             Pcounts.append((simmatLogP.iloc[Iloc, :]>0).sum(axis=1).sum())
 
         # Compute corrected Pvalue
@@ -316,7 +343,7 @@ class hnet():
         plt.grid(True)
         plt.xlabel('Catagories')
         plt.ylabel('Total degree (significant associations)')
-        plt.title('Feature importance by the total degree per catagory.')
+        plt.title('Feature importance by the total degree per category.')
 
         # Plot feature importance after normalization
         plt.figure(figsize=figsize)
@@ -327,7 +354,7 @@ class hnet():
         plt.title('Feature importance after normalization (Psum/degree)')
 
     # Make network d3
-    def d3heatmap(self, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
+    def d3heatmap(self, modeltype='label', savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
         """Interactive heatmap creator.
 
         Description
@@ -342,6 +369,9 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
+        modeltype : str
+            Show the results based on generic of specific associations.
+            'category', 'label'
         savepath : str
             Save the figure in specified path.
         directed : bool, default is True.
@@ -368,12 +398,15 @@ class hnet():
             Cluster labels.
 
         """
+        if verbose>=3: print('[hnet] >Building dynamic heatmaps using d3graph..')
         # Check results
         status = self._check_results()
         if not status: return None
+        # Retrieve data
+        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
 
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
@@ -384,7 +417,7 @@ class hnet():
             simmatLogP = to_undirected(simmatLogP, method='logp')
 
         # Cluster
-        labx = self.plot(node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+        labx = self.plot(modeltype=modeltype, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
 
         if vmax is None:
             vmax = np.max(np.max(simmatLogP)) / 10
@@ -399,8 +432,22 @@ class hnet():
         results['clust_labx'] = labx
         return(results)
 
+    def _get_modeltype_data(self, modeltype):
+        """Retrieve data for catagories or labels."""
+        if modeltype=='category':
+            simmatP = self.results['simmatP_generic']
+            simmatLogP = self.results['simmatLogP_generic']
+            labx = self.results['simmatP_generic'].columns.values
+        elif modeltype=='label':
+            simmatP = self.results['simmatP']
+            simmatLogP = self.results['simmatLogP']
+            labx = self.results['labx']
+        else:
+            raise ValueError('[hnet] >Input parameter modeltype: [%s] does not exists.' %(modeltype))
+        return simmatP, simmatLogP, labx
+
     # Make network d3
-    def d3graph(self, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
+    def d3graph(self, modeltype='label', node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(1500, 1500), showfig=True, verbose=3):
         """Interactive network creator.
 
         Description
@@ -415,6 +462,9 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
+        modeltype : str
+            Show the results based on generic of specific associations.
+            'category', 'label'
         node_size_limits : tuple
             node sizes are scaled between [min,max] values. The default is [6,15].
         savepath : str
@@ -447,14 +497,16 @@ class hnet():
             Cluster labels.
 
         """
+        if verbose>=3: print('[hnet] >Building dynamic network graph using d3graph..')
+        # Check input data
         status = self._check_results()
         if not status: return None
-
-        if verbose>=3: print('[hnet] >Building d3graph..')
+        # Retrieve data
+        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
@@ -471,10 +523,8 @@ class hnet():
 
         # Color node using network-clustering
         if node_color=='cluster':
-            labx = self.plot(node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+            labx = self.plot(modeltype=modeltype, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
         else:
-            # IA,_ = ismember(self.results['simmatLogP'].columns, simmatLogP.columns)
-            # labx = label_encoder.fit_transform(self.results['labx'][IA])
             labx = label_encoder.fit_transform(labx)
 
         # Make network
@@ -485,7 +535,7 @@ class hnet():
         return(Gout)
 
     # Make network plot
-    def plot(self, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
+    def plot(self, modeltype='label', scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
         """Make plot static network plot of the model results.
 
         Description
@@ -496,6 +546,9 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
+        modeltype : str
+            Show the results based on generic of specific associations.
+            'category', 'label'
         scale : int, optional
             scale the network by blowing it up by scale. The default is 2.
         dist_between_nodes : float, optional
@@ -538,10 +591,13 @@ class hnet():
             Coordinates of the node postions.
 
         """
+        if verbose>=3: print('[hnet] >Building static network graph..')
+        # Check input data
         status = self._check_results()
         if not status: return None
+        # Retrieve data
+        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
 
-        if verbose>=3: print('[hnet] >Building network graph..')
         config = {}
         config['scale'] = scale
         config['node_color'] = node_color
@@ -556,7 +612,7 @@ class hnet():
         # Get adjmat
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
         # Check whether anything has remained
         if adjmatLog.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
@@ -648,8 +704,8 @@ class hnet():
         return(Gout)
 
     # Make plot of the association_learning
-    def heatmap(self, cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
-        """Plot heatmap.
+    def heatmap(self, modeltype='label', cluster=False, figsize=[15, 10], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
+        """Plot static heatmap.
 
         Description
         -----------
@@ -659,6 +715,9 @@ class hnet():
         ----------
         self : Object
             The output of .association_learning()
+        modeltype : str
+            Show the results based on generic of specific associations.
+            'category', 'label'
         cluster : Bool, optional
             Cluster before making heatmap. The default is False.
         figsize : typle, optional
@@ -681,12 +740,15 @@ class hnet():
         None.
 
         """
+        if verbose>=3: print('[hnet] >Building static heatmap.')
         status = self._check_results()
         if not status: return None
+        # Retrieve data
+        _, simmatLogP, labx = self._get_modeltype_data(modeltype)
 
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(self.results['simmatLogP'], self.results['labx'], threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
         if adjmatLog.values.flatten().sum()==0:
             if verbose>=3: print('[hnet] >Nothing to plot.')
             return None
@@ -900,10 +962,12 @@ class hnet():
 
 
 # %% Store results
-def _store(simmatP, adjmatLog, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance):
+def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance):
     out = {}
     out['simmatP'] = simmatP
     out['simmatLogP'] = adjmatLog
+    out['simmatP_generic'] = GsimmatP
+    out['simmatLogP_generic'] = GsimmatLogP
     out['labx'] = labx.astype(str)
     out['dtypes'] = np.array(list(zip(df.columns.values.astype(str), dtypes)))
     out['counts'] = nr_succes_pop_n

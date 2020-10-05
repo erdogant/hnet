@@ -14,20 +14,30 @@ del df['PassengerId']
 del df['Name']
 results = hn.association_learning(df)
 
+# Plot dynamic graph
+hn.d3graph(modeltype='category')
+hn.d3graph(modeltype='label')
+
+# hn.d3graph(modeltype='catagory', node_color='cluster')
+# hn.d3graph(modeltype='label', node_color='cluster')
+
+# Feature importance
 hn.plot_feat_importance(marker_size=50)
 
 # Static plot
 hn.plot()
 hn.plot(node_color='cluster')
 
-# Plot dynamic graph
-hn.d3graph(node_color='cluster', savepath='c://temp/titanic/titanic_d3graph.html')
+# Plot heatmap
+# hn.heatmap(modeltype='catagory', cluster=True)
+# hn.heatmap(modeltype='label', cluster=True)
+
+hn.heatmap(modeltype='category', cluster=False)
+hn.heatmap(modeltype='label', cluster=False)
 
 # Plot heatmap
-hn.heatmap(cluster=True)
-
-# Plot heatmap
-hn.d3heatmap(savepath='c://temp/titanic/titanic_heatmap.html')
+hn.d3heatmap(modeltype='category')
+hn.d3heatmap(modeltype='label')
 
 
 # %%
@@ -351,8 +361,16 @@ hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
 
 # Association learning
 results = hn.association_learning(df, verbose=4)
-# hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
+# hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
 # hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
+
+hn.d3heatmap(modeltype='category')
+hn.d3heatmap(modeltype='label')
+
+#
+hn.d3graph(modeltype='catagory')
+hn.d3graph(modeltype='label')
+hn.d3graph(black_list=['latitude', 'longitude'], node_color='cluster', min_edges=2)
 
 # Plot
 hn.d3graph(black_list=['latitude', 'longitude'])

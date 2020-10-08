@@ -346,6 +346,7 @@ results = hn.association_learning(df)
 # https://github.com/washingtonpost/data-police-shootings
 import pandas as pd
 from hnet import hnet
+hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
 
 # Load results
 results = hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
@@ -370,8 +371,9 @@ hn.d3graph(black_list=['city', 'state'])
 hn.d3graph(summarize=True)
 
 # Plot heatmap
-hn.d3heatmap(summarize=True, vmax=2)
+hn.d3heatmap(black_list=['city', 'state'])
 hn.d3heatmap(black_list=['city', 'state', 'longitude', 'latitude'])
+hn.d3heatmap(summarize=True, vmax=5)
 
 # Feature importance
 hn.plot_feat_importance()

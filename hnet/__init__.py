@@ -14,7 +14,7 @@ from hnet.utils.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 
 # module level doc-string
 __doc__ = """

@@ -275,6 +275,10 @@ class hnet():
         adjmatP = pd.DataFrame(data=adjmatP, index=uilabx, columns=uilabx)
         adjmatlogP = -np.log10(adjmatP)
         adjmatlogP[adjmatlogP<=0]=0
+        # Replace inf values with maximum value that is possible
+        # adjmatlogP[np.isinf(adjmatlogP)]=323
+        for (columnName, columnData) in adjmatlogP.iteritems():
+            columnData.loc[~(columnData!= np.inf)] = columnData.loc[columnData!= np.inf].max()
         return adjmatP, adjmatlogP
 
     def _feat_importance(self, simmatLogP, labx, verbose=3):

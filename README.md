@@ -6,7 +6,7 @@
 [![Github Forks](https://img.shields.io/github/forks/erdogant/hnet.svg)](https://github.com/erdogant/hnet/network)
 [![GitHub Open Issues](https://img.shields.io/github/issues/erdogant/hnet.svg)](https://github.com/erdogant/hnet/issues)
 [![Project Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![Downloads](https://pepy.tech/badge/hnet/month)](https://pepy.tech/project/hnet/month)
+[![Downloads](https://pepy.tech/badge/hnet/month)](https://pepy.tech/project/hnet/)
 [![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-Green)](https://erdogant.github.io/hnet/)
 [![arXiv](https://img.shields.io/badge/arXiv-Docs-Green)](https://arxiv.org/abs/2005.04679)

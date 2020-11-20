@@ -142,7 +142,13 @@ hn.d3graph(summarize=True, charge=1000)
 
 <p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_heatmap.png" width="300" />
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_heatmap.png" width="400" />
+  <a href="https://erdogant.github.io/docs/d3heatmap/d3heatmap.html">
+     <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_heatmap.png" width="400" />
+  </a>
+</p>
+
+
+<p align="center">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_graph.png" width="400" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_graph.png" width="400" />
 </p>

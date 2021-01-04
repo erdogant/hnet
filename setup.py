@@ -13,7 +13,7 @@ else:
 with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
-     install_requires=['colourmap', 'd3heatmap','pypickle','classeval','wget','d3graph','matplotlib','numpy','pandas','statsmodels','networkx','community','python-louvain','tqdm','sklearn','ismember','imagesc','df2onehot'],
+     install_requires=['colourmap', 'd3heatmap','pypickle','classeval','wget','d3graph','matplotlib','numpy','pandas','statsmodels','networkx','community','python-louvain','tqdm','sklearn','ismember','imagesc','df2onehot','fsspec'],
      python_requires='>=3',
      name='hnet',
      version=new_version,

@@ -10,13 +10,11 @@ pandas
 statsmodels
 networkx
 seaborn
-community
 python-louvain
 statsmodels
 fsspec
 
 tqdm
-community
 sklearn
 
 # Custom libraries

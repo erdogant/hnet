@@ -12,6 +12,7 @@ networkx
 seaborn
 python-louvain
 statsmodels
+fsspec
 
 tqdm
 sklearn

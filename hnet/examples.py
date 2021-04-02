@@ -373,7 +373,8 @@ if results is None:
 
     start = time.time()
     # Association learning
-    results = hn.association_learning(df, verbose=4)
+    with PyCallGraph(output=GraphvizOutput()):
+        results = hn.association_learning(df, verbose=4)
     end = time.time()
     print(end - start)
 

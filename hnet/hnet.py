@@ -25,10 +25,6 @@ from utils.savefig import savefig
 import utils.network as network
 import utils.hnstats as hnstats
 
-# from hnet.utils.savefig import savefig
-# import hnet.utils.network as network
-# import hnet.utils.hnstats as hnstats
-
 # Known libraries
 from scipy.stats import combine_pvalues
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder

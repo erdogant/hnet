@@ -58,25 +58,25 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
                     datacOnehot.drop(labels=[False], axis=1, inplace=True)
                 # Run over all unique entities/cats in column for target vlue
 
-                for k in range(0, datacOnehot.shape[1]):
-                    outtest = _prob_hypergeo(datacOnehot.iloc[:, k], yc==target)
-                    outtest.update({'y': target})
-                    outtest.update({'category_name': colname})
-                    out.append(outtest)
-
-                # #############################################################
-                # ytarget = (yc==target)
-                # y_compute = np.any(ytarget)
-                # names = datacOnehot.columns.values
-                # n = np.sum(datacOnehot.values, axis=0)  # Number of successes in population, known in pathway, eg 2000
-                # N = np.sum(ytarget)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
-
                 # for k in range(0, datacOnehot.shape[1]):
-                #     X = np.sum(np.logical_and(ytarget, datacOnehot.iloc[:, k])) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
-                #     outtest = _prob_hypergeo_fast(y_compute, names[k], X, M, n[k], N)
+                #     outtest = _prob_hypergeo(datacOnehot.iloc[:, k], yc==target)
                 #     outtest.update({'y': target})
                 #     outtest.update({'category_name': colname})
                 #     out.append(outtest)
+
+                #############################################################
+                ytarget = (yc==target)
+                y_compute = np.any(ytarget)
+                names = datacOnehot.columns.values
+                n = np.sum(datacOnehot.values, axis=0)  # Number of successes in population, known in pathway, eg 2000
+                N = np.sum(ytarget)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
+
+                for k in range(0, datacOnehot.shape[1]):
+                    X = np.sum(np.logical_and(ytarget, datacOnehot.iloc[:, k])) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
+                    outtest = _prob_hypergeo_fast(y_compute, names[k], X, M, n[k], N)
+                    outtest.update({'y': target})
+                    outtest.update({'category_name': colname})
+                    out.append(outtest)
 
             elif dtypes[i]=='num':
                 # Numerical

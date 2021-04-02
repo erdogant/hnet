@@ -1266,9 +1266,11 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     colname = X_comb.columns[i]
     # Default output is nan
     out = [colname, np.nan]
+    # Set max-string length for verbosity message
+    maxstr = np.minimum(X_comb.columns.str.len().max(), 40)
     # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
-        if verbose>=4: print('[hnet] >Working on [%s]' %(X_comb.columns[i]), end='')
+        if verbose>=4: print('[hnet] >Working on [%s]%s ' %(X_comb.columns[i], '.' * (maxstr - len(X_comb.columns[i]))), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit

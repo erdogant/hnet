@@ -1,6 +1,6 @@
-import hnet
-print(dir(hnet))
-print(hnet.__version__)
+# import hnet
+# print(dir(hnet))
+# print(hnet.__version__)
 
 # %%
 import numpy as np
@@ -12,10 +12,10 @@ hn = hnet()
 df = hn.import_example('titanic')
 del df['PassengerId']
 del df['Name']
-results = hn.association_learning(df)
+results_new = hn.association_learning(df, verbose=4)
 
 # STATIC
-hn.heatmap(summarize=True, cluster=False)
+hn.heatmap(summarize=False, cluster=False)
 hn.plot(node_color='cluster')
 
 # Feature importance
@@ -23,6 +23,13 @@ hn.plot_feat_importance(marker_size=50)
 
 hn.d3heatmap('c:/temp/titanic_summarize/')
 hn.d3graph('c:/temp/titanic_summarize_d3graph/')
+
+# %% Timimg checks
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
+
+with PyCallGraph(output=GraphvizOutput()):
+    results = hn.association_learning(df)
 
 # %%
 from hnet import hnet
@@ -346,6 +353,8 @@ results = hn.association_learning(df)
 # https://github.com/washingtonpost/data-police-shootings
 import pandas as pd
 from hnet import hnet
+import time
+
 hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
 
 # Load results
@@ -353,14 +362,21 @@ results = hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
 
 # Run hnet
 if results is None:
+
+
     # Read csv
-    df = pd.read_csv('C://temp/New folder/data-police-shootings/fatal-police-shootings-data.csv')
+    df = pd.read_csv('C://temp/police_shooting.csv')
     df['month'] = pd.to_datetime(df['date']).dt.month_name()
     df.head()
     # Initialize
     hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
+
+    start = time.time()
     # Association learning
     results = hn.association_learning(df, verbose=4)
+    end = time.time()
+    print(end - start)
+
     # Save
     hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)
 

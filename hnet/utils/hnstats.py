@@ -18,6 +18,7 @@ import itertools
 # %% Compute significance
 def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
     out=[]
+
     # Run over all columns
     for i in range(0, df.shape[1]):
         if (i>0) and (verbose>=3): print('')
@@ -41,6 +42,8 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
             uiy=uiy[uiy!='False']
             uiy=uiy[uiy!='false']
 
+        M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
+
         # Run over all target values
         for j in range(0, len(uiy)):
             target = uiy[j]
@@ -54,11 +57,27 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
                 if (datacOnehot.shape[1]==2) & (np.any(np.isin(datacOnehot.columns, False))):
                     datacOnehot.drop(labels=[False], axis=1, inplace=True)
                 # Run over all unique entities/cats in column for target vlue
+
                 for k in range(0, datacOnehot.shape[1]):
                     outtest = _prob_hypergeo(datacOnehot.iloc[:, k], yc==target)
                     outtest.update({'y': target})
                     outtest.update({'category_name': colname})
                     out.append(outtest)
+
+                # #############################################################
+                # ytarget = (yc==target)
+                # y_compute = np.any(ytarget)
+                # names = datacOnehot.columns.values
+                # n = np.sum(datacOnehot.values, axis=0)  # Number of successes in population, known in pathway, eg 2000
+                # N = np.sum(ytarget)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
+
+                # for k in range(0, datacOnehot.shape[1]):
+                #     X = np.sum(np.logical_and(ytarget, datacOnehot.iloc[:, k])) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
+                #     outtest = _prob_hypergeo_fast(y_compute, names[k], X, M, n[k], N)
+                #     outtest.update({'y': target})
+                #     outtest.update({'category_name': colname})
+                #     out.append(outtest)
+
             elif dtypes[i]=='num':
                 # Numerical
                 outtest = _prob_ranksums(datac, yc==target, specificity=specificity)
@@ -114,6 +133,42 @@ def _prob_ranksums(datac, yc, specificity=None):
 
 
 # %% Hypergeometric test
+def _prob_hypergeo_fast(y_compute, name, X, M, n, N):
+    """Compute hypergeometric Pvalue.
+
+    Description
+    -----------
+    Suppose you have a lot of 100 floppy disks (M), and you know that 20 of them are defective (n).
+    What is the prbability of drawing zero to 2 floppy disks (N=2), if you select 10 at random (N).
+    P=hypergeom.sf(2,100,20,10)
+
+    """
+    P = np.nan
+    logP = np.nan
+    # M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
+    # n = np.sum(datac)  # Number of successes in population, known in pathway, eg 2000
+    # N = np.sum(yc)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
+    # X = np.sum(np.logical_and(yc, datac.values)) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
+
+    # Do the hypergeo-test
+    if y_compute and (X>0):
+        P = hypergeom.sf(X, M, n, N)
+        logP = hypergeom.logsf(X, M, n, N)
+
+    # Store
+    out = {}
+    out['category_label']=name
+    out['P']=P
+    out['logP']=logP
+    out['overlap_X']=X
+    out['popsize_M']=M
+    out['nr_succes_pop_n']=n
+    out['samplesize_N']=N
+    out['dtype']='categorical'
+    return(out)
+
+
+# %% Hypergeometric test
 def _prob_hypergeo(datac, yc):
     """Compute hypergeometric Pvalue.
 
@@ -129,15 +184,15 @@ def _prob_hypergeo(datac, yc):
     M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
     n = np.sum(datac)  # Number of successes in population, known in pathway, eg 2000
     N = np.sum(yc)  # sample size: Random variate, eg clustersize or groupsize, over expressed genes, eg 300
-    X = np.sum(np.logical_and(yc, datac)) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
+    X = np.sum(np.logical_and(yc, datac.values)) - 1  # Let op, de -1 is belangrijk omdatje P<X wilt weten ipv P<=X. Als je P<=X doet dan kan je vele false positives krijgen als bijvoorbeeld X=1 en n=1 oid
 
-    # Test
+    # Do the hypergeo-test
     if np.any(yc) and (X>0):
         P = hypergeom.sf(X, M, n, N)
         logP = hypergeom.logsf(X, M, n, N)
 
     # Store
-    out=dict()
+    out = {}
     out['category_label']=datac.name
     out['P']=P
     out['logP']=logP
@@ -146,7 +201,6 @@ def _prob_hypergeo(datac, yc):
     out['nr_succes_pop_n']=n
     out['samplesize_N']=N
     out['dtype']='categorical'
-
     return(out)
 
 

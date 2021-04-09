@@ -6,6 +6,27 @@
 import numpy as np
 import pandas as pd
 
+# %%
+from hnet import hnet
+hn = hnet()
+df = hn.import_example('sprinkler')
+
+hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
+out1 = hn1.association_learning(df.astype(bool))
+
+hn2 = hnet()
+out2 = hn2.association_learning(df.astype(bool))
+
+hn2.d3graph(summarize=True)
+hn2.d3graph()
+
+hn2.d3heatmap(summarize=True)
+hn2.d3heatmap(summarize=False)
+
+hn2.heatmap(summarize=True, cluster=False)
+hn2.heatmap(cluster=True)
+
+
 # %% Titanic case
 from hnet import hnet
 hn = hnet()
@@ -31,25 +52,6 @@ from pycallgraph.output import GraphvizOutput
 with PyCallGraph(output=GraphvizOutput()):
     results = hn.association_learning(df)
 
-# %%
-from hnet import hnet
-hn = hnet()
-df = hn.import_example('sprinkler')
-
-hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
-out1 = hn1.association_learning(df.astype(bool))
-
-hn2 = hnet()
-out2 = hn2.association_learning(df.astype(bool))
-
-hn2.d3graph(summarize=True)
-hn2.d3graph()
-
-hn2.d3heatmap(summarize=True)
-hn2.d3heatmap(summarize=False)
-
-hn2.heatmap(summarize=True, cluster=False)
-hn2.heatmap(cluster=True)
 
 # %%
 import hnet
@@ -358,11 +360,10 @@ import time
 hn = hnet(excl_background=['nan'], black_list=['id', 'date', 'name'])
 
 # Load results
-results = hn.load(filepath='C://temp/New folder/data-police-shootings/hnet.pkl')
+results = hn.load(filepath='C://temp//data-police-shootings/hnet.pkl')
 
 # Run hnet
 if results is None:
-
 
     # Read csv
     df = pd.read_csv('C://temp/police_shooting.csv')
@@ -373,10 +374,14 @@ if results is None:
 
     start = time.time()
     # Association learning
-    with PyCallGraph(output=GraphvizOutput()):
-        results = hn.association_learning(df, verbose=4)
-    end = time.time()
-    print(end - start)
+    results = hn.association_learning(df, verbose=4)
+    print(time.time()- start)
+
+
+    # with PyCallGraph(output=GraphvizOutput()):
+    #     results = hn.association_learning(df, verbose=4)
+    # end = time.time()
+    # print(end - start)
 
     # Save
     hn.save(filepath='C://temp/New folder/data-police-shootings/hnet.pkl', overwrite=True)

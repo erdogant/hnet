@@ -42,7 +42,7 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
             uiy=uiy[uiy!='False']
             uiy=uiy[uiy!='false']
 
-        M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
+        # M = len(yc)  # Population size: Total number of samples, eg total number of genes; 10000
 
         # Run over all target values
         for j in range(0, len(uiy)):

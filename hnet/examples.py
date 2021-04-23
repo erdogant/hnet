@@ -148,7 +148,7 @@ from hnet import hnet
 
 hn = hnet()
 # Load data
-# df = hn.import_example('titanic')
+df = hn.import_example('titanic')
 df = hn.import_example('sprinkler')
 # Association learning
 results = hn.association_learning(df.astype(bool))

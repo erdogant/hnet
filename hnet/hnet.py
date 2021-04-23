@@ -68,11 +68,10 @@ class hnet():
     y_min : int [1..n], where n is the number of samples. (default : 10)
         Minimum number of samples in a group. Should be [samples>=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
         10, None, 1, etc
+    perc_min_num : float [None, 0..1], optional
+        Force column (int or float) to be numerical if unique non-zero values are above percentage.
     k : int, [1..n] , (default : 1)
         Number of combinatoric elements to create for the n features
-    perc_min_num : float, (default : 0.8)
-        Force column (int or float) to be numerical if unique non-zero values are above percentage.
-        Can also be None.
     multtest : String, (default : 'holm')
         * None: No multiple Test,
         * 'bonferroni': one-step correction,

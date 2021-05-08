@@ -235,6 +235,8 @@ class hnet():
 
         """
         if not isinstance(df, pd.DataFrame): raise ValueError('Input data [df] must be of type pd.DataFrame()')
+        # Clean readily fitted models to ensure correct results.
+        self._clean(verbose=verbose)
         # Preprocessing
         df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df, verbose=verbose)
         # Here we go! Over all columns now
@@ -966,6 +968,11 @@ class hnet():
 
         return status
 
+    def _clean(self, verbose=3):
+        # Clean readily fitted models to ensure correct results.
+        if hasattr(self, 'results'):
+            if verbose>=3: print('[hnet] >Cleaning previous fitted model results..')
+            if hasattr(self, 'results'): del self.results
 
 # %% Store results
 def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance):

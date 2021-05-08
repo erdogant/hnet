@@ -6,6 +6,7 @@
 import numpy as np
 import pandas as pd
 
+
 # %%
 from hnet import hnet
 hn = hnet()
@@ -27,6 +28,8 @@ hn2.heatmap(summarize=True, cluster=False)
 hn2.heatmap(cluster=True)
 
 
+
+
 # %% Titanic case
 from hnet import hnet
 hn = hnet()
@@ -44,6 +47,23 @@ hn.plot_feat_importance(marker_size=50)
 
 hn.d3heatmap('c:/temp/titanic_summarize/')
 hn.d3graph('c:/temp/titanic_summarize_d3graph/')
+
+
+# %% Penguins dataset
+import seaborn as sns
+from hnet import hnet
+
+df = sns.load_dataset("penguins")
+
+hn = hnet()
+results_new = hn.association_learning(df, verbose=3)
+
+hn.d3graph()
+hn.d3heatmap()
+
+hn.d3graph(summarize=True)
+hn.d3heatmap(summarize=True)
+hn.plot_feat_importance(marker_size=50)
 
 # %% Timimg checks
 from pycallgraph import PyCallGraph

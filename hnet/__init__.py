@@ -7,14 +7,14 @@ from hnet.hnet import (
     import_example,
     )
 
-from hnet.utils.adjmat_vec import (
+from hnet.adjmat_vec import (
     vec2adjmat,
     adjmat2vec,
     )
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.1.7'
+__version__ = '1.1.8'
 
 # module level doc-string
 __doc__ = """

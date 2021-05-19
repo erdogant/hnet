@@ -1,74 +1,4 @@
-""" This function has functionalities for network creation, clustering and plotting.
-
-	G    = network.to_graph(adjmat)
-	labx = network.cluster(G)
-	fig  = network.plot(G, labx)
-
- INPUT:
-   adjmat:         pd.DataFrame(): Edges are any values >0 between intersecting nodes.
-                   rows    = features
-                   colums  = samples
- OPTIONAL
-
-   verbose:        Integer [0..5] if verbose >= DEBUG: print('debug message')
-                   0: (default)
-                   1: ERROR
-                   2: WARN
-                   3: INFO
-                   4: DEBUG
-                   
-
- OUTPUT
-	output
-
- DESCRIPTION
-   This function has functionalities for network creation, clustering and plotting
- 
- REQUIRES
-   pip install python-louvain
-   pip install --upgrade networkx
-   
-
- EXAMPLE
-   %reset -f
-   %matplotlib auto
-   import matplotlib.pyplot as plt
-   import numpy as np
-   import networkx as nx
-   import NETWORKS.network as network
-   
-   adjmat=np.random.randint(0,2,(10,10))
-
-   G = nx.karate_club_graph()
-   adjmat = nx.adjacency_matrix(G).todense()
-   
-   
-   # Create network
-   G = network.to_graph(adjmat)
-   
-   # Cluster
-   [G,labx]=network.cluster(G)
-   [*G.node.values()]
-   
-   # Plot
-   fig=network.plot(G, node_color=labx, node_size=500)
-   
-   # Plot interactive
-   from NETWORKS.d3graph import d3graph
-   import pandas as pd
-   G = nx.karate_club_graph()
-   nodes=pd.DataFrame([*G.node.values()])['club']
-   adjmat = nx.adjacency_matrix(G).todense()
-   adjmat=pd.DataFrame(index=nodes, data=adjmat, columns=nodes)
-
-   A=d3graph(adjmat, node_color=labx.astype(str))
-   A=d3graph(adjmat)
-   
-
- SEE ALSO
-    d3graph
-"""
-
+""" This function has functionalities for network creation, clustering and plotting."""
 # --------------------------------------------------------------------------
 # Name        : network.py
 # Version     : 1.0
@@ -91,6 +21,20 @@ import classeval as clf
 
 #%% Make graph from adjacency matrix
 def to_graph(adjmat, verbose=3):
+    """Convert adjacency matrix to graph.
+
+    Parameters
+    ----------
+    adjmat : Pandas DataFrame
+        adjacency matrix.
+    verbose : int [1-5], default: 3
+        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
+
+    Returns
+    -------
+    Graph G.
+
+    """
     assert float(nx.__version__)>2, 'This function requires networkx to be v2 or higher. Try to: pip install --upgrade networkx'
     config = dict()
     config['verbose'] = verbose
@@ -103,6 +47,18 @@ def to_graph(adjmat, verbose=3):
 
 #%% Convert Adjmat to graph (G) (also works with lower versions of networkx)
 def adjmat2graph(adjmat):
+    """Convert adjacency matrix to graph.
+
+    Parameters
+    ----------
+    adjmat : DataFrame of numpy array
+        adjacency matrix.
+
+    Returns
+    -------
+    Graph G.
+
+    """
     G = nx.DiGraph() # Directed graph
     # Convert adjmat to source target
     df_edges=adjmat.stack().reset_index()
@@ -129,6 +85,23 @@ def adjmat2graph(adjmat):
     
 #%% Compute similarity matrix
 def compute_centrality(G, centrality='betweenness', verbose=3):
+    """Compute Centrality measures from Graph G.
+
+    Parameters
+    ----------
+    G : NetworkX object
+        Graph.
+    centrality : str, The default is 'betweenness'.
+        Compute centrality measure.
+        'betweenness', 'closeness', 'eigenvector', 'degree', 'edge', 'harmonic', 'katz', 'local', 'out_degree', 'percolation', 'second_order', 'subgraph', 'subgraph_exp', 'information'
+    verbose : int [1-5], default: 3
+        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
+
+    Returns
+    -------
+    tuple (G, score).
+
+    """
     if verbose>=3: print('[hnet] >Computing centrality %s' %(centrality))
     
     if centrality=='betweenness':
@@ -160,7 +133,7 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
     elif centrality=='information':
         bb=nx.centrality.information_centrality(G)
     else:
-        print('[NETWORK] [ERROR] Centrality <%s> does not exist!' %(centrality))
+        print('[hnet] >Error in network function: Centrality <%s> does not exist!' %(centrality))
     
     # Set the attributes
     score=np.array([*bb.values()])
@@ -170,6 +143,20 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
 
 #%% compute clusters
 def cluster(G, verbose=3):
+    """Clustering of graph labels.
+
+    Parameters
+    ----------
+    G : NetworkX object
+        Graph.
+    verbose : int [1-5], default: 3
+        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
+
+    Returns
+    -------
+    tuple (G, labx).
+
+    """
     if verbose>=3: print('[hnet] >Clustering using best partition')
     # Partition
     partition=community_louvain.best_partition(G)
@@ -189,7 +176,7 @@ def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodt
     config['height']=height
     config['verbose']=verbose
 
-    if verbose>=3: print('[NETWORK] Compute a dozen of centralities and clusterlabels')
+    if verbose>=3: print('[hnet] >Error in network function: Compute a dozen of centralities and clusterlabels')
     
     # compute labx for each of the centralities
     centralities=['betweenness', 'closeness','eigenvector','degree','edge','harmonic','katz','local','out_degree','percolation','second_order','subgraph','subgraph_exp','information']
@@ -225,14 +212,14 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     config['verbose']=verbose
     config['node_size_scale']=node_size_scale
     
-    if verbose>=3: print('[NETWORK] Creating network plot')
+    if verbose>=3: print('[hnet] >Error in network function: Creating network plot')
     
     if 'pandas' in str(type(node_size)):
         node_size=node_size.values
     
     #scaling node sizes
     if config['node_size_scale']!=None and 'numpy' in str(type(node_size)):
-        if verbose>=3: print('[NETWORK] Scaling node sizes')
+        if verbose>=3: print('[hnet] >Error in network function: Scaling node sizes')
         node_size=minmax_scale(node_size, feature_range=(node_size_scale[0], node_size_scale[1]))
 
     # Node positions

@@ -21,9 +21,9 @@ import colourmap
 
 # Local utils
 import pypickle
-from utils.savefig import savefig
-import utils.network as network
-import utils.hnstats as hnstats
+from hnet.savefig import savefig
+import hnet.network as network
+import hnet.hnstats as hnstats
 
 # Known libraries
 from scipy.stats import combine_pvalues
@@ -217,7 +217,7 @@ class hnet():
            | s3 | 1 | 1 | 0 |
 
         verbose : int [1-5], default: 3
-            Print information to screen. A higher number will print more.
+            Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
         Returns
         -------

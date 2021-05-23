@@ -185,11 +185,11 @@ def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodt
     pos=nx.spring_layout(G)
 
     # Cluster data nd store label in G
-    [G, score] = cluster(G)
+    G, score = cluster(G)
     
     # Compute centrality score for each of the centralities and store in G
     for centrality in centralities:
-        [G,score]=compute_centrality(G, centrality=centrality)
+        G, score = compute_centrality(G, centrality=centrality)
     
     # Store
     df=pd.DataFrame([*G.nodes.values()])
@@ -217,17 +217,10 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     if 'pandas' in str(type(node_size)):
         node_size=node_size.values
     
-    #scaling node sizes
+    # scaling node sizes
     if config['node_size_scale']!=None and 'numpy' in str(type(node_size)):
         if verbose>=3: print('[hnet] >Error in network function: Scaling node sizes')
         node_size=minmax_scale(node_size, feature_range=(node_size_scale[0], node_size_scale[1]))
-
-    # Node positions
-#    if isinstance(pos, type(None)):
-#        pos=nx.spring_layout(G)
-
-#    if isinstance(node_label, type(None)):
-#        node_label=[*G.nodes])
 
     fig=plt.figure(figsize=(config['width'], config['height']))
     
@@ -238,7 +231,7 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
         nx.draw_kamada_kawai(G, labels=node_label, node_size=node_size, alhpa=alpha, node_color=node_color, cmap=cmap, font_size=font_size, with_labels=True)
     else:
         nx.draw_networkx(G, labels=node_label, pos=pos, node_size=node_size, alhpa=alpha, node_color=node_color, cmap=cmap, font_size=font_size, with_labels=True)
-#        nx.draw_networkx(G, pos=pos, node_size=node_size, alhpa=alpha, node_color=node_color, cmap=cmap, font_size=font_size)
+        # nx.draw_networkx(G, pos=pos, node_size=node_size, alhpa=alpha, node_color=node_color, cmap=cmap, font_size=font_size)
         
     plt.title(title)
     plt.grid(True)
@@ -259,7 +252,7 @@ def normalize_size(getsizes, minscale=0.1, maxscale=4):
 #%% Convert dataframe to Graph
 def df2G(df_nodes, df_edges, verbose=3):
     # Put edge information in G
-#    G = nx.from_pandas_edgelist(df_edges, 'source', 'target', ['weight', 'edge_weight','edge_width','source_label','target_label'])
+    # G = nx.from_pandas_edgelist(df_edges, 'source', 'target', ['weight', 'edge_weight','edge_width','source_label','target_label'])
     
     colnames=list(df_edges.columns.values[~np.isin(df_edges.columns.values,['source','target'])])
     G = nx.from_pandas_edgelist(df_edges, 'source', 'target', colnames)
@@ -303,7 +296,7 @@ def G2df(G, node_color=None, node_label=None, node_size=100, edge_distance_minma
     df_nodes['index_value']=None
     df_edges['source']=None
     df_edges['target']=None
-#    uinodes=np.unique(np.append(df_edges['source_label'], df_edges['target_label']))
+    # uinodes=np.unique(np.append(df_edges['source_label'], df_edges['target_label']))
     uinodes=np.unique(df_nodes['node_name'])
     for i in range(0,len(uinodes)):
         I=(uinodes[i]==df_edges['source_label'])

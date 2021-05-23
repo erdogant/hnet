@@ -11,6 +11,7 @@ rm -rf hnet/utils/__pycache__
 rm -rf tests/__pycache__
 rm -rf hnet/data/*.zip
 rm -rf hnet/data/*.data
+rm -rf hnet/data/
 rm -rf hnet/data/*.names
 rm -rf *.js
 rm -rf *.html

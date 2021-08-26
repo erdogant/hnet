@@ -372,7 +372,7 @@ hn = hnet(dtypes=dtypes)
 results = hn.association_learning(df)
 
 # %% Police shooting
-# https://github.com/washingtonpost/data-police-shootings
+# https://github.com/washingtonpost/data-police-shootings/blob/master/fatal-police-shootings-data.csv
 import pandas as pd
 from hnet import hnet
 import time
@@ -386,7 +386,7 @@ results = hn.load(filepath='C://temp//data-police-shootings/hnet.pkl')
 if results is None:
 
     # Read csv
-    df = pd.read_csv('C://temp/police_shooting.csv')
+    df = pd.read_csv('C://temp/data-police-shootings/fatal-police-shootings-data.csv')
     df['month'] = pd.to_datetime(df['date']).dt.month_name()
     df.head()
     # Initialize
@@ -410,6 +410,7 @@ if results is None:
 hn.d3graph()
 hn.d3graph(black_list=['city'])
 hn.d3graph(black_list=['city', 'state'])
+hn.d3graph(black_list=['city', 'state', 'longitude', 'latitude'])
 hn.d3graph(summarize=True)
 
 # Plot heatmap

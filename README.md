@@ -177,23 +177,12 @@ hn.plot_feat_importance(marker_size=50)
 
 ### Citation
 
-Please cite ``hnet`` in your publications if this is useful for your research.
+Please cite ``hnet`` in your publications if this is useful for your research! You can find it in the right panel.
 
 * [arXiv](https://arxiv.org/abs/2005.04679)
 * [Article in pdf](https://arxiv.org/pdf/2005.04679)
 * [Sphinx](https://erdogant.github.io/hnet)
 * [Github](https://github.com/erdogant/hnet)
-
-Here is the BibTeX entry:
-
-	@misc{taskesen2020hnet,
-	    title={HNet: Graphical Hypergeometric Networks},
-	    author={Erdogan Taskesen},
-	    year={2020},
-	    eprint={2005.04679},
-	    archivePrefix={arXiv},
-	    primaryClass={cs.LG}
-	}
 
 ### Maintainer
 	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)

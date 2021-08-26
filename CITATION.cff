@@ -1,0 +1,23 @@
+# YAML 1.2
+---
+authors: 
+  -
+    family-names: Taskesen
+    given-names: Erdogan
+    orcid: "https://orcid.org/0000-0002-3430-9618"
+cff-version: "1.1.0"
+date-released: 2019-12-28
+identifiers: 
+  - 
+    type: other
+    value: "https://arxiv.org/abs/2005.04679v1"
+keywords: 
+  - "Machine learning"
+  - "Network analysis"
+  - "Association-learning"
+license: "Apache-2.0"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/erdogant/hnet"
+title: "HNet: Graphical Hypergeometric Networks"
+version: "1.1.8"
+...

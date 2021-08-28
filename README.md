@@ -26,7 +26,7 @@ the search space is super-exponential in the number of variables. A thorough dat
 
 **Read my blog about HNEt!**
 
-[![Medium Blog HNet](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+[Medium Blog HNet](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 
 
 **Methods**

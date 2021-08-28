@@ -10,7 +10,7 @@
 [![Downloads](https://pepy.tech/badge/hnet)](https://pepy.tech/project/hnet)
 [![Sphinx](https://img.shields.io/badge/Sphinx-Docs-Green)](https://erdogant.github.io/hnet/)
 [![arXiv](https://img.shields.io/badge/arXiv-Docs-Green)](https://arxiv.org/abs/2005.04679)
-[![Medium blog](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+[![Medium](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb)
 
     Star it if you like it!

@@ -24,6 +24,11 @@ and it remains a challenge to describe the relationships between variables.
 The data understanding phase is crucial to the data-mining process, however, without making any assumptions on the data,
 the search space is super-exponential in the number of variables. A thorough data understanding phase is therefore not common practice.
 
+**Read my blog about HNEt!**
+
+[![Medium Blog HNet](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+
+
 **Methods**
 
 We propose graphical hypergeometric networks (``HNet``), a method to test associations across variables for significance using statistical inference. The aim is to determine a network using only the significant associations in order to shed light on the complex relationships across variables. HNet processes raw unstructured data sets and outputs a network that consists of (partially) directed or undirected edges between the nodes (i.e., variables). To evaluate the accuracy of HNet, we used well known data sets and generated data sets with known ground truth. In addition, the performance of HNet is compared to Bayesian association learning.

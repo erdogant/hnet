@@ -14,6 +14,13 @@
 
     Star it if you like it!
 
+**Read my blog about HNEt!**
+
+[**Medium Blog HNet**](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+
+
+**Summary**
+
 HNet stands for graphical Hypergeometric Networks, which is a method where associations across variables are tested for significance by statistical inference.
 The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
 Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.
@@ -23,11 +30,6 @@ Despite the availability of many libraries, data sets with mixed data types requ
 and it remains a challenge to describe the relationships between variables.
 The data understanding phase is crucial to the data-mining process, however, without making any assumptions on the data,
 the search space is super-exponential in the number of variables. A thorough data understanding phase is therefore not common practice.
-
-**Read my blog about HNEt!**
-
-[Medium Blog HNet](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
-
 
 **Methods**
 

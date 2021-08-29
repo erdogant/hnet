@@ -15,7 +15,7 @@
 
     Star it if you like it!
 
-[**Read my blog about HNEt at Medium**](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+[**Read my blog about HNet at Medium**](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 
 
 **Summary**

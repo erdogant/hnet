@@ -8,41 +8,42 @@
 # -------------------------------------------------
 
 # %% Libraries
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+import numpy as np
+import pandas as pd
+import os
+import wget
+import networkx as nx
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from scipy.stats import combine_pvalues
+import hnet.hnstats as hnstats
+import hnet.network as network
+from hnet.savefig import savefig
+import pypickle
+import colourmap
+import df2onehot
+import imagesc
+from ismember import ismember
+from d3heatmap import d3heatmap as d3
+from d3graph import d3graph as d3graphs
 import warnings
 warnings.filterwarnings("ignore")
 
 # Custom packages
-from d3graph import d3graph as d3graphs
-from d3heatmap import d3heatmap as d3
-from ismember import ismember
-import imagesc
-import df2onehot
-import colourmap
 
 # Local utils
-import pypickle
-from hnet.savefig import savefig
-import hnet.network as network
-import hnet.hnstats as hnstats
 
 # Known libraries
-from scipy.stats import combine_pvalues
-from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 label_encoder = LabelEncoder()
 
-import networkx as nx
 
 # Internal
-import wget
-import os
-import pandas as pd
-import numpy as np
-from tqdm import tqdm
-import matplotlib.pyplot as plt
 
 # from functools import lru_cache
 
 # %% Association learning across all variables
+
 class hnet():
     """HNET - Graphical Hypergeometric networks.
 
@@ -975,6 +976,8 @@ class hnet():
             if hasattr(self, 'results'): del self.results
 
 # %% Store results
+
+
 def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance):
     out = {}
     out['simmatP'] = simmatP
@@ -1114,10 +1117,10 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
 
     Examples
     --------
-    >>> import hnet
+    >>> import hnet as hn
     >>> df = hn.import_example('titanic')
     >>> y = df['Survived'].values
-    >>> out = hnet.enrichment(df, y)
+    >>> out = hn.enrichment(df, y)
 
     """
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'

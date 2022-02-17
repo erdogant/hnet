@@ -16,9 +16,8 @@
 <!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
 
 
-## Star ⭐️
 
-**Star it if you like it!**
+**Star ⭐️ it if you like it!**
 
 
 ## Blog

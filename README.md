@@ -19,10 +19,13 @@
 
 **Star it if you like it!**
 
+
+## Blog
+
 [**Read my blog about HNet at Medium**](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 
 
-**Summary**
+## Summary
 
 HNet stands for graphical Hypergeometric Networks, which is a method where associations across variables are tested for significance by statistical inference.
 The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.

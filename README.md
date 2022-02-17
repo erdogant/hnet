@@ -13,6 +13,7 @@
 [![Medium](https://img.shields.io/badge/Medium-Blog-green)](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb)
 [![BuyMeCoffee](https://img.shields.io/badge/buymea-coffee-yellow.svg)](https://www.buymeacoffee.com/erdogant)
+[![DOI](https://zenodo.org/badge/226647104.svg)](https://zenodo.org/badge/latestdoi/226647104)
 <!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
 
     Star it if you like it!

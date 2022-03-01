@@ -1,73 +1,35 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Use Cases &mdash; hnet hnet documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Coding quality" href="Coding%20quality.html" />
     <link rel="prev" title="Examples" href="Examples.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> hnet
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,18 +37,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Background</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Abstract.html">Abstract</a></li>
@@ -137,74 +88,33 @@
 <li class="toctree-l1"><a class="reference internal" href="arXiv.html">arXiv</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">hnet</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Use Cases</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/Use Cases.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <hr class="docutils" id="code-directive" />
-<div class="section" id="use-cases">
-<h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
+<section id="use-cases">
+<h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline"></a></h1>
 <p>HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.</p>
 <blockquote>
 <div><dl class="simple">
@@ -217,8 +127,8 @@
 </dl>
 </div></blockquote>
 <p>Here we will explore various data sets for the goals <em>1</em>, <em>2</em> and <em>3</em>.</p>
-<div class="section" id="cancer-dataset">
-<h2>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline">¶</a></h2>
+<section id="cancer-dataset">
+<h2>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline"></a></h2>
 <p>The cancer data set contains only a few columns but can result in an enormous complexity in their cross-relationships.
 To unravel the associations between the variables, and gain insights, we can easily run <code class="docutils literal notranslate"><span class="pre">hnet</span></code>. This dataset already contains tsne and PCA coordinates that we do not use. We will black list those to prevent being modeled.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -413,9 +323,9 @@ The second most significant hit is that females, and death indicator=1 implies t
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">,</span><span class="s1">&#39;survival_months&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe></div>
-<div class="section" id="fifa-dataset">
-<h2>Fifa dataset<a class="headerlink" href="#fifa-dataset" title="Permalink to this headline">¶</a></h2>
+<iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe></section>
+<section id="fifa-dataset">
+<h2>Fifa dataset<a class="headerlink" href="#fifa-dataset" title="Permalink to this headline"></a></h2>
 <p>The Fifa data set is from 2018 and contains many variables. By default, many variables would be converted to categorical values which may not be the ideal choice.
 We will set the dtypes manually to make sure each variable has the correct dtype.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -752,9 +662,9 @@ It seems that football is not so complicated after all ;)</p>
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
 </pre></div>
 </div>
-<iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe></div>
-<div class="section" id="census-income-dataset">
-<h2>Census Income dataset<a class="headerlink" href="#census-income-dataset" title="Permalink to this headline">¶</a></h2>
+<iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe></section>
+<section id="census-income-dataset">
+<h2>Census Income dataset<a class="headerlink" href="#census-income-dataset" title="Permalink to this headline"></a></h2>
 <p>The adult dataset is to determine whether income exceeds $50K/yr based on census data. Also known as “Census Income” dataset.
 This dataset is Multivariate (categorical, and integer variables), contains in total 48842 instances, missing values, and is located in the archives of [UCI](<a class="reference external" href="https://archive.ics.uci.edu/ml/">https://archive.ics.uci.edu/ml/</a>).</p>
 <p>Lets find out what we can learn from this data set using <code class="docutils literal notranslate"><span class="pre">HNet</span></code>.</p>
@@ -989,7 +899,7 @@ It seems that football is not so complicated after all ;)</p>
 </dd>
 </dl>
 </td>
-<td><p>[‘<a href="#id3"><span class="problematic" id="id4">workclass_</span></a> ?’, ‘<a href="#id5"><span class="problematic" id="id6">education_</span></a> 10th’, ‘<a href="#id7"><span class="problematic" id="id8">occupation_</span></a> ?’, ‘<a href="#id9"><span class="problematic" id="id10">occupation_</span></a> Craft-repair’, ‘<a href="#id11"><span class="problematic" id="id12">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id13"><span class="problematic" id="id14">occupation_</span></a> Machine-op-inspct’, ‘<a href="#id15"><span class="problematic" id="id16">occupation_</span></a> Other-service’, ‘<a href="#id17"><span class="problematic" id="id18">occupation_</span></a> Transport-moving’, ‘<a href="#id19"><span class="problematic" id="id20">relationship_</span></a> Own-child’, ‘<a href="#id21"><span class="problematic" id="id22">race_</span></a> Black’, ‘<a href="#id23"><span class="problematic" id="id24">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’]</p></td>
+<td><p>[’<a href="#id3"><span class="problematic" id="id4">workclass_</span></a> ?’, ‘<a href="#id5"><span class="problematic" id="id6">education_</span></a> 10th’, ‘<a href="#id7"><span class="problematic" id="id8">occupation_</span></a> ?’, ‘<a href="#id9"><span class="problematic" id="id10">occupation_</span></a> Craft-repair’, ‘<a href="#id11"><span class="problematic" id="id12">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id13"><span class="problematic" id="id14">occupation_</span></a> Machine-op-inspct’, ‘<a href="#id15"><span class="problematic" id="id16">occupation_</span></a> Other-service’, ‘<a href="#id17"><span class="problematic" id="id18">occupation_</span></a> Transport-moving’, ‘<a href="#id19"><span class="problematic" id="id20">relationship_</span></a> Own-child’, ‘<a href="#id21"><span class="problematic" id="id22">race_</span></a> Black’, ‘<a href="#id23"><span class="problematic" id="id24">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’]</p></td>
 <td><p>education-num_6</p></td>
 <td><p>0</p></td>
 </tr>
@@ -1000,7 +910,7 @@ It seems that football is not so complicated after all ;)</p>
 </dd>
 </dl>
 </td>
-<td><p>[‘<a href="#id25"><span class="problematic" id="id26">workclass_</span></a> ?’, ‘<a href="#id27"><span class="problematic" id="id28">workclass_</span></a> Private’, ‘<a href="#id29"><span class="problematic" id="id30">education_</span></a> 11th’, ‘<a href="#id31"><span class="problematic" id="id32">marital-status_</span></a> Never-married’, ‘<a href="#id33"><span class="problematic" id="id34">occupation_</span></a> ?’, ‘<a href="#id35"><span class="problematic" id="id36">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id37"><span class="problematic" id="id38">occupation_</span></a> Other-service’, ‘<a href="#id39"><span class="problematic" id="id40">occupation_</span></a> Transport-moving’, ‘<a href="#id41"><span class="problematic" id="id42">relationship_</span></a> Own-child’, ‘<a href="#id43"><span class="problematic" id="id44">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’, ‘age_low_28’]</p></td>
+<td><p>[’<a href="#id25"><span class="problematic" id="id26">workclass_</span></a> ?’, ‘<a href="#id27"><span class="problematic" id="id28">workclass_</span></a> Private’, ‘<a href="#id29"><span class="problematic" id="id30">education_</span></a> 11th’, ‘<a href="#id31"><span class="problematic" id="id32">marital-status_</span></a> Never-married’, ‘<a href="#id33"><span class="problematic" id="id34">occupation_</span></a> ?’, ‘<a href="#id35"><span class="problematic" id="id36">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id37"><span class="problematic" id="id38">occupation_</span></a> Other-service’, ‘<a href="#id39"><span class="problematic" id="id40">occupation_</span></a> Transport-moving’, ‘<a href="#id41"><span class="problematic" id="id42">relationship_</span></a> Own-child’, ‘<a href="#id43"><span class="problematic" id="id44">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’, ‘age_low_28’]</p></td>
 <td><p>education-num_7</p></td>
 <td><p>0</p></td>
 </tr>
@@ -1010,7 +920,7 @@ It seems that football is not so complicated after all ;)</p>
 </dd>
 </dl>
 </td>
-<td><p>[‘<a href="#id45"><span class="problematic" id="id46">education_</span></a> 12th’, ‘<a href="#id47"><span class="problematic" id="id48">marital-status_</span></a> Never-married’, ‘<a href="#id49"><span class="problematic" id="id50">occupation_</span></a> Other-service’, ‘<a href="#id51"><span class="problematic" id="id52">relationship_</span></a> Own-child’, ‘<a href="#id53"><span class="problematic" id="id54">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’, ‘age_low_28’]</p></td>
+<td><p>[’<a href="#id45"><span class="problematic" id="id46">education_</span></a> 12th’, ‘<a href="#id47"><span class="problematic" id="id48">marital-status_</span></a> Never-married’, ‘<a href="#id49"><span class="problematic" id="id50">occupation_</span></a> Other-service’, ‘<a href="#id51"><span class="problematic" id="id52">relationship_</span></a> Own-child’, ‘<a href="#id53"><span class="problematic" id="id54">earnings_</span></a> &lt;=50K’, ‘hours-per-week_low_40’, ‘age_low_28’]</p></td>
 <td><p>education-num_8</p></td>
 <td><p>0</p></td>
 </tr>
@@ -1022,7 +932,7 @@ It seems that football is not so complicated after all ;)</p>
 </dd>
 </dl>
 </td>
-<td><p>[‘<a href="#id55"><span class="problematic" id="id56">workclass_</span></a> Private’, ‘<a href="#id57"><span class="problematic" id="id58">education_</span></a> HS-grad’, ‘<a href="#id59"><span class="problematic" id="id60">marital-status_</span></a> Divorced’, ‘<a href="#id61"><span class="problematic" id="id62">marital-status_</span></a> Separated’, ‘<a href="#id63"><span class="problematic" id="id64">marital-status_</span></a> Widowed’, ‘<a href="#id65"><span class="problematic" id="id66">occupation_</span></a> Adm-clerical’, ‘<a href="#id67"><span class="problematic" id="id68">occupation_</span></a> Craft-repair’, ‘<a href="#id69"><span class="problematic" id="id70">occupation_</span></a> Farming-fishing’, ‘<a href="#id71"><span class="problematic" id="id72">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id73"><span class="problematic" id="id74">occupation_</span></a> Machine-op-inspct’, ‘<a href="#id75"><span class="problematic" id="id76">occupation_</span></a> Other-service’, ‘<a href="#id77"><span class="problematic" id="id78">occupation_</span></a> Transport-moving’, ‘<a href="#id79"><span class="problematic" id="id80">relationship_</span></a> Other-relative’, ‘<a href="#id81"><span class="problematic" id="id82">relationship_</span></a> Unmarried’, ‘<a href="#id83"><span class="problematic" id="id84">race_</span></a> Black’, ‘<a href="#id85"><span class="problematic" id="id86">native-country_</span></a> United-States’, ‘<a href="#id87"><span class="problematic" id="id88">earnings_</span></a> &lt;=50K’]</p></td>
+<td><p>[’<a href="#id55"><span class="problematic" id="id56">workclass_</span></a> Private’, ‘<a href="#id57"><span class="problematic" id="id58">education_</span></a> HS-grad’, ‘<a href="#id59"><span class="problematic" id="id60">marital-status_</span></a> Divorced’, ‘<a href="#id61"><span class="problematic" id="id62">marital-status_</span></a> Separated’, ‘<a href="#id63"><span class="problematic" id="id64">marital-status_</span></a> Widowed’, ‘<a href="#id65"><span class="problematic" id="id66">occupation_</span></a> Adm-clerical’, ‘<a href="#id67"><span class="problematic" id="id68">occupation_</span></a> Craft-repair’, ‘<a href="#id69"><span class="problematic" id="id70">occupation_</span></a> Farming-fishing’, ‘<a href="#id71"><span class="problematic" id="id72">occupation_</span></a> Handlers-cleaners’, ‘<a href="#id73"><span class="problematic" id="id74">occupation_</span></a> Machine-op-inspct’, ‘<a href="#id75"><span class="problematic" id="id76">occupation_</span></a> Other-service’, ‘<a href="#id77"><span class="problematic" id="id78">occupation_</span></a> Transport-moving’, ‘<a href="#id79"><span class="problematic" id="id80">relationship_</span></a> Other-relative’, ‘<a href="#id81"><span class="problematic" id="id82">relationship_</span></a> Unmarried’, ‘<a href="#id83"><span class="problematic" id="id84">race_</span></a> Black’, ‘<a href="#id85"><span class="problematic" id="id86">native-country_</span></a> United-States’, ‘<a href="#id87"><span class="problematic" id="id88">earnings_</span></a> &lt;=50K’]</p></td>
 <td><p>education-num_9</p></td>
 <td><p>0</p></td>
 </tr>
@@ -1033,7 +943,7 @@ It seems that football is not so complicated after all ;)</p>
 </dd>
 </dl>
 </td>
-<td><p>[‘<a href="#id89"><span class="problematic" id="id90">workclass_</span></a> Local-gov’, ‘<a href="#id91"><span class="problematic" id="id92">education_</span></a> Assoc-acdm’, ‘<a href="#id93"><span class="problematic" id="id94">education_</span></a> HS-grad’, ‘education-num_12’, ‘education-num_9’, ‘<a href="#id95"><span class="problematic" id="id96">occupation_</span></a> Adm-clerical’, ‘<a href="#id97"><span class="problematic" id="id98">relationship_</span></a> Not-in-family’, ‘<a href="#id99"><span class="problematic" id="id100">relationship_</span></a> Unmarried’, ‘<a href="#id101"><span class="problematic" id="id102">sex_</span></a> Female’, ‘<a href="#id103"><span class="problematic" id="id104">native-country_</span></a> United-States’, ‘<a href="#id105"><span class="problematic" id="id106">earnings_</span></a> &lt;=50K’, ‘age_low_42’]</p></td>
+<td><p>[’<a href="#id89"><span class="problematic" id="id90">workclass_</span></a> Local-gov’, ‘<a href="#id91"><span class="problematic" id="id92">education_</span></a> Assoc-acdm’, ‘<a href="#id93"><span class="problematic" id="id94">education_</span></a> HS-grad’, ‘education-num_12’, ‘education-num_9’, ‘<a href="#id95"><span class="problematic" id="id96">occupation_</span></a> Adm-clerical’, ‘<a href="#id97"><span class="problematic" id="id98">relationship_</span></a> Not-in-family’, ‘<a href="#id99"><span class="problematic" id="id100">relationship_</span></a> Unmarried’, ‘<a href="#id101"><span class="problematic" id="id102">sex_</span></a> Female’, ‘<a href="#id103"><span class="problematic" id="id104">native-country_</span></a> United-States’, ‘<a href="#id105"><span class="problematic" id="id106">earnings_</span></a> &lt;=50K’, ‘age_low_42’]</p></td>
 <td><p><a href="#id107"><span class="problematic" id="id108">marital-status_</span></a> Divorced</p></td>
 <td><p>0</p></td>
 </tr>
@@ -1045,9 +955,9 @@ It seems that football is not so complicated after all ;)</p>
 <span class="c1"># G = hn.d3graph(min_edges=2, threshold=100)</span>
 </pre></div>
 </div>
-<iframe src="https://erdogant.github.io/docs/d3graph/income/" height="600px" width="100%", frameBorder="0"></iframe></div>
-<div class="section" id="cluster-enrichment">
-<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline">¶</a></h2>
+<iframe src="https://erdogant.github.io/docs/d3graph/income/" height="600px" width="100%", frameBorder="0"></iframe></section>
+<section id="cluster-enrichment">
+<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline"></a></h2>
 <p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
 In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For cluster evaluation</span>
@@ -1159,7 +1069,7 @@ In many use-cases, your scatterplot would not be colored because you do not know
 </pre></div>
 </div>
 <table class="docutils align-center" id="id1">
-<caption><span class="caption-text">tSNE scatter plot of Cancer patients.</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">tSNE scatter plot of Cancer patients.</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1592,7 +1502,7 @@ Note that the target labels in <em>y</em> can be significantly enriched more the
 </pre></div>
 </div>
 <table class="docutils align-center" id="id2">
-<caption><span class="caption-text">Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1604,55 +1514,38 @@ Note that the target labels in <em>y</em> can be significantly enriched more the
 </tbody>
 </table>
 <p>It can bee seen that the most significantly enriched cancer labels for the clusters do represent the true labels very well.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Coding%20quality.html" class="btn btn-neutral float-right" title="Coding quality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Coding%20quality.html" class="btn btn-neutral float-right" title="Coding quality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Erdogan Taskesen.
-
-    </p>
+    <p>&#169; Copyright 2020, Erdogan Taskesen.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

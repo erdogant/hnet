@@ -1,73 +1,35 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Import datasets &mdash; hnet hnet documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Pre-processing" href="Methods.html" />
     <link rel="prev" title="Quickstart" href="Installation.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> hnet
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,18 +37,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Background</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Abstract.html">Abstract</a></li>
@@ -137,74 +88,33 @@
 <li class="toctree-l1"><a class="reference internal" href="arXiv.html">arXiv</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">hnet</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Import datasets</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/input_output.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <hr class="docutils" id="code-directive" />
-<div class="section" id="import-datasets">
-<h1>Import datasets<a class="headerlink" href="#import-datasets" title="Permalink to this headline">¶</a></h1>
+<section id="import-datasets">
+<h1>Import datasets<a class="headerlink" href="#import-datasets" title="Permalink to this headline"></a></h1>
 <p>HNet learns the association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.</p>
 <p>We decided to use the DataFrame of <code class="docutils literal notranslate"><span class="pre">pandas</span></code> as the input data type for <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 The columns represent the variables or features containing continues/categorical values. The rows are the samples.</p>
@@ -331,8 +241,8 @@ The columns represent the variables or features containing continues/categorical
 </tr>
 </tbody>
 </table>
-<div class="section" id="import-example-datasets">
-<h2>Import example datasets<a class="headerlink" href="#import-example-datasets" title="Permalink to this headline">¶</a></h2>
+<section id="import-example-datasets">
+<h2>Import example datasets<a class="headerlink" href="#import-example-datasets" title="Permalink to this headline"></a></h2>
 <p>Importing an example data set can be performed using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code>. This function provides some example datasets such as <strong>sprinkler</strong>, <strong>titanic</strong>, <strong>student</strong>.
 The titanic dataset is depiced above and the spinkler below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
@@ -583,18 +493,18 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="import-from-csv">
-<h2>Import from csv<a class="headerlink" href="#import-from-csv" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="import-from-csv">
+<h2>Import from csv<a class="headerlink" href="#import-from-csv" title="Permalink to this headline"></a></h2>
 <p>Importing data from a csv file can be performed using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./pathname/to/file.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="import-from-url">
-<h2>Import from url<a class="headerlink" href="#import-from-url" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="import-from-url">
+<h2>Import from url<a class="headerlink" href="#import-from-url" title="Permalink to this headline"></a></h2>
 <p>If your dataset is located on a particular website, it is possible to directly download the dataset.
 In the example below, we will download a dataset from the archives of [UCI](<a class="reference external" href="https://archive.ics.uci.edu/ml/">https://archive.ics.uci.edu/ml/</a>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import hnet</span>
@@ -613,9 +523,9 @@ In the example below, we will download a dataset from the archives of [UCI](<a c
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="import-from-sklearn">
-<h2>Import from sklearn<a class="headerlink" href="#import-from-sklearn" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="import-from-sklearn">
+<h2>Import from sklearn<a class="headerlink" href="#import-from-sklearn" title="Permalink to this headline"></a></h2>
 <p>Various example datasets are also present in <code class="docutils literal notranslate"><span class="pre">sklean</span></code>.
 See below a demonstration how to import and use these in <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 However, datasets should contain at least 1 catagorical value. Datasets containing only continues values should follow a different method, perhaps <code class="docutils literal notranslate"><span class="pre">t-SNE</span></code>, <code class="docutils literal notranslate"><span class="pre">SVD</span></code>, <code class="docutils literal notranslate"><span class="pre">UMAP</span></code>.</p>
@@ -632,10 +542,10 @@ However, datasets should contain at least 1 catagorical value. Datasets containi
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;feature_names&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="output-variables">
-<h1>Output variables<a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h1>
+</section>
+</section>
+<section id="output-variables">
+<h1>Output variables<a class="headerlink" href="#output-variables" title="Permalink to this headline"></a></h1>
 <p>There are many output parameters provided by <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 It all starts with the initialization:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load library</span>
@@ -656,54 +566,37 @@ The association_learning outputs various output variables in a dictionary.</p>
 <span class="c1"># dict_keys([&#39;simmatP&#39;, &#39;simmatLogP&#39;, &#39;labx&#39;, &#39;dtypes&#39;, &#39;counts&#39;, &#39;rules&#39;])</span>
 </pre></div>
 </div>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Methods.html" class="btn btn-neutral float-right" title="Pre-processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Installation.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Methods.html" class="btn btn-neutral float-right" title="Pre-processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Erdogan Taskesen.
-
-    </p>
+    <p>&#169; Copyright 2020, Erdogan Taskesen.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

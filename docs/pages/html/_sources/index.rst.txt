@@ -1,8 +1,6 @@
 HNet documentation!
 ========================
 
-`Read my blog about HNet at Medium <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
-
 *-HNet Graphical Hypergeometric Networks-*
 
 Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
@@ -17,6 +15,10 @@ HNet can be used for all kind of datasets that contain features such as categori
         1. Explore the complex associations between your variables.
         2. Explain your clusters by enrichment of the meta-data.
         3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
+
+
+.. tip::
+	`Medium blog: HNet <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
 
 
 Content
@@ -104,3 +106,8 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. raw:: html
+
+	<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>

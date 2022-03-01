@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; hnet hnet documentation</title>
+  <title>Python Module Index &mdash; hnet hnet documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -19,8 +18,9 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Import datasets" href="input_output.html" />
-    <link rel="prev" title="Abstract" href="Abstract.html" /> 
+ 
+
+
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,9 +44,9 @@
 <li class="toctree-l1"><a class="reference internal" href="Abstract.html#schematic-overview">Schematic overview</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html#installation">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Input/output</span></p>
 <ul>
@@ -96,9 +96,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Quickstart</li>
+      <li>Python Module Index</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -106,62 +105,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <hr class="docutils" id="code-directive" />
-<section id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h1>
-<p>Installing <code class="docutils literal notranslate"><span class="pre">hnet</span></code></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install hnet
-</pre></div>
-</div>
-<p>A quick example how to learn the association on a given dataset.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load library</span>
-<span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
-<span class="c1"># Import library with default settings</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
+   <h1>Python Module Index</h1>
 
-<span class="c1"># Import data:</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+   <div class="modindex-jumpbox">
+   <a href="#cap-h"><strong>h</strong></a>
+   </div>
 
-<span class="c1"># Learn association on the data</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># Plot dynamic graph</span>
-<span class="n">G_dynamic</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
-
-<span class="c1"># Plot static graph</span>
-<span class="n">G_static</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-<span class="c1"># Plot heatmap</span>
-<span class="n">P_heatmap</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
-<p><strong>Create environment</strong></p>
-<p>Example how to install <code class="docutils literal notranslate"><span class="pre">hnet</span></code> via <code class="docutils literal notranslate"><span class="pre">pip</span></code> in an isolated Python environment:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">env_hnet</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">env_hnet</span>
-</pre></div>
-</div>
-<p>The installation of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> from pypi:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install hnet</span>
-</pre></div>
-</div>
-<p>Install latest beta version from github source:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install git+https://github.com/erdogant/hnet</span>
-</pre></div>
-</div>
-</section>
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-h"><td></td><td>
+       <strong>h</strong></td><td></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
+       <td>
+       <code class="xref">hnet</code></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="hnet.hnet.html#module-hnet.adjmat_vec"><code class="xref">hnet.adjmat_vec</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="hnet.hnet.html#module-hnet.hnet"><code class="xref">hnet.hnet</code></a></td><td>
+       <em></em></td></tr>
+   </table>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Abstract.html" class="btn btn-neutral float-left" title="Abstract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="input_output.html" class="btn btn-neutral float-right" title="Import datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

@@ -6,20 +6,20 @@ Blog
 '''''''''''''''''''''
 
 .. tip::
-	`Read the usage of **HNet** at **Medium** <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
+	`Read the usage of HNet at Medium <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
 
 Article
 '''''''''''''''''''''
 
 .. note::
-	`Read all the technical details of **HNet** at **arXiv** <https://arxiv.org/abs/2005.04679>`_
+	`Read all the technical details of HNet at arXiv <https://arxiv.org/abs/2005.04679>`_
 
 
 Github
 '''''''''''''''''''''
 
 .. note::
-	`Source code of HNet can be found at **Github** <https://github.com/erdogant/hnet/>`_
+	`Source code of HNet can be found at Github <https://github.com/erdogant/hnet/>`_
 
 
 
@@ -27,8 +27,8 @@ Sponsor this project
 '''''''''''''''''''''
 
 .. note::
-	If you like this project, **Star** this repo at the github page and become a **sponsor**!
-	Read more why this is important on my sponsor page. The **sponsor button** will direct you to the sponsor github page.
+	If you like this project, Star this repo at the github page and become a sponsor!
+	Read more why this is important on my sponsor page. The sponsor button will direct you to the sponsor github page.
 
 .. raw:: html
 

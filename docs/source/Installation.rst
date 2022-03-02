@@ -59,9 +59,12 @@ The installation of ``hnet`` from pypi:
     pip install hnet
 
 
-Install latest beta version from github source:
 
-.. code-block:: console
+.. raw:: html
 
-    pip install git+https://github.com/erdogant/hnet
+	<hr>
+	<center>
+		<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
+	</center>
+	<hr>
 

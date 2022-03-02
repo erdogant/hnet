@@ -69,36 +69,38 @@ Content
 
 .. toctree::
   :maxdepth: 1
-  :caption: Code Documentation
+  :caption: Documentation
 
+  Blog
   Coding quality
   hnet.hnet
-  arXiv
+
+* :ref:`genindex`
 
 
 
-Code and paper
+Source code and issue tracker
 ------------------------------
 
-Please cite ``hnet`` in your publications if this is useful for your research.
+`Github hnet <https://github.com/erdogant/hnet/>`_.
+Please report bugs, issues and feature extensions there.
 
-* arXiv: `arXiv <https://arxiv.org/abs/2005.04679>`_
-* Paper: `Paper <https://arxiv.org/pdf/2005.04679>`_
-* Github: `erdogant/hnet <https://github.com/erdogant/hnet/>`_
-* Please report bugs, issues and feature extensions on the github page.
 
-Here is the BibTeX entry:
+Citing *hnet*
+----------------
 
-.. code-block:: python
+The bibtex can be found in the right side menu at the `github page <https://github.com/erdogant/hnet/>`_.
 
-	@misc{taskesen2020hnet,
-	    title={HNet: Graphical Hypergeometric Networks},
-	    author={Erdogan Taskesen},
-	    year={2020},
-	    eprint={2005.04679},
-	    archivePrefix={arXiv},
-	    primaryClass={cs.LG}
-	}
+
+Sponsor this project
+------------------------------
+
+If you like this project, **star** this repo and become a **sponsor**!
+Read more why this is important on my sponsor page!
+
+.. raw:: html
+
+	<iframe src="https://github.com/sponsors/erdogant/button" title="Sponsor erdogant" height="35" width="116" style="border: 0;"></iframe>
 
 
 Indices and tables
@@ -111,4 +113,9 @@ Indices and tables
 
 .. raw:: html
 
-	<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
+	<hr>
+	<center>
+		<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
+	</center>
+	<hr>
+

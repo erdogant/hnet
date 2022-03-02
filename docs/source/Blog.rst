@@ -22,6 +22,15 @@ Github
 	`Source code of HNet can be found at Github <https://github.com/erdogant/hnet/>`_
 
 
+Colab Notebook
+''''''''''''''''''''''''''''''''''''''''''
+
+.. note::
+	Experiment with HNet associations using the `Colab notebook`_.
+
+.. _Colab notebook: https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb
+
+
 
 Sponsor this project
 '''''''''''''''''''''

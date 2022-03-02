@@ -4,7 +4,7 @@ HNet documentation!
 *-HNet Graphical Hypergeometric Networks-*
 
 .. tip::
-	`Medium blog: HNet <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
+	`Read the details and usage in this blog! <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
 
 
 Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.

@@ -139,22 +139,23 @@ With the summarize functionality, the results will be summarized towards categor
 
 * [Example: Feature importance](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance)
 
-<p align="center">
+<p align="left">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_1.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_2.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_3.png" width="600" />
 </p>
 
+#
 
 
 #### Performance
 
-<p align="center">
+<p align="left">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
 </p>
 
 
-
+<hr>
 
 ### Contribute
 * All kinds of contributions are welcome!

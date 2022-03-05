@@ -556,16 +556,19 @@ Feature Importance
 
 .. |FUC4| image:: ../figs/other/feat_imp_1.png
 .. |FUC5| image:: ../figs/other/feat_imp_2.png
-.. |FUC6| image:: ../figs/other/feat_imp_#.png
+.. |FUC6| image:: ../figs/other/feat_imp_3.png
 
 
 .. table:: Summarize datasets.
    :align: center
 
-   +---------+---------+---------+
-   | |FUC4|  | |FUC5|  | |FUC6|  |
-   +---------+---------+---------+
-
+   +---------+
+   | |FUC4|  |
+   +---------+
+   | |FUC5|  |
+   +---------+
+   | |FUC6|  |
+   +---------+
 
 
 Summarize results

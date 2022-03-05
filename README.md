@@ -57,7 +57,7 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 
 ## Method overview
 
-<p align="center">
+<p align="left">
   <a href="https://erdogant.github.io/hnet/pages/html/index.html">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="600" />
   </a>
@@ -105,7 +105,7 @@ print(df)
 
 ##### [Example: Learn association learning on the titanic dataset](https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset)
 
-<p align="center">
+<p align="left">
   <a href="https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset">
      <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig4.png" width="900" />
   </a>

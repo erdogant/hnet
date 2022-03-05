@@ -97,8 +97,6 @@ print(df)
 
 ##### [Example: Learn association learning on the titanic dataset](https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset)
 
-
-
 <p align="center">
   <a href="https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset">
      <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig4.png" width="900" />
@@ -110,13 +108,9 @@ print(df)
 <link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
 
-# 
-
-* [Example: Learn association learning on the titanic dataset](https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset)
-
 #
 
-* [Example: Summarize results](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#summarize-results)
+##### [Example: Summarize results](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#summarize-results)
 
 Networks can become giant hairballs and heatmaps unreadable. You may want to see the general associations between the categories, instead of the label-associations.
 With the summarize functionality, the results will be summarized towards categories.
@@ -137,7 +131,7 @@ With the summarize functionality, the results will be summarized towards categor
 
 #
 
-* [Example: Feature importance](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance)
+##### [Example: Feature importance](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance)
 
 <p align="left">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_1.png" width="600" />

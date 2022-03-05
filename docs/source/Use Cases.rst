@@ -545,6 +545,28 @@ Create interactive heatmap.
    <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1100px" width="1000px", frameBorder="0"></iframe>
 
 
+Feature Importance
+*******************
+
+.. code-block:: python
+
+	# Plot feature importance
+	hn.plot_feat_importance(marker_size=50)
+
+
+.. |FUC4| image:: ../figs/other/feat_imp_1.png
+.. |FUC5| image:: ../figs/other/feat_imp_2.png
+.. |FUC6| image:: ../figs/other/feat_imp_#.png
+
+
+.. table:: Summarize datasets.
+   :align: center
+
+   +---------+---------+---------+
+   | |FUC4|  | |FUC5|  | |FUC6|  |
+   +---------+---------+---------+
+
+
 
 Summarize results
 *******************
@@ -581,7 +603,7 @@ With the summarize functionality, the results will be summarized towards categor
    :align: center
 
    +---------+
-   | |fig1|  |
+   | |FUC1|  |
    +---------+
 
 
@@ -593,7 +615,7 @@ With the summarize functionality, the results will be summarized towards categor
    :align: center
 
    +---------+---------+
-   | |fig1|  | |fig2|  |
+   | |FUC2|  | |FUC3|  |
    +---------+---------+
 
 

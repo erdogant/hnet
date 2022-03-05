@@ -56,8 +56,11 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 * Article: https://arxiv.org/abs/2005.04679
 
 ## Method overview
+
 <p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="900" />
+  <a href="https://erdogant.github.io/hnet/pages/html/index.html">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="600" />
+  </a>
 </p>
 
 ## Installation
@@ -154,7 +157,7 @@ With the summarize functionality, the results will be summarized towards categor
 
 <p align="left">
   <a href="https://erdogant.github.io/hnet/pages/html/index.html">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="600" />
   </a>
 </p>
 

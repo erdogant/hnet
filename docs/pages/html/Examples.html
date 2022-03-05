@@ -74,21 +74,33 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#sprinkler-dataset">Sprinkler dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#titanic-dataset">Titanic dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#heatmap-d3-javascript">Heatmap d3-javascript</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#black-and-white-listing">black and white listing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sprinkler-dataset">Sprinkler dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-network">Interactive network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cluster-enrichment">Cluster enrichment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cancer-dataset">Cancer dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tsne-scatterplot">tSNE scatterplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compute-associations">Compute associations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-associations-with-categories">Cluster associations with categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#color-on-significantly-associated-catagories">Color on significantly associated catagories</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Use%20Cases.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use%20Cases.html#cancer-dataset">Cancer dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use%20Cases.html#fifa-dataset">Fifa dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use%20Cases.html#census-income-dataset">Census Income dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Use%20Cases.html#titanic-dataset">Titanic dataset</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Blog.html">Blog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Blog.html#article">Article</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Blog.html#github">Github</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Blog.html#colab-notebook">Colab Notebook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Blog.html#sponsor-this-project">Sponsor this project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#sponsor">Sponsor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Coding%20quality.html">Coding quality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
 </ul>
@@ -119,8 +131,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <hr class="docutils" id="code-directive" />
-<section id="examples">
+  <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h1>
 <p>Lets load some datasets using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code> and demonstrate the usage of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in learning Associations.</p>
 <section id="sprinkler-dataset">
@@ -139,144 +150,588 @@
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Network output</strong></p>
+<section id="interactive-network">
+<h3>Interactive network<a class="headerlink" href="#interactive-network" title="Permalink to this headline"></a></h3>
 <iframe src="https://erdogant.github.io/docs/d3graph/sprinkler_example/index.html" height="500px" width="1000px", frameBorder="0"></iframe></section>
-<section id="titanic-dataset">
-<h2>Titanic dataset<a class="headerlink" href="#titanic-dataset" title="Permalink to this headline"></a></h2>
-<p>The titanic data set contains a data structure that is often seen in real use cases (i.e., the presence of categorical, boolean, and continues variables per sample) which is therefore ideal to demonstrate the steps of <code class="docutils literal notranslate"><span class="pre">hnet</span></code>, and the interpretability. The first step is the typing of the 12 input features, followed by one-hot encoding. This resulted in a total of 2634 one hot encoded features for which only 18 features had the minimum required of <cite>y_min=10</cite> samples.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
-
+</section>
+<section id="cluster-enrichment">
+<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline"></a></h2>
+<p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
+In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For cluster evaluation</span>
+pip install sklearn
+<span class="c1"># For easy plotting</span>
+pip install scatterd
+</pre></div>
+</div>
+<section id="cancer-dataset">
+<h3>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
-
-<span class="c1"># Learn the relationships</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># Generate the interactive graph</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;cancer&#39;</span><span class="p">)</span>
+<span class="c1"># Print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
-<p><strong>Output looks as following</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># [DTYPES] Auto detecting dtypes</span>
-<span class="c1"># [DTYPES] [PassengerId] &gt; [force]-&gt;[num] [891]</span>
-<span class="c1"># [DTYPES] [Survived]    &gt; [int]  -&gt;[cat] [2]</span>
-<span class="c1"># [DTYPES] [Pclass]      &gt; [int]  -&gt;[cat] [3]</span>
-<span class="c1"># [DTYPES] [Name]        &gt; [obj]  -&gt;[cat] [891]</span>
-<span class="c1"># [DTYPES] [Sex]         &gt; [obj]  -&gt;[cat] [2]</span>
-<span class="c1"># [DTYPES] [Age]         &gt; [float]-&gt;[num] [88]</span>
-<span class="c1"># [DTYPES] [SibSp]       &gt; [int]  -&gt;[cat] [7]</span>
-<span class="c1"># [DTYPES] [Parch]       &gt; [int]  -&gt;[cat] [7]</span>
-<span class="c1"># [DTYPES] [Ticket]      &gt; [obj]  -&gt;[cat] [681]</span>
-<span class="c1"># [DTYPES] [Fare]        &gt; [float]-&gt;[num] [248]</span>
-<span class="c1"># [DTYPES] [Cabin]       &gt; [obj]  -&gt;[cat] [147]</span>
-<span class="c1"># [DTYPES] [Embarked]    &gt; [obj]  -&gt;[cat] [3]</span>
-<span class="c1"># [DTYPES] Setting dtypes in dataframe</span>
-<span class="c1">#</span>
-<span class="c1"># [DF2ONEHOT] Working on PassengerId</span>
-<span class="c1"># [DF2ONEHOT] Working on Survived.....[2]</span>
-<span class="c1"># [DF2ONEHOT] Working on Pclass.....[3]</span>
-<span class="c1"># [DF2ONEHOT] Working on Name.....[891]</span>
-<span class="c1"># [DF2ONEHOT] Working on Sex.....[2]</span>
-<span class="c1"># [DF2ONEHOT] Working on Age</span>
-<span class="c1"># [DF2ONEHOT] Working on SibSp.....[7]</span>
-<span class="c1"># [DF2ONEHOT] Working on Ticket.....[681]</span>
-<span class="c1"># [DF2ONEHOT] Working on Fare</span>
-<span class="c1"># [DF2ONEHOT] Working on Cabin.....[148]</span>
-<span class="c1"># [DF2ONEHOT] Working on Embarked.....[4]</span>
-<span class="c1"># [DF2ONEHOT] Total onehot features: 19</span>
-<span class="c1">#</span>
-<span class="c1"># [HNET] Association learning across [19] features.</span>
-<span class="c1"># [HNET] Multiple test correction using holm</span>
-<span class="c1"># [HNET] Dropping Age</span>
-<span class="c1"># [HNET] Dropping Fare</span>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 8%" />
+<col style="width: 9%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>tsneX</p></th>
+<th class="head"><p>tsneY</p></th>
+<th class="head"><p>age</p></th>
+<th class="head"><p>sex</p></th>
+<th class="head"><p>survival_months</p></th>
+<th class="head"><p>death_indicator</p></th>
+<th class="head"><p>labx</p></th>
+<th class="head"><p>PC1</p></th>
+<th class="head"><p>PC2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>37.2043</p></td>
+<td><p>24.1628</p></td>
+<td><p>58</p></td>
+<td><p>male</p></td>
+<td><p>44.5175</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>49.2335</p></td>
+<td><p>14.4965</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>37.0931</p></td>
+<td><p>23.4236</p></td>
+<td><p>44</p></td>
+<td><p>female</p></td>
+<td><p>55.0965</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>46.328</p></td>
+<td><p>14.4645</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>36.8063</p></td>
+<td><p>23.4449</p></td>
+<td><p>23</p></td>
+<td><p>female</p></td>
+<td><p>63.8029</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>46.5679</p></td>
+<td><p>13.4801</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>38.0679</p></td>
+<td><p>24.4118</p></td>
+<td><p>30</p></td>
+<td><p>male</p></td>
+<td><p>11.9918</p></td>
+<td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>63.6247</p></td>
+<td><p>1.87406</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>36.7912</p></td>
+<td><p>21.7153</p></td>
+<td><p>29</p></td>
+<td><p>female</p></td>
+<td><p>79.77</p></td>
+<td><p>1</p></td>
+<td><p>acc</p></td>
+<td><p>41.7467</p></td>
+<td><p>37.5336</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tsne-scatterplot">
+<h3>tSNE scatterplot<a class="headerlink" href="#tsne-scatterplot" title="Permalink to this headline"></a></h3>
+<p>For demonstration purposes, we make a scatter plot with the True cancer labels to show that cancer labels are associated with the clusters.
+In many use-cases, your scatterplot would not be colored because you do not know yet which variables fit best the cluster labels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">scatterd</span> <span class="kn">import</span> <span class="n">scatterd</span>
+<span class="c1"># Make scatter plot</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset with True labels&#39;</span><span class="p">)</span>
+<span class="c1"># Make scatter plot wihtout colors</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Exernal link: <a class="reference external" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">https://erdogant.github.io/docs/d3graph/titanic_example/index.html</a></p>
-<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/index.html" height="1000px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph color on cluster label</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
+<table class="docutils align-center" id="id1">
+<caption><span class="caption-text">tSNE scatter plot of Cancer patients.</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><img alt="fig1" src="_images/cancer_scatter_no_color.png" /></p></td>
+<td><p><img alt="fig2" src="_images/cancer_scatter.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="compute-associations">
+<h3>Compute associations<a class="headerlink" href="#compute-associations" title="Permalink to this headline"></a></h3>
+<p>Step 1 is to compute the cluster labels based on the tSNE coordinates. We readily have these coordinates computed and can be extracted from the dataframe.
+Step 2 is to compute the enrichment of the variables (meta-data) with the cluster labels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+
+<span class="c1"># Determine cluster labels</span>
+<span class="n">dbscan</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">labx</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of detected clusters: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labx</span><span class="p">))))</span>
+<span class="c1"># Number of detected clusters: 22</span>
 </pre></div>
 </div>
-<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">hnet</span>
 
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
+<span class="c1"># Enrichment of clusterlabels with the meta-data</span>
+<span class="c1"># results = hnet.enrichment(df[[&#39;age&#39;, &#39;sex&#39;, &#39;survival_months&#39;, &#39;death_indicator&#39;,&#39;labx&#39;]], labx)</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">()</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="n">G_static</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">()</span>
-
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
-
-    <span class="p">[</span><span class="n">scores</span><span class="p">,</span> <span class="n">adjmat</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">compare_networks</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatP&#39;</span><span class="p">],</span> <span class="n">showfig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">adjmat_undirected</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;simmatLogP&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph color on cluster label</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1000px" width="100%", frameBorder="0"></iframe></section>
-<section id="heatmap-d3-javascript">
-<h2>Heatmap d3-javascript<a class="headerlink" href="#heatmap-d3-javascript" title="Permalink to this headline"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive heatmap</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3heatmap</span><span class="p">()</span>
-</pre></div>
-</div>
-<iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe></section>
-<section id="black-and-white-listing">
-<h2>black and white listing<a class="headerlink" href="#black-and-white-listing" title="Permalink to this headline"></a></h2>
-<p>Input variables (column names) can be black or white listed in the model.</p>
-<p><strong>White list example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
-
-<span class="c1"># White list the underneath variables</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
-
-<span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
-
-<span class="c1"># Association learning</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1"># [hnet] &gt;Association learning across [10] categories.</span>
-<span class="c1"># 100%|---------| 10/10 [00:01&lt;00:00,  7.27it/s]</span>
-<span class="c1"># [hnet] &gt;Total number of computations: [171]</span>
+<span class="c1"># [hnet] &gt;Start making fit..</span>
+<span class="c1"># [df2onehot] &gt;Auto detecting dtypes</span>
+<span class="c1"># [df2onehot] &gt;[age]                     &gt; [float] &gt; [num] [74]</span>
+<span class="c1"># [df2onehot] &gt;[sex]                     &gt; [obj]   &gt; [cat] [2]</span>
+<span class="c1"># [df2onehot] &gt;[survival_months] &gt; [force] &gt; [num] [1591]</span>
+<span class="c1"># [df2onehot] &gt;[death_indicator] &gt; [float] &gt; [num] [2]</span>
+<span class="c1"># [df2onehot] &gt;[labx]                    &gt; [obj]   &gt; [cat] [19]</span>
+<span class="c1"># [df2onehot] &gt;</span>
+<span class="c1"># [df2onehot] &gt;Setting dtypes in dataframe</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] age......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [cat] sex......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] survival_months......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [num] death_indicator......................</span>
+<span class="c1"># [hnet] &gt;Analyzing [cat] labx......................</span>
 <span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
-<span class="c1"># [hnet] &gt;Dropping Age</span>
+<span class="c1"># [hnet] &gt;Fin</span>
+
+<span class="c1"># For demonstration purposes I will only do the true cancer label column.</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;labx&#39;</span><span class="p">]],</span> <span class="n">labx</span><span class="p">)</span>
+
+<span class="c1"># Examine the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Black list example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
+</section>
+<section id="cluster-associations-with-categories">
+<h3>Cluster associations with categories<a class="headerlink" href="#cluster-associations-with-categories" title="Permalink to this headline"></a></h3>
+<p>When we look at the results (table below), we see in the first column the <em>category_label</em>. These are the metadata variables of the dataframe <em>df</em> that we gave as an input.
+The second columns: <em>P</em> stands for P-value, which is the computed significance of the catagory_label with the target variable <em>y</em>. In this case, target variable <em>y</em> are are the cluster labels <em>labx</em>.
+A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
+Note that the target labels in <em>y</em> can be significantly enriched more then once. This means that certain <em>y</em> are enriched for multiple variables. This may occur because we may need to better estimate the cluster labels or its a mixed group or something else.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 3%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>category_label</p></th>
+<th class="head"><p>P</p></th>
+<th class="head"><p>logP</p></th>
+<th class="head"><p>overlap_X</p></th>
+<th class="head"><p>popsize_M</p></th>
+<th class="head"><p>nr_succes_pop_n</p></th>
+<th class="head"><p>samplesize_N</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>y</p></th>
+<th class="head"><p>category_name</p></th>
+<th class="head"><p>Padj</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>acc</p></td>
+<td><p>1.27018e-153</p></td>
+<td><p>-352.056</p></td>
+<td><p>71</p></td>
+<td><p>4674</p></td>
+<td><p>77</p></td>
+<td><p>72</p></td>
+<td><p>categorical</p></td>
+<td><p>0</p></td>
+<td><p>labx</p></td>
+<td><p>5.15692e-151</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>dlbc</p></td>
+<td><p>3.22319e-51</p></td>
+<td><p>-116.261</p></td>
+<td><p>24</p></td>
+<td><p>4674</p></td>
+<td><p>27</p></td>
+<td><p>48</p></td>
+<td><p>categorical</p></td>
+<td><p>1</p></td>
+<td><p>labx</p></td>
+<td><p>1.29572e-48</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>kirc</p></td>
+<td><p>4.73559e-219</p></td>
+<td><p>-502.711</p></td>
+<td><p>218</p></td>
+<td><p>4674</p></td>
+<td><p>259</p></td>
+<td><p>398</p></td>
+<td><p>categorical</p></td>
+<td><p>10</p></td>
+<td><p>labx</p></td>
+<td><p>1.94633e-216</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>kirp</p></td>
+<td><p>2.12553e-166</p></td>
+<td><p>-381.475</p></td>
+<td><p>177</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>398</p></td>
+<td><p>categorical</p></td>
+<td><p>10</p></td>
+<td><p>labx</p></td>
+<td><p>8.65091e-164</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>kirc</p></td>
+<td><p>8.16897e-20</p></td>
+<td><p>-43.9514</p></td>
+<td><p>15</p></td>
+<td><p>4674</p></td>
+<td><p>259</p></td>
+<td><p>17</p></td>
+<td><p>categorical</p></td>
+<td><p>11</p></td>
+<td><p>labx</p></td>
+<td><p>3.24308e-17</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>kirp</p></td>
+<td><p>1.26634e-20</p></td>
+<td><p>-45.8156</p></td>
+<td><p>18</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>26</p></td>
+<td><p>categorical</p></td>
+<td><p>12</p></td>
+<td><p>labx</p></td>
+<td><p>5.04005e-18</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>blca</p></td>
+<td><p>5.65247e-217</p></td>
+<td><p>-497.929</p></td>
+<td><p>157</p></td>
+<td><p>4674</p></td>
+<td><p>265</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>13</p></td>
+<td><p>labx</p></td>
+<td><p>2.31751e-214</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>kirp</p></td>
+<td><p>4.18004e-14</p></td>
+<td><p>-30.8059</p></td>
+<td><p>9</p></td>
+<td><p>4674</p></td>
+<td><p>219</p></td>
+<td><p>10</p></td>
+<td><p>categorical</p></td>
+<td><p>14</p></td>
+<td><p>labx</p></td>
+<td><p>1.6553e-11</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>lgg</p></td>
+<td><p>0</p></td>
+<td><p>-1571.11</p></td>
+<td><p>500</p></td>
+<td><p>4674</p></td>
+<td><p>504</p></td>
+<td><p>501</p></td>
+<td><p>categorical</p></td>
+<td><p>15</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>lihc</p></td>
+<td><p>0</p></td>
+<td><p>-841.979</p></td>
+<td><p>220</p></td>
+<td><p>4674</p></td>
+<td><p>231</p></td>
+<td><p>222</p></td>
+<td><p>categorical</p></td>
+<td><p>16</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>luad</p></td>
+<td><p>0</p></td>
+<td><p>-1172.91</p></td>
+<td><p>397</p></td>
+<td><p>4674</p></td>
+<td><p>427</p></td>
+<td><p>419</p></td>
+<td><p>categorical</p></td>
+<td><p>17</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>ov</p></td>
+<td><p>0</p></td>
+<td><p>-963.047</p></td>
+<td><p>256</p></td>
+<td><p>4674</p></td>
+<td><p>262</p></td>
+<td><p>258</p></td>
+<td><p>categorical</p></td>
+<td><p>18</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>brca</p></td>
+<td><p>0</p></td>
+<td><p>-846.29</p></td>
+<td><p>745</p></td>
+<td><p>4674</p></td>
+<td><p>761</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>cesc</p></td>
+<td><p>1.49892e-49</p></td>
+<td><p>-112.422</p></td>
+<td><p>172</p></td>
+<td><p>4674</p></td>
+<td><p>205</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>5.99569e-47</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>hnsc</p></td>
+<td><p>1.9156e-212</p></td>
+<td><p>-487.498</p></td>
+<td><p>463</p></td>
+<td><p>4674</p></td>
+<td><p>474</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>7.83481e-210</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>lusc</p></td>
+<td><p>6.20884e-51</p></td>
+<td><p>-115.606</p></td>
+<td><p>159</p></td>
+<td><p>4674</p></td>
+<td><p>182</p></td>
+<td><p>1653</p></td>
+<td><p>categorical</p></td>
+<td><p>2</p></td>
+<td><p>labx</p></td>
+<td><p>2.48975e-48</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>prad</p></td>
+<td><p>0</p></td>
+<td><p>-1241.55</p></td>
+<td><p>356</p></td>
+<td><p>4674</p></td>
+<td><p>360</p></td>
+<td><p>357</p></td>
+<td><p>categorical</p></td>
+<td><p>20</p></td>
+<td><p>labx</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>laml</p></td>
+<td><p>4.39155e-312</p></td>
+<td><p>-716.927</p></td>
+<td><p>166</p></td>
+<td><p>4674</p></td>
+<td><p>167</p></td>
+<td><p>167</p></td>
+<td><p>categorical</p></td>
+<td><p>3</p></td>
+<td><p>labx</p></td>
+<td><p>1.80932e-309</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>paad</p></td>
+<td><p>2.14906e-54</p></td>
+<td><p>-123.575</p></td>
+<td><p>19</p></td>
+<td><p>4674</p></td>
+<td><p>20</p></td>
+<td><p>21</p></td>
+<td><p>categorical</p></td>
+<td><p>4</p></td>
+<td><p>labx</p></td>
+<td><p>8.6822e-52</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>cesc</p></td>
+<td><p>1.11451e-28</p></td>
+<td><p>-64.364</p></td>
+<td><p>21</p></td>
+<td><p>4674</p></td>
+<td><p>205</p></td>
+<td><p>24</p></td>
+<td><p>categorical</p></td>
+<td><p>5</p></td>
+<td><p>labx</p></td>
+<td><p>4.44688e-26</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>coad</p></td>
+<td><p>1.16815e-193</p></td>
+<td><p>-444.244</p></td>
+<td><p>122</p></td>
+<td><p>4674</p></td>
+<td><p>134</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>6</p></td>
+<td><p>labx</p></td>
+<td><p>4.76605e-191</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>read</p></td>
+<td><p>4.83245e-52</p></td>
+<td><p>-118.159</p></td>
+<td><p>33</p></td>
+<td><p>4674</p></td>
+<td><p>34</p></td>
+<td><p>161</p></td>
+<td><p>categorical</p></td>
+<td><p>6</p></td>
+<td><p>labx</p></td>
+<td><p>1.94748e-49</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>coad</p></td>
+<td><p>3.71058e-13</p></td>
+<td><p>-28.6224</p></td>
+<td><p>7</p></td>
+<td><p>4674</p></td>
+<td><p>134</p></td>
+<td><p>8</p></td>
+<td><p>categorical</p></td>
+<td><p>7</p></td>
+<td><p>labx</p></td>
+<td><p>1.46568e-10</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>kich</p></td>
+<td><p>5.97831e-124</p></td>
+<td><p>-283.732</p></td>
+<td><p>59</p></td>
+<td><p>4674</p></td>
+<td><p>66</p></td>
+<td><p>65</p></td>
+<td><p>categorical</p></td>
+<td><p>8</p></td>
+<td><p>labx</p></td>
+<td><p>2.42122e-121</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>kich</p></td>
+<td><p>1.2301e-06</p></td>
+<td><p>-13.6084</p></td>
+<td><p>3</p></td>
+<td><p>4674</p></td>
+<td><p>66</p></td>
+<td><p>7</p></td>
+<td><p>categorical</p></td>
+<td><p>9</p></td>
+<td><p>labx</p></td>
+<td><p>0.00048466</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="color-on-significantly-associated-catagories">
+<h3>Color on significantly associated catagories<a class="headerlink" href="#color-on-significantly-associated-catagories" title="Permalink to this headline"></a></h3>
+<p>Lets compute for each cluster label <em>y</em>, the most significantly enriched category label.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scatterd</span> <span class="kn">import</span> <span class="n">scatterd</span>
 
-<span class="c1"># Black list the underneath variables</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="c1"># Import</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)[</span><span class="s1">&#39;logP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]</span>
+<span class="n">enriched_label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">labx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
 
-<span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">enriched_label</span> <span class="o">=</span> <span class="n">enriched_label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;category_label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-<span class="c1"># Association learning</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># Scatterplot of the cluster numbers</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labx</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="c1"># [hnet] &gt;Association learning across [7] categories.</span>
-<span class="c1"># 100%|---------| 7/7 [00:11&lt;00:00,  1.62s/it]</span>
-<span class="c1"># [hnet] &gt;Total number of computations: [1182]</span>
-<span class="c1"># [hnet] &gt;Multiple test correction using holm</span>
-<span class="c1"># [hnet] &gt;Dropping Fare</span>
+<span class="c1"># Scatterplot of the significantly enriched cancer labels</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">enriched_label</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Significantly enriched cancer labels&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<table class="docutils align-center" id="id2">
+<caption><span class="caption-text">Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><img alt="fig3" src="_images/cancer_clusters.png" /></p></td>
+<td><p><img alt="fig4" src="_images/cancer_clusters_enriched.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<p>It can bee seen that the most significantly enriched cancer labels for the clusters do represent the true labels very well.</p>
 <hr>
 <center>
         <script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
 </center>
 <hr></section>
+</section>
 </section>
 
 

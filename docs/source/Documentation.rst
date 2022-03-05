@@ -5,7 +5,7 @@
 Blog
 '''''''''''''''''''''
 
-.. tip::
+.. note::
 	`Read the usage of HNet at Medium <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
 
 Article
@@ -32,10 +32,10 @@ Colab Notebook
 
 
 
-Sponsor this project
+Sponsor
 '''''''''''''''''''''
 
-.. note::
+.. tip::
 	If you like this project, Star this repo at the github page and become a sponsor!
 	Read more why this is important on my sponsor page. The sponsor button will direct you to the sponsor github page.
 

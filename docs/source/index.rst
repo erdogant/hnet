@@ -71,7 +71,7 @@ Content
   :maxdepth: 1
   :caption: Documentation
 
-  Blog
+  Documentation
   Coding quality
   hnet.hnet
 

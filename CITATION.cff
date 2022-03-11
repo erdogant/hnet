@@ -17,7 +17,7 @@ keywords:
   - "Association-learning"
 license: "Apache-2.0"
 message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/erdogant/hnet"
+repository-code: "https://erdogant.github.io/hnet"
 title: "HNet: Graphical Hypergeometric Networks"
 version: "1.1.8"
 ...

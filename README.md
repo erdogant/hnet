@@ -56,17 +56,20 @@ HNet overcomes processes raw unstructured data sets, it allows analysis of mixed
 * Article: https://arxiv.org/abs/2005.04679
 
 ## Method overview
-<p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="900" />
+
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/index.html">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig1.png" width="600" />
+  </a>
 </p>
 
 ## Installation
-* Install hnet from PyPI (recommended). Hnet is compatible with Python 3.6+ and runs on Linux, MacOS X and Windows. 
-It is distributed under the Apache 2.0 license.
+* Install hnet from PyPI (recommended).
 
 ```bash
 pip install -U hnet
 ```
+## Examples
 
 - Simple example for the Titanic data set
 
@@ -92,106 +95,81 @@ print(df)
 	# 889          890         1       1  ...  30.0000  C148         C
 	# 890          891         0       3  ...   7.7500   NaN         Q
 
+#
 
-#### Association learning on the titanic dataset.
 
-```python
-from hnet import hnet
-hn = hnet()
-results = hn.association_learning(df)
+##### <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">Play with the interactive Titanic results.</a> 
+<link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
 
-# Plot static graph
-G_static = hn.plot()
+# 
 
-# Plot heatmap
-P_heatmap = hn.heatmap(cluster=True)
+##### [Example: Learn association learning on the titanic dataset](https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset)
 
-# Plot dynamic graph
-hn.d3graph()
-
-# Plot dynamic graph
-hn.d3heatmap()
-
-```
-
-<p align="center">
-  <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset">
      <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig4.png" width="900" />
   </a>
 </p>
 
 
-* <a href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">d3graph Titanic</a> 
-<link rel="import" href="https://erdogant.github.io/docs/d3graph/titanic_example/index.html">
+#
 
-
-#### Summarize results.
+##### [Example: Summarize results](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#summarize-results)
 
 Networks can become giant hairballs and heatmaps unreadable. You may want to see the general associations between the categories, instead of the label-associations.
 With the summarize functionality, the results will be summarized towards categories.
 
-```python
-
-# Import
-from hnet import hnet
-
-# Load example dataset
-df = hnet.import_example('titanic')
-
-# Initialize
-hn = hnet()
-
-# Association learning
-results = hn.association_learning(df)
-
-# Plot heatmap
-hn.heatmap(summarize=True, cluster=True)
-hn.d3heatmap(summarize=True)
-
-# Plot static graph
-hn.plot(summarize=True)
-hn.d3graph(summarize=True, charge=1000)
-
-```
-
-<p align="center">
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#summarize-results">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_heatmap.png" width="300" />
   <a href="https://erdogant.github.io/docs/d3heatmap/d3heatmap.html">
      <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_heatmap.png" width="400" />
   </a>
 </p>
 
-
-<p align="center">
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/Examples.html#titanic-dataset">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_static_graph.png" width="400" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/titanic_summarize_dynamic_graph.png" width="400" />
+  </a>
 </p>
 
 
-#### Feature importance
 
-```python
-# Plot feature importance
-hn.plot_feat_importance(marker_size=50)
-```
-<p align="center">
+
+
+#
+
+##### [Example: Feature importance](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance)
+
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance">
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_1.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_2.png" width="600" />
   <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/other/feat_imp_3.png" width="600" />
+  </a>
 </p>
 
+#
 
 
 #### Performance
 
-<p align="center">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="900" />
+<p align="left">
+  <a href="https://erdogant.github.io/hnet/pages/html/index.html">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/fig3.png" width="600" />
+  </a>
 </p>
 
 
-### Citation
 
-Please cite ``hnet`` in your publications if this is useful for your research! You can find it in the right panel.
+<hr>
+
+### Contribute
+* All kinds of contributions are welcome!
+
+### Citation
+Please cite ``HNet`` in your publications if this is useful for your research. See column right for citation information.
 
 * [arXiv](https://arxiv.org/abs/2005.04679)
 * [Article in pdf](https://arxiv.org/pdf/2005.04679)
@@ -199,7 +177,6 @@ Please cite ``hnet`` in your publications if this is useful for your research! Y
 * [Github](https://github.com/erdogant/hnet)
 
 ### Maintainer
-	Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
-	Contributions are welcome.
-
-	Star it if you like it!
+* Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
+* Contributions are welcome.
+* If you wish to buy me a <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">Coffee</a> for this work, it is very appreciated :)

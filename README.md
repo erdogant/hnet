@@ -14,9 +14,8 @@
 <!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
 
 
-# HNET - Association ruled based networkds using graphical Hypergeometric Networks.
+# HNET - Association ruled based networkd using graphical Hypergeometric Networks.
 
-## 
 **Star this repo if you like it! ⭐️**
 ## 
 

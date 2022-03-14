@@ -1,5 +1,3 @@
-# HNET - Graphical Hypergeometric Networks
-
 [![Python](https://img.shields.io/pypi/pyversions/hnet)](https://img.shields.io/pypi/pyversions/hnet)
 [![PyPI Version](https://img.shields.io/pypi/v/hnet)](https://pypi.org/project/hnet/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/erdogant/hnet/blob/master/LICENSE)
@@ -15,6 +13,8 @@
 [![DOI](https://zenodo.org/badge/226647104.svg)](https://zenodo.org/badge/latestdoi/226647104)
 <!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
 
+
+# HNET - Association ruled based networkds using graphical Hypergeometric Networks.
 
 ## 
 **Star this repo if you like it! ⭐️**

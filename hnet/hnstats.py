@@ -569,7 +569,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):
         if verbose>=2: print('[hnet] >WARNING: Features with y_min needs another round of filtering. Fixing it now..')
-        df_onehot['onehot']=df_onehot['onehot'].loc[:,Iloc]
+        df_onehot['onehot']=df_onehot['onehot'].loc[:, Iloc]
         df_onehot['labx']=df_onehot['labx'][Iloc]
 
     # Some check before proceeding
@@ -608,7 +608,7 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         if np.all(simmatBOOL.columns==simmatBOOL.index.values):
             Iloc = np.logical_or(simmatBOOL.sum(axis=0)>=min_edges, simmatBOOL.sum(axis=1)>=min_edges).values
             if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
-            simmatLogP = simmatLogP.loc[Iloc,Iloc]
+            simmatLogP = simmatLogP.loc[Iloc, Iloc]
             labx = labx[Iloc]
 
     # Filter on white_list
@@ -619,7 +619,7 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         Irow = np.logical_or(Irow, Ilabx)
         Icol = np.logical_or(Icol, Ilabx)
         if verbose>=3: print('[hnet] >Number of variables at input: [%d], and after white listing: [%d]' %(len(Irow), sum(Irow)))
-        simmatLogP = simmatLogP.iloc[Irow,Icol]
+        simmatLogP = simmatLogP.iloc[Irow, Icol]
         labx = labx[Irow]
 
     # Filter on white_list

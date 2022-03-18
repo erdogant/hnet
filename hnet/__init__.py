@@ -38,26 +38,31 @@ Examples
 
 >>> # Structure learning
 >>> out = hn.association_learning(df)
-
+>>>
 >>> # Plot dynamic graphs
 >>> G = hn.d3graph()
 >>> G = hn.d3heatmap()
+>>>
 >>> # Plot static graph
 >>> G = hn.plot()
+>>>
 >>> # Plot heatmap
 >>> hn.heatmap(cluster=True)
+>>>
 >>> # Plot feature importance
 >>> hn.plot_feat_importance()
-
+>>>
 >>> # Examine differences between models
 >>> import hnet
 >>> scores, adjmat = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
 >>> adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+>>>
 
 References
 ----------
 * https://erdogant.github.io/hnet/
 * https://github.com/erdogant/hnet
+* https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
 * https://arxiv.org/abs/2005.04679
 
 """

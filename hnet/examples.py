@@ -13,7 +13,8 @@ hn = hnet()
 df = hn.import_example('grocery')
 results = hn.association_learning(df)
 hn.d3graph()
-hn.d3graph(summarize=False)
+hn.d3graph(summarize=True)
+hn.d3heatmap(summarize=True)
 
 # %%
 from hnet import hnet

@@ -29,21 +29,10 @@ from d3heatmap import d3heatmap as d3
 from d3graph import d3graph as d3graphs
 import warnings
 warnings.filterwarnings("ignore")
-
-# Custom packages
-
-# Local utils
-
-# Known libraries
 label_encoder = LabelEncoder()
 
 
-# Internal
-
-# from functools import lru_cache
-
 # %% Association learning across all variables
-
 class hnet():
     """HNET - Graphical Hypergeometric networks.
 
@@ -820,7 +809,7 @@ class hnet():
         >>> df = hn.import_example('sprinkler')
         >>> hn.association_learning(df)
         >>> hn.combined_rules()
-        >>> print(hn.rules)
+        >>> print(hn.results['rules'])
 
         """
         if simmatP is None:

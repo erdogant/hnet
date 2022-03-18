@@ -10,15 +10,23 @@ import pandas as pd
 # %%
 from hnet import hnet
 hn = hnet()
+df = hn.import_example('grocery')
+results = hn.association_learning(df)
+hn.d3graph()
+hn.d3graph(summarize=False)
+
+# %%
+from hnet import hnet
+hn = hnet()
 df = hn.import_example('sprinkler')
 
 hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
 out1 = hn1.association_learning(df.astype(bool))
+hn1.d3graph()
 
 hn2 = hnet()
 out2 = hn2.association_learning(df.astype(bool))
-
-hn2.d3graph(summarize=True)
+# hn2.d3graph(summarize=True)
 hn2.d3graph()
 
 hn2.d3heatmap(summarize=True)

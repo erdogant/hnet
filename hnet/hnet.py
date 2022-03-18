@@ -849,7 +849,7 @@ class hnet():
         Parameters
         ----------
         data : str
-            Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump', 'retail'
+            Name of datasets: 'sprinkler', 'grocery', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
         url : str
             url link to to dataset.
         verbose : int, (default: 3)
@@ -992,7 +992,7 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
     Parameters
     ----------
     data : str
-        Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump', 'retail'
+        Name of datasets: 'sprinkler', 'grocery', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
     url : str
         url link to to dataset.
     verbose : int, (default: 3)
@@ -1017,8 +1017,9 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
             url='https://erdogant.github.io/datasets/FIFA_2018.zip'
         elif data=='waterpump':
             url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
-        elif data=='retail':
-            url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
+        elif data=='grocery':
+            url='https://erdogant.github.io/datasets/grocery_products_purchase.zip'
+            sep=';'
     else:
         data = wget.filename_from_url(url)
 
@@ -1039,6 +1040,11 @@ def import_example(data='titanic', url=None, sep=',', verbose=3):
     # Import local dataset
     if verbose>=3: print('[hnet] >Import dataset [%s]' %(data))
     df = pd.read_csv(PATH_TO_DATA, sep=sep)
+
+    # Transform data in case of grocery
+    if data=='grocery':
+        df.columns = ['grocery']
+        df = pd.concat([df.drop('grocery', 1), df['grocery'].str.get_dummies(sep=",")], 1).astype(bool)
     # Return
     return df
 

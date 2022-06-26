@@ -85,6 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-web-interface">Online web-interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#sponsor">Sponsor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Coding%20quality.html">Coding quality</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API References</a></li>
@@ -360,7 +361,7 @@ The columns are as following:</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hn</span><span class="o">.</span><span class="n">combined_rules</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -484,7 +485,7 @@ False: All associations across labels</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’, ‘retail’</p></li>
+<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘grocery’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’</p></li>
 <li><p><strong>url</strong> (<em>str</em>) – url link to to dataset.</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>(</em><em>default: 3</em><em>)</em>) – Print message to screen.</p></li>
 </ul>
@@ -612,7 +613,7 @@ False: All associations across labels</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’, ‘retail’</p></li>
+<li><p><strong>data</strong> (<em>str</em>) – Name of datasets: ‘sprinkler’, ‘grocery’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’</p></li>
 <li><p><strong>url</strong> (<em>str</em>) – url link to to dataset.</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>(</em><em>default: 3</em><em>)</em>) – Print message to screen.</p></li>
 </ul>

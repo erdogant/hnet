@@ -22,7 +22,14 @@
 
 ## Blog
 
-[**Read more details and usage about HNet in this blog!**](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
+[**Read more details and usage about HNet in this blog!**](https://erdogant.github.io/hnet/pages/html/Documentation.html#)
+
+## Online Web-interface!
+
+[**Use HNet using a web-interface**](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface)
+
+
+
 
 
 ## Summary

@@ -7,12 +7,29 @@ import numpy as np
 import pandas as pd
 
 
+# %% Titanic case
+from hnet import hnet
+hn = hnet()
+df = hn.import_example('titanic')
+del df['PassengerId']
+del df['Name']
+results_new = hn.association_learning(df, verbose=4)
+
+# STATIC
+hn.heatmap(summarize=False, cluster=False)
+hn.plot(node_color='cluster')
+
+# Feature importance
+hn.plot_feat_importance(marker_size=50)
+
+hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
+hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/', node_color='cluster')
+
 # %%
 from hnet import hnet
 hn = hnet()
 df = hn.import_example('grocery')
 results = hn.association_learning(df)
-hn.d3graph()
 hn.d3graph(summarize=True)
 hn.d3heatmap(summarize=True)
 
@@ -39,23 +56,6 @@ hn2.heatmap(cluster=True)
 
 
 
-# %% Titanic case
-from hnet import hnet
-hn = hnet()
-df = hn.import_example('titanic')
-del df['PassengerId']
-del df['Name']
-results_new = hn.association_learning(df, verbose=4)
-
-# STATIC
-hn.heatmap(summarize=False, cluster=False)
-hn.plot(node_color='cluster')
-
-# Feature importance
-hn.plot_feat_importance(marker_size=50)
-
-hn.d3heatmap('c:/temp/titanic_summarize/')
-hn.d3graph('c:/temp/titanic_summarize_d3graph/')
 
 
 # %% Penguins dataset

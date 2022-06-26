@@ -31,6 +31,15 @@ Colab Notebook
 .. _Colab notebook: https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb
 
 
+Online web-interface
+'''''''''''''''''''''
+
+No installation required for when using the online web-interface!
+
+.. note::
+	`Web-interface <https://rwsdatalab.gitlab.io/public/codebase/dashboards/hnet-dashboard/hnet/>`_
+	`Docs web-interface <https://rwsdatalab.gitlab.io/public/codebase/dashboards/hnet-dashboard/pages//>`_
+
 
 Sponsor
 '''''''''''''''''''''

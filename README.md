@@ -26,7 +26,7 @@
 
 ## Online Web-interface!
 
-[**Use HNet using a web-interface**](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface)
+[**HNet web-interface**](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface)
 
 
 

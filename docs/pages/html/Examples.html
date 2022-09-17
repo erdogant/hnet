@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -96,12 +97,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-web-interface">Online web-interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#sponsor">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-tool">Online-tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#citing">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Coding%20quality.html">Coding quality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
 </ul>
@@ -133,10 +135,10 @@
            <div itemprop="articleBody">
              
   <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h1>
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
 <p>Lets load some datasets using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code> and demonstrate the usage of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in learning Associations.</p>
 <section id="sprinkler-dataset">
-<h2>Sprinkler dataset<a class="headerlink" href="#sprinkler-dataset" title="Permalink to this headline"></a></h2>
+<h2>Sprinkler dataset<a class="headerlink" href="#sprinkler-dataset" title="Permalink to this heading"></a></h2>
 <p>A natural way to study the relation between nodes in a network is to analyse the presence or absence of node-links. The sprinkler data set contains four nodes and therefore ideal to demonstrate the working of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in inferring a network. Links between two nodes of a network can either be undirected or directed (directed edges are indicated with arrows). Notably, a directed edge does imply directionality between the two nodes whereas undirected does not.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
@@ -152,11 +154,11 @@
 </pre></div>
 </div>
 <section id="interactive-network">
-<h3>Interactive network<a class="headerlink" href="#interactive-network" title="Permalink to this headline"></a></h3>
+<h3>Interactive network<a class="headerlink" href="#interactive-network" title="Permalink to this heading"></a></h3>
 <iframe src="https://erdogant.github.io/docs/d3graph/sprinkler_example/index.html" height="500px" width="1000px", frameBorder="0"></iframe></section>
 </section>
 <section id="cluster-enrichment">
-<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this headline"></a></h2>
+<h2>Cluster enrichment<a class="headerlink" href="#cluster-enrichment" title="Permalink to this heading"></a></h2>
 <p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
 In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For cluster evaluation</span>
@@ -166,7 +168,7 @@ pip install scatterd
 </pre></div>
 </div>
 <section id="cancer-dataset">
-<h3>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline"></a></h3>
+<h3>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">import</span> <span class="nn">hnet</span>
 <span class="c1"># Import example dataset</span>
@@ -261,7 +263,7 @@ pip install scatterd
 </table>
 </section>
 <section id="tsne-scatterplot">
-<h3>tSNE scatterplot<a class="headerlink" href="#tsne-scatterplot" title="Permalink to this headline"></a></h3>
+<h3>tSNE scatterplot<a class="headerlink" href="#tsne-scatterplot" title="Permalink to this heading"></a></h3>
 <p>For demonstration purposes, we make a scatter plot with the True cancer labels to show that cancer labels are associated with the clusters.
 In many use-cases, your scatterplot would not be colored because you do not know yet which variables fit best the cluster labels.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -286,7 +288,7 @@ In many use-cases, your scatterplot would not be colored because you do not know
 </table>
 </section>
 <section id="compute-associations">
-<h3>Compute associations<a class="headerlink" href="#compute-associations" title="Permalink to this headline"></a></h3>
+<h3>Compute associations<a class="headerlink" href="#compute-associations" title="Permalink to this heading"></a></h3>
 <p>Step 1 is to compute the cluster labels based on the tSNE coordinates. We readily have these coordinates computed and can be extracted from the dataframe.
 Step 2 is to compute the enrichment of the variables (meta-data) with the cluster labels.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -331,7 +333,7 @@ Step 2 is to compute the enrichment of the variables (meta-data) with the cluste
 </div>
 </section>
 <section id="cluster-associations-with-categories">
-<h3>Cluster associations with categories<a class="headerlink" href="#cluster-associations-with-categories" title="Permalink to this headline"></a></h3>
+<h3>Cluster associations with categories<a class="headerlink" href="#cluster-associations-with-categories" title="Permalink to this heading"></a></h3>
 <p>When we look at the results (table below), we see in the first column the <em>category_label</em>. These are the metadata variables of the dataframe <em>df</em> that we gave as an input.
 The second columns: <em>P</em> stands for P-value, which is the computed significance of the catagory_label with the target variable <em>y</em>. In this case, target variable <em>y</em> are are the cluster labels <em>labx</em>.
 A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
@@ -696,7 +698,7 @@ Note that the target labels in <em>y</em> can be significantly enriched more the
 </table>
 </section>
 <section id="color-on-significantly-associated-catagories">
-<h3>Color on significantly associated catagories<a class="headerlink" href="#color-on-significantly-associated-catagories" title="Permalink to this headline"></a></h3>
+<h3>Color on significantly associated catagories<a class="headerlink" href="#color-on-significantly-associated-catagories" title="Permalink to this heading"></a></h3>
 <p>Lets compute for each cluster label <em>y</em>, the most significantly enriched category label.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scatterd</span> <span class="kn">import</span> <span class="n">scatterd</span>
 

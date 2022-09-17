@@ -15,11 +15,12 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Blog" href="Documentation.html" />
+    <link rel="next" title="Sponsor" href="Documentation.html" />
     <link rel="prev" title="Examples" href="Examples.html" /> 
 </head>
 
@@ -102,12 +103,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-web-interface">Online web-interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#sponsor">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-tool">Online-tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#citing">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Coding%20quality.html">Coding quality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
 </ul>
@@ -139,7 +141,7 @@
            <div itemprop="articleBody">
              
   <section id="use-cases">
-<h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline"></a></h1>
+<h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this heading"></a></h1>
 <p>HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.</p>
 <blockquote>
 <div><dl class="simple">
@@ -154,7 +156,7 @@
 <p>Here we will explore various data sets for the goals <em>1</em>, <em>2</em> and <em>3</em>.</p>
 </section>
 <section id="cancer-dataset">
-<h1>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this headline"></a></h1>
+<h1>Cancer dataset<a class="headerlink" href="#cancer-dataset" title="Permalink to this heading"></a></h1>
 <p>The cancer data set contains only a few columns but can result in an enormous complexity in their cross-relationships.
 To unravel the associations between the variables, and gain insights, we can easily run <code class="docutils literal notranslate"><span class="pre">hnet</span></code>. This dataset already contains tsne and PCA coordinates that we do not use. We will black list those to prevent being modeled.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -286,7 +288,7 @@ To unravel the associations between the variables, and gain insights, we can eas
 </pre></div>
 </div>
 <section id="antecedents-and-consequents">
-<h2>Antecedents and Consequents<a class="headerlink" href="#antecedents-and-consequents" title="Permalink to this headline"></a></h2>
+<h2>Antecedents and Consequents<a class="headerlink" href="#antecedents-and-consequents" title="Permalink to this heading"></a></h2>
 <p>If A implies C, then A is called the antecedent and C is called the consequent.
 For the cancer data set we computed the antecedent and its consequent.
 Here we can see that the strongest antecedents are BRCA: Breast cancer, CESC: Cervical squamous cell carcinoma, and OV: Ovarian Cancer, implies to the gender Female.
@@ -353,7 +355,7 @@ The second most significant hit is that females, and death indicator=1 implies t
 <iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe></section>
 </section>
 <section id="fifa-dataset">
-<h1>Fifa dataset<a class="headerlink" href="#fifa-dataset" title="Permalink to this headline"></a></h1>
+<h1>Fifa dataset<a class="headerlink" href="#fifa-dataset" title="Permalink to this heading"></a></h1>
 <p>The Fifa data set is from 2018 and contains many variables. By default, many variables would be converted to categorical values which may not be the ideal choice.
 We will set the dtypes manually to make sure each variable has the correct dtype.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -577,7 +579,7 @@ We will set the dtypes manually to make sure each variable has the correct dtype
 </tbody>
 </table>
 <section id="learn-associations">
-<h2>Learn associations<a class="headerlink" href="#learn-associations" title="Permalink to this headline"></a></h2>
+<h2>Learn associations<a class="headerlink" href="#learn-associations" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
@@ -631,7 +633,7 @@ We will set the dtypes manually to make sure each variable has the correct dtype
 </div>
 </section>
 <section id="id1">
-<h2>Antecedents and Consequents<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<h2>Antecedents and Consequents<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <p>The conclusions are mostly about who/what was not doing so well during the matches.
 A lot of information seems relevant for improvement of matches. As an example, if you are <strong>not the man of the match</strong>, you will likely have <strong>0 goals</strong>.
 Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
@@ -697,7 +699,7 @@ It seems that football is not so complicated after all ;)</p>
 <iframe src="https://erdogant.github.io/docs/d3graph/fifa_2018/" height="600px" width="100%", frameBorder="0"></iframe></section>
 </section>
 <section id="census-income-dataset">
-<h1>Census Income dataset<a class="headerlink" href="#census-income-dataset" title="Permalink to this headline"></a></h1>
+<h1>Census Income dataset<a class="headerlink" href="#census-income-dataset" title="Permalink to this heading"></a></h1>
 <p>The adult dataset is to determine whether income exceeds $50K/yr based on census data. Also known as “Census Income” dataset.
 This dataset is Multivariate (categorical, and integer variables), contains in total 48842 instances, missing values, and is located in the archives of [UCI](<a class="reference external" href="https://archive.ics.uci.edu/ml/">https://archive.ics.uci.edu/ml/</a>).</p>
 <p>Lets find out what we can learn from this data set using <code class="docutils literal notranslate"><span class="pre">HNet</span></code>.</p>
@@ -839,7 +841,7 @@ This dataset is Multivariate (categorical, and integer variables), contains in t
 </tbody>
 </table>
 <section id="id2">
-<h2>Learn associations<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<h2>Learn associations<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import hnet</span>
 <span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
@@ -903,7 +905,7 @@ This dataset is Multivariate (categorical, and integer variables), contains in t
 </div>
 </section>
 <section id="id3">
-<h2>Antecedents and Consequents<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<h2>Antecedents and Consequents<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
 <p>The conclusions are mostly about who/what was not doing so well during the matches.
 A lot of information seems relevant for improvement of matches. As an example, if you are <strong>not the man of the match</strong>, you will likely have <strong>0 goals</strong>.
 Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
@@ -995,10 +997,10 @@ It seems that football is not so complicated after all ;)</p>
 <iframe src="https://erdogant.github.io/docs/d3graph/income/" height="600px" width="100%", frameBorder="0"></iframe></section>
 </section>
 <section id="titanic-dataset">
-<h1>Titanic dataset<a class="headerlink" href="#titanic-dataset" title="Permalink to this headline"></a></h1>
+<h1>Titanic dataset<a class="headerlink" href="#titanic-dataset" title="Permalink to this heading"></a></h1>
 <p>The titanic data set contains a data structure that is often seen in real use cases (i.e., the presence of categorical, boolean, and continues variables per sample) which is therefore ideal to demonstrate the steps of <code class="docutils literal notranslate"><span class="pre">hnet</span></code>, and the interpretability. The first step is the typing of the 12 input features, followed by one-hot encoding. This resulted in a total of 2634 one hot encoded features for which only 18 features had the minimum required of <cite>y_min=10</cite> samples.</p>
 <section id="id4">
-<h2>Learn associations<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<h2>Learn associations<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
@@ -1046,7 +1048,7 @@ It seems that football is not so complicated after all ;)</p>
 </div>
 </section>
 <section id="interactive-network">
-<h2>Interactive network<a class="headerlink" href="#interactive-network" title="Permalink to this headline"></a></h2>
+<h2>Interactive network<a class="headerlink" href="#interactive-network" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">()</span>
 </pre></div>
@@ -1058,7 +1060,7 @@ It seems that football is not so complicated after all ;)</p>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1500px" width="1500px", frameBorder="0"></iframe></section>
 <section id="interactive-heatmap">
-<h2>Interactive Heatmap<a class="headerlink" href="#interactive-heatmap" title="Permalink to this headline"></a></h2>
+<h2>Interactive Heatmap<a class="headerlink" href="#interactive-heatmap" title="Permalink to this heading"></a></h2>
 <p>Create interactive heatmap.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive heatmap</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3heatmap</span><span class="p">()</span>
@@ -1066,7 +1068,7 @@ It seems that football is not so complicated after all ;)</p>
 </div>
 <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1100px" width="1000px", frameBorder="0"></iframe></section>
 <section id="feature-importance">
-<h2>Feature Importance<a class="headerlink" href="#feature-importance" title="Permalink to this headline"></a></h2>
+<h2>Feature Importance<a class="headerlink" href="#feature-importance" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot feature importance</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">plot_feat_importance</span><span class="p">(</span><span class="n">marker_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
@@ -1087,7 +1089,7 @@ It seems that football is not so complicated after all ;)</p>
 </table>
 </section>
 <section id="summarize-results">
-<h2>Summarize results<a class="headerlink" href="#summarize-results" title="Permalink to this headline"></a></h2>
+<h2>Summarize results<a class="headerlink" href="#summarize-results" title="Permalink to this heading"></a></h2>
 <p>Networks can become giant hairballs and heatmaps unreadable. You may want to see the general associations between the categories, instead of the label-associations.
 With the summarize functionality, the results will be summarized towards categories.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
@@ -1135,7 +1137,7 @@ With the summarize functionality, the results will be summarized towards categor
 </table>
 </section>
 <section id="white-listing">
-<h2>White listing<a class="headerlink" href="#white-listing" title="Permalink to this headline"></a></h2>
+<h2>White listing<a class="headerlink" href="#white-listing" title="Permalink to this heading"></a></h2>
 <p>Input variables (column names) can be black or white listed in the model.
 Witht black listing we specify which variables are included in the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
@@ -1158,7 +1160,7 @@ Witht black listing we specify which variables are included in the model.</p>
 </div>
 </section>
 <section id="black-listing">
-<h2>Black listing<a class="headerlink" href="#black-listing" title="Permalink to this headline"></a></h2>
+<h2>Black listing<a class="headerlink" href="#black-listing" title="Permalink to this heading"></a></h2>
 <p>Input variables (column names) can be black or white listed in the model.
 Witht black listing we specify which variables are excluded in the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
@@ -1191,7 +1193,7 @@ Witht black listing we specify which variables are excluded in the model.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Documentation.html" class="btn btn-neutral float-right" title="Blog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Documentation.html" class="btn btn-neutral float-right" title="Sponsor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

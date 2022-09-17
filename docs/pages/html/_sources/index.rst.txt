@@ -16,9 +16,20 @@ HNet learns the Association from datasets with mixed datatypes and with unknown 
 HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.
 
     Your goal can be for example:
-        1. Explore the complex associations between your variables.
-        2. Explain your clusters by enrichment of the meta-data.
-        3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
+
+	* 1. Explore the complex associations between your variables.
+        * 2. Explain your clusters by enrichment of the meta-data.
+        * 3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
+
+
+Star is important
+======================
+If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/XXX/>`_!
+
+
+Github
+======
+Please report bugs, issues and feature extensions at `github <https://github.com/erdogant/XXX/>`_.
 
 
 
@@ -77,30 +88,6 @@ Content
 
 * :ref:`genindex`
 
-
-
-Source code and issue tracker
-------------------------------
-
-`Github hnet <https://github.com/erdogant/hnet/>`_.
-Please report bugs, issues and feature extensions there.
-
-
-Citing *hnet*
-----------------
-
-The bibtex can be found in the right side menu at the `github page <https://github.com/erdogant/hnet/>`_.
-
-
-Sponsor this project
-------------------------------
-
-If you like this project, **Star** this repo at the github page and become a **Sponsor**!
-Read more why this is important on my *Sponsor page*. The **sponsor button** will direct you to the sponsor github page.
-
-.. raw:: html
-
-	<iframe src="https://github.com/sponsors/erdogant/button" title="Sponsor erdogant" height="35" width="116" style="border: 0;"></iframe>
 
 
 Indices and tables

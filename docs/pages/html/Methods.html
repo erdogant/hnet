@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -92,12 +93,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-web-interface">Online web-interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#sponsor">Sponsor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#online-tool">Online-tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#citing">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Coding%20quality.html">Coding quality</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html">API References</a></li>
 </ul>
@@ -130,20 +132,20 @@
              
   <hr class="docutils" id="code-directive" />
 <section id="pre-processing">
-<h1>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline"></a></h1>
+<h1>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this heading"></a></h1>
 <p>To detect significant edge probabilities between pairs of vertices (node-links) given a data set, <code class="docutils literal notranslate"><span class="pre">hnet</span></code> consists a multi-step process that are described below.</p>
 </section>
 <section id="typing">
-<h1>Typing<a class="headerlink" href="#typing" title="Permalink to this headline"></a></h1>
+<h1>Typing<a class="headerlink" href="#typing" title="Permalink to this heading"></a></h1>
 <p>The first step is pre-processing the data set by feature typing. In this step we type each feature as categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. In the latter case, features are set to numerical if values are floating type or have more than a minimum number of unique elements (e.g., if the number of unique elements &gt;20% of the total non-missing). Features are set to categoric if values are boolean, integer or string.</p>
 </section>
 <section id="one-hot-enconding">
-<h1>One-hot Enconding<a class="headerlink" href="#one-hot-enconding" title="Permalink to this headline"></a></h1>
+<h1>One-hot Enconding<a class="headerlink" href="#one-hot-enconding" title="Permalink to this heading"></a></h1>
 <p>The second step is encoding the categoric values into a one-hot dense array. This is done using <code class="docutils literal notranslate"><span class="pre">df2onehot</span></code>. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement, Figure 1C). The default k is set to 1, meaning that the input matrix (Xcategoric) is the same as combinatory matrix (Xcombination). When k&gt;1, n boolean features are combined by multiplication for k unique combinations (eq.1). Each new combinatoric feature (Xc) is then added to the dense array.</p>
 </section>
 <section id="statistical-inference">
-<h1>Statistical inference<a class="headerlink" href="#statistical-inference" title="Permalink to this headline"></a></h1>
-<p>Each feature is examined on enrichment compared to another in the function <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a>. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2).</p>
+<h1>Statistical inference<a class="headerlink" href="#statistical-inference" title="Permalink to this heading"></a></h1>
+<p>Each feature is examined on enrichment compared to another in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code>. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2).</p>
 <table class="docutils align-center" id="id1">
 <caption><span class="caption-text">Equation 1 and 2</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
 <colgroup>
@@ -155,7 +157,7 @@
 </tbody>
 </table>
 <section id="hypergeometric-test">
-<h2>Hypergeometric test<a class="headerlink" href="#hypergeometric-test" title="Permalink to this headline"></a></h2>
+<h2>Hypergeometric test<a class="headerlink" href="#hypergeometric-test" title="Permalink to this heading"></a></h2>
 <p>To assess significance with the categoric features (Xcategoric), the final dense array is tested for over-representation of successes in sample Xi by means of the hypergeometric distribution. The hypergeometric P-value between feature Xi and feature Xcj, is calculated as the probability of randomly drawing x or more successes from the population in n total draws with population size N containing K successes. For any Xi and Xcj, Pc(i,j) is computed as depicted in eq.3.</p>
 <table class="docutils align-center" id="id2">
 <caption><span class="caption-text">Equation 3</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
@@ -169,11 +171,11 @@
 </table>
 </section>
 <section id="wilcoxon-ranksum">
-<h2>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Permalink to this headline"></a></h2>
+<h2>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Permalink to this heading"></a></h2>
 <p>To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.</p>
 </section>
 <section id="multiple-testing">
-<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Permalink to this headline"></a></h2>
+<h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Permalink to this heading"></a></h2>
 <p>All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
 <table class="docutils align-center" id="id3">
 <caption><span class="caption-text">Equation 4</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
@@ -199,7 +201,7 @@
 <p>The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices. The adjacency matrix can then be examined as a network representation using d3graph.</p>
 </section>
 <section id="enrichment">
-<h2>Enrichment<a class="headerlink" href="#enrichment" title="Permalink to this headline"></a></h2>
+<h2>Enrichment<a class="headerlink" href="#enrichment" title="Permalink to this heading"></a></h2>
 <p>An example of calculating hte enrichment is demonstrated below for a single response variable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
 
@@ -250,15 +252,15 @@
 <figure class="align-default">
 <img alt="_images/output_enrichment.png" src="_images/output_enrichment.png" />
 </figure>
-<p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a></p>
+<p>As can been seen from the results, the most significant feature is <em>Survived</em> as shown in the <cite>category_name</cite> and <cite>P</cite> value. This is as expected as we used this variable as the response variable. The description of the output variables can be found here: <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></p>
 </section>
 </section>
 <section id="black-white-listing">
-<h1>black/white listing<a class="headerlink" href="#black-white-listing" title="Permalink to this headline"></a></h1>
+<h1>black/white listing<a class="headerlink" href="#black-white-listing" title="Permalink to this heading"></a></h1>
 <p>Input variables (column names) can be black or white listed in the model.
 When variables are black listed, they are excluded from the search and the resulting model will not contain any of those edges. If variables are white listed, the search is limited to only those edges. The resulting model will then only contain edges that are in white_list.</p>
 <section id="white-listing">
-<h2>White listing<a class="headerlink" href="#white-listing" title="Permalink to this headline"></a></h2>
+<h2>White listing<a class="headerlink" href="#white-listing" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 
@@ -271,7 +273,7 @@ When variables are black listed, they are excluded from the search and the resul
 </div>
 </section>
 <section id="black-listing">
-<h2>Black listing<a class="headerlink" href="#black-listing" title="Permalink to this headline"></a></h2>
+<h2>Black listing<a class="headerlink" href="#black-listing" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 

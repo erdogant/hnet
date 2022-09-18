@@ -22,14 +22,14 @@ HNet can be used for all kind of datasets that contain features such as categori
         * 3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
 
 
-Star is important
-======================
-If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/XXX/>`_!
+You contribution is important
+==============================
+If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/hnet/>`_ and have a look at the `sponser page <https://github.com/erdogant/hnet/pages/html/Documentation.html>`_!
 
 
 Github
 ======
-Please report bugs, issues and feature extensions at `github <https://github.com/erdogant/XXX/>`_.
+Please report bugs, issues and feature extensions at `github <https://github.com/erdogant/hnet/>`_.
 
 
 

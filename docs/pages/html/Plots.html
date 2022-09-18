@@ -15,7 +15,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -134,7 +133,7 @@
              
   <hr class="docutils" id="code-directive" />
 <section id="network-graphs">
-<h1>Network Graphs<a class="headerlink" href="#network-graphs" title="Permalink to this heading"></a></h1>
+<h1>Network Graphs<a class="headerlink" href="#network-graphs" title="Permalink to this headline"></a></h1>
 <p>Dynamic graph representations are created using <code class="docutils literal notranslate"><span class="pre">d3graph</span></code> that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly.
 The advantage is that d3graph is an interactive and stand-alone network. The network is created with collision and charge parameters to ensure that nodes do not overlap.</p>
 <p>d3graph is developed as a stand-alone python library (<a class="reference external" href="https://github.com/erdogant/d3graph">https://github.com/erdogant/d3graph</a>) which generates java script based on a set of user-defined or <code class="docutils literal notranslate"><span class="pre">hnet</span></code> parameters. The java script file is built on functionalities from the d3 javascript library (version 3).</p>
@@ -186,7 +185,7 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 </tbody>
 </table>
 <section id="static-graph">
-<h2>Static graph<a class="headerlink" href="#static-graph" title="Permalink to this heading"></a></h2>
+<h2>Static graph<a class="headerlink" href="#static-graph" title="Permalink to this headline"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="c1"># Load example</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
@@ -200,7 +199,7 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 </div>
 </section>
 <section id="dynamic-graph-d3graph">
-<h2>Dynamic graph - d3graph<a class="headerlink" href="#dynamic-graph-d3graph" title="Permalink to this heading"></a></h2>
+<h2>Dynamic graph - d3graph<a class="headerlink" href="#dynamic-graph-d3graph" title="Permalink to this headline"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="c1"># Load example</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
@@ -216,13 +215,13 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 <iframe src="https://erdogant.github.io/docs/d3graph/sprinkler_example/index.html" height="500px" width="1000px", frameBorder="0"></iframe></section>
 </section>
 <section id="heatmap">
-<h1>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this heading"></a></h1>
+<h1>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this headline"></a></h1>
 <p>A heatmap can be of use when the network becomes a giant hairball.
 The effectiveness of a matrix diagram is heavily dependent on the order of rows and columns: if related nodes are placed closed to each other, it is easier to identify clusters and bridges.
 While path-following is harder in a matrix view than in a node-link diagram, matrices have other advantages.
 Matrix cells can also be encoded to show additional data; here color depicts clusters computed by a community-detection algorithm.</p>
 <section id="static-heatmap">
-<h2>Static heatmap<a class="headerlink" href="#static-heatmap" title="Permalink to this heading"></a></h2>
+<h2>Static heatmap<a class="headerlink" href="#static-heatmap" title="Permalink to this headline"></a></h2>
 <p>Below is depicted a demonstration of plotting the results of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> using a static heatmap:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
@@ -241,7 +240,7 @@ Matrix cells can also be encoded to show additional data; here color depicts clu
 </figure>
 </section>
 <section id="dynamic-heatmap-d3heatmap">
-<h2>Dynamic heatmap - d3heatmap<a class="headerlink" href="#dynamic-heatmap-d3heatmap" title="Permalink to this heading"></a></h2>
+<h2>Dynamic heatmap - d3heatmap<a class="headerlink" href="#dynamic-heatmap-d3heatmap" title="Permalink to this headline"></a></h2>
 <p>A heatmap can also be created using d3-javascript, where each cell ij represents an edge from vertex i to vertex j.
 Here color depicts clusters computed by a community-detection algorithm. Below is depicted a demonstration of plotting the results of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> using a d3heatmap:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive heatmap</span>
@@ -251,7 +250,7 @@ Here color depicts clusters computed by a community-detection algorithm. Below i
 <iframe src="https://erdogant.github.io/docs/titanic/d3heatmap/titanic_heatmap.html" height="1000px" width="100%", frameBorder="0"></iframe></section>
 </section>
 <section id="feature-importance">
-<h1>Feature importance<a class="headerlink" href="#feature-importance" title="Permalink to this heading"></a></h1>
+<h1>Feature importance<a class="headerlink" href="#feature-importance" title="Permalink to this headline"></a></h1>
 <p>Feature importance can be plotted to analyze the involvement of the feature in the network.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 
@@ -285,7 +284,7 @@ In the following figure we correct for the number of labels per catagory.</p>
 </figure>
 </section>
 <section id="summarize-into-categories">
-<h1>Summarize into categories<a class="headerlink" href="#summarize-into-categories" title="Permalink to this heading"></a></h1>
+<h1>Summarize into categories<a class="headerlink" href="#summarize-into-categories" title="Permalink to this headline"></a></h1>
 <p>If many associations are detected, a network plot can lead to a giant hairball, and a heatmap can become unreadable.
 A function in <code class="docutils literal notranslate"><span class="pre">hnet</span></code> is to summarize the associations towards categories. This will result in generic insights.
 As an example: In case of the <strong>titanic</strong> use-case, it will not describe whether <strong>Parch 2</strong> was associated with <strong>four SibSp</strong>
@@ -312,7 +311,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 </figure>
 <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_summarize.html" height="500px" width="100%", frameBorder="0"></iframe></section>
 <section id="comparing-networks">
-<h1>Comparing networks<a class="headerlink" href="#comparing-networks" title="Permalink to this heading"></a></h1>
+<h1>Comparing networks<a class="headerlink" href="#comparing-networks" title="Permalink to this headline"></a></h1>
 <p>Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame. The columns and rows between both matrices are matched if not ordered similarly.</p>
 <p>Below is depicted a demonstration of comparing two networks that may have been the result of <code class="docutils literal notranslate"><span class="pre">hnet</span></code> using different parameter settings:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
@@ -323,7 +322,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 </div>
 </section>
 <section id="black-white-listing-in-plots">
-<h1>Black/White listing in plots<a class="headerlink" href="#black-white-listing-in-plots" title="Permalink to this heading"></a></h1>
+<h1>Black/White listing in plots<a class="headerlink" href="#black-white-listing-in-plots" title="Permalink to this headline"></a></h1>
 <p>It is sometimes desired to remove variables from the plot to reduce complexity or to focus on specific associations.</p>
 <p>Four methods of filtering are possible in <code class="docutils literal notranslate"><span class="pre">hnet</span></code></p>
 <blockquote>
@@ -335,7 +334,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 </ul>
 </div></blockquote>
 <section id="black-listing-in-plot">
-<h2>Black listing in plot<a class="headerlink" href="#black-listing-in-plot" title="Permalink to this heading"></a></h2>
+<h2>Black listing in plot<a class="headerlink" href="#black-listing-in-plot" title="Permalink to this headline"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will remove the node Age and SibSp.</span>
 
 <span class="c1"># d3graph</span>
@@ -348,7 +347,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 </div>
 </section>
 <section id="white-listing-in-plot">
-<h2>White listing in plot<a class="headerlink" href="#white-listing-in-plot" title="Permalink to this heading"></a></h2>
+<h2>White listing in plot<a class="headerlink" href="#white-listing-in-plot" title="Permalink to this headline"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and SibSp</span>
 
 <span class="c1"># d3graph</span>

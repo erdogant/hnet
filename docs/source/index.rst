@@ -24,7 +24,7 @@ HNet can be used for all kind of datasets that contain features such as categori
 
 You contribution is important
 ==============================
-If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/hnet/>`_ and have a look at the `sponser page <https://github.com/erdogant/hnet/pages/html/Documentation.html>`_!
+If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/hnet/>`_ and have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_!
 
 
 Github

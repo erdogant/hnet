@@ -60,9 +60,9 @@ Examples
 
 References
 ----------
-* https://erdogant.github.io/hnet/
-* https://github.com/erdogant/hnet
-* https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
-* https://arxiv.org/abs/2005.04679
+* Blog: https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
+* Github: https://github.com/erdogant/hnet
+* Documentation: https://erdogant.github.io/hnet/
+* Article: https://arxiv.org/abs/2005.04679
 
 """

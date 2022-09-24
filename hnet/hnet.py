@@ -123,6 +123,14 @@ class hnet():
     >>> P_heatmap = hn.heatmap(cluster=True)
     >>> # Plot feature importance
     >>> hn.plot_feat_importance()
+
+    References
+    ----------
+    * Blog: https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
+    * Github: https://github.com/erdogant/hnet
+    * Documentation: https://erdogant.github.io/hnet/
+    * Article: https://arxiv.org/abs/2005.04679
+
     """
 
     def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):

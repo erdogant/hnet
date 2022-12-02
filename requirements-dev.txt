@@ -3,3 +3,4 @@ rst2pdf
 spyder-kernels
 sphinx
 pytest
+# pip install dash dash-renderer dash-html-components dash-core-components

@@ -22,7 +22,7 @@ hn.plot(node_color='cluster')
 # Feature importance
 hn.plot_feat_importance(marker_size=50)
 
-hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
+# hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
 hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/', node_color='cluster')
 
 # %%

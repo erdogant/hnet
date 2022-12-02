@@ -25,8 +25,9 @@ import colourmap
 import df2onehot
 import imagesc
 from ismember import ismember
-from d3heatmap import d3heatmap as d3
-from d3graph import d3graph as d3graphs
+from d3blocks import D3Blocks
+# from d3heatmap import d3heatmap as d3
+# from d3graph import d3graph as d3graphs
 import warnings
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
@@ -439,18 +440,23 @@ class hnet():
         if vmax is None:
             vmax = np.max(np.max(simmatLogP)) / 10
 
+        # Initialize
+        d3 = D3Blocks()
         # Make heatmap
-        if verbose>=3: print('[hnet] >Creating output html..')
-        paths = d3.heatmap(simmatLogP, clust=labx, path=savepath, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
+        df_vector = d3.adjmat2vec(simmatLogP.T)
+        d3.heatmap(df_vector, showfig=True, title='Hnet d3heatmap', filepath=savepath, figsize=figsize, stroke='red', vmax=vmax, color=labx)
+        # Make heatmap
+        # if verbose>=3: print('[hnet] >Creating output html..')
+        # paths = d3.heatmap(simmatLogP, color=labx, path=savepath, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
 
         # Return
         results = {}
-        results['paths'] = paths
+        results['paths'] = d3.config['filepath']
         results['clust_labx'] = labx
         return(results)
 
     # Make network d3
-    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, verbose=3):
+    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, elastic=False, verbose=3):
         """Interactive network creator.
 
         Description
@@ -527,16 +533,39 @@ class hnet():
 
         # Color node using network-clustering
         if node_color=='cluster':
-            labx = self.plot(summarize=summarize, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+            # labx = self.plot(summarize=summarize, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
+            labx='cluster'
         else:
             labx = label_encoder.fit_transform(labx)
 
-        # Make network
-        if verbose>=3: print('[hnet] >Creating output html..')
-        Gout = d3graphs(simmatLogP.T, savepath=savepath, node_size=node_size, charge=charge, height=figsize[0], width=figsize[1], collision=0.1, node_color=labx, directed=directed, showfig=showfig)
+        if verbose>=3: print('[hnet] >Creating d3graph..')
+        # Initialize
+        d3 = D3Blocks()
+        df_vector = d3.adjmat2vec(simmatLogP.T)
+        # Create network using default 
+        d3.d3graph(df_vector,
+                   color=labx,
+                   size=node_size,
+                   title='D3graph - D3blocks',
+                   filepath=savepath,
+                   figsize=figsize,
+                   overwrite=True,
+                   collision=0.1,
+                   charge=charge,
+                   slider=[None, None],
+                   scaler='zscore',
+                   showfig=False,
+                   )
+
+        # Change node properties
+        # d3.D3graph.set_node_properties(color=None, size=node_size)
+        # Change edge properties
+        d3.D3graph.set_edge_properties(directed=directed, marker_end='arrow')
+        # Show
+        d3.D3graph.show(showfig=showfig)
+
         # Return
-        Gout['labx'] = labx
-        return(Gout)
+        return {'G': d3.D3graph.G, 'savepath': d3.D3graph.config['filepath'], 'labx': labx}
 
     # Make network plot
     def plot(self, summarize=False, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):

@@ -1,9 +1,4 @@
-#conda create -n env_HNET python=3.6
-#conda activate env_HNET
-#conda install spyder
-
 wget
-
 matplotlib
 numpy
 pandas
@@ -13,11 +8,8 @@ seaborn
 python-louvain
 statsmodels
 fsspec
-
 tqdm
-sklearn
-
-# Custom libraries
+scikit-learn
 ismember
 imagesc
 df2onehot
@@ -25,5 +17,3 @@ classeval
 d3graph=='1.0.3'
 colourmap
 pypickle
-
-# pip install dash dash-renderer dash-html-components dash-core-components

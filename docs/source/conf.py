@@ -13,19 +13,20 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
+currpath = os.path.dirname(__file__)
+sys.path.insert(0, os.path.abspath('./'))
+from helper import *
+import hnet
 
+########################################################################################
 # -- Download rst file -----------------------------------------------------
-try:
-	from urllib.request import urlretrieve
-	sponsor_url_rst = 'https://erdogant.github.io/docs/rst/sponsor.rst'
-	sponsor_file = "sponsor.rst"
-	if os.path.isfile(sponsor_file):
-		os.remove(sponsor_file)
-		print('Update sponsor rst file.')
-	urlretrieve (sponsor_url_rst, sponsor_file)
-except:
-	print('Downloading sponsor.rst file failed.')
-
+download_file('https://erdogant.github.io/docs/rst/sponsor.rst', "sponsor.rst")
+download_file('https://erdogant.github.io/docs/rst/add_carbon.add', "add_carbon.add")
+download_file('https://erdogant.github.io/docs/rst/add_top.add', "add_top.add")
+download_file('https://erdogant.github.io/docs/rst/add_bottom.add', "add_bottom.add")
+########################################################################################
+add_includes_to_rst_files()
+########################################################################################
 
 # -- Project information -----------------------------------------------------
 
@@ -38,6 +39,7 @@ master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
 release = 'hnet'
+version = str(hnet.__version__)
 
 # -- General configuration ---------------------------------------------------
 

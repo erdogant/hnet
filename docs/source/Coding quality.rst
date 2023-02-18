@@ -1,6 +1,5 @@
-.. _code_directive:
+.. include:: add_top.add
 
--------------------------------------
 
 Coding quality
 '''''''''''''''''''''
@@ -88,3 +87,6 @@ The following tests are secured using :func:`tests.test_hnet`:
     tests/test_hnet.py::test_plot
     
     =========================== 3 passed, 1 warning in 1254.97s (0:20:54) ===========================    
+
+
+.. include:: add_bottom.add

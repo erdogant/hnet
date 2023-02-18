@@ -1,6 +1,6 @@
-.. _code_directive:
+.. include:: add_top.add
 
--------------------------------------
+
 
 Import datasets
 ---------------
@@ -217,11 +217,8 @@ The association_learning outputs various output variables in a dictionary.
     print(results.keys())
     # dict_keys(['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules'])
 
-.. raw:: html
 
-	<hr>
-	<center>
-		<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
-	</center>
-	<hr>
 
+
+
+.. include:: add_bottom.add

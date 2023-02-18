@@ -1,3 +1,5 @@
+.. include:: add_top.add
+
 Examples
 #########
 
@@ -254,11 +256,5 @@ Lets compute for each cluster label *y*, the most significantly enriched categor
 It can bee seen that the most significantly enriched cancer labels for the clusters do represent the true labels very well.
 
 
-.. raw:: html
 
-	<hr>
-	<center>
-		<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CEADP27U&placement=erdogantgithubio" id="_carbonads_js"></script>
-	</center>
-	<hr>
-
+.. include:: add_bottom.add

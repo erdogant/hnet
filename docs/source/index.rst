@@ -22,9 +22,9 @@ Use HNET if your goal is:
 * 3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
 
 
-You contribution is important
-==============================
-If you ❤️ this project, **star** this repo at the `github page <https://github.com/erdogant/hnet/>`_ and have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_!
+Your support is important
+=========================
+You can support in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_
 
 
 Github

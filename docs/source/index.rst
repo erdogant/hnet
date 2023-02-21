@@ -3,12 +3,8 @@ HNet documentation!
 
 |python| |pypi| |docs| |stars| |LOC| |downloads_month| |downloads_total| |license| |forks| |open issues| |project status| |medium| |colab| |DOI| |repo-size| |donate|
 
-.. include:: add_top.add
-
-
 .. tip::
 	`Read the details and usage of HNet in the Medium blog! <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
-
 
 Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
 We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference. 
@@ -22,16 +18,17 @@ Use HNET if your goal is:
 * 3. Transform your feature space into network graph and/or dissimilarity matrix that can be used for further analysis.
 
 
-Your support is important
-=========================
-You can support in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_
+-----------------------------------
 
+.. note::
+	**Your ❤️ is important to keep maintaining this package.** You can `support <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_ in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_.
+	Report bugs, issues and feature extensions at `github <https://github.com/erdogant/hnet/>`_ page.
 
-Github
-======
-Please report bugs, issues and feature extensions at `github <https://github.com/erdogant/hnet/>`_.
+	.. code-block:: console
 
+	   pip install hnet
 
+-----------------------------------
 
 Content
 =======

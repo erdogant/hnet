@@ -1,5 +1,3 @@
-.. include:: add_top.add
-
 
 .. automodule:: hnet.hnet
     :members:

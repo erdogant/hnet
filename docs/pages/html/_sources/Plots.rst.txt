@@ -4,7 +4,7 @@ Network Graphs
 Dynamic graph representations are created using ``d3blocks`` that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly. 
 The advantage is that d3graph is an interactive and stand-alone network. The network is created with collision and charge parameters to ensure that nodes do not overlap. 
 
-d3graph is developed as a stand-alone python library (https://d3blocks.github.io/d3blocks/) which generates java script based on a set of user-defined or ``hnet`` parameters. The java script file is built on functionalities from the d3 javascript library (version 3). 
+d3graph is part of the stand-alone python library (https://d3blocks.github.io/d3blocks/) which generates java script based on a set of user-defined or ``hnet`` parameters. The java script file is built on functionalities from the d3 javascript library (version 3). 
 
 
 .. code-block:: bash

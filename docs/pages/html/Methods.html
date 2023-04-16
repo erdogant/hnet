@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pre-processing &mdash; hnet hnet documentation</title>
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> hnet
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            hnet
           </a>
               <div class="version">
-                1.1.13
+                1.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -110,6 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -129,8 +131,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Pre-processing</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Pre-processing</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Methods.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -157,9 +159,6 @@
 <p>Each feature is examined on enrichment compared to another in the function <a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment" title="hnet.hnet.enrichment"><code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.hnet.enrichment()</span></code></a>. To avoid high computational costs, mutual exclusive features are excluded, and features are excluded in case Xi contains less then ymin positive samples (default ymin=10, eq.2).</p>
 <table class="docutils align-center" id="id1">
 <caption><span class="caption-text">Equation 1 and 2</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_1_2.png"><img alt="eq_1_2" src="_images/eq_1_2.png" style="width: 408.5px; height: 174.0px;" /></a></p></td>
 </tr>
@@ -170,9 +169,6 @@
 <p>To assess significance with the categoric features (Xcategoric), the final dense array is tested for over-representation of successes in sample Xi by means of the hypergeometric distribution. The hypergeometric P-value between feature Xi and feature Xcj, is calculated as the probability of randomly drawing x or more successes from the population in n total draws with population size N containing K successes. For any Xi and Xcj, Pc(i,j) is computed as depicted in eq.3.</p>
 <table class="docutils align-center" id="id2">
 <caption><span class="caption-text">Equation 3</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_3.png"><img alt="eq_3" src="_images/eq_3.png" style="width: 520.0px; height: 82.0px;" /></a></p></td>
 </tr>
@@ -188,9 +184,6 @@
 <p>All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
 <table class="docutils align-center" id="id3">
 <caption><span class="caption-text">Equation 4</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_4.png"><img alt="eq_4" src="_images/eq_4.png" style="width: 321.0px; height: 68.5px;" /></a></p></td>
 </tr>
@@ -199,9 +192,6 @@
 <p>The last step in HNet (Figure 1F) is declaring significance for node-links. An edge is called significant under alpha is 0.05 by default. The edge-weight is computed as depicted in equation 5.</p>
 <table class="docutils align-center" id="id4">
 <caption><span class="caption-text">Equation 5</span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_images/eq_5.png"><img alt="eq_5" src="_images/eq_5.png" style="width: 352.5px; height: 60.5px;" /></a></p></td>
 </tr>

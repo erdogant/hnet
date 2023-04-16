@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Network Graphs &mdash; hnet hnet documentation</title>
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> hnet
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            hnet
           </a>
               <div class="version">
-                1.1.13
+                1.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,7 +72,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Network Graphs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#static-graph">Static graph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dynamic-graph-d3graph">Dynamic graph - d3graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dynamic-graph-d3blocks">Dynamic graph - d3blocks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#heatmap">Heatmap</a><ul>
@@ -112,6 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -131,8 +133,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Network Graphs</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Network Graphs</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Plots.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -144,21 +146,14 @@
              
   <section id="network-graphs">
 <h1>Network Graphs<a class="headerlink" href="#network-graphs" title="Permalink to this heading"></a></h1>
-<p>Dynamic graph representations are created using <code class="docutils literal notranslate"><span class="pre">d3graph</span></code> that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly.
+<p>Dynamic graph representations are created using <code class="docutils literal notranslate"><span class="pre">d3blocks</span></code> that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly.
 The advantage is that d3graph is an interactive and stand-alone network. The network is created with collision and charge parameters to ensure that nodes do not overlap.</p>
-<p>d3graph is developed as a stand-alone python library (<a class="reference external" href="https://github.com/erdogant/d3graph">https://github.com/erdogant/d3graph</a>) which generates java script based on a set of user-defined or <code class="docutils literal notranslate"><span class="pre">hnet</span></code> parameters. The java script file is built on functionalities from the d3 javascript library (version 3).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install d3graph
+<p>d3graph is developed as a stand-alone python library (<a class="reference external" href="https://d3blocks.github.io/d3blocks/">https://d3blocks.github.io/d3blocks/</a>) which generates java script based on a set of user-defined or <code class="docutils literal notranslate"><span class="pre">hnet</span></code> parameters. The java script file is built on functionalities from the d3 javascript library (version 3).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>d3blocks
 </pre></div>
 </div>
-<p>In its simplest form, the input for d3graph is an adjacency matrix for which the elements indicate pairs of vertices are adjacent or not in the graph.</p>
+<p>In its simplest form, the input for <code class="docutils literal notranslate"><span class="pre">d3blocks</span></code> is an adjacency matrix for which the elements indicate pairs of vertices are adjacent or not in the graph.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 16%" />
-<col style="width: 22%" />
-<col style="width: 16%" />
-<col style="width: 22%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"></th>
 <th class="head"><p>Node 1</p></th>
@@ -208,8 +203,8 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 </pre></div>
 </div>
 </section>
-<section id="dynamic-graph-d3graph">
-<h2>Dynamic graph - d3graph<a class="headerlink" href="#dynamic-graph-d3graph" title="Permalink to this heading"></a></h2>
+<section id="dynamic-graph-d3blocks">
+<h2>Dynamic graph - d3blocks<a class="headerlink" href="#dynamic-graph-d3blocks" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hnet</span> <span class="kn">import</span> <span class="n">hnet</span>
 <span class="c1"># Load example</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
@@ -347,7 +342,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <h2>Black listing in plot<a class="headerlink" href="#black-listing-in-plot" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will remove the node Age and SibSp.</span>
 
-<span class="c1"># d3graph</span>
+<span class="c1"># d3blocks</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 <span class="c1"># Plot</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
@@ -360,7 +355,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <h2>White listing in plot<a class="headerlink" href="#white-listing-in-plot" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and SibSp</span>
 
-<span class="c1"># d3graph</span>
+<span class="c1"># d3blocks</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
 <span class="c1"># Plot</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
@@ -371,7 +366,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <p><strong>White list example in plot</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and Age</span>
 
-<span class="c1"># d3graph</span>
+<span class="c1"># d3blocks</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
 <span class="c1"># Plot</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>

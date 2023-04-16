@@ -1,18 +1,18 @@
 Network Graphs
 '''''''''''''''
 
-Dynamic graph representations are created using ``d3graph`` that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly. 
+Dynamic graph representations are created using ``d3blocks`` that allow to deeper examine the detected associations. Just like static graphs, the dynamic graph consists out of nodes and edges for which sizes and colours are adjusted accordingly. 
 The advantage is that d3graph is an interactive and stand-alone network. The network is created with collision and charge parameters to ensure that nodes do not overlap. 
 
-d3graph is developed as a stand-alone python library (https://github.com/erdogant/d3graph) which generates java script based on a set of user-defined or ``hnet`` parameters. The java script file is built on functionalities from the d3 javascript library (version 3). 
+d3graph is developed as a stand-alone python library (https://d3blocks.github.io/d3blocks/) which generates java script based on a set of user-defined or ``hnet`` parameters. The java script file is built on functionalities from the d3 javascript library (version 3). 
 
 
 .. code-block:: bash
 
-  pip install d3graph
+  pip install d3blocks
 
 
-In its simplest form, the input for d3graph is an adjacency matrix for which the elements indicate pairs of vertices are adjacent or not in the graph.
+In its simplest form, the input for ``d3blocks`` is an adjacency matrix for which the elements indicate pairs of vertices are adjacent or not in the graph.
 
 
 .. table::
@@ -45,7 +45,7 @@ Static graph
   G_dynamic = hn.plot()
 
 
-Dynamic graph - d3graph
+Dynamic graph - d3blocks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -236,7 +236,7 @@ Black listing in plot
 
   # In this example we will remove the node Age and SibSp.
   
-  # d3graph
+  # d3blocks
   hn = hn.d3graph(black_list=['Age', 'SibSp'])
   # Plot
   hn = hn.plot(black_list=['Age', 'SibSp'])
@@ -251,7 +251,7 @@ White listing in plot
 
   # In this example we will keep only the node Survived and SibSp
   
-  # d3graph
+  # d3blocks
   hn = hn.d3graph(white_list=['Survived', 'SibSp'])
   # Plot
   hn = hn.plot(white_list=['Survived', 'SibSp'])
@@ -265,7 +265,7 @@ White listing in plot
 
   # In this example we will keep only the node Survived and Age
   
-  # d3graph
+  # d3blocks
   hn = hn.d3graph(white_list=['Survived', 'Age', 'Pclass'])
   # Plot
   hn = hn.plot(white_list=['Survived', 'Age', 'Pclass'])

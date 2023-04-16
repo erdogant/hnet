@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Import datasets &mdash; hnet hnet documentation</title>
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> hnet
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            hnet
           </a>
               <div class="version">
-                1.1.13
+                1.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -106,6 +107,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -125,8 +127,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Import datasets</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Import datasets</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/input_output.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -143,16 +145,6 @@
 The columns represent the variables or features containing continues/categorical values. The rows are the samples.</p>
 <p>Below is the titanic dataset that can be the input for <code class="docutils literal notranslate"><span class="pre">hnet</span></code> in its current form. The steps of pre-processing of the dataset is explained in the pre-processing section.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 8%" />
-<col style="width: 20%" />
-<col style="width: 15%" />
-<col style="width: 12%" />
-<col style="width: 7%" />
-<col style="width: 13%" />
-<col style="width: 8%" />
-<col style="width: 17%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td></td>
 <td><p>PassengerId</p></td>
@@ -278,13 +270,6 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 16%" />
-<col style="width: 27%" />
-<col style="width: 14%" />
-<col style="width: 30%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td></td>
 <td><p>Cloudy</p></td>
@@ -369,18 +354,6 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 6%" />
-<col style="width: 7%" />
-<col style="width: 7%" />
-<col style="width: 13%" />
-<col style="width: 8%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td></td>
 <td><p>school_GP</p></td>

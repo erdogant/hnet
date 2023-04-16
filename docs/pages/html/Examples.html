@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Examples &mdash; hnet hnet documentation</title>
@@ -13,9 +13,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> hnet
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            hnet
           </a>
               <div class="version">
-                1.1.13
+                1.2.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,6 +115,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -133,8 +135,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Examples</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -172,9 +174,9 @@
 <p>In case you have detected cluster labels and now you want to know whether there is association between any of the clusters with a (group of) feature(s).
 In this example, I will load an cancer data set with pre-computed t-SNE coordinates based on genomic profiles. The t-SNE coordinates I will cluster, and the detected labels are used to determine any assocation with the metadata.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For cluster evaluation</span>
-pip install sklearn
+pip<span class="w"> </span>install<span class="w"> </span>sklearn
 <span class="c1"># For easy plotting</span>
-pip install scatterd
+pip<span class="w"> </span>install<span class="w"> </span>scatterd
 </pre></div>
 </div>
 <section id="cancer-dataset">
@@ -188,18 +190,6 @@ pip install scatterd
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 4%" />
-<col style="width: 9%" />
-<col style="width: 9%" />
-<col style="width: 7%" />
-<col style="width: 8%" />
-<col style="width: 19%" />
-<col style="width: 19%" />
-<col style="width: 8%" />
-<col style="width: 9%" />
-<col style="width: 10%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"></th>
 <th class="head"><p>tsneX</p></th>
@@ -286,10 +276,6 @@ In many use-cases, your scatterplot would not be colored because you do not know
 </div>
 <table class="docutils align-center" id="id1">
 <caption><span class="caption-text">tSNE scatter plot of Cancer patients.</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><img alt="fig1" src="_images/cancer_scatter_no_color.png" /></p></td>
 <td><p><img alt="fig2" src="_images/cancer_scatter.png" /></p></td>
@@ -349,20 +335,6 @@ The second columns: <em>P</em> stands for P-value, which is the computed signifi
 A disadvantage of the P value is the limitation of machine precision. This may end up with P-value of 0. The logP is more interesting as these are not capped by machine precision (lower is better).
 Note that the target labels in <em>y</em> can be significantly enriched more then once. This means that certain <em>y</em> are enriched for multiple variables. This may occur because we may need to better estimate the cluster labels or its a mixed group or something else.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 3%" />
-<col style="width: 11%" />
-<col style="width: 9%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 12%" />
-<col style="width: 10%" />
-<col style="width: 8%" />
-<col style="width: 3%" />
-<col style="width: 11%" />
-<col style="width: 9%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"></th>
 <th class="head"><p>category_label</p></th>
@@ -728,10 +700,6 @@ Note that the target labels in <em>y</em> can be significantly enriched more the
 </div>
 <table class="docutils align-center" id="id2">
 <caption><span class="caption-text">Scatter plot of detected cluster and significantly enriched cancer labels for each of the clusters.</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><img alt="fig3" src="_images/cancer_clusters.png" /></p></td>
 <td><p><img alt="fig4" src="_images/cancer_clusters_enriched.png" /></p></td>

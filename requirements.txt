@@ -1,4 +1,3 @@
-wget
 matplotlib
 numpy
 pandas
@@ -14,6 +13,6 @@ ismember
 imagesc
 df2onehot
 classeval
-d3graph=='1.0.3'
 colourmap
 pypickle
+requests

@@ -11,6 +11,7 @@ import pandas as pd
 from hnet import hnet
 hn = hnet()
 df = hn.import_example('titanic')
+
 del df['PassengerId']
 del df['Name']
 results_new = hn.association_learning(df, verbose=4)
@@ -22,8 +23,11 @@ hn.plot(node_color='cluster')
 # Feature importance
 hn.plot_feat_importance(marker_size=50)
 
-# hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
-hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/', node_color='cluster')
+hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
+hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/d3graph.html', node_color='cluster')
+
+hn.d3heatmap()
+hn.d3graph()
 
 # %%
 from hnet import hnet
@@ -153,7 +157,7 @@ results = hn.association_learning(df)
 hn.d3heatmap(figsize=(1000,1000))
 hn.d3graph(node_color='cluster')
 hn.d3graph(min_edges=5)
-# hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
+# hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/income.html')
 
 
 # %% Import examples
@@ -308,7 +312,7 @@ print(tabulate(df.head(), tablefmt="grid", headers="keys"))
 df = hn.import_example('retail')
 hn1 = hnet()
 results1 = hn1.association_learning(df)
-hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/marketing_data_online_retail_small/')
+hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/marketing_data_online_retail_small/d3graph.html')
 # hn1.plot()
 # hn1.d3graph()
 # hn1.heatmap()
@@ -318,7 +322,7 @@ hn1.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/market
 df = hn.import_example('waterpump')
 hn2 = hnet(black_list=['id','longitude','latitude'])
 results2 = hn2.association_learning(df)
-hn2.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/waterpump/')
+hn2.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/waterpump/d3graph.html')
 # hn2.plot()
 # hn2.d3graph()
 # hn2.heatmap()
@@ -338,7 +342,7 @@ hn3 = hnet(dtypes=['None', 'cat', 'cat', 'cat', 'num',
 
 results3 = hn3.association_learning(df)
 hn3.d3graph()
-# hn3.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/fifa_2018/')
+# hn3.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/fifa_2018/d3graph.html')
 # hn3.plot()
 # hn3.heatmap()
 
@@ -368,7 +372,7 @@ results = hn.association_learning(df)
 
 out = tabulate(hn.results['rules'].iloc[1:,:].head(), tablefmt="grid", headers="keys")
 
-hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/')
+hn.d3graph(savepath='D://PY/REPOSITORIES/erdogant.github.io/docs/d3graph/income/d3graph.html')
 hn.d3graph(min_edges=1)
 
 # %% Covid-19 dataset

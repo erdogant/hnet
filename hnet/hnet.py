@@ -9,11 +9,11 @@
 
 # %% Libraries
 import matplotlib.pyplot as plt
+import requests
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import os
-import wget
 import networkx as nx
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from scipy.stats import combine_pvalues
@@ -25,9 +25,6 @@ import colourmap
 import df2onehot
 import imagesc
 from ismember import ismember
-from d3blocks import D3Blocks
-# from d3heatmap import d3heatmap as d3
-# from d3graph import d3graph as d3graphs
 import warnings
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
@@ -49,7 +46,7 @@ class hnet():
         5. Multiple test correction: Declaring significance for node-links.
 
     The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices.
-    The adjacency matrix can then be examined as a network representation using d3graph.
+    The adjacency matrix can then be examined as a network representation using D3blocks.
 
     Parameters
     ----------
@@ -277,7 +274,7 @@ class hnet():
         adjmatlogP[adjmatlogP<=0]=0
         # Replace inf values with maximum value that is possible
         # adjmatlogP[np.isinf(adjmatlogP)]=323
-        for (columnName, columnData) in adjmatlogP.iteritems():
+        for (columnName, columnData) in adjmatlogP.items():
             columnData.loc[~(columnData!= np.inf)] = columnData.loc[columnData!= np.inf].max()
         return adjmatP, adjmatlogP
 
@@ -417,6 +414,7 @@ class hnet():
 
         """
         if verbose>=3: print('[hnet] >Building dynamic heatmaps using d3graph..')
+        if savepath is None: savepath=''
         # Check results
         status = self._check_results()
         if not status: return None
@@ -441,19 +439,17 @@ class hnet():
             vmax = np.max(np.max(simmatLogP)) / 10
 
         # Initialize
+        if not _check_import_d3blocks(): return None
+        from d3blocks import D3Blocks
         d3 = D3Blocks()
         # Make heatmap
-        df_vector = d3.adjmat2vec(simmatLogP.T)
-        d3.heatmap(df_vector, showfig=True, title='Hnet d3heatmap', filepath=savepath, figsize=figsize, stroke='red', vmax=vmax, color=labx)
-        # Make heatmap
-        # if verbose>=3: print('[hnet] >Creating output html..')
-        # paths = d3.heatmap(simmatLogP, color=labx, path=savepath, title='Hnet d3heatmap', vmax=vmax, width=figsize[1], height=figsize[0], showfig=showfig, stroke='red', verbose=verbose)
+        d3.heatmap(simmatLogP, showfig=True, title='Hnet D3blocks', filepath=savepath, figsize=figsize, stroke='red', vmax=vmax, classlabel='cluster')
 
         # Return
         results = {}
         results['paths'] = d3.config['filepath']
         results['clust_labx'] = labx
-        return(results)
+        return results
 
     # Make network d3
     def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, elastic=False, verbose=3):
@@ -537,7 +533,10 @@ class hnet():
             labx='cluster'
         else:
             labx = label_encoder.fit_transform(labx)
-
+        
+        if not _check_import_d3blocks(): return None
+        from d3blocks import D3Blocks
+        d3 = D3Blocks()
         if verbose>=3: print('[hnet] >Creating d3graph..')
         # Initialize
         d3 = D3Blocks()
@@ -655,7 +654,7 @@ class hnet():
         # Set weights for edges
         adjmatLogWEIGHT = adjmatLog.copy()
         np.fill_diagonal(adjmatLogWEIGHT.values, 0)
-        adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values, data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT), columns=adjmatLog.columns)
+        adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values.astype(str), data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT.values), columns=adjmatLog.columns.astype(str))
 
         # Set size for node
         IA, IB = ismember(adjmatLog.columns, self.results['counts'][:, 0])
@@ -1018,74 +1017,6 @@ def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n,
     return out
 
 
-# %% Import example dataset from github.
-def import_example(data='titanic', url=None, sep=',', verbose=3):
-    """Import example dataset from github source.
-
-    Description
-    -----------
-    Import one of the few datasets from github source or specify your own download url link.
-
-    Parameters
-    ----------
-    data : str
-        Name of datasets: 'sprinkler', 'grocery', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
-    url : str
-        url link to to dataset.
-    verbose : int, (default: 3)
-        Print message to screen.
-
-    Returns
-    -------
-    pd.DataFrame()
-        Dataset containing mixed features.
-
-    """
-    if url is None:
-        if data=='sprinkler':
-            url='https://erdogant.github.io/datasets/sprinkler.zip'
-        elif data=='titanic':
-            url='https://erdogant.github.io/datasets/titanic_train.zip'
-        elif data=='student':
-            url='https://erdogant.github.io/datasets/student_train.zip'
-        elif data=='cancer':
-            url='https://erdogant.github.io/datasets/cancer_dataset.zip'
-        elif data=='fifa':
-            url='https://erdogant.github.io/datasets/FIFA_2018.zip'
-        elif data=='waterpump':
-            url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
-        elif data=='grocery':
-            url='https://erdogant.github.io/datasets/grocery_products_purchase.zip'
-            sep=';'
-    else:
-        data = wget.filename_from_url(url)
-
-    if url is None:
-        if verbose>=3: print('[hnet] >Nothing to download.')
-        return None
-
-    curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-    PATH_TO_DATA = os.path.join(curpath, wget.filename_from_url(url))
-    if not os.path.isdir(curpath):
-        os.makedirs(curpath, exist_ok=True)
-
-    # Check file exists.
-    if not os.path.isfile(PATH_TO_DATA):
-        if verbose>=3: print('[hnet] >Downloading [%s] dataset from github source..' %(data))
-        wget.download(url, curpath)
-
-    # Import local dataset
-    if verbose>=3: print('[hnet] >Import dataset [%s]' %(data))
-    df = pd.read_csv(PATH_TO_DATA, sep=sep)
-
-    # Transform data in case of grocery
-    if data=='grocery':
-        df.columns = ['grocery']
-        df = pd.concat([df.drop('grocery', 1), df['grocery'].str.get_dummies(sep=",")], 1).astype(bool)
-    # Return
-    return df
-
-
 # %% Compute fit
 def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=3):
     """Enrichment analysis.
@@ -1338,5 +1269,127 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
         if verbose>=4: print('[hnet] >Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
 
     if verbose>=4: print('')
+
     # Return
-    return(out, simmatP, simmat_labx)
+    return out, simmatP, simmat_labx
+
+
+# %% Import example dataset from github.
+def import_example(data='titanic', url=None, sep=',', verbose=3):
+    """Import example dataset from github source.
+
+    Description
+    -----------
+    Import one of the few datasets from github source or specify your own download url link.
+
+    Parameters
+    ----------
+    data : str
+        * 'sprinkler'
+        * 'titanic'
+        * 'student'
+        * 'fifa'
+        * 'cancer'
+        * 'waterpump'
+        * 'retail'
+        * 'grocery'
+    url : str
+        url link to to dataset.
+
+    Returns
+    -------
+    pd.DataFrame()
+        Dataset containing mixed features.
+
+    """
+    from urllib.parse import urlparse
+
+    if url is None:
+        if data=='sprinkler':
+            url='https://erdogant.github.io/datasets/sprinkler.zip'
+        elif data=='titanic':
+            url='https://erdogant.github.io/datasets/titanic_train.zip'
+        elif data=='student':
+            url='https://erdogant.github.io/datasets/student_train.zip'
+        elif data=='cancer':
+            url='https://erdogant.github.io/datasets/cancer_dataset.zip'
+        elif data=='fifa':
+            url='https://erdogant.github.io/datasets/FIFA_2018.zip'
+        elif data=='waterpump':
+            url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
+        elif data=='retail':
+            url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
+            sep=';'
+        elif data=='grocery':
+            url='https://erdogant.github.io/datasets/grocery_products_purchase.zip'
+            sep=';'
+    else:
+        data = wget.filename_from_url(url)
+
+    if url is None:
+        if verbose>=3: print('Nothing to download.')
+        return None
+
+    curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+    filename = os.path.basename(urlparse(url).path)
+    PATH_TO_DATA = os.path.join(curpath, filename)
+    if not os.path.isdir(curpath):
+        os.makedirs(curpath, exist_ok=True)
+
+    # Check file exists.
+    if not os.path.isfile(PATH_TO_DATA):
+        if verbose>=3: print('Downloading [%s] dataset from github source..' %(data))
+        wget.download(url, PATH_TO_DATA)
+
+    # Import local dataset
+    if verbose>=3: print('Import dataset [%s]' %(data))
+    df = pd.read_csv(PATH_TO_DATA, sep=sep)
+
+    # Transform data in case of grocery
+    if data=='grocery':
+        # Split the column by commas
+        df = df.iloc[:, 0].str.split(',', expand=True)
+        # Rename columns
+        df.columns = [f'Product {i+1}' for i in range(df.shape[1])]
+
+    # Return
+    return df
+
+
+# %% Retrieve files files.
+class wget:
+    """Retrieve file from url."""
+
+    def filename_from_url(url):
+        """Return filename."""
+        return os.path.basename(url)
+
+    def download(url, writepath):
+        """Download.
+
+        Parameters
+        ----------
+        url : str.
+            Internet source.
+        writepath : str.
+            Directory to write the file.
+
+        Returns
+        -------
+        None.
+
+        """
+        r = requests.get(url, stream=True)
+        with open(writepath, "wb") as fd:
+            for chunk in r.iter_content(chunk_size=1024):
+                fd.write(chunk)
+
+
+def _check_import_d3blocks(verbose=3):
+    try:
+        import d3blocks
+        status = True
+    except:
+        if verbose>=3: print('Error: The library [d3blocks] is not installed by default. Try: <pip install d3blocks>')
+        status = False
+    return status

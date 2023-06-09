@@ -14,15 +14,13 @@ from hnet.adjmat_vec import (
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 # module level doc-string
 __doc__ = """
 HNET - Graphical Hypergeometric networks.
 =====================================================================
 
-Description
------------
 Creation of networks from datasets with mixed datatypes and with unknown function.
 Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.
 HNet (graphical Hypergeometric Networks) is a method where associations across variables are tested for significance by statistical inference.

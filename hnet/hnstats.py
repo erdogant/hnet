@@ -551,6 +551,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     if verbose>=4: print('[hnet] >preprocessing: Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
+    df.columns = make_elements_unique(df.columns.values)
     df.reset_index(drop=True, inplace=True)
 
     # Convert bool columns to integer values
@@ -592,6 +593,16 @@ def _tempdir(savepath):
 
     return(savepath)
 
+
+# %%
+def make_elements_unique(X):
+    uix, counts = np.unique(X, return_counts=True)
+    idx = np.where(counts>1)[0]
+    for i in idx:
+        Iloc = uix[i]==X
+        lst = X[Iloc]
+        X[Iloc] = [f"{element}_{index+1}" for index, element in enumerate(lst)]
+    return X
 
 # %% Filter adjacency matrix
 def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):

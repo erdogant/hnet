@@ -13,8 +13,7 @@ import pandas as pd
 import numpy as np
 from community import community_louvain
 import networkx as nx
-from sklearn.preprocessing import minmax_scale
-from sklearn.preprocessing import MinMaxScaler 
+from sklearn.preprocessing import minmax_scale, MinMaxScaler
 import df2onehot
 from ismember import ismember
 import classeval as clf

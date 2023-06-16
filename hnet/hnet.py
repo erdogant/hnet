@@ -370,8 +370,6 @@ class hnet():
     def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
         """Interactive heatmap creator.
 
-        Description
-        -----------
         This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
         d3heatmap is integrated into hnet and uses the -log10(P-value) adjacency matrix.
         Each column and index name represents a node whereas values >0 in the matrix represents an edge.
@@ -454,8 +452,6 @@ class hnet():
     def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, elastic=False, verbose=3):
         """Interactive network creator.
 
-        Description
-        -----------
         This function creates a interactive and stand-alone network that is build on d3 javascript.
         d3graph is integrated into hnet and uses the -log10(P-value) adjacency matrix.
         Each column and index name represents a node whereas values >0 in the matrix represents an edge.
@@ -569,8 +565,6 @@ class hnet():
     def plot(self, summarize=False, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
         """Make plot static network plot of the model results.
 
-        Description
-        -----------
         The results of hnet can be vizualized in several manners, one of them is a static network plot.
 
         Parameters
@@ -733,14 +727,12 @@ class hnet():
         Gout['G'] = G
         Gout['labx'] = labx
         Gout['pos'] = pos
-        return(Gout)
+        return Gout
 
     # Make plot of the association_learning
     def heatmap(self, summarize=False, cluster=False, figsize=[15, 15], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
         """Plot static heatmap.
 
-        Description
-        -----------
         A heatmap can be of use when the results becomes too large to plot in a network.
 
         Parameters
@@ -811,8 +803,6 @@ class hnet():
     def combined_rules(self, simmatP=None, labx=None, verbose=3):
         """Association testing and combining Pvalues using fishers-method.
 
-        Description
-        -----------
         Multiple variables (antecedents) can be associated to a single variable (consequent).
         To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.
 
@@ -872,31 +862,33 @@ class hnet():
         df_rules.sort_values(by=['Pfisher'], ascending=True, inplace=True)
         df_rules.reset_index(inplace=True, drop=True)
         # Return
-        return(df_rules)
+        return df_rules
 
     def import_example(self, data='titanic', url=None, sep=',', verbose=3):
         """Import example dataset from github source.
 
-        Description
-        -----------
         Import one of the few datasets from github source or specify your own download url link.
 
         Parameters
         ----------
         data : str
-            Name of datasets: 'sprinkler', 'grocery', 'titanic', 'student', 'fifa', 'cancer', 'waterpump'
+            Example of a few datasets are:
+            Name of datasets: 'sprinkler', 'titanic', 'student', 'fifa', 'cancer', 'waterpump', 'retail'
         url : str
             url link to to dataset.
-        verbose : int, (default: 3)
-            Print message to screen.
 
         Returns
         -------
         pd.DataFrame()
             Dataset containing mixed features.
 
+        References
+        ----------
+            * https://github.com/erdogant/datazets
+
         """
-        return import_example(data=data, url=url, sep=sep, verbose=verbose)
+        return dz.get(data=data, url=url, sep=sep)
+        # return import_example(data=data, url=url, sep=sep, verbose=verbose)
 
     # Save model
     def save(self, filepath='hnet_model.pkl', overwrite=False, verbose=3):
@@ -1020,8 +1012,6 @@ def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n,
 def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=3):
     """Enrichment analysis.
 
-    Description
-    -----------
     Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
     The input dataset is converted into a one-hot dense array based on automatic typing ``dtypes='pandas'`` or user defined dtypes.
 
@@ -1116,15 +1106,13 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     out = pd.DataFrame(out)
     # Return
     if config['verbose']>=3: print('[hnet] >Fin')
-    return(out)
+    return out
 
 
 # %% Make adjacency matrix symmetric with repect to the diagonal
 def to_undirected(adjmat, method='logp', verbose=3):
     """Make adjacency matrix symmetric.
 
-    Description
-    -----------
     The adjacency matrix resulting from hnet is not neccesarily symmetric due to the statistics being used.
     In some cases, a symmetric matrix can be usefull. This function makes sure that values above the diagonal are the same as below the diagonal.
     Values above and below the diagnal are combined using the max or min value.
@@ -1175,15 +1163,13 @@ def to_undirected(adjmat, method='logp', verbose=3):
     # Make dataframe and return
     adjmatS=pd.DataFrame(index=index, data=adjmatS, columns=columns, dtype=float)
     # Return
-    return(adjmatS)
+    return adjmatS
 
 
 # %% Comparison of two networks
 def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
     """Compare two adjacency matrices and plot the differences.
 
-    Description
-    -----------
     Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame.
     The columns and rows between both matrices are matched if not ordered similarly.
 
@@ -1225,7 +1211,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
                                                    width=width,
                                                    height=height,
                                                    verbose=verbose)
-    return(scores, adjmat_diff)
+    return scores, adjmat_diff
 
 
 # %% Do the math
@@ -1271,117 +1257,6 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
 
     # Return
     return out, simmatP, simmat_labx
-
-
-# %% Import example dataset from github.
-def import_example(data='titanic', url=None, sep=',', verbose=3):
-    """Import example dataset from github source.
-
-    Description
-    -----------
-    Import one of the few datasets from github source or specify your own download url link.
-
-    Parameters
-    ----------
-    data : str
-        * 'sprinkler'
-        * 'titanic'
-        * 'student'
-        * 'fifa'
-        * 'cancer'
-        * 'waterpump'
-        * 'retail'
-        * 'grocery'
-    url : str
-        url link to to dataset.
-
-    Returns
-    -------
-    pd.DataFrame()
-        Dataset containing mixed features.
-
-    """
-    from urllib.parse import urlparse
-
-    if url is None:
-        if data=='sprinkler':
-            url='https://erdogant.github.io/datasets/sprinkler.zip'
-        elif data=='titanic':
-            url='https://erdogant.github.io/datasets/titanic_train.zip'
-        elif data=='student':
-            url='https://erdogant.github.io/datasets/student_train.zip'
-        elif data=='cancer':
-            url='https://erdogant.github.io/datasets/cancer_dataset.zip'
-        elif data=='fifa':
-            url='https://erdogant.github.io/datasets/FIFA_2018.zip'
-        elif data=='waterpump':
-            url='https://erdogant.github.io/datasets/waterpump/waterpump_test.zip'
-        elif data=='retail':
-            url='https://erdogant.github.io/datasets/marketing_data_online_retail_small.zip'
-            sep=';'
-        elif data=='grocery':
-            url='https://erdogant.github.io/datasets/grocery_products_purchase.zip'
-            sep=';'
-    else:
-        data = wget.filename_from_url(url)
-
-    if url is None:
-        if verbose>=3: print('Nothing to download.')
-        return None
-
-    curpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-    filename = os.path.basename(urlparse(url).path)
-    PATH_TO_DATA = os.path.join(curpath, filename)
-    if not os.path.isdir(curpath):
-        os.makedirs(curpath, exist_ok=True)
-
-    # Check file exists.
-    if not os.path.isfile(PATH_TO_DATA):
-        if verbose>=3: print('Downloading [%s] dataset from github source..' %(data))
-        wget.download(url, PATH_TO_DATA)
-
-    # Import local dataset
-    if verbose>=3: print('Import dataset [%s]' %(data))
-    df = pd.read_csv(PATH_TO_DATA, sep=sep)
-
-    # Transform data in case of grocery
-    if data=='grocery':
-        # Split the column by commas
-        df = df.iloc[:, 0].str.split(',', expand=True)
-        # Rename columns
-        df.columns = [f'Product {i+1}' for i in range(df.shape[1])]
-
-    # Return
-    return df
-
-
-# %% Retrieve files files.
-class wget:
-    """Retrieve file from url."""
-
-    def filename_from_url(url):
-        """Return filename."""
-        return os.path.basename(url)
-
-    def download(url, writepath):
-        """Download.
-
-        Parameters
-        ----------
-        url : str.
-            Internet source.
-        writepath : str.
-            Directory to write the file.
-
-        Returns
-        -------
-        None.
-
-        """
-        r = requests.get(url, stream=True)
-        with open(writepath, "wb") as fd:
-            for chunk in r.iter_content(chunk_size=1024):
-                fd.write(chunk)
 
 
 def _check_import_d3blocks(verbose=3):

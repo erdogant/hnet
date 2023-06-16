@@ -41,7 +41,7 @@ hn.d3graph()
 # %%
 from hnet import hnet
 hn = hnet()
-df = hn.import_example('grocery')
+df = hn.import_example('grocery_products')
 results = hn.association_learning(df)
 hn.d3graph(summarize=True)
 hn.d3heatmap(summarize=True)

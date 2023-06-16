@@ -9,7 +9,7 @@
 
 # %% Libraries
 import matplotlib.pyplot as plt
-import requests
+# import requests
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -26,6 +26,7 @@ import df2onehot
 import imagesc
 from ismember import ismember
 import warnings
+import datazets as dz
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
 
@@ -34,8 +35,6 @@ label_encoder = LabelEncoder()
 class hnet():
     """HNET - Graphical Hypergeometric networks.
 
-    Description
-    -----------
     This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input DataFrame.
 
     A multi-step process is performed which consisting 5 steps.

@@ -2,6 +2,15 @@
 # print(dir(hnet))
 # print(hnet.__version__)
 
+# %% test examples
+
+from hnet import hnet
+hn = hnet()
+df = hn.import_example()
+
+import hnet
+df=hnet.import_example('titanic')
+
 # %%
 import numpy as np
 import pandas as pd

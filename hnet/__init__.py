@@ -4,7 +4,7 @@ from hnet.hnet import (
     enrichment,
     compare_networks,
     to_undirected,
-    import_example,
+    # import_example,
     )
 
 from hnet.adjmat_vec import (
@@ -12,9 +12,11 @@ from hnet.adjmat_vec import (
     adjmat2vec,
     )
 
+from datazets import get as import_example
+
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 # module level doc-string
 __doc__ = """

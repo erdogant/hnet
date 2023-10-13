@@ -20,10 +20,6 @@
 ## 
 
 
-## Blog
-
-[**Read more details and usage about HNet in this blog!**](https://erdogant.github.io/hnet/pages/html/Documentation.html#)
-
 ## Dashboard HNet!
 
 [**HNet Dashboard**](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface)

@@ -10,7 +10,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-Docs-Green)](https://arxiv.org/abs/2005.04679)
 [![Substack](https://img.shields.io/badge/Substack-Blog-green)](https://erdogant.substack.com/p/advanced-network-analysis-to-explore)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb)
-[![DOI](https://zenodo.org/badge/226647104.svg)](https://zenodo.org/badge/latestdoi/226647104)
+<!-- [![DOI](https://zenodo.org/badge/226647104.svg)](https://zenodo.org/badge/latestdoi/226647104) -->
 
 <p align="left">
   <a href="https://erdogant.substack.com/p/advanced-network-analysis-to-explore">

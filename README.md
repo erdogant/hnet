@@ -11,7 +11,12 @@
 [![Medium](https://img.shields.io/badge/Medium-Blog-green)](https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/erdogant/hnet/blob/master/notebooks/hnet.ipynb)
 [![DOI](https://zenodo.org/badge/226647104.svg)](https://zenodo.org/badge/latestdoi/226647104)
-<!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
+
+<p align="left">
+  <a href="https://open.substack.com/pub/erdogant/p/advanced-network-analysis-to-explore?r=ffc3n&utm_campaign=post&utm_medium=web">
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/blog_link.jpg" width="600" />
+  </a>
+</p>
 
 
 # HNET - Association ruled based networks using graphical Hypergeometric Networks.

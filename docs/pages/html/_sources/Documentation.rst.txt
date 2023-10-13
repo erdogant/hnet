@@ -4,11 +4,11 @@ Sponsor
 .. include:: sponsor.rst
 
 
-Medium Blog
+Blog
 ############
 
 .. note::
-	`Read the usage of HNet at Medium <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
+	`A structured blog about the usage of HNet can be found here <https://erdogant.substack.com/p/advanced-network-analysis-to-explore>`_
 
 Article
 ############

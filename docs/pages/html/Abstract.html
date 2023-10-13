@@ -12,9 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=68f0eb34"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
             hnet
           </a>
               <div class="version">
-                1.2.0
+                1.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -89,7 +91,7 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#blog">Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
@@ -99,9 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html"><code class="docutils literal notranslate"><span class="pre">compare_networks()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment"><code class="docutils literal notranslate"><span class="pre">enrichment()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -133,7 +133,7 @@
            <div itemprop="articleBody">
              
   <section id="abstract">
-<h1>Abstract<a class="headerlink" href="#abstract" title="Permalink to this heading"></a></h1>
+<h1>Abstract<a class="headerlink" href="#abstract" title="Link to this heading"></a></h1>
 <dl class="simple">
 <dt>Background</dt><dd><p>Real-world data often contain measurements with both continuous and discrete values. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships between variables. The data understanding phase is an important step in the data-mining process, however, without making any assumptions on the data, the search space is super-exponential in the number of variables.</p>
 </dd>
@@ -146,7 +146,7 @@
 </dl>
 </section>
 <section id="schematic-overview">
-<h1>Schematic overview<a class="headerlink" href="#schematic-overview" title="Permalink to this heading"></a></h1>
+<h1>Schematic overview<a class="headerlink" href="#schematic-overview" title="Link to this heading"></a></h1>
 <p>The schematic overview of our approach is as following:</p>
 <figure class="align-default" id="id1">
 <img alt="_images/fig1.png" src="_images/fig1.png" />

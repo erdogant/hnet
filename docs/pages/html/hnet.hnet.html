@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Description &mdash; hnet hnet documentation</title>
+  <title>&lt;no title&gt; &mdash; hnet hnet documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -12,9 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=68f0eb34"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,7 +35,7 @@
             hnet
           </a>
               <div class="version">
-                1.2.0
+                1.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -88,7 +90,7 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#blog">Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
@@ -112,13 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#hnet.hnet.hnet.save"><code class="docutils literal notranslate"><span class="pre">hnet.save()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hnet.hnet.wget.download"><code class="docutils literal notranslate"><span class="pre">wget.download()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#hnet.hnet.wget.filename_from_url"><code class="docutils literal notranslate"><span class="pre">wget.filename_from_url()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -139,7 +135,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Description</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/hnet.hnet.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -149,60 +145,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="module-hnet.hnet"></span><p>HNET: Graphical Hypergeometric-networks.</p>
+  <p id="module-hnet.hnet">HNET: Graphical Hypergeometric-networks.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="hnet.hnet.compare_networks">
-<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">compare_networks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjmat_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.compare_networks" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">compare_networks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjmat_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.compare_networks" title="Link to this definition"></a></dt>
 <dd><p>Compare two adjacency matrices and plot the differences.</p>
-<section id="description">
-<h1>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h1>
 <p>Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame.
 The columns and rows between both matrices are matched if not ordered similarly.</p>
-<dl class="field-list">
-<dt class="field-odd">param adjmat_true<span class="colon">:</span></dt>
-<dd class="field-odd"><p>First array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adjmat_true</strong> (<em>pd.DataFrame</em><em>(</em><em>)</em>) – First array.</p></li>
+<li><p><strong>adjmat_pred</strong> (<em>pd.DataFrame</em><em>(</em><em>)</em>) – Second array.</p></li>
+<li><p><strong>pos</strong> (<em>dict</em><em>, </em><em>optional</em>) – Position of the nodes. The default is None.</p></li>
+<li><p><strong>showfig</strong> (<em>Bool</em><em>, </em><em>optional</em>) – Plot figure. The default is True.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the figure. The default is 15.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – Height of the figure. The default is 8.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity. The default is 3.</p></li>
+</ul>
 </dd>
-<dt class="field-even">type adjmat_true<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame()</p>
-</dd>
-<dt class="field-odd">param adjmat_pred<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Second array.</p>
-</dd>
-<dt class="field-even">type adjmat_pred<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame()</p>
-</dd>
-<dt class="field-odd">param pos<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Position of the nodes. The default is None.</p>
-</dd>
-<dt class="field-even">type pos<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict, optional</p>
-</dd>
-<dt class="field-odd">param showfig<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Plot figure. The default is True.</p>
-</dd>
-<dt class="field-even">type showfig<span class="colon">:</span></dt>
-<dd class="field-even"><p>Bool, optional</p>
-</dd>
-<dt class="field-odd">param width<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Width of the figure. The default is 15.</p>
-</dd>
-<dt class="field-even">type width<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param height<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Height of the figure. The default is 8.</p>
-</dd>
-<dt class="field-even">type height<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Verbosity. The default is 3.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><ul>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul>
 <li><p><em>tuple</em> – Output contains a tuple of two elements, the score of matching adjacency matrix and adjacency matrix differences.</p></li>
 <li><p><strong>scores</strong> (<em>dict</em>) – Contains extensive number of keys with various scoring values.</p></li>
 <li><dl class="simple">
@@ -214,77 +177,34 @@ The columns and rows between both matrices are matched if not ordered similarly.
 <p>-1 = Depliction of edge in the first netwwork compared to the second</p>
 </li>
 </ul>
+</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hnet.hnet.enrichment">
-<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Link to this definition"></a></dt>
 <dd><p>Enrichment analysis.</p>
-<section id="id1">
-<h1>Description<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
 <p>Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
 The input dataset is converted into a one-hot dense array based on automatic typing <code class="docutils literal notranslate"><span class="pre">dtypes='pandas'</span></code> or user defined dtypes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param df<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Input Dataframe.</p>
-</dd>
-<dt class="field-even">type df<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataFrame</p>
-</dd>
-<dt class="field-odd">param y<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Response variable.</p>
-</dd>
-<dt class="field-even">type y<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of length df.index</p>
-</dd>
-<dt class="field-odd">param y_min<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Minimal number of samples in a group.. The default is None.</p>
-</dd>
-<dt class="field-even">type y_min<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param alpha<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Significance. The default is 0.05.</p>
-</dd>
-<dt class="field-even">type alpha<span class="colon">:</span></dt>
-<dd class="field-even"><p>float, optional</p>
-</dd>
-<dt class="field-odd">param multtest<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Multiple test correcton. The default is ‘holm’.</p>
-</dd>
-<dt class="field-even">type multtest<span class="colon">:</span></dt>
-<dd class="field-even"><p>String, optional</p>
-</dd>
-<dt class="field-odd">param dtypes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped. The default is ‘pandas’.</p>
-</dd>
-<dt class="field-even">type dtypes<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of length df.columns, optional</p>
-</dd>
-<dt class="field-odd">param specificity<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Configure how numerical data labels are stored.. The default is ‘medium’.</p>
-</dd>
-<dt class="field-even">type specificity<span class="colon">:</span></dt>
-<dd class="field-even"><p>String, optional</p>
-</dd>
-<dt class="field-odd">param excl_background<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name to exclude from the background.
-Example: [‘0.0’]: To remove categorical values with label 0</p>
-</dd>
-<dt class="field-even">type excl_background<span class="colon">:</span></dt>
-<dd class="field-even"><p>String (default : None)</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Print message to screen. The higher the number, the more details. The default is 3.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – Input Dataframe.</p></li>
+<li><p><strong>y</strong> (<em>list</em><em> of </em><em>length df.index</em>) – Response variable.</p></li>
+<li><p><strong>y_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimal number of samples in a group.. The default is None.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Significance. The default is 0.05.</p></li>
+<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>optional</em>) – Multiple test correcton. The default is ‘holm’.</p></li>
+<li><p><strong>dtypes</strong> (<em>list</em><em> of </em><em>length df.columns</em><em>, </em><em>optional</em>) – By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped. The default is ‘pandas’.</p></li>
+<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>optional</em>) – Configure how numerical data labels are stored.. The default is ‘medium’.</p></li>
+<li><p><strong>excl_background</strong> (<em>String</em><em> (</em><em>default : None</em><em>)</em>) – Name to exclude from the background.
+Example: [‘0.0’]: To remove categorical values with label 0</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The higher the number, the more details. The default is 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>pd.DataFrame() with the following columns</em></p></li>
 <li><p><strong>category_label</strong> (<em>str</em>) – Label of the category.</p></li>
 <li><p><strong>P</strong> (<em>float</em>) – Pvalue of the hypergeometric test or Wilcoxon Ranksum.</p></li>
@@ -300,6 +220,7 @@ Example: [‘0.0’]: To remove categorical values with label 0</p>
 <li><p><strong>zscore</strong> (<em>float</em>) – Z-score of the Wilcoxon Ranksum test.</p></li>
 <li><p><strong>nr_not_succes_pop_n</strong> (<em>int</em>) – Number of successes in population.</p></li>
 </ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -309,15 +230,12 @@ Example: [‘0.0’]: To remove categorical values with label 0</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="hnet.hnet.hnet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">hnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_min_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropna</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">hnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_min_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropna</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet" title="Link to this definition"></a></dt>
 <dd><p>HNET - Graphical Hypergeometric networks.</p>
-<section id="id2">
-<h1>Description<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h1>
 <p>This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input DataFrame.</p>
 <dl class="simple">
 <dt>A multi-step process is performed which consisting 5 steps.</dt><dd><ol class="arabic simple">
@@ -332,94 +250,44 @@ Example: [‘0.0’]: To remove categorical values with label 0</p>
 <p>The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices.
 The adjacency matrix can then be examined as a network representation using D3blocks.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param alpha<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Significance to keep only edges with &lt;=alhpa.
-1 : (for all results)</p>
-</dd>
-<dt class="field-even">type alpha<span class="colon">:</span></dt>
-<dd class="field-even"><p>float [0..1], (default : 0.05)</p>
-</dd>
-<dt class="field-odd">param y_min<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Minimum number of samples in a group. Should be [samples&gt;=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
-10, None, 1, etc</p>
-</dd>
-<dt class="field-even">type y_min<span class="colon">:</span></dt>
-<dd class="field-even"><p>int [1..n], where n is the number of samples. (default : 10)</p>
-</dd>
-<dt class="field-odd">param perc_min_num<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Force column (int or float) to be numerical if unique non-zero values are above percentage.</p>
-</dd>
-<dt class="field-even">type perc_min_num<span class="colon">:</span></dt>
-<dd class="field-even"><p>float [None, 0..1], optional</p>
-</dd>
-<dt class="field-odd">param k<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of combinatoric elements to create for the n features</p>
-</dd>
-<dt class="field-even">type k<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, [1..n] , (default : 1)</p>
-</dd>
-<dt class="field-odd">param multtest<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em><em> [</em><em>0..1</em><em>]</em><em>, </em><em>(</em><em>default : 0.05</em><em>)</em>) – Significance to keep only edges with &lt;=alhpa.
+1 : (for all results)</p></li>
+<li><p><strong>y_min</strong> (<em>int</em><em> [</em><em>1..n</em><em>]</em><em>, </em><em>where n is the number</em><em> of </em><em>samples.</em><em> (</em><em>default : 10</em><em>)</em>) – Minimum number of samples in a group. Should be [samples&gt;=y_min]. All groups with less then y_min samples are labeled as _other_ and are not used in the model.
+10, None, 1, etc</p></li>
+<li><p><strong>perc_min_num</strong> (<em>float</em><em> [</em><em>None</em><em>, </em><em>0..1</em><em>]</em><em>, </em><em>optional</em>) – Force column (int or float) to be numerical if unique non-zero values are above percentage.</p></li>
+<li><p><strong>k</strong> (<em>int</em><em>, </em><em>[</em><em>1..n</em><em>] </em><em>, </em><em>(</em><em>default : 1</em><em>)</em>) – Number of combinatoric elements to create for the n features</p></li>
+<li><p><strong>multtest</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'holm'</em><em>)</em>) – <ul>
 <li><p>None: No multiple Test,</p></li>
-<li><p>‘bonferroni’: one-step correction,</p></li>
-<li><p>‘sidak’: one-step correction,</p></li>
-<li><p>‘holm-sidak’: step down method using Sidak adjustments,</p></li>
-<li><p>‘holm’: step-down method using Bonferroni adjustments,</p></li>
-<li><p>‘simes-hochberg’: step-up method  (independent),</p></li>
-<li><p>‘hommel’: closed method based on Simes tests (non-negative),</p></li>
-<li><p>‘fdr_bh’: Benjamini/Hochberg  (non-negative),</p></li>
-<li><p>‘fdr_by’: Benjamini/Yekutieli (negative),</p></li>
-<li><p>‘fdr_tsbh’: two stage fdr correction (non-negative),</p></li>
-<li><p>‘fdr_tsbky’: two stage fdr correction (non-negative)</p></li>
+<li><p>’bonferroni’: one-step correction,</p></li>
+<li><p>’sidak’: one-step correction,</p></li>
+<li><p>’holm-sidak’: step down method using Sidak adjustments,</p></li>
+<li><p>’holm’: step-down method using Bonferroni adjustments,</p></li>
+<li><p>’simes-hochberg’: step-up method  (independent),</p></li>
+<li><p>’hommel’: closed method based on Simes tests (non-negative),</p></li>
+<li><p>’fdr_bh’: Benjamini/Hochberg  (non-negative),</p></li>
+<li><p>’fdr_by’: Benjamini/Yekutieli (negative),</p></li>
+<li><p>’fdr_tsbh’: two stage fdr correction (non-negative),</p></li>
+<li><p>’fdr_tsbky’: two stage fdr correction (non-negative)</p></li>
 </ul>
-</dd>
-<dt class="field-even">type multtest<span class="colon">:</span></dt>
-<dd class="field-even"><p>String, (default : ‘holm’)</p>
-</dd>
-<dt class="field-odd">param dtypes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
-Can also be of the form: [‘cat’,’cat’,’num’,’’,’cat’]</p>
-</dd>
-<dt class="field-even">type dtypes<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of str, (default : ‘pandas’)</p>
-</dd>
-<dt class="field-odd">param specificity<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Configure how numerical data labels are stored. Setting this variable can be of use in the ‘association_learning’ function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
+</p></li>
+<li><p><strong>dtypes</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>(</em><em>default : 'pandas'</em><em>)</em>) – list strings, example: [‘cat’,’num’,’’] of length y. By default the dtype is determined based on the pandas dataframe. Empty ones [‘’] are skipped.
+Can also be of the form: [‘cat’,’cat’,’num’,’’,’cat’]</p></li>
+<li><p><strong>specificity</strong> (<em>String</em><em>, </em><em>(</em><em>default : 'medium'</em><em>)</em>) – Configure how numerical data labels are stored. Setting this variable can be of use in the ‘association_learning’ function for the creation of a network ([None] will glue most numerical labels together whereas [high] mostly will not).
 * None : No additional information in the labels,
 * ‘low’ : ‘high’ or ‘low’ are included that represents significantly higher or lower assocations compared to the rest-group,
 * ‘medium’: ‘high’ or ‘low’ are included with 1 decimal behind the comma,
-* ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p>
+* ‘high’ : ‘high’ or ‘low’ are included with 3 decimal behind the comma.</p></li>
+<li><p><strong>dropna</strong> (<em>Bool</em><em>, </em><em>[</em><em>True</em><em>,</em><em>False</em><em>] </em><em>(</em><em>Default : True</em><em>)</em>) – Drop rows/columns in adjacency matrix that showed no significance</p></li>
+<li><p><strong>excl_background</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>[</em><em>0</em><em>]</em><em>, </em><em>[</em><em>0</em><em>, </em><em>'0.0'</em><em>, </em><em>'male'</em><em>, </em><em>...</em><em>]</em><em>,  </em><em>(</em><em>Default: None</em><em>)</em>) – Remove values/strings that labeled as background. As an example, in a two-class approach with [0,1], the 0 is usually the background and not of interest.
+Example: ‘0.0’: To remove categorical values with label 0</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+</ul>
 </dd>
-<dt class="field-even">type specificity<span class="colon">:</span></dt>
-<dd class="field-even"><p>String, (default : ‘medium’)</p>
-</dd>
-<dt class="field-odd">param dropna<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Drop rows/columns in adjacency matrix that showed no significance</p>
-</dd>
-<dt class="field-even">type dropna<span class="colon">:</span></dt>
-<dd class="field-even"><p>Bool, [True,False] (Default : True)</p>
-</dd>
-<dt class="field-odd">param excl_background<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Remove values/strings that labeled as background. As an example, in a two-class approach with [0,1], the 0 is usually the background and not of interest.
-Example: ‘0.0’: To remove categorical values with label 0</p>
-</dd>
-<dt class="field-even">type excl_background<span class="colon">:</span></dt>
-<dd class="field-even"><p>list or None, [0], [0, ‘0.0’, ‘male’, …],  (Default: None)</p>
-</dd>
-<dt class="field-odd">param black_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p>
-</dd>
-<dt class="field-even">type black_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param white_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p>
-</dd>
-<dt class="field-even">type white_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
 <dt>simmatP<span class="classifier">pd.DataFrame()</span></dt><dd><p>Adjacency matrix containing P-values between variable assocations.</p>
 </dd>
 <dt>simmatLogP<span class="classifier">pd.DataFrame()</span></dt><dd><p>-log10(P-value) of the simmatP.</p>
@@ -431,9 +299,10 @@ Example: ‘0.0’: To remove categorical values with label 0</p>
 <dt>counts<span class="classifier">list of str</span></dt><dd><p>Relative counts for the labels based on the number of successes in population.</p>
 </dd>
 </dl>
+</p>
 </dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict()</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -462,7 +331,7 @@ Example: ‘0.0’: To remove categorical values with label 0</p>
 </ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.association_learning">
-<span class="sig-name descname"><span class="pre">association_learning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.association_learning" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">association_learning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.association_learning" title="Link to this definition"></a></dt>
 <dd><p>Learn the associations in the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -496,27 +365,19 @@ Example: ‘0.0’: To remove categorical values with label 0</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.combined_rules">
-<span class="sig-name descname"><span class="pre">combined_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simmatP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.combined_rules" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">combined_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simmatP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.combined_rules" title="Link to this definition"></a></dt>
 <dd><p>Association testing and combining Pvalues using fishers-method.</p>
-<section id="id3">
-<h2>Description<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
 <p>Multiple variables (antecedents) can be associated to a single variable (consequent).
 To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param simmatP<span class="colon">:</span></dt>
-<dd class="field-odd"><p>simmilarity matrix</p>
-</dd>
-<dt class="field-even">type simmatP<span class="colon">:</span></dt>
-<dd class="field-even"><p>matrix</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Print message to screen. The higher the number, the more details. The default is 3.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>simmatP</strong> (<em>matrix</em>) – simmilarity matrix</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The higher the number, the more details. The default is 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>pd.DataFrame()</em> – Dataset containing antecedents and consequents. The strongest connection will be sorted on top.
 The columns are as following:</p></li>
 <li><p><em>antecedents_labx</em> – Generic label name.</p></li>
@@ -524,6 +385,7 @@ The columns are as following:</p></li>
 <li><p><em>consequents</em> – Specific label names that are the result of the antecedents.</p></li>
 <li><p><em>Pfisher</em> – Combined P-value</p></li>
 </ul>
+</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -535,314 +397,148 @@ The columns are as following:</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.compute_associations">
-<span class="sig-name descname"><span class="pre">compute_associations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simmatP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simmat_labx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_labx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.compute_associations" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">compute_associations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simmatP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simmat_labx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_labx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.compute_associations" title="Link to this definition"></a></dt>
 <dd><p>Association learning on the processed data.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.d3graph">
-<span class="sig-name descname"><span class="pre">d3graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[6,</span> <span class="pre">15]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1500,</span> <span class="pre">1500)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3graph" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">d3graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[6,</span> <span class="pre">15]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1500,</span> <span class="pre">1500)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elastic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3graph" title="Link to this definition"></a></dt>
 <dd><p>Interactive network creator.</p>
-<section id="id4">
-<h2>Description<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <p>This function creates a interactive and stand-alone network that is build on d3 javascript.
 d3graph is integrated into hnet and uses the -log10(P-value) adjacency matrix.
 Each column and index name represents a node whereas values &gt;0 in the matrix represents an edge.
 Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
 The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the category names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param self<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The output of .association_learning()</p>
-</dd>
-<dt class="field-even">type self<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object</p>
-</dd>
-<dt class="field-odd">param summarize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Show the results based on categoric or label-specific associations.
-True: Summrize based on the categories
-False: All associations across labels</p>
-</dd>
-<dt class="field-even">type summarize<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, (default: False)</p>
-</dd>
-<dt class="field-odd">param node_size_limits<span class="colon">:</span></dt>
-<dd class="field-odd"><p>node sizes are scaled between [min,max] values. The default is [6,15].</p>
-</dd>
-<dt class="field-even">type node_size_limits<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple</p>
-</dd>
-<dt class="field-odd">param savepath<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Save the figure in specified path.</p>
-</dd>
-<dt class="field-even">type savepath<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param node_color<span class="colon">:</span></dt>
-<dd class="field-odd"><p>color nodes based on clustering or by label colors.</p>
-</dd>
-<dt class="field-even">type node_color<span class="colon">:</span></dt>
-<dd class="field-even"><p>None or ‘cluster’ default : None</p>
-</dd>
-<dt class="field-odd">param directed<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Create network using directed edges (arrows).</p>
-</dd>
-<dt class="field-even">type directed<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, default is True.</p>
-</dd>
-<dt class="field-odd">param threshold<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p>
-</dd>
-<dt class="field-even">type threshold<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param black_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p>
-</dd>
-<dt class="field-even">type black_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param white_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p>
-</dd>
-<dt class="field-even">type white_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param min_edges<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Edges are only shown if a node has at least min_edges.</p>
-</dd>
-<dt class="field-even">type min_edges<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param showfig<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Plot figure to screen. The default is True.</p>
-</dd>
-<dt class="field-even">type showfig<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, optional</p>
-</dd>
-<dt class="field-odd">param figsize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Size of the figure in the browser, [height,width]. The default is [1500,1500].</p>
-</dd>
-<dt class="field-even">type figsize<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>(</em><em>default: False</em><em>)</em>) – Show the results based on categoric or label-specific associations.
+True: Summrize based on the categories
+False: All associations across labels</p></li>
+<li><p><strong>node_size_limits</strong> (<em>tuple</em>) – node sizes are scaled between [min,max] values. The default is [6,15].</p></li>
+<li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
+<li><p><strong>node_color</strong> (<em>None</em><em> or </em><em>'cluster' default : None</em>) – color nodes based on clustering or by label colors.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
+<li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure in the browser, [height,width]. The default is [1500,1500].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>dict</strong> (<em>containing various results derived from network.</em>)</p></li>
 <li><p><strong>G</strong> (<em>graph</em>) – Graph generated by networkx.</p></li>
 <li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
 <li><p><strong>labx</strong> (<em>array-like</em>) – Cluster labels.</p></li>
 </ul>
+</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.d3heatmap">
-<span class="sig-name descname"><span class="pre">d3heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(700,</span> <span class="pre">700)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3heatmap" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">d3heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(700,</span> <span class="pre">700)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.d3heatmap" title="Link to this definition"></a></dt>
 <dd><p>Interactive heatmap creator.</p>
-<section id="id5">
-<h2>Description<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
 <p>This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
 d3heatmap is integrated into hnet and uses the -log10(P-value) adjacency matrix.
 Each column and index name represents a node whereas values &gt;0 in the matrix represents an edge.
 Node links are build from rows to columns. Building the edges from row to columns only matters in directed cases.
 The network nodes and edges are adjusted in weight based on hte -log10(P-value), and colors are based on the category names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param self<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The output of .association_learning()</p>
-</dd>
-<dt class="field-even">type self<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object</p>
-</dd>
-<dt class="field-odd">param summarize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Show the results based on categoric or label-specific associations.
-True: Summrize based on the categories
-False: All associations across labels</p>
-</dd>
-<dt class="field-even">type summarize<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, (default: False)</p>
-</dd>
-<dt class="field-odd">param savepath<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Save the figure in specified path.</p>
-</dd>
-<dt class="field-even">type savepath<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param directed<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Create network using directed edges (arrows).</p>
-</dd>
-<dt class="field-even">type directed<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, default is True.</p>
-</dd>
-<dt class="field-odd">param threshold<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p>
-</dd>
-<dt class="field-even">type threshold<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param black_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p>
-</dd>
-<dt class="field-even">type black_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param white_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p>
-</dd>
-<dt class="field-even">type white_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param min_edges<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Edges are only shown if a node has at least min_edges.</p>
-</dd>
-<dt class="field-even">type min_edges<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param showfig<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Plot figure to screen. The default is True.</p>
-</dd>
-<dt class="field-even">type showfig<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, optional</p>
-</dd>
-<dt class="field-odd">param figsize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Size of the figure in the browser, [height,width]. The default is [1500,1500].</p>
-</dd>
-<dt class="field-even">type figsize<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>(</em><em>default: False</em><em>)</em>) – Show the results based on categoric or label-specific associations.
+True: Summrize based on the categories
+False: All associations across labels</p></li>
+<li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
+<li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure in the browser, [height,width]. The default is [1500,1500].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>dict</strong> (<em>containing various results derived from network.</em>)</p></li>
 <li><p><strong>savepath</strong> (<em>str</em>) – Save the figure in specified path.</p></li>
 <li><p><strong>labx</strong> (<em>array-like</em>) – Cluster labels.</p></li>
 </ul>
+</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.heatmap">
-<span class="sig-name descname"><span class="pre">heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[15,</span> <span class="pre">15]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.heatmap" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[15,</span> <span class="pre">15]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.heatmap" title="Link to this definition"></a></dt>
 <dd><p>Plot static heatmap.</p>
-<section id="id6">
-<h2>Description<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
 <p>A heatmap can be of use when the results becomes too large to plot in a network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param self<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The output of .association_learning()</p>
-</dd>
-<dt class="field-even">type self<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object</p>
-</dd>
-<dt class="field-odd">param summarize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Show the results based on categoric or label-specific associations.
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>(</em><em>default: False</em><em>)</em>) – Show the results based on categoric or label-specific associations.
 True: Summrize based on the categories
-False: All associations across labels</p>
+False: All associations across labels</p></li>
+<li><p><strong>cluster</strong> (<em>Bool</em><em>, </em><em>optional</em>) – Cluster before making heatmap. The default is False.</p></li>
+<li><p><strong>figsize</strong> (<em>typle</em><em>, </em><em>optional</em>) – Figure size. The default is [15, 10].</p></li>
+<li><p><strong>savepath</strong> (<em>Bool</em><em>, </em><em>optional</em>) – saveingpath. The default is None.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity. The default is 3.</p></li>
+</ul>
 </dd>
-<dt class="field-even">type summarize<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, (default: False)</p>
-</dd>
-<dt class="field-odd">param cluster<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Cluster before making heatmap. The default is False.</p>
-</dd>
-<dt class="field-even">type cluster<span class="colon">:</span></dt>
-<dd class="field-even"><p>Bool, optional</p>
-</dd>
-<dt class="field-odd">param figsize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Figure size. The default is [15, 10].</p>
-</dd>
-<dt class="field-even">type figsize<span class="colon">:</span></dt>
-<dd class="field-even"><p>typle, optional</p>
-</dd>
-<dt class="field-odd">param savepath<span class="colon">:</span></dt>
-<dd class="field-odd"><p>saveingpath. The default is None.</p>
-</dd>
-<dt class="field-even">type savepath<span class="colon">:</span></dt>
-<dd class="field-even"><p>Bool, optional</p>
-</dd>
-<dt class="field-odd">param threshold<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p>
-</dd>
-<dt class="field-even">type threshold<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param black_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p>
-</dd>
-<dt class="field-even">type black_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param white_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p>
-</dd>
-<dt class="field-even">type white_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param min_edges<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Edges are only shown if a node has at least min_edges.</p>
-</dd>
-<dt class="field-even">type min_edges<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Verbosity. The default is 3.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.import_example">
-<span class="sig-name descname"><span class="pre">import_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'titanic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.import_example" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">import_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'titanic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.import_example" title="Link to this definition"></a></dt>
 <dd><p>Import example dataset from github source.</p>
-<section id="id7">
-<h2>Description<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
 <p>Import one of the few datasets from github source or specify your own download url link.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param data<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of datasets: ‘sprinkler’, ‘grocery’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>str</em>) – Example of a few datasets are:
+Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘cancer’, ‘waterpump’, ‘retail’</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – url link to to dataset.</p></li>
+</ul>
 </dd>
-<dt class="field-even">type data<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset containing mixed features.</p>
 </dd>
-<dt class="field-odd">param url<span class="colon">:</span></dt>
-<dd class="field-odd"><p>url link to to dataset.</p>
-</dd>
-<dt class="field-even">type url<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Print message to screen.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, (default: 3)</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dataset containing mixed features.</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame()</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame()</p>
 </dd>
 </dl>
-</section>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/erdogant/datazets">https://github.com/erdogant/datazets</a></p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hnet_model.pkl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.load" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hnet_model.pkl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.load" title="Link to this definition"></a></dt>
 <dd><p>Load learned model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -859,131 +555,48 @@ False: All associations across labels</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_between_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[25,</span> <span class="pre">500]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[15,</span> <span class="pre">10]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fruchterman_reingold'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_between_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[25,</span> <span class="pre">500]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[15,</span> <span class="pre">10]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fruchterman_reingold'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">white_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showfig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot" title="Link to this definition"></a></dt>
 <dd><p>Make plot static network plot of the model results.</p>
-<section id="id8">
-<h2>Description<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
 <p>The results of hnet can be vizualized in several manners, one of them is a static network plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param self<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The output of .association_learning()</p>
-</dd>
-<dt class="field-even">type self<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object</p>
-</dd>
-<dt class="field-odd">param summarize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Show the results based on categoric or label-specific associations.
-True: Summrize based on the categories
-False: All associations across labels</p>
-</dd>
-<dt class="field-even">type summarize<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, (default: False)</p>
-</dd>
-<dt class="field-odd">param scale<span class="colon">:</span></dt>
-<dd class="field-odd"><p>scale the network by blowing it up by scale. The default is 2.</p>
-</dd>
-<dt class="field-even">type scale<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param dist_between_nodes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Distance between the nodes. Edges are sized based this value. The default is 0.4.</p>
-</dd>
-<dt class="field-even">type dist_between_nodes<span class="colon">:</span></dt>
-<dd class="field-even"><p>float, optional</p>
-</dd>
-<dt class="field-odd">param node_size_limits<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Nodes are scaled between the Min and max size. The default is [25,500].</p>
-</dd>
-<dt class="field-even">type node_size_limits<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param node_color<span class="colon">:</span></dt>
-<dd class="field-odd"><p>color nodes based on clustering or by label colors.</p>
-</dd>
-<dt class="field-even">type node_color<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, None or ‘cluster’ default is None</p>
-</dd>
-<dt class="field-odd">param directed<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Create network using directed edges (arrows).</p>
-</dd>
-<dt class="field-even">type directed<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, default is True.</p>
-</dd>
-<dt class="field-odd">param savepath<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Save the figure in specified path.</p>
-</dd>
-<dt class="field-even">type savepath<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional</p>
-</dd>
-<dt class="field-odd">param figsize<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Size of the figure, [height,width]. The default is [15,10].</p>
-</dd>
-<dt class="field-even">type figsize<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple, optional</p>
-</dd>
-<dt class="field-odd">param pos<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list with coordinates to orientate the nodes.</p>
-</dd>
-<dt class="field-even">type pos<span class="colon">:</span></dt>
-<dd class="field-even"><p>list, optional</p>
-</dd>
-<dt class="field-odd">param layout<span class="colon">:</span></dt>
-<dd class="field-odd"><p>layouts from networkx can be used. The default is ‘fruchterman_reingold’.</p>
-</dd>
-<dt class="field-even">type layout<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional</p>
-</dd>
-<dt class="field-odd">param dpi<span class="colon">:</span></dt>
-<dd class="field-odd"><p>resolution of the figure. The default is 250.</p>
-</dd>
-<dt class="field-even">type dpi<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional</p>
-</dd>
-<dt class="field-odd">param threshold<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p>
-</dd>
-<dt class="field-even">type threshold<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param black_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p>
-</dd>
-<dt class="field-even">type black_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param white_list<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p>
-</dd>
-<dt class="field-even">type white_list<span class="colon">:</span></dt>
-<dd class="field-even"><p>List or None (default : None)</p>
-</dd>
-<dt class="field-odd">param min_edges<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Edges are only shown if a node has at least min_edges.</p>
-</dd>
-<dt class="field-even">type min_edges<span class="colon">:</span></dt>
-<dd class="field-even"><p>int (default : None)</p>
-</dd>
-<dt class="field-odd">param showfig<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Plot figure to screen. The default is True.</p>
-</dd>
-<dt class="field-even">type showfig<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Object</em>) – The output of .association_learning()</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>(</em><em>default: False</em><em>)</em>) – Show the results based on categoric or label-specific associations.
+True: Summrize based on the categories
+False: All associations across labels</p></li>
+<li><p><strong>scale</strong> (<em>int</em><em>, </em><em>optional</em>) – scale the network by blowing it up by scale. The default is 2.</p></li>
+<li><p><strong>dist_between_nodes</strong> (<em>float</em><em>, </em><em>optional</em>) – Distance between the nodes. Edges are sized based this value. The default is 0.4.</p></li>
+<li><p><strong>node_size_limits</strong> (<em>int</em><em>, </em><em>optional</em>) – Nodes are scaled between the Min and max size. The default is [25,500].</p></li>
+<li><p><strong>node_color</strong> (<em>str</em><em>, </em><em>None</em><em> or </em><em>'cluster' default is None</em>) – color nodes based on clustering or by label colors.</p></li>
+<li><p><strong>directed</strong> (<em>bool</em><em>, </em><em>default is True.</em>) – Create network using directed edges (arrows).</p></li>
+<li><p><strong>savepath</strong> (<em>str</em><em>, </em><em>optional</em>) – Save the figure in specified path.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the figure, [height,width]. The default is [15,10].</p></li>
+<li><p><strong>pos</strong> (<em>list</em><em>, </em><em>optional</em>) – list with coordinates to orientate the nodes.</p></li>
+<li><p><strong>layout</strong> (<em>str</em><em>, </em><em>optional</em>) – layouts from networkx can be used. The default is ‘fruchterman_reingold’.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em><em>, </em><em>optional</em>) – resolution of the figure. The default is 250.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Associations (edges) are filtered based on the -log10(P) &gt; threshold. threshold should range between 0 and maximum value of -log10(P).</p></li>
+<li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
+<li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
+<li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
+<li><p><strong>showfig</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot figure to screen. The default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>dict. Dictionary containing various results derived from network. The keys in the dict contain the following results</em></p></li>
 <li><p><strong>G</strong> (<em>graph</em>) – Graph generated by networkx.</p></li>
 <li><p><strong>labx</strong> (<em>str</em>) – labels of the nodes.</p></li>
 <li><p><strong>pos</strong> (<em>list</em>) – Coordinates of the node postions.</p></li>
 </ul>
+</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.plot_feat_importance">
-<span class="sig-name descname"><span class="pre">plot_feat_importance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(15,</span> <span class="pre">8)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot_feat_importance" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_feat_importance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">marker_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(15,</span> <span class="pre">8)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.plot_feat_importance" title="Link to this definition"></a></dt>
 <dd><p>Plot feature importance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1002,13 +615,13 @@ False: All associations across labels</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.prepocessing">
-<span class="sig-name descname"><span class="pre">prepocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.prepocessing" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">prepocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.prepocessing" title="Link to this definition"></a></dt>
 <dd><p>Pre-processing based on the model parameters.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hnet.hnet.hnet.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hnet_model.pkl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.save" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hnet_model.pkl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.hnet.save" title="Link to this definition"></a></dt>
 <dd><p>Save learned model in pickle file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1027,118 +640,35 @@ False: All associations across labels</p>
 </dl>
 </dd></dl>
 
-</section>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="hnet.hnet.import_example">
-<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">import_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'titanic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.import_example" title="Permalink to this definition"></a></dt>
-<dd><p>Import example dataset from github source.</p>
-<section id="id9">
-<h1>Description<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h1>
-<p>Import one of the few datasets from github source or specify your own download url link.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param data<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p>‘sprinkler’</p></li>
-<li><p>‘titanic’</p></li>
-<li><p>‘student’</p></li>
-<li><p>‘fifa’</p></li>
-<li><p>‘cancer’</p></li>
-<li><p>‘waterpump’</p></li>
-<li><p>‘retail’</p></li>
-<li><p>‘grocery’</p></li>
-</ul>
-</dd>
-<dt class="field-even">type data<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param url<span class="colon">:</span></dt>
-<dd class="field-odd"><p>url link to to dataset.</p>
-</dd>
-<dt class="field-even">type url<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dataset containing mixed features.</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame()</p>
-</dd>
-</dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hnet.hnet.to_undirected">
-<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.to_undirected" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'logp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.to_undirected" title="Link to this definition"></a></dt>
 <dd><p>Make adjacency matrix symmetric.</p>
-<section id="id10">
-<h1>Description<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h1>
 <p>The adjacency matrix resulting from hnet is not neccesarily symmetric due to the statistics being used.
 In some cases, a symmetric matrix can be usefull. This function makes sure that values above the diagonal are the same as below the diagonal.
 Values above and below the diagnal are combined using the max or min value.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param adjmat<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Square form adjacency matrix.</p>
-</dd>
-<dt class="field-even">type adjmat<span class="colon">:</span></dt>
-<dd class="field-even"><p>array</p>
-</dd>
-<dt class="field-odd">param method<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Make matrix symmetric using the ‘max’ or ‘min’ function.</p>
-</dd>
-<dt class="field-even">type method<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Verbosity. The default is 3.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Symmetric adjacency matrix.</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame().</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="hnet.hnet.wget">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">wget</span></span><a class="headerlink" href="#hnet.hnet.wget" title="Permalink to this definition"></a></dt>
-<dd><p>Retrieve file from url.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="hnet.hnet.wget.download">
-<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">writepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.wget.download" title="Permalink to this definition"></a></dt>
-<dd><p>Download.</p>
-<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<em>str.</em>) – Internet source.</p></li>
-<li><p><strong>writepath</strong> (<em>str.</em>) – Directory to write the file.</p></li>
+<li><p><strong>adjmat</strong> (<em>array</em>) – Square form adjacency matrix.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Make matrix symmetric using the ‘max’ or ‘min’ function.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity. The default is 3.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Symmetric adjacency matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame().</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="hnet.hnet.wget.filename_from_url">
-<span class="sig-name descname"><span class="pre">filename_from_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.wget.filename_from_url" title="Permalink to this definition"></a></dt>
-<dd><p>Return filename.</p>
-</dd></dl>
-
-</dd></dl>
-
-<span class="target" id="module-hnet.adjmat_vec"></span><dl class="py function">
+<dl class="py function" id="module-hnet.adjmat_vec">
 <dt class="sig sig-object py" id="hnet.adjmat_vec.adjmat2vec">
-<span class="sig-prename descclassname"><span class="pre">hnet.adjmat_vec.</span></span><span class="sig-name descname"><span class="pre">adjmat2vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.adjmat_vec.adjmat2vec" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.adjmat_vec.</span></span><span class="sig-name descname"><span class="pre">adjmat2vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.adjmat_vec.adjmat2vec" title="Link to this definition"></a></dt>
 <dd><p>Convert adjacency matrix into vector with source and target.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1165,7 +695,7 @@ Values above and below the diagnal are combined using the max or min value.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hnet.adjmat_vec.vec2adjmat">
-<span class="sig-prename descclassname"><span class="pre">hnet.adjmat_vec.</span></span><span class="sig-name descname"><span class="pre">vec2adjmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.adjmat_vec.vec2adjmat" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.adjmat_vec.</span></span><span class="sig-name descname"><span class="pre">vec2adjmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.adjmat_vec.vec2adjmat" title="Link to this definition"></a></dt>
 <dd><p>Convert source and target into adjacency matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1187,7 +717,7 @@ Values above and below the diagnal are combined using the max or min value.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Cloudy&#39;</span><span class="p">,</span><span class="s1">&#39;Cloudy&#39;</span><span class="p">,</span><span class="s1">&#39;Sprinkler&#39;</span><span class="p">,</span><span class="s1">&#39;Rain&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sprinkler&#39;</span><span class="p">,</span><span class="s1">&#39;Rain&#39;</span><span class="p">,</span><span class="s1">&#39;Wet_Grass&#39;</span><span class="p">,</span><span class="s1">&#39;Wet_Grass&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec2adjmat</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">weight</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec2adjmat</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
 </pre></div>

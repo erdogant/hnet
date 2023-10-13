@@ -1,3 +1,5 @@
+@ECHO OFF
+
 echo "Cleaning previous builds first.."
 rm -rf dist
 rm -rf build

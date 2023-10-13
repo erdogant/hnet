@@ -12,9 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=68f0eb34"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +36,7 @@
             hnet
           </a>
               <div class="version">
-                1.2.0
+                1.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -95,7 +97,7 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#blog">Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
@@ -105,9 +107,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html"><code class="docutils literal notranslate"><span class="pre">compare_networks()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment"><code class="docutils literal notranslate"><span class="pre">enrichment()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -139,7 +139,7 @@
            <div itemprop="articleBody">
              
   <section id="import-datasets">
-<h1>Import datasets<a class="headerlink" href="#import-datasets" title="Permalink to this heading"></a></h1>
+<h1>Import datasets<a class="headerlink" href="#import-datasets" title="Link to this heading"></a></h1>
 <p>HNet learns the association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations.</p>
 <p>We decided to use the DataFrame of <code class="docutils literal notranslate"><span class="pre">pandas</span></code> as the input data type for <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 The columns represent the variables or features containing continues/categorical values. The rows are the samples.</p>
@@ -257,7 +257,7 @@ The columns represent the variables or features containing continues/categorical
 </tbody>
 </table>
 <section id="import-example-datasets">
-<h2>Import example datasets<a class="headerlink" href="#import-example-datasets" title="Permalink to this heading"></a></h2>
+<h2>Import example datasets<a class="headerlink" href="#import-example-datasets" title="Link to this heading"></a></h2>
 <p>Importing an example data set can be performed using <code class="xref py py-func docutils literal notranslate"><span class="pre">hnet.import_example()</span></code>. This function provides some example datasets such as <strong>sprinkler</strong>, <strong>titanic</strong>, <strong>student</strong>.
 The titanic dataset is depiced above and the spinkler below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hnet</span>
@@ -491,7 +491,7 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </table>
 </section>
 <section id="import-from-csv">
-<h2>Import from csv<a class="headerlink" href="#import-from-csv" title="Permalink to this heading"></a></h2>
+<h2>Import from csv<a class="headerlink" href="#import-from-csv" title="Link to this heading"></a></h2>
 <p>Importing data from a csv file can be performed using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -500,7 +500,7 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </div>
 </section>
 <section id="import-from-url">
-<h2>Import from url<a class="headerlink" href="#import-from-url" title="Permalink to this heading"></a></h2>
+<h2>Import from url<a class="headerlink" href="#import-from-url" title="Link to this heading"></a></h2>
 <p>If your dataset is located on a particular website, it is possible to directly download the dataset.
 In the example below, we will download a dataset from the archives of [UCI](<a class="reference external" href="https://archive.ics.uci.edu/ml/">https://archive.ics.uci.edu/ml/</a>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import hnet</span>
@@ -521,7 +521,7 @@ In the example below, we will download a dataset from the archives of [UCI](<a c
 </div>
 </section>
 <section id="import-from-sklearn">
-<h2>Import from sklearn<a class="headerlink" href="#import-from-sklearn" title="Permalink to this heading"></a></h2>
+<h2>Import from sklearn<a class="headerlink" href="#import-from-sklearn" title="Link to this heading"></a></h2>
 <p>Various example datasets are also present in <code class="docutils literal notranslate"><span class="pre">sklean</span></code>.
 See below a demonstration how to import and use these in <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 However, datasets should contain at least 1 catagorical value. Datasets containing only continues values should follow a different method, perhaps <code class="docutils literal notranslate"><span class="pre">t-SNE</span></code>, <code class="docutils literal notranslate"><span class="pre">SVD</span></code>, <code class="docutils literal notranslate"><span class="pre">UMAP</span></code>.</p>
@@ -541,7 +541,7 @@ However, datasets should contain at least 1 catagorical value. Datasets containi
 </section>
 </section>
 <section id="output-variables">
-<h1>Output variables<a class="headerlink" href="#output-variables" title="Permalink to this heading"></a></h1>
+<h1>Output variables<a class="headerlink" href="#output-variables" title="Link to this heading"></a></h1>
 <p>There are many output parameters provided by <code class="docutils literal notranslate"><span class="pre">hnet</span></code>.
 It all starts with the initialization:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load library</span>

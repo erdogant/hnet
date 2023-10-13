@@ -1,10 +1,10 @@
 HNet documentation!
 ========================
 
-|python| |pypi| |docs| |stars| |LOC| |downloads_month| |downloads_total| |license| |forks| |open issues| |project status| |medium| |colab| |DOI| |repo-size| |donate|
+|python| |pypi| |docs| |stars| |LOC| |downloads_month| |downloads_total| |license| |forks| |open issues| |project status| |substack| |colab| |DOI| |repo-size| |donate|
 
 .. tip::
-	`Read the details and usage of HNet in the Medium blog! <https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254>`_
+	`A structured blog about the usage of HNet can be found here <https://erdogant.substack.com/p/advanced-network-analysis-to-explore>`_
 
 Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
 We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference. 
@@ -139,9 +139,9 @@ Indices and tables
     :alt: Project Status
     :target: http://www.repostatus.org/#active
 
-.. |medium| image:: https://img.shields.io/badge/Medium-Blog-green.svg
-    :alt: Medium Blog
-    :target: https://erdogant.github.io/hnet/pages/html/Documentation.html#medium-blog
+.. |substack| image:: https://img.shields.io/badge/Substack-green.svg
+    :alt: Substack Blog
+    :target: https://erdogant.github.io/hnet/pages/html/Documentation.html#Blog
 
 .. |donate| image:: https://img.shields.io/badge/Support%20this%20project-grey.svg?logo=github%20sponsors
     :alt: donate

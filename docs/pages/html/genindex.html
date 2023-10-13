@@ -11,9 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=68f0eb34"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -31,7 +33,7 @@
             hnet
           </a>
               <div class="version">
-                1.2.0
+                1.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -86,7 +88,7 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html">Sponsor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Documentation.html#medium-blog">Medium Blog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html#blog">Blog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#article">Article</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#github">Github</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Documentation.html#colab-notebook">Colab Notebook</a></li>
@@ -96,9 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html"><code class="docutils literal notranslate"><span class="pre">compare_networks()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.enrichment"><code class="docutils literal notranslate"><span class="pre">enrichment()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.hnet"><code class="docutils literal notranslate"><span class="pre">hnet</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.import_example"><code class="docutils literal notranslate"><span class="pre">import_example()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.to_undirected"><code class="docutils literal notranslate"><span class="pre">to_undirected()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.hnet.wget"><code class="docutils literal notranslate"><span class="pre">wget</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.adjmat2vec"><code class="docutils literal notranslate"><span class="pre">adjmat2vec()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat"><code class="docutils literal notranslate"><span class="pre">vec2adjmat()</span></code></a></li>
 </ul>
@@ -136,7 +136,6 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
- | <a href="#F"><strong>F</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -145,7 +144,6 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -183,8 +181,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hnet.hnet.html#hnet.hnet.hnet.d3heatmap">d3heatmap() (hnet.hnet.hnet method)</a>
 </li>
-      <li><a href="hnet.hnet.html#hnet.hnet.wget.download">download() (hnet.hnet.wget method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -192,14 +188,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hnet.hnet.html#hnet.hnet.enrichment">enrichment() (in module hnet.hnet)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="hnet.hnet.html#hnet.hnet.wget.filename_from_url">filename_from_url() (hnet.hnet.wget method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -234,11 +222,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hnet.hnet.html#hnet.hnet.hnet.import_example">import_example() (hnet.hnet.hnet method)</a>
-
-      <ul>
-        <li><a href="hnet.hnet.html#hnet.hnet.import_example">(in module hnet.hnet)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -299,14 +283,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hnet.hnet.html#hnet.adjmat_vec.vec2adjmat">vec2adjmat() (in module hnet.adjmat_vec)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="hnet.hnet.html#hnet.hnet.wget">wget (class in hnet.hnet)</a>
 </li>
   </ul></td>
 </tr></table>

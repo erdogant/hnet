@@ -14,7 +14,7 @@
 
 <p align="left">
   <a href="https://open.substack.com/pub/erdogant/p/advanced-network-analysis-to-explore?r=ffc3n&utm_campaign=post&utm_medium=web">
-  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/blog_link.jpg" width="600" />
+  <img src="https://github.com/erdogant/hnet/blob/master/docs/figs/blog_link.jpg" width="250" />
   </a>
 </p>
 

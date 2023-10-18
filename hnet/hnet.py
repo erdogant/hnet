@@ -367,7 +367,7 @@ class hnet():
         return simmatP, simmatLogP, labx
 
     # Make network d3
-    def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, figsize=(700, 700), vmax=None, showfig=True, verbose=3):
+    def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, fontsize=10, figsize=(700, 700), showfig=True, verbose=3):
         """Interactive heatmap creator.
 
         This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
@@ -432,15 +432,12 @@ class hnet():
         # Cluster
         labx = self.plot(summarize=summarize, node_color='cluster', directed=True, threshold=threshold, white_list=white_list, black_list=black_list, min_edges=min_edges, showfig=False)['labx']
 
-        if vmax is None:
-            vmax = np.max(np.max(simmatLogP)) / 10
-
         # Initialize
         if not _check_import_d3blocks(): return None
         from d3blocks import D3Blocks
         d3 = D3Blocks()
         # Make heatmap
-        d3.heatmap(simmatLogP, showfig=True, title='Hnet D3blocks', filepath=savepath, figsize=figsize, stroke='red', vmax=vmax, classlabel='cluster')
+        d3.heatmap(simmatLogP, showfig=True, title='Hnet D3blocks', filepath=savepath, figsize=figsize, stroke='red', color='cluster', fontsize=fontsize)
 
         # Return
         results = {}

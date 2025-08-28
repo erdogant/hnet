@@ -692,7 +692,7 @@ def process_csv_file(uploaded_filenames, uploaded_file_contents, y_min, alpha, k
         # Run HNet
         # progressbar['value']=progressbar['value']+1 # update bar
         # progressbar.update() # update gui
-        HNET_OUT = hnet.fit(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'], verbose=3)
+        HNET_OUT = hnet.fit(df, alpha=args['alpha'], y_min=args['y_min'], k=args['k'], multtest=args['multtest'], dtypes='pandas', specificity=args['specificity'], perc_min_num=args['perc_min_num'], dropna=args['dropna'], excl_background=args['excl_background'])
         # Save pickle file
         print('SAVING NETWORK FIGURE: %s' %(savepath))
         # progressbar['value']=progressbar['value']+1 # update bar

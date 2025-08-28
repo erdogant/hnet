@@ -187,7 +187,7 @@ class hnet():
         nr_succes_pop_n = []
 
         for i in tqdm(range(0, X_comb.shape[1]), disable=hnstats.disable_tqdm(), desc='Association learning across categories'):
-            nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=self.verbose)
+            nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min)
             nr_succes_pop_n.append(nr_succes_i)
             logger.debug('[%d] %s' %(i, nr_succes_i))
 
@@ -417,10 +417,10 @@ class hnet():
         _, simmatLogP, labx = self._get_adjmat(summarize)
 
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
-            if self.verbose>=3: logger.info('Nothing to plot.')
+            logger.info('Nothing to plot.')
             return None
 
         # Make undirected network
@@ -502,7 +502,7 @@ class hnet():
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
             logger.info('Nothing to plot.')
@@ -633,7 +633,7 @@ class hnet():
         # Get adjmat
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list)
         # Check whether anything has remained
         if adjmatLog.values.flatten().sum()==0:
             logger.info('Nothing to plot.')
@@ -752,8 +752,6 @@ class hnet():
             If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
         min_edges : int (default : None)
             Edges are only shown if a node has at least min_edges.
-        verbose : int, optional
-            Verbosity. The default is 3.
 
         Returns
         -------
@@ -768,7 +766,7 @@ class hnet():
 
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list)
         if adjmatLog.values.flatten().sum()==0:
             logger.info('Nothing to plot.')
             return None
@@ -805,8 +803,6 @@ class hnet():
         ----------
         simmatP : matrix
             simmilarity matrix
-        verbose : int, optional
-            Print message to screen. The higher the number, the more details. The default is 3.
 
         Returns
         -------
@@ -883,7 +879,7 @@ class hnet():
 
         """
         return dz.get(data=data, url=url, sep=sep)
-        # return import_example(data=data, url=url, sep=sep, verbose=verbose)
+        # return import_example(data=data, url=url, sep=sep)
 
     # Save model
     def save(self, filepath='hnet_model.pkl', overwrite=False):
@@ -895,8 +891,6 @@ class hnet():
             Pathname to store pickle files.
         overwrite : bool, (default=False)
             Overwite file if exists.
-        verbose : int, optional
-            Show message. A higher number gives more informatie. The default is 3.
 
         Returns
         -------
@@ -922,7 +916,7 @@ class hnet():
         storedata['fillna'] = self.fillna
         storedata['excl_background'] = self.excl_background
         # Save
-        status = pypickle.save(filepath, storedata, overwrite=overwrite, verbose=self.verbose)
+        status = pypickle.save(filepath, storedata, overwrite=overwrite)
         logger.info('Saving.. %s' %(status))
         # return
         return status
@@ -935,8 +929,6 @@ class hnet():
         ----------
         filepath : str
             Pathname to stored pickle files.
-        verbose : int, optional
-            Show message. A higher number gives more information. The default is 3.
 
         Returns
         -------
@@ -948,7 +940,7 @@ class hnet():
         if filepath[-4:]!='.pkl':
             filepath = filepath + '.pkl'
         # Load
-        storedata = pypickle.load(filepath, verbose=self.verbose)
+        storedata = pypickle.load(filepath)
         # Store in self.
         if storedata is not None:
             self.results = storedata['results']
@@ -1004,7 +996,7 @@ def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n,
 
 
 # %% Compute fit
-def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None):
+def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=None):
     """Enrichment analysis.
 
     Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
@@ -1073,34 +1065,35 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'
     assert len(y)==df.shape[0], 'Length of [df] and [y] must be equal'
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
+    # Handle verbose logging - use instance verbose if not overridden
+    verbose = hnstats.set_logger(verbose) if verbose is not None else hnstats.get_logger()
 
     # DECLARATIONS
     config = {}
-    config['verbose'] = verbose
     config['alpha'] = alpha
     config['multtest'] = multtest
     config['specificity'] = specificity
 
-    logger.info('Start making fit..')
+    logger.debug('Start making fit..')
     df.columns = df.columns.astype(str)
 
-    # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
-    df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
+    # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background)
+    df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background)
 
     # Set y as string
-    y = df2onehot.set_y(y, y_min=y_min, verbose=config['verbose'])
+    y = df2onehot.set_y(y, y_min=y_min, verbose=0) # hnstats.convert_verbose_to_old(hnstats.get_logger())
     # Determine dtypes for columns
-    df, dtypes = df2onehot.set_dtypes(df, dtypes, verbose=config['verbose'])
+    df, dtypes = df2onehot.set_dtypes(df, dtypes, verbose=0)
     # Compute fit
-    out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'], verbose=config['verbose'])
+    out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'])
     # Multiple test correction
-    out = hnstats._multipletestcorrection(out, config['multtest'], verbose=config['verbose'])
+    out = hnstats._multipletestcorrection(out, config['multtest'])
     # Keep only significant ones
     out = hnstats._filter_significance(out, config['alpha'], multtest)
     # Make dataframe
     out = pd.DataFrame(out)
     # Return
-    logger.info('Fin')
+    logger.debug('Fin')
     return out
 
 
@@ -1118,8 +1111,6 @@ def to_undirected(adjmat, method='logp'):
         Square form adjacency matrix.
     method : str
         Make matrix symmetric using the 'max' or 'min' function.
-    verbose : int
-        Verbosity. The default is 3.
 
     Returns
     -------
@@ -1181,8 +1172,6 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
         Width of the figure. The default is 15.
     height : int, optional
         Height of the figure. The default is 8.
-    verbose : int, optional
-        Verbosity. The default is 3.
 
     Returns
     -------
@@ -1203,13 +1192,12 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
                                                    pos=pos,
                                                    showfig=showfig,
                                                    width=width,
-                                                   height=height,
-                                                   verbose=verbose)
+                                                   height=height)
     return scores, adjmat_diff
 
 
 # %% Do the math
-def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificity, y_min, verbose=3):
+def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificity, y_min):
     count = 0
     # Get response variable to test association
     y = X_comb.iloc[:, i].values.astype(str)
@@ -1225,7 +1213,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit
-        dfout = enrichment(df.loc[:, Iloc], y, y_min=y_min, alpha=1, multtest=None, dtypes=dtypes[Iloc], specificity=specificity, verbose=0)
+        dfout = enrichment(df.loc[:, Iloc], y, y_min=y_min, alpha=1, multtest=None, dtypes=dtypes[Iloc], specificity=specificity)
         # Count
         count=count + dfout.shape[0]
         # Match with dataframe and store
@@ -1253,7 +1241,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     return out, simmatP, simmat_labx
 
 
-def _check_import_d3blocks(verbose=3):
+def _check_import_d3blocks():
     try:
         import d3blocks
         status = True

@@ -17,19 +17,19 @@ from sklearn.preprocessing import minmax_scale, MinMaxScaler
 import df2onehot
 from ismember import ismember
 import classeval as clf
+import hnet.hnstats as hnstats
+
 import logging
 logger = logging.getLogger(__name__)
 
 #%% Make graph from adjacency matrix
-def to_graph(adjmat, verbose=3):
+def to_graph(adjmat):
     """Convert adjacency matrix to graph.
 
     Parameters
     ----------
     adjmat : Pandas DataFrame
         adjacency matrix.
-    verbose : int [1-5], default: 3
-        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
     Returns
     -------
@@ -38,7 +38,7 @@ def to_graph(adjmat, verbose=3):
     """
     assert float(nx.__version__)>2, 'This function requires networkx to be v2 or higher. Try to: pip install --upgrade networkx'
     config = dict()
-    config['verbose'] = verbose
+    config['verbose'] = hnstats.get_logger()
 
     adjmat = df2onehot.is_DataFrame(adjmat)
     logger.info('Making graph..')
@@ -85,7 +85,7 @@ def adjmat2graph(adjmat):
     return(G)
     
 #%% Compute similarity matrix
-def compute_centrality(G, centrality='betweenness', verbose=3):
+def compute_centrality(G, centrality='betweenness'):
     """Compute Centrality measures from Graph G.
 
     Parameters
@@ -95,8 +95,6 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
     centrality : str, The default is 'betweenness'.
         Compute centrality measure.
         'betweenness', 'closeness', 'eigenvector', 'degree', 'edge', 'harmonic', 'katz', 'local', 'out_degree', 'percolation', 'second_order', 'subgraph', 'subgraph_exp', 'information'
-    verbose : int [1-5], default: 3
-        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
     Returns
     -------
@@ -143,15 +141,13 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
     return(G, score)
 
 #%% compute clusters
-def cluster(G, verbose=3):
+def cluster(G):
     """Clustering of graph labels.
 
     Parameters
     ----------
     G : NetworkX object
         Graph.
-    verbose : int [1-5], default: 3
-        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
     Returns
     -------
@@ -170,12 +166,12 @@ def cluster(G, verbose=3):
     return(G, labx)
 
 #%% Compute cluster comparison
-def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodtype='default', verbose=3):
+def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodtype='default'):
     config=dict()
     config['showfig']=showfig
     config['width']=width
     config['height']=height
-    config['verbose']=verbose
+    config['verbose'] = hnstats.get_logger()
 
     logger.info('Error in network function: Compute a dozen of centralities and clusterlabels')
     
@@ -204,13 +200,13 @@ def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodt
     return(G, df)
 
 #%% Make plot
-def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25,200], alpha=0.8, font_size=18, cmap='Set1', width=40, height=30, pos=None, filename=None, title=None, methodtype='default', verbose=3):
+def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25,200], alpha=0.8, font_size=18, cmap='Set1', width=40, height=30, pos=None, filename=None, title=None, methodtype='default'):
     # https://networkx.github.io/documentation/networkx-1.7/reference/generated/networkx.drawing.nx_pylab.draw_networkx.html
     config=dict()
     config['filename']=filename
     config['width']=width
     config['height']=height
-    config['verbose']=verbose
+    config['verbose']=hnstats.get_logger()
     config['node_size_scale']=node_size_scale
     
     logger.error('Error in network function: Creating network plot')
@@ -251,7 +247,7 @@ def normalize_size(getsizes, minscale=0.1, maxscale=4):
     return(getsizes)
 
 #%% Convert dataframe to Graph
-def df2G(df_nodes, df_edges, verbose=3):
+def df2G(df_nodes, df_edges):
     # Put edge information in G
     # G = nx.from_pandas_edgelist(df_edges, 'source', 'target', ['weight', 'edge_weight','edge_width','source_label','target_label'])
     
@@ -268,7 +264,7 @@ def df2G(df_nodes, df_edges, verbose=3):
     return(G)
     
 #%% Convert Graph to dataframe
-def G2df(G, node_color=None, node_label=None, node_size=100, edge_distance_minmax=[1,100], verbose=3):
+def G2df(G, node_color=None, node_label=None, node_size=100, edge_distance_minmax=[1,100]):
     # Nodes
     df_node_names=pd.DataFrame([*G.nodes], columns=['node_name'])
     df_node_props=pd.DataFrame([*G.nodes.values()])
@@ -328,7 +324,7 @@ def G2df(G, node_color=None, node_label=None, node_size=100, edge_distance_minma
     return(df_nodes, df_edges)
 
 #%% Make plot
-def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25,200], alpha=0.8, font_size=18, cmap='Set1', width=40, height=30, pos=None, filename=None, title=None, methodtype='default', verbose=3):
+def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25,200], alpha=0.8, font_size=18, cmap='Set1', width=40, height=30, pos=None, filename=None, title=None, methodtype='default'):
     import networkx as nx
     from bokeh.io import show, output_file
     from bokeh.models import Plot, Range1d, MultiLine, Circle, HoverTool, BoxZoomTool, ResetTool
@@ -363,7 +359,7 @@ def bokeh(G, node_color=None, node_label=None, node_size=100, node_size_scale=[2
 
 
 # %% Comparison of two networks
-def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
+def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8):
     """Compare two networks.
 
     Parameters
@@ -380,8 +376,6 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
         Width of the figure. The default is 15.
     height : int, optional
         Height of the figure. The default is 8.
-    verbose : int, optional
-        Verbosity. The default is 3.
 
     Returns
     -------
@@ -408,7 +402,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     y_pred = adjmat_pred.stack().reset_index()[0].values
 
     # Compute score
-    scores = clf.confmatrix.eval(y_true, y_pred, verbose=verbose)
+    scores = clf.confmatrix.eval(y_true, y_pred, verbose=0)
     # bayes.plot(out_bayes['adjmat'], pos=G['pos'])
 
     # Setup graph
@@ -426,7 +420,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
         # Bootup figure
         plt.figure(figsize=(width,height))
         # nodes
-        nx.draw_networkx_nodes(G_diff, pos, node_size=700, with_labels=True)
+        nx.draw_networkx_nodes(G_diff, pos, node_size=700)
         # edges
         colors  = [G_diff[u][v]['color'] for u,v in G_diff.edges()]
         #weights = [G_diff[u][v]['weight'] for u,v in G_diff.edges()]
@@ -447,7 +441,7 @@ def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15,
     return(scores, adjmat_diff)
 
 #%% Make graph layout
-def graphlayout(model, pos, scale=1, layout='fruchterman_reingold', verbose=3):
+def graphlayout(model, pos, scale=1, layout='fruchterman_reingold'):
     if isinstance(pos, type(None)):
         if layout=='fruchterman_reingold':
             pos = nx.fruchterman_reingold_layout(model, scale=scale, iterations=50)

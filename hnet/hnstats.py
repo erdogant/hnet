@@ -25,8 +25,8 @@ def _compute_significance(df, y, dtypes, specificity=None):
 
     # Run over all columns
     for i in range(0, df.shape[1]):
-        if (i>0): logger.info('')
-        logger.info('Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
+        # if (i>0): logger.info('')
+        logger.debug('Analyzing [%s] %s' %(dtypes[i], df.columns[i]))
         colname = df.columns[i]
 
         # Clean nan fields
@@ -92,9 +92,9 @@ def _compute_significance(df, y, dtypes, specificity=None):
                 logger.warning('Can not process dtype: [%s] <skipping>' %(dtypes[i]))
                 # raise ValueError('[hnet] >dtype can not be of type [%s]' %(dtypes[i]))
             # Print dots
-            logger.info('.', end='')
+            # logger.info('.')
 
-    logger.info('')
+    # logger.info('')
     return out
 
 
@@ -223,10 +223,10 @@ def _logscale(simmat_padj):
 
 
 # %% Do multiple test correction
-def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
-    logger.info('Multiple test correction using %s' %(multtest))
+def _multipletestcorrectionAdjmat(adjmat, multtest):
     # Multiple test correction
     if multtest is not None:
+        logger.info('Multiple test correction using %s' %(multtest))
         # Make big row with all pvalues
         tmpP = adjmat.values.ravel()
         # Find not nans
@@ -243,10 +243,8 @@ def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
 
 
 # %% Do multiple test correction
-def _multipletestcorrection(out, multtest, verbose=3):
+def _multipletestcorrection(out, multtest):
     # Always do a multiple test correction but do not use it in the filtering step if not desired
-    logger.info('Multiple test correction using %s' %(multtest))
-
     if out!=[]:
         # Get pvalues
         Praw = np.array(list(map(lambda x: x['P'], out)))
@@ -257,6 +255,7 @@ def _multipletestcorrection(out, multtest, verbose=3):
         if multtest is None:
             Padj = Praw
         else:
+            logger.info('Multiple test correction using %s' %(multtest))
             # Padj=np.zeros_like(Praw)*np.nan
             Padj=multitest.multipletests(Praw, method=multtest)[1]
 
@@ -267,7 +266,7 @@ def _multipletestcorrection(out, multtest, verbose=3):
 
 
 # %% Add combinations
-def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
+def _make_n_combinations(Xhot, Xlabx, combK, y_min):
     Xlabo=Xlabx.copy()
     if isinstance(y_min, type(None)): y_min=1
     # If any, run over combinations
@@ -346,7 +345,7 @@ def _addcolumns(simmat_padj, colnames, Xlabx, catnames):
 
 
 # %% Remove columns without dtype
-def _remove_columns_without_dtype(df, dtypes, verbose=3):
+def _remove_columns_without_dtype(df, dtypes):
     if not isinstance(dtypes, str):
         assert df.shape[1]==len(dtypes), 'Columns in df and dtypes should match! [hnet.remove_columns_without_dtype]'
         Iloc = np.isin(dtypes, '')
@@ -362,7 +361,7 @@ def _remove_columns_without_dtype(df, dtypes, verbose=3):
 
 
 # %% Clean empty rows
-def _drop_empty(df, Xlabx, verbose=3):
+def _drop_empty(df, Xlabx):
     dfO=df.copy()
     cols=dfO.columns.values
     rows=dfO.index.values
@@ -406,7 +405,7 @@ def _nancleaning(datac, y):
 
 
 # %% Do the math
-def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest, fillna, dropna, verbose=3):
+def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest, fillna, dropna):
     # Clean label names by chaning X.0 into X
     simmat_padj.columns = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
     simmat_padj.index = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
@@ -415,9 +414,9 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
 
     logger.debug(simmat_padj)
     # Multiple test correction
-    simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, multtest, verbose=verbose)
+    simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, multtest)
     # Remove variables for which both rows and columns are empty
-    if dropna: [simmat_padj, simmat_labx]=_drop_empty(simmat_padj, simmat_labx, verbose=verbose)
+    if dropna: [simmat_padj, simmat_labx]=_drop_empty(simmat_padj, simmat_labx)
     # Fill empty fields
     if fillna: simmat_padj.fillna(1, inplace=True)
     # Remove those with P>alpha, to prevent unnecesarilly edges
@@ -491,7 +490,7 @@ def _path_correct(savepath, filename='fig', ext='.png'):
 
 
 # %%
-def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
+def _white_black_list(df, dtypes, white_list, black_list):
     # Keep only variables that are in white_list.
     if white_list is not None:
         white_list = [x.lower() for x in white_list]
@@ -524,7 +523,7 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
 
 
 # %%
-def _bool_processesing(df, dtypes, excl_background, verbose=3):
+def _bool_processesing(df, dtypes, excl_background):
     if isinstance(dtypes, str) | (np.any(dtypes=='bool')):
         Iloc = ((df.dtypes=='bool') | (dtypes=='bool')).values
         if np.any(Iloc):
@@ -551,7 +550,7 @@ def _bool_processesing(df, dtypes, excl_background, verbose=3):
 
 
 # %% Preprocessing
-def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
+def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None):
     logger.debug('preprocessing: Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
@@ -559,13 +558,13 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     df.reset_index(drop=True, inplace=True)
 
     # Convert bool columns to integer values
-    df, dtypes, excl_background = _bool_processesing(df, dtypes, excl_background=excl_background, verbose=verbose)
+    df, dtypes, excl_background = _bool_processesing(df, dtypes, excl_background=excl_background)
     # Filter on white_list and black_list
     df, dtypes = _white_black_list(df, dtypes, white_list, black_list)
     # Remove columns without dtype
-    df, dtypes = _remove_columns_without_dtype(df, dtypes, verbose=verbose)
+    df, dtypes = _remove_columns_without_dtype(df, dtypes)
     # Make onehot matrix for response variable y
-    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
+    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=convert_verbose_to_old(get_logger()))
     # Set the dtypes for the input dataframe
     df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
     dtypes = np.array(dtypes)
@@ -609,7 +608,7 @@ def make_elements_unique(X):
     return X
 
 # %% Filter adjacency matrix
-def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None, verbose=3):
+def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=None, black_list=None):
     # if (white_list is not None) and (len(white_list)<=1): raise ValueError('[hnet] >ERROR: white_list should contain at least 2 input variables.')
 
     # Filter on threshold

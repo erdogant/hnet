@@ -76,7 +76,7 @@ Examples
 
 References
 ----------
-* Blog: https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
+* Blog: https://erdogant.github.io/hnet/pages/html/Documentation.html#blog
 * Github: https://github.com/erdogant/hnet
 * Documentation: https://erdogant.github.io/hnet/
 * Article: https://arxiv.org/abs/2005.04679

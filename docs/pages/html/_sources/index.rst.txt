@@ -7,6 +7,8 @@ HNet documentation!
    :width: 250px
    :align: center
 
+-----------------------------------
+
 .. tip::
 	`A structured blog about the usage of HNet can be found here <https://medium.com/data-science-collective/uncover-hidden-patterns-in-your-tabular-datasets-all-you-need-is-the-right-statistics-6de38f6a8aa7>`_
 

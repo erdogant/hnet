@@ -204,22 +204,10 @@ G_static = hn.plot(node_color='cluster')
 P_heatmap = hn.heatmap(cluster=True)
 
 # Plot heatmap
-paths = hn.d3heatmap()
-
-# %%
-import matplotlib.pyplot as plt
-P = hn.results['simmatLogP'].values.ravel()
-P = P[P>0]
-
-plt.figure(figsize=(15,10))
-plt.hist(P, bins=50)
-plt.grid(True)
-plt.xlabel('-log10(P)')
-plt.ylabel('Frequency')
-plt.title('P-value Associaties')
-
+# paths = hn.d3heatmap()
 
 # %% Association learning
+from hnet import hnet
 hn1 = hnet(y_min=50)
 hn2 = hnet()
 # Data
@@ -235,7 +223,7 @@ import hnet
 [scores, adjmat] = hnet.compare_networks(out1['simmatLogP'], out2['simmatLogP'], showfig=True)
 
 # Make undirected matrix
-adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+adjmat_undirected = hnet.to_undirected(out1['simmatLogP'])
 
 
 # %% Enrichment
@@ -411,12 +399,12 @@ if results is None:
 
     start = time.time()
     # Association learning
-    results = hn.association_learning(df, verbose=4)
+    results = hn.association_learning(df)
     print(time.time()- start)
 
 
     # with PyCallGraph(output=GraphvizOutput()):
-    #     results = hn.association_learning(df, verbose=4)
+    #     results = hn.association_learning(df)
     # end = time.time()
     # print(end - start)
 

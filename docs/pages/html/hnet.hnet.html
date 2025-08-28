@@ -159,7 +159,6 @@ The columns and rows between both matrices are matched if not ordered similarly.
 <li><p><strong>showfig</strong> (<em>Bool</em><em>, </em><em>optional</em>) – Plot figure. The default is True.</p></li>
 <li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the figure. The default is 15.</p></li>
 <li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – Height of the figure. The default is 8.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity. The default is 3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -182,7 +181,7 @@ The columns and rows between both matrices are matched if not ordered similarly.
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hnet.hnet.enrichment">
-<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hnet.hnet.</span></span><span class="sig-name descname"><span class="pre">enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multtest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'holm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pandas'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specificity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excl_background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hnet.hnet.enrichment" title="Link to this definition"></a></dt>
 <dd><p>Enrichment analysis.</p>
 <p>Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
 The input dataset is converted into a one-hot dense array based on automatic typing <code class="docutils literal notranslate"><span class="pre">dtypes='pandas'</span></code> or user defined dtypes.</p>
@@ -366,10 +365,7 @@ Example: ‘0.0’: To remove categorical values with label 0</p></li>
 To test the significance of combined associations we used fishers-method. The strongest connection will be sorted on top.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>simmatP</strong> (<em>matrix</em>) – simmilarity matrix</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Print message to screen. The higher the number, the more details. The default is 3.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>simmatP</strong> (<em>matrix</em>) – simmilarity matrix</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
@@ -496,7 +492,6 @@ False: All associations across labels</p></li>
 <li><p><strong>black_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.</p></li>
 <li><p><strong>white_list</strong> (<em>List</em><em> or </em><em>None</em><em> (</em><em>default : None</em><em>)</em>) – If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.</p></li>
 <li><p><strong>min_edges</strong> (<em>int</em><em> (</em><em>default : None</em><em>)</em>) – Edges are only shown if a node has at least min_edges.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity. The default is 3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -537,10 +532,7 @@ Name of datasets: ‘sprinkler’, ‘titanic’, ‘student’, ‘fifa’, ‘
 <dd><p>Load learned model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> (<em>str</em>) – Pathname to stored pickle files.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Show message. A higher number gives more information. The default is 3.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – Pathname to stored pickle files.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Object.</p>
@@ -622,7 +614,6 @@ False: All associations across labels</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filepath</strong> (<em>str</em><em>, </em><em>(</em><em>default: 'hnet_model.pkl'</em><em>)</em>) – Pathname to store pickle files.</p></li>
 <li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>(</em><em>default=False</em><em>)</em>) – Overwite file if exists.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Show message. A higher number gives more informatie. The default is 3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -648,7 +639,6 @@ Values above and below the diagnal are combined using the max or min value.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>adjmat</strong> (<em>array</em>) – Square form adjacency matrix.</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – Make matrix symmetric using the ‘max’ or ‘min’ function.</p></li>
-<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity. The default is 3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

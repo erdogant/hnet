@@ -4,7 +4,7 @@ HNet documentation!
 |python| |pypi| |docs| |stars| |LOC| |downloads_month| |downloads_total| |license| |forks| |open issues| |project status| |substack| |colab| |DOI| |repo-size| |donate|
 
 .. image:: ../figs/logo.png
-   :width: 250px
+   :width: 350px
    :align: center
 
 -----------------------------------
@@ -27,7 +27,7 @@ Use HNET if your goal is:
 -----------------------------------
 
 .. note::
-	**Your ❤️ is important to keep maintaining this package.** You can `support <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_ in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_.
+	**Your ❤ is important to keep maintaining this package.** You can `support <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_ in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_.
 	Report bugs, issues and feature extensions at `github <https://github.com/erdogant/hnet/>`_ page.
 
 	.. code-block:: console

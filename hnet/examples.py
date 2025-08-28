@@ -23,7 +23,7 @@ df = hn.import_example('titanic')
 
 del df['PassengerId']
 del df['Name']
-results_new = hn.association_learning(df, verbose=4)
+results_new = hn.association_learning(df)
 
 # STATIC
 hn.heatmap(summarize=False, cluster=False)
@@ -66,11 +66,6 @@ hn2.d3heatmap(summarize=False)
 hn2.heatmap(summarize=True, cluster=False)
 hn2.heatmap(cluster=True)
 
-
-
-
-
-
 # %% Penguins dataset
 import seaborn as sns
 from hnet import hnet
@@ -78,7 +73,7 @@ from hnet import hnet
 df = sns.load_dataset("penguins")
 
 hn = hnet()
-results_new = hn.association_learning(df, verbose=3)
+results_new = hn.association_learning(df)
 
 hn.d3graph()
 hn.d3heatmap()

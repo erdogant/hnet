@@ -8,9 +8,11 @@
 # Libraries
 from os import mkdir
 from os import path
+import logging
+logger = logging.getLogger(__name__)
 
 #%%
-def savefig(fig, filepath, dpi=100, transp=False, verbose=0):
+def savefig(fig, filepath, dpi=100, transp=False):
     """Saving figure.
 
     Parameters
@@ -23,8 +25,6 @@ def savefig(fig, filepath, dpi=100, transp=False, verbose=0):
         Resolution fo the figure to storein Dotch Per Inch. 
     transp : bool, The default is False.
         Set background transparancy.
-    verbose : int [1-5], default: 3
-        Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
     Returns
     -------

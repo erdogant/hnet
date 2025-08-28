@@ -17,6 +17,8 @@ from sklearn.preprocessing import minmax_scale, MinMaxScaler
 import df2onehot
 from ismember import ismember
 import classeval as clf
+import logging
+logger = logging.getLogger(__name__)
 
 #%% Make graph from adjacency matrix
 def to_graph(adjmat, verbose=3):
@@ -39,7 +41,7 @@ def to_graph(adjmat, verbose=3):
     config['verbose'] = verbose
 
     adjmat = df2onehot.is_DataFrame(adjmat)
-    if config['verbose']>=3: print('[hnet] >Making graph..')
+    logger.info('Making graph..')
     G=nx.from_pandas_adjacency(adjmat)
 
     return(G)
@@ -101,7 +103,7 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
     tuple (G, score).
 
     """
-    if verbose>=3: print('[hnet] >Computing centrality %s' %(centrality))
+    logger.info('Computing centrality %s' %(centrality))
     
     if centrality=='betweenness':
         bb=nx.centrality.betweenness_centrality(G)
@@ -132,7 +134,7 @@ def compute_centrality(G, centrality='betweenness', verbose=3):
     elif centrality=='information':
         bb=nx.centrality.information_centrality(G)
     else:
-        print('[hnet] >Error in network function: Centrality <%s> does not exist!' %(centrality))
+        logger.error('Error in network function: Centrality <%s> does not exist!' %(centrality))
     
     # Set the attributes
     score=np.array([*bb.values()])
@@ -156,7 +158,7 @@ def cluster(G, verbose=3):
     tuple (G, labx).
 
     """
-    if verbose>=3: print('[hnet] >Clustering using best partition')
+    logger.info('Clustering using best partition')
     # Partition
     partition=community_louvain.best_partition(G)
     # Set property to node
@@ -175,7 +177,7 @@ def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodt
     config['height']=height
     config['verbose']=verbose
 
-    if verbose>=3: print('[hnet] >Error in network function: Compute a dozen of centralities and clusterlabels')
+    logger.info('Error in network function: Compute a dozen of centralities and clusterlabels')
     
     # compute labx for each of the centralities
     centralities=['betweenness', 'closeness','eigenvector','degree','edge','harmonic','katz','local','out_degree','percolation','second_order','subgraph','subgraph_exp','information']
@@ -211,14 +213,14 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     config['verbose']=verbose
     config['node_size_scale']=node_size_scale
     
-    if verbose>=3: print('[hnet] >Error in network function: Creating network plot')
+    logger.error('Error in network function: Creating network plot')
     
     if 'pandas' in str(type(node_size)):
         node_size=node_size.values
     
     # scaling node sizes
     if config['node_size_scale']!=None and 'numpy' in str(type(node_size)):
-        if verbose>=3: print('[hnet] >Error in network function: Scaling node sizes')
+        logger.error('Error in network function: Scaling node sizes')
         node_size=minmax_scale(node_size, feature_range=(node_size_scale[0], node_size_scale[1]))
 
     fig=plt.figure(figsize=(config['width'], config['height']))
@@ -238,7 +240,7 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     
     # Savefig
     if not isinstance(config['filename'], type(None)):
-        if verbose>=3: print('[hnet] >Saving figure..')
+        logger.info('Saving figure..')
         plt.savefig(config['filename'])
     
     return(fig)
@@ -452,6 +454,6 @@ def graphlayout(model, pos, scale=1, layout='fruchterman_reingold', verbose=3):
         else:
             pos = nx.spring_layout(model, scale=scale, iterations=50)
     else:
-        if verbose>=3: print('[hnet] >Existing coordinates from <pos> are used for the graphlayout.')
+        logger.info('Existing coordinates from <pos> are used for the graphlayout.')
 
     return(pos)

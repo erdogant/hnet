@@ -13,16 +13,20 @@ import os
 import tempfile
 from pathlib import Path
 import itertools
+import requests
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # %% Compute significance
-def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
+def _compute_significance(df, y, dtypes, specificity=None):
     out=[]
 
     # Run over all columns
     for i in range(0, df.shape[1]):
-        if (i>0) and (verbose>=3): print('')
-        if verbose>=3: print('[hnet] >Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
+        if (i>0): logger.info('')
+        logger.info('Analyzing [%s] %s' %(dtypes[i], df.columns[i]), end='')
         colname = df.columns[i]
 
         # Clean nan fields
@@ -33,11 +37,11 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
         uiy=uiy[uiy!='_other_']
 
         if len(uiy)==1 and (uiy=='0'):
-            if verbose>=4: print('[hnet] >The response variable [y] has only one catagory; [0] which is seen as the negative class and thus ignored.')
+            logger.debug('The response variable [y] has only one catagory; [0] which is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
 
         if len(uiy)==2:
-            if verbose>=4: print('[hnet] >The response variable [y] has two catagories, the catagory 0 is seen as the negative class and thus ignored.')
+            logger.debug('The response variable [y] has two catagories, the catagory 0 is seen as the negative class and thus ignored.')
             uiy=uiy[uiy!='0']
             uiy=uiy[uiy!='False']
             uiy=uiy[uiy!='false']
@@ -85,13 +89,13 @@ def _compute_significance(df, y, dtypes, specificity=None, verbose=3):
                 outtest.update({'category_name': colname})
                 out.append(outtest)
             else:
-                if verbose>=2: print('[hnet] >Warning: Can not process dtype: [%s] <skipping>' %(dtypes[i]))
+                logger.warning('Can not process dtype: [%s] <skipping>' %(dtypes[i]))
                 # raise ValueError('[hnet] >dtype can not be of type [%s]' %(dtypes[i]))
             # Print dots
-            if verbose>=3: print('.', end='')
+            logger.info('.', end='')
 
-    if verbose>=3: print('')
-    return(out)
+    logger.info('')
+    return out
 
 
 # %% Wilcoxon Ranksum test
@@ -220,7 +224,7 @@ def _logscale(simmat_padj):
 
 # %% Do multiple test correction
 def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
-    if verbose>=3: print('[hnet] >Multiple test correction using %s' %(multtest))
+    logger.info('Multiple test correction using %s' %(multtest))
     # Multiple test correction
     if multtest is not None:
         # Make big row with all pvalues
@@ -241,7 +245,7 @@ def _multipletestcorrectionAdjmat(adjmat, multtest, verbose=3):
 # %% Do multiple test correction
 def _multipletestcorrection(out, multtest, verbose=3):
     # Always do a multiple test correction but do not use it in the filtering step if not desired
-    if verbose>=3: print('[hnet] >Multiple test correction using %s' %(multtest))
+    logger.info('Multiple test correction using %s' %(multtest))
 
     if out!=[]:
         # Get pvalues
@@ -277,12 +281,12 @@ def _make_n_combinations(Xhot, Xlabx, combK, y_min, verbose=3):
             [cmbn_hot, cmbn_labX, cmbn_labH, cmbn_labO] = _cmbnN(Xhot, Xlabx, y_min, k)
             # If any combinations is found, add to dataframe
             if len(cmbn_labX)>0:
-                if verbose>=3: print('[hnet] >Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
+                logger.info('Adding %d none mutual exclusive combinations with k=[%d] features.' %(cmbn_hot.shape[1], k))
                 out_hot = pd.concat([out_hot, pd.DataFrame(data=cmbn_hot, columns=cmbn_labH).astype(int)], axis=1)
                 out_labo = np.append(out_labo, cmbn_labO, axis=0)
                 out_labx = out_labx + cmbn_labX
             else:
-                if verbose>=3: print('[hnet] >No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
+                logger.info('No combinatorial features detected with k=[%d] features. No need to search for higher k.' %(k))
                 break
 
         # Add to one-hot dataframe
@@ -350,7 +354,7 @@ def _remove_columns_without_dtype(df, dtypes, verbose=3):
             remcols=df.columns[Iloc].values
             df.drop(columns=remcols, inplace=True)
             dtypes=list(np.array(dtypes)[(Iloc==False)])
-            if verbose>=3: print('[hnet] >%.0f columns are removed.' %(len(remcols)))
+            logger.info('%.0f columns are removed.' %(len(remcols)))
 
         assert df.shape[1]==len(dtypes), 'Columns in df and dtypes should match! [hnet.remove_columns_without_dtype]'
 
@@ -370,7 +374,7 @@ def _drop_empty(df, Xlabx, verbose=3):
     for col in cols:
         if np.any(cols==col):
             if np.all(np.logical_and(df.loc[:, cols==col].isna().values.reshape(-1, 1), df.loc[rows==col, :].isna().values.reshape(-1, 1))):
-                if verbose>=3: print('[hnet] >Dropping %s' %(col))
+                logger.info('Dropping %s' %(col))
                 droplabel.append(col)
 
     # Remove labels from the original df
@@ -409,7 +413,7 @@ def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest,
     nr_succes_pop_n = np.array(nr_succes_pop_n)
     nr_succes_pop_n[:, 0] = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:, 0]))
 
-    if verbose>=5: print(simmat_padj)
+    logger.debug(simmat_padj)
     # Multiple test correction
     simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, multtest, verbose=verbose)
     # Remove variables for which both rows and columns are empty
@@ -493,14 +497,14 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
         white_list = [x.lower() for x in white_list]
         Iloc = np.isin(df.columns.str.lower(), white_list)
         df = df.loc[:,Iloc]
-        if verbose>=3: print('[hnet] >Keeping ony features in the white list..')
+        logger.info('Keeping ony features in the white list..')
 
     # Exclude variables that are in black_list.
     if black_list is not None:
         black_list = [x.lower() for x in black_list]
         Iloc = ~np.isin(df.columns.str.lower(), black_list)
         df = df.loc[:,Iloc]
-        if verbose>=3: print('[hnet] >Removing features from the black list..')
+        logger.info('Removing features from the black list..')
         # Remove also in dtypes
         if not isinstance(dtypes, str):
             if len(dtypes)!=len(Iloc):
@@ -515,7 +519,7 @@ def _white_black_list(df, dtypes, white_list, black_list, verbose=3):
         if len(dtypes)!=df.shape[1]:
             raise ValueError('[hnet] >ERROR : dtypes should have same length as your dataframe or white_list')
 
-    if df.shape[1]<=1: print('[hnet] >Warning : After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
+    if df.shape[1]<=1: logger.warning('After filtering, [%d] variable remained. A minimum of 2 is required. Tip: Check your dtypes, and see which ones are (not) categorical.' %(df.shape[1]))
     return df, dtypes
 
 
@@ -524,7 +528,7 @@ def _bool_processesing(df, dtypes, excl_background, verbose=3):
     if isinstance(dtypes, str) | (np.any(dtypes=='bool')):
         Iloc = ((df.dtypes=='bool') | (dtypes=='bool')).values
         if np.any(Iloc):
-            if verbose>=3: print('[hnet] >Converting boolean values..')
+            logger.info('Converting boolean values..')
             # Set as int
             df.loc[:, Iloc] = df.loc[:, Iloc].astype('int')
             # Remove the background values
@@ -537,7 +541,7 @@ def _bool_processesing(df, dtypes, excl_background, verbose=3):
             excl_background = excl_background + ['0.0']
             # Get only unique background
             excl_background = np.unique(np.array(excl_background)).tolist()
-            if verbose>=3: print('[hnet] >Set parameter <excl_background> to: %s.' %(str(excl_background)))
+            logger.info('Set parameter <excl_background> to: %s.' %(str(excl_background)))
             if not isinstance(dtypes, str):
                 # Set dtypes as catagorical
                 dtypes = np.array(dtypes)
@@ -548,7 +552,7 @@ def _bool_processesing(df, dtypes, excl_background, verbose=3):
 
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None, verbose=3):
-    if verbose>=4: print('[hnet] >preprocessing: Column names are set to str. and spaces are trimmed.')
+    logger.debug('preprocessing: Column names are set to str. and spaces are trimmed.')
     df.columns = df.columns.astype(str)
     df.columns = df.columns.str.strip()
     df.columns = make_elements_unique(df.columns.values)
@@ -569,7 +573,7 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Make sure its limited to the number of y_min
     Iloc = (df_onehot['onehot'].sum(axis=0)>=y_min).values
     if np.any(Iloc==False):
-        if verbose>=2: print('[hnet] >WARNING: Features with y_min needs another round of filtering. Fixing it now..')
+        logger.warning('Features with y_min needs another round of filtering. Fixing it now..')
         df_onehot['onehot']=df_onehot['onehot'].loc[:, Iloc]
         df_onehot['labx']=df_onehot['labx'][Iloc]
 
@@ -610,7 +614,7 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
 
     # Filter on threshold
     if threshold is not None:
-        if verbose>=3: print('[hnet] >Filtering associations on threshold > %d' %(threshold))
+        logger.info('Filtering associations on threshold > %d' %(threshold))
         simmatLogP[simmatLogP<threshold]=0
 
     # Filter on minimum number of edges
@@ -618,7 +622,7 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         simmatBOOL = simmatLogP.copy()>0
         if np.all(simmatBOOL.columns==simmatBOOL.index.values):
             Iloc = np.logical_or(simmatBOOL.sum(axis=0)>=min_edges, simmatBOOL.sum(axis=1)>=min_edges).values
-            if verbose>=3: print('[hnet] >Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
+            logger.info('Filtering on edges: [%d] variables remain after filtering on a minimum of [%d] edges.' %(np.sum(Iloc), min_edges))
             simmatLogP = simmatLogP.loc[Iloc, Iloc]
             labx = labx[Iloc]
 
@@ -629,7 +633,7 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         Ilabx = np.isin(labx, white_list)
         Irow = np.logical_or(Irow, Ilabx)
         Icol = np.logical_or(Icol, Ilabx)
-        if verbose>=3: print('[hnet] >Number of variables at input: [%d], and after white listing: [%d]' %(len(Irow), sum(Irow)))
+        logger.info('Number of variables at input: [%d], and after white listing: [%d]' %(len(Irow), sum(Irow)))
         simmatLogP = simmatLogP.iloc[Irow, Icol]
         labx = labx[Irow]
 
@@ -640,8 +644,126 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
         Ilabx = np.isin(labx, black_list)
         Irow = np.logical_or(Irow, Ilabx)
         Icol = np.logical_or(Icol, Ilabx)
-        if verbose>=3: print('[hnet] >Number of variables at input: [%d], and after black listing: [%d]' %(len(Irow), sum(~Irow)))
+        logger.info('Number of variables at input: [%d], and after black listing: [%d]' %(len(Irow), sum(~Irow)))
         simmatLogP = simmatLogP.iloc[~Irow, ~Icol]
         labx = labx[~Irow]
 
     return simmatLogP, labx
+
+# %% Verbosity
+# =============================================================================
+# Functions for verbosity
+# =============================================================================
+def convert_verbose_to_old(verbose):
+    """Convert new verbosity to the old ones."""
+    # In case the new verbosity is used, convert to the old one.
+    if verbose is None: verbose=0
+    if isinstance(verbose, str) or verbose>=10:
+        status_map = {
+            60: 0, 'silent': 0, 'off': 0, 'no': 0, None: 0,
+            40: 1, 'error': 1, 'critical': 1,
+            30: 2, 'warning': 2,
+            20: 3, 'info': 3,
+            10: 4, 'debug': 4}
+        return status_map.get(verbose, 0)
+    else:
+        return verbose
+
+def convert_verbose_to_new(verbose):
+    """Convert old verbosity to the new."""
+    # In case the new verbosity is used, convert to the old one.
+    if verbose is None: verbose=0
+    if not isinstance(verbose, str) and verbose<10:
+        status_map = {
+            'None': 'silent',
+            0: 'silent',
+            6: 'silent',
+            1: 'critical',
+            2: 'warning',
+            3: 'info',
+            4: 'debug',
+            5: 'debug'}
+        if verbose>=2: print('[hnet] WARNING use the standardized verbose status. The status [1-6] will be deprecated in future versions.')
+        return status_map.get(verbose, 0)
+    else:
+        return verbose
+
+def get_logger():
+    return logger.getEffectiveLevel()
+
+
+def set_logger(verbose: [str, int] = 'info', return_status: bool = False):
+    """Set the logger for verbosity messages.
+
+    Parameters
+    ----------
+    verbose : str or int, optional, default='info' (20)
+        Logging verbosity level. Possible values:
+        - 0, 60, None, 'silent', 'off', 'no' : no messages.
+        - 10, 'debug' : debug level and above.
+        - 20, 'info' : info level and above.
+        - 30, 'warning' : warning level and above.
+        - 50, 'critical' : critical level and above.
+
+    Returns
+    -------
+    None.
+
+    > # Set the logger to warning
+    > set_logger(verbose='warning')
+    > # Test with different messages
+    > logger.debug("Hello debug")
+    > logger.info("Hello info")
+    > logger.warning("Hello warning")
+    > logger.critical("Hello critical")
+
+    """
+    # Convert verbose to new
+    verbose = convert_verbose_to_new(verbose)
+
+    # Set 0 and None as no messages.
+    if (verbose==0) or (verbose is None):
+        verbose=60
+    # Convert verbose to numeric level
+    if verbose in (0, None):
+        log_level = logging.CRITICAL + 10  # silent
+    elif isinstance(verbose, str):
+        levels = {
+            'silent': logging.CRITICAL + 10,
+            'off': logging.CRITICAL + 10,
+            'no': logging.CRITICAL + 10,
+            'debug': logging.DEBUG,
+            'info': logging.INFO,
+            'warning': logging.WARNING,
+            'error': logging.ERROR,
+            'critical': logging.CRITICAL,
+        }
+        log_level = levels.get(verbose.lower(), logging.INFO)
+    elif isinstance(verbose, int):
+        log_level = verbose
+    else:
+        log_level = logging.INFO
+
+    # Set package logger
+    logger = logging.getLogger('hnet')
+    logger.setLevel(log_level)
+    for handler in logger.handlers:
+        handler.setLevel(log_level)
+
+    if return_status:
+        return log_level
+
+
+
+def disable_tqdm():
+    """Set the logger for verbosity messages."""
+    return (True if (logger.getEffectiveLevel()>=30) else False)
+
+
+def check_logger(verbose: [str, int] = None):
+    """Check the logger."""
+    if verbose is not None: set_logger(verbose)
+    logger.debug('DEBUG')
+    logger.info('INFO')
+    logger.warning('WARNING')
+    logger.critical('CRITICAL')

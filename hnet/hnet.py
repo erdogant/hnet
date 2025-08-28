@@ -9,7 +9,6 @@
 
 # %% Libraries
 import matplotlib.pyplot as plt
-# import requests
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -29,6 +28,9 @@ import warnings
 import datazets as dz
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # %% Association learning across all variables
@@ -123,14 +125,14 @@ class hnet():
 
     References
     ----------
-    * Blog: https://towardsdatascience.com/explore-and-understand-your-data-with-a-network-of-significant-associations-9a03cf79d254
+    * Blog: https://erdogant.github.io/hnet/pages/html/Documentation.html#blog
     * Github: https://github.com/erdogant/hnet
     * Documentation: https://erdogant.github.io/hnet/
     * Article: https://arxiv.org/abs/2005.04679
 
     """
 
-    def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None):
+    def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None, verbose='info'):
         """Initialize distfit with user-defined parameters."""
         if (alpha is None): alpha=1
         if (y_min is None): y_min=1
@@ -151,13 +153,15 @@ class hnet():
         self.excl_background = excl_background
         self.white_list = white_list
         self.black_list = black_list
+        self.verbose = verbose
+        hnstats.set_logger(verbose=verbose)
 
-    def prepocessing(self, df, verbose=3):
+    def prepocessing(self, df):
         """Pre-processing based on the model parameters."""
         # Pre processing
-        [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, white_list=self.white_list, black_list=self.black_list, verbose=verbose)
+        [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=self.dtypes, y_min=self.y_min, perc_min_num=self.perc_min_num, excl_background=self.excl_background, white_list=self.white_list, black_list=self.black_list)
         # Add combinations
-        [X_comb, X_labx, X_labo] = hnstats._make_n_combinations(df_onehot['onehot'], df_onehot['labx'], self.k, self.y_min, verbose=verbose)
+        [X_comb, X_labx, X_labo] = hnstats._make_n_combinations(df_onehot['onehot'], df_onehot['labx'], self.k, self.y_min)
         # Get numerical columns
         colNum = df.columns[df.dtypes == 'float64'].values
         simmat_labx = np.append(X_labo, colNum).astype(str)
@@ -165,7 +169,7 @@ class hnet():
         # Return
         return df, simmatP, simmat_labx, X_comb, X_labx, dtypes
 
-    def compute_associations(self, df, simmatP, simmat_labx, X_comb, X_labx, dtypes, verbose=3):
+    def compute_associations(self, df, simmatP, simmat_labx, X_comb, X_labx, dtypes):
         """Association learning on the processed data."""
         # Here we go! in parallel!
         # from multiprocessing import Pool
@@ -178,27 +182,26 @@ class hnet():
         #     print(len(results))
 
         # Print some
-        if verbose>=3: print('[hnet] >Association learning across [%d] categories.' %(X_comb.shape[1]))
+        logger.info('Association learning across [%d] categories.' %(X_comb.shape[1]))
 
-        disable = (True if (verbose==0 or verbose>3) else False)
         nr_succes_pop_n = []
 
-        for i in tqdm(range(0, X_comb.shape[1]), disable=disable):
-            nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=verbose)
+        for i in tqdm(range(0, X_comb.shape[1]), disable=hnstats.disable_tqdm(), desc='Association learning across categories'):
+            nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min, verbose=self.verbose)
             nr_succes_pop_n.append(nr_succes_i)
-            if verbose>=5: print('[hnet] >[%d] %s' %(i, nr_succes_i))
+            logger.debug('[%d] %s' %(i, nr_succes_i))
 
         # Post processing
-        simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna, verbose=verbose)
+        simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna)
         # Message
-        print_text = '[hnet] >Total number of associatons computed: [%.0d]' %((simmatP.shape[0] * simmatP.shape[1]) - simmatP.shape[0])
-        if verbose>=3: print('-' * len(print_text))
-        if verbose>=3: print(print_text)
-        if verbose>=3: print('-' * len(print_text))
+        print_text = 'Total number of associatons computed: [%.0d]' %((simmatP.shape[0] * simmatP.shape[1]) - simmatP.shape[0])
+        logger.info('-' * len(print_text))
+        logger.info(print_text)
+        logger.info('-' * len(print_text))
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
-    def association_learning(self, df, verbose=3):
+    def association_learning(self, df):
         """Learn the associations in the data.
 
         Parameters
@@ -210,9 +213,6 @@ class hnet():
            | s1 | 0 | 0 | 1 |
            | s2 | 0 | 1 | 0 |
            | s3 | 1 | 1 | 0 |
-
-        verbose : int [1-5], default: 3
-            Print information to screen. 0: nothing, 1: Error, 2: Warning, 3: information, 4: debug, 5: trace.
 
         Returns
         -------
@@ -231,24 +231,24 @@ class hnet():
         """
         if not isinstance(df, pd.DataFrame): raise ValueError('Input data [df] must be of type pd.DataFrame()')
         # Clean readily fitted models to ensure correct results.
-        self._clean(verbose=verbose)
+        self._clean()
         # Preprocessing
-        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df, verbose=verbose)
+        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df)
         # Here we go! Over all columns now
-        simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes, verbose=verbose)
+        simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes)
         # Combine rules
-        rules = self.combined_rules(simmatP, labx, verbose=0)
+        rules = self.combined_rules(simmatP, labx)
         # Feature importance
-        feat_importance = self._feat_importance(simmatLogP, labx, verbose=verbose)
+        feat_importance = self._feat_importance(simmatLogP, labx)
         # Compute associations for the catagories
-        GsimmatP, GsimmatLogP = self._compute_associations_cat(simmatP, labx, verbose=verbose)
+        GsimmatP, GsimmatLogP = self._compute_associations_cat(simmatP, labx)
         # Store
         self.results = _store(simmatP, simmatLogP, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n, dtypes, rules, feat_importance)
         # Use this option for storage of your model
-        if verbose>=3: print('[hnet] >Fin.')
+        if logger.isEnabledFor(logging.INFO): logger.info('Fin.')
         return self.results
 
-    def _compute_associations_cat(self, simmatP, labx, verbose=3):
+    def _compute_associations_cat(self, simmatP, labx):
         """Compute category associations by fishers method."""
         # Make some checks
         if not np.all(simmatP.columns==simmatP.index.values):
@@ -256,12 +256,12 @@ class hnet():
         if not np.all(simmatP.shape[0]==len(labx)):
             raise ValueError('[hnet] >Error: The number of columns in [simmatP] does not match with the label [labx]!')
 
-        if verbose>=3: print('[hnet] >Computing category association using fishers method..')
+        logger.info('Computing category association using fishers method..')
         uilabx = np.unique(labx)
         adjmatP = np.ones((len(uilabx), len(uilabx)))
 
         # Combine Pvalues for catagories based on fishers method
-        for labxC in tqdm(uilabx, disable=(True if verbose==0 else False)):
+        for labxC in tqdm(uilabx, disable=hnstats.disable_tqdm(), desc='Computing category association using fishers method..'):
             for labxR in uilabx:
                 Ic = labx==labxC
                 Ir = labx==labxR
@@ -277,7 +277,7 @@ class hnet():
             columnData.loc[~(columnData!= np.inf)] = columnData.loc[columnData!= np.inf].max()
         return adjmatP, adjmatlogP
 
-    def _feat_importance(self, simmatLogP, labx, verbose=3):
+    def _feat_importance(self, simmatLogP, labx):
         """Compute feature importance."""
         # Get unique labels
         uilabx, counts = np.unique(labx, return_counts=True)
@@ -302,7 +302,7 @@ class hnet():
         return df_feat_importance
 
     # Make network d3
-    def plot_feat_importance(self, marker_size=5, top_n=10, figsize=(15, 8), verbose=3):
+    def plot_feat_importance(self, marker_size=5, top_n=10, figsize=(15, 8)):
         """Plot feature importance.
 
         Parameters
@@ -313,8 +313,6 @@ class hnet():
             Top n features are labelled in the plot. The default is 10.
         figsize : tuple, optional
             Size of the figure in the browser, [height,width]. The default is [1500,1500].
-        verbose : int, optional
-            Verbosity. The default is 3.
 
         Returns
         -------
@@ -367,7 +365,7 @@ class hnet():
         return simmatP, simmatLogP, labx
 
     # Make network d3
-    def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, fontsize=10, figsize=(700, 700), showfig=True, verbose=3):
+    def d3heatmap(self, summarize=False, savepath=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, fontsize=10, figsize=(700, 700), showfig=True):
         """Interactive heatmap creator.
 
         This function creates a interactive and stand-alone heatmap that is build on d3 javascript.
@@ -410,7 +408,7 @@ class hnet():
             Cluster labels.
 
         """
-        if verbose>=3: print('[hnet] >Building dynamic heatmaps using d3graph..')
+        logger.info('Building dynamic heatmaps using d3graph..')
         if savepath is None: savepath=''
         # Check results
         status = self._check_results()
@@ -419,10 +417,10 @@ class hnet():
         _, simmatLogP, labx = self._get_adjmat(summarize)
 
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
-            if verbose>=3: print('[hnet] >Nothing to plot.')
+            if self.verbose>=3: logger.info('Nothing to plot.')
             return None
 
         # Make undirected network
@@ -446,7 +444,7 @@ class hnet():
         return results
 
     # Make network d3
-    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, elastic=False, verbose=3):
+    def d3graph(self, summarize=False, node_size_limits=[6, 15], savepath=None, node_color=None, directed=True, threshold=None, white_list=None, black_list=None, min_edges=None, charge=500, figsize=(1500, 1500), showfig=True, elastic=False):
         """Interactive network creator.
 
         This function creates a interactive and stand-alone network that is build on d3 javascript.
@@ -495,7 +493,7 @@ class hnet():
             Cluster labels.
 
         """
-        if verbose>=3: print('[hnet] >Building dynamic network graph using d3graph..')
+        logger.info('Building dynamic network graph using d3graph..')
         # Check input data
         status = self._check_results()
         if not status: return None
@@ -504,10 +502,10 @@ class hnet():
         # Setup tempdir
         savepath = hnstats._tempdir(savepath)
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        simmatLogP, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
         # Check whether anything has remained
         if simmatLogP.values.flatten().sum()==0:
-            if verbose>=3: print('[hnet] >Nothing to plot.')
+            logger.info('Nothing to plot.')
             return None
 
         # Resizing nodes based on user-limits
@@ -529,7 +527,7 @@ class hnet():
         if not _check_import_d3blocks(): return None
         from d3blocks import D3Blocks
         d3 = D3Blocks()
-        if verbose>=3: print('[hnet] >Creating d3graph..')
+        logger.info('Creating d3graph..')
         # Initialize
         d3 = D3Blocks()
         df_vector = d3.adjmat2vec(simmatLogP.T)
@@ -559,7 +557,7 @@ class hnet():
         return {'G': d3.D3graph.G, 'savepath': d3.D3graph.config['filepath'], 'labx': labx}
 
     # Make network plot
-    def plot(self, summarize=False, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True, verbose=3):
+    def plot(self, summarize=False, scale=2, dist_between_nodes=0.4, node_size_limits=[25, 500], directed=True, node_color=None, savepath=None, figsize=[15, 10], pos=None, layout='fruchterman_reingold', dpi=250, threshold=None, white_list=None, black_list=None, min_edges=None, showfig=True):
         """Make plot static network plot of the model results.
 
         The results of hnet can be vizualized in several manners, one of them is a static network plot.
@@ -614,7 +612,7 @@ class hnet():
             Coordinates of the node postions.
 
         """
-        if verbose>=3: print('[hnet] >Building static network graph..')
+        logger.info('Building static network graph..')
         # Check input data
         status = self._check_results()
         if not status: return None
@@ -635,10 +633,10 @@ class hnet():
         # Get adjmat
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
         # Check whether anything has remained
         if adjmatLog.values.flatten().sum()==0:
-            if verbose>=3: print('[hnet] >Nothing to plot.')
+            logger.info('Nothing to plot.')
             return None
 
         # Set weights for edges
@@ -727,7 +725,7 @@ class hnet():
         return Gout
 
     # Make plot of the association_learning
-    def heatmap(self, summarize=False, cluster=False, figsize=[15, 15], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None, verbose=3):
+    def heatmap(self, summarize=False, cluster=False, figsize=[15, 15], savepath=None, threshold=None, white_list=None, black_list=None, min_edges=None):
         """Plot static heatmap.
 
         A heatmap can be of use when the results becomes too large to plot in a network.
@@ -762,7 +760,7 @@ class hnet():
         None.
 
         """
-        if verbose>=3: print('[hnet] >Building static heatmap.')
+        logger.info('Building static heatmap.')
         status = self._check_results()
         if not status: return None
         # Retrieve data
@@ -770,9 +768,9 @@ class hnet():
 
         # adjmatLog = self.results['simmatLogP'].copy()
         # Filter adjacency matrix on blacklist/whitelist and/or threshold
-        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=verbose)
+        adjmatLog, labx = hnstats._filter_adjmat(simmatLogP, labx, threshold=threshold, min_edges=min_edges, white_list=white_list, black_list=black_list, verbose=self.verbose)
         if adjmatLog.values.flatten().sum()==0:
-            if verbose>=3: print('[hnet] >Nothing to plot.')
+            logger.info('Nothing to plot.')
             return None
 
         # Set savepath and filename
@@ -791,13 +789,13 @@ class hnet():
                 fig1=imagesc.plot(adjmatLog.fillna(value=0).values, row_labels=adjmatLog.index.values, col_labels=adjmatLog.columns.values, cmap='Reds', figsize=figsize)
 
             if savepath is not None:
-                if verbose>=3: print('[hnet] >Saving heatmap..')
+                logger.info('Saving heatmap..')
                 _ = savefig(fig1, savepath1, transp=True)
         except:
-            print('[hnet] >Error: Heatmap failed. Try cluster=False')
+            logger.error('Heatmap failed. Try cluster=False')
 
     # Extract combined rules from association_learning
-    def combined_rules(self, simmatP=None, labx=None, verbose=3):
+    def combined_rules(self, simmatP=None, labx=None):
         """Association testing and combining Pvalues using fishers-method.
 
         Multiple variables (antecedents) can be associated to a single variable (consequent).
@@ -843,7 +841,7 @@ class hnet():
         df_rules = pd.DataFrame(index=np.arange(0, simmatP.shape[0]), columns=['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
         df_rules['consequents'] = simmatP.index.values
 
-        for i in tqdm(range(0, simmatP.shape[0]), disable=(True if verbose==0 else False)):
+        for i in tqdm(range(0, simmatP.shape[0]), disable=hnstats.disable_tqdm(), desc='Combining Pvalues'):
             idx = np.where(simmatP.iloc[i, :]<1)[0]
             # Remove self
             idx = np.setdiff1d(idx, i)
@@ -861,7 +859,7 @@ class hnet():
         # Return
         return df_rules
 
-    def import_example(self, data='titanic', url=None, sep=',', verbose=3):
+    def import_example(self, data='titanic', url=None, sep=','):
         """Import example dataset from github source.
 
         Import one of the few datasets from github source or specify your own download url link.
@@ -888,7 +886,7 @@ class hnet():
         # return import_example(data=data, url=url, sep=sep, verbose=verbose)
 
     # Save model
-    def save(self, filepath='hnet_model.pkl', overwrite=False, verbose=3):
+    def save(self, filepath='hnet_model.pkl', overwrite=False):
         """Save learned model in pickle file.
 
         Parameters
@@ -924,13 +922,13 @@ class hnet():
         storedata['fillna'] = self.fillna
         storedata['excl_background'] = self.excl_background
         # Save
-        status = pypickle.save(filepath, storedata, overwrite=overwrite, verbose=verbose)
-        if verbose>=3: print('[hnet] >Saving.. %s' %(status))
+        status = pypickle.save(filepath, storedata, overwrite=overwrite, verbose=self.verbose)
+        logger.info('Saving.. %s' %(status))
         # return
         return status
 
     # Load model.
-    def load(self, filepath='hnet_model.pkl', verbose=3):
+    def load(self, filepath='hnet_model.pkl'):
         """Load learned model.
 
         Parameters
@@ -950,7 +948,7 @@ class hnet():
         if filepath[-4:]!='.pkl':
             filepath = filepath + '.pkl'
         # Load
-        storedata = pypickle.load(filepath, verbose=verbose)
+        storedata = pypickle.load(filepath, verbose=self.verbose)
         # Store in self.
         if storedata is not None:
             self.results = storedata['results']
@@ -964,28 +962,28 @@ class hnet():
             self.dropna = storedata['dropna']
             self.fillna = storedata['fillna']
             self.excl_background = storedata['excl_background']
-            if verbose>=3: print('[hnet] >Loading succesfull!')
+            logger.info('Loading succesfull!')
             # Return results
             return self.results
         else:
-            if verbose>=2: print('[hnet] >WARNING: Could not load data.')
+            logger.warning('Could not load data.')
 
     # Check results
-    def _check_results(self, verbose=3):
+    def _check_results(self):
         status = True
         if not hasattr(self, 'results'):
-            if verbose>=3: print('[hnet] >Nothing to plot. Try to run hnet with first with: hn.association_learning()')
+            logger.info('Nothing to plot. Try to run hnet with first with: hn.association_learning()')
             status = False
         elif self.results['simmatLogP'].empty:
-            if verbose>=3: print('[hnet] >Nothing to plot. No associations were detected.')
+            logger.info('Nothing to plot. No associations were detected.')
             status = False
 
         return status
 
-    def _clean(self, verbose=3):
+    def _clean(self):
         # Clean readily fitted models to ensure correct results.
         if hasattr(self, 'results'):
-            if verbose>=3: print('[hnet] >Cleaning previous fitted model results..')
+            logger.info('Cleaning previous fitted model results..')
             if hasattr(self, 'results'): del self.results
 
 # %% Store results
@@ -1006,7 +1004,7 @@ def _store(simmatP, adjmatLog, GsimmatP, GsimmatLogP, labx, df, nr_succes_pop_n,
 
 
 # %% Compute fit
-def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None, verbose=3):
+def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', specificity='medium', excl_background=None):
     """Enrichment analysis.
 
     Compute enrichment between input dataset and response variable y. Length of dataframe and y must be equal.
@@ -1083,7 +1081,7 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     config['multtest'] = multtest
     config['specificity'] = specificity
 
-    if config['verbose']>=3: print('[hnet] >Start making fit..')
+    logger.info('Start making fit..')
     df.columns = df.columns.astype(str)
 
     # [df, df_onehot, dtypes] = hnstats._preprocessing(df, dtypes=dtypes, y_min=y_min, perc_min_num=perc_min_num, excl_background=excl_background, verbose=verbose)
@@ -1102,12 +1100,12 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     # Make dataframe
     out = pd.DataFrame(out)
     # Return
-    if config['verbose']>=3: print('[hnet] >Fin')
+    logger.info('Fin')
     return out
 
 
 # %% Make adjacency matrix symmetric with repect to the diagonal
-def to_undirected(adjmat, method='logp', verbose=3):
+def to_undirected(adjmat, method='logp'):
     """Make adjacency matrix symmetric.
 
     The adjacency matrix resulting from hnet is not neccesarily symmetric due to the statistics being used.
@@ -1132,8 +1130,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
     if np.sum(np.isin(adjmat.index.values, adjmat.columns.values))!=np.max(adjmat.shape):
         raise ValueError('Adjacency matrix must have similar number of rows and columns! Re-run HNet with dropna=False!')
 
-    if verbose>=3: print('[hnet] >Make adjacency matrix undirected..')
-    progressbar=(True if verbose==0 else False)
+    logger.info('Make adjacency matrix undirected..')
     columns=adjmat.columns.values
     index=adjmat.index.values
 
@@ -1145,7 +1142,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
     adjmatS=np.zeros(adjmat.shape, dtype=float)
 
     # Make symmetric using maximum as combining function
-    for i in tqdm(range(adjmat.shape[0]), disable=progressbar):
+    for i in tqdm(range(adjmat.shape[0]), disable=hnstats.disable_tqdm(), desc='Make adjacency matrix undirected..'):
         for j in range(adjmat.shape[1]):
             if method=='logp':
                 # Maximum -log10(P) values
@@ -1164,7 +1161,7 @@ def to_undirected(adjmat, method='logp', verbose=3):
 
 
 # %% Comparison of two networks
-def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8, verbose=3):
+def compare_networks(adjmat_true, adjmat_pred, pos=None, showfig=True, width=15, height=8):
     """Compare two adjacency matrices and plot the differences.
 
     Comparison of two networks based on two adjacency matrices. Both matrices should be of equal size and of type pandas DataFrame.
@@ -1224,7 +1221,7 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     maxstr = np.minimum(X_comb.columns.str.len().max(), 40)
     # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
-        if verbose>=4: print('[hnet] >Working on [%s]%s ' %(X_comb.columns[i], '.' * (maxstr - len(X_comb.columns[i]))), end='')
+        logger.debug('Working on [%s]%s ' %(X_comb.columns[i], '.' * (maxstr - len(X_comb.columns[i]))), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit
@@ -1246,11 +1243,11 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             # Count nr. successes
             out = [colname, X_comb.iloc[:, i].sum() / X_comb.shape[0]]
             # showprogress
-            if verbose>=4: print('[%g]' %(len(IB)), end='')
+            logger.debug('[%g]' %(len(IB)), end='')
     else:
-        if verbose>=4: print('[hnet] >Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
+        logger.debug('Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
 
-    if verbose>=4: print('')
+    logger.debug('')
 
     # Return
     return out, simmatP, simmat_labx
@@ -1261,6 +1258,6 @@ def _check_import_d3blocks(verbose=3):
         import d3blocks
         status = True
     except:
-        if verbose>=3: print('Error: The library [d3blocks] is not installed by default. Try: <pip install d3blocks>')
+        logger.error('Error: The library [d3blocks] is not installed by default. Try: <pip install d3blocks>')
         status = False
     return status

@@ -16,7 +16,7 @@
 <!---[![Coffee](https://img.shields.io/badge/coffee-black-grey.svg)](https://erdogant.github.io/donate/?currency=USD&amount=5)-->
 
 <div>
-<a href="https://erdogant.github.io/hnet/"><img src="https://github.com/erdogant/hnet/blob/master/docs/figs/logo.png" width="150" align="left" /></a>
+<a href="https://erdogant.github.io/hnet/"><img src="https://github.com/erdogant/hnet/blob/master/docs/figs/logo.png" width="200" align="left" /></a>
 hnet is a Python package for probability density fitting of univariate distributions for random variables.
 The hnet library can determine the best fit for over 90 theoretical distributions. The goodness-of-fit test is used to score for the best fit and after finding the best-fitted theoretical distribution, the loc, scale, and arg parameters are returned.
 It can be used for parametric, non-parametric, and discrete distributions. ⭐️Star it if you like it⭐️
@@ -206,8 +206,8 @@ With the summarize functionality, the results will be summarized towards categor
 ### Maintainer
 * Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
 * Contributions are welcome.
-* Yes! This library is entirely **free** but it runs on coffee! :) Feel free to support with a <a href="https://erdogant.github.io/donate/?currency=USD&amount=5">Coffee</a>.
-
+* This library is free. But powered by caffeine! Like it? Chip in what it's worth, and keep me coding!🙂
+ 
 [![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy+me+a+coffee&emoji=&slug=erdogant&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/erdogant)
 
 

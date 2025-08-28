@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hnet"
+dynamic = ["version"]
+authors = [{ name = "Erdogan Taskesen", email = "erdogant@gmail.com" },]
+description = "Graphical Hypergeometric Networks"
+readme = "README.md"
+requires-python = ">=3"
+license = "MIT"
+keywords = ["Python", "hnet", "network analysis", "tabular data", "data analysis", "graph", "machine learning", "AI"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Operating System :: Unix",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = ['colourmap',
+                  'pypickle',
+                  'classeval',
+                  'matplotlib',
+                  'numpy',
+                  'pandas',
+                  'statsmodels',
+                  'networkx',
+                  'python-louvain',
+                  'tqdm',
+                  'scikit-learn',
+                  'ismember',
+                  'imagesc',
+                  'df2onehot',
+                  'fsspec',
+                  'datazets']
+
+[project.urls]
+Homepage = "https://erdogant.github.io/hnet"
+Download = "https://github.com/erdogant/hnet/archive/{version}.tar.gz"
+
+# Add the entire directory with subdirs into the package
+[tool.setuptools.packages.find]
+include = ["hnet*"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "hnet.__version__" }

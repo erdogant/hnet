@@ -3,12 +3,23 @@ Sponsor
 
 .. include:: sponsor.rst
 
-
-Blog
-############
+Medium Blogs
+#############
 
 .. note::
-	`A structured blog about the usage of HNet can be found here <https://erdogant.substack.com/p/advanced-network-analysis-to-explore>`_
+	#. `Subscribe to Medium blogs <https://erdogant.medium.com/subscribe>`_
+	#. `Uncover Hidden Patterns In Your Tabular Datasets: All You Need Is The Right Statistics. <https://erdogant.medium.com/uncover-hidden-patterns-in-your-tabular-datasets-all-you-need-is-the-right-statistics-6de38f6a8aa7>`_
+	#. `K-Nearest-Rank Scores: A Tool for Local Structure Analysis in Embeddings. <https://medium.com/data-science-collective/k-nearest-rank-scores-a-tool-for-local-structure-analysis-in-embeddings-ee4cbbbb996d>`_
+
+
+Gumroad Products with Podcasts
+################################
+
+.. tip::
+	#. `Gumroad products <https://erdogant.gumroad.com>`_
+	#. `Uncover Hidden Patterns In Your Tabular Datasets: All You Need Is The Right Statistics. <https://erdogant.gumroad.com/l/uncover-hidden-patterns-in-your-tabular-datasets-all-you-need-is-the-right-statistics-6de38f6a8aa7>`_
+	#. `K-Nearest-Rank Scores: A Tool for Local Structure Analysis in Embeddings. <https://erdogant.gumroad.com/l/k-nearest-rank-scores-a-tool-for-local-structure-analysis-in-embeddings-ee4cbbbb996d>`_
+
 
 Article
 ############

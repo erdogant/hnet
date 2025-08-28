@@ -3,8 +3,12 @@ HNet documentation!
 
 |python| |pypi| |docs| |stars| |LOC| |downloads_month| |downloads_total| |license| |forks| |open issues| |project status| |substack| |colab| |DOI| |repo-size| |donate|
 
+.. image:: ../figs/logo.png
+   :width: 250px
+   :align: center
+
 .. tip::
-	`A structured blog about the usage of HNet can be found here <https://erdogant.substack.com/p/advanced-network-analysis-to-explore>`_
+	`A structured blog about the usage of HNet can be found here <https://medium.com/data-science-collective/uncover-hidden-patterns-in-your-tabular-datasets-all-you-need-is-the-right-statistics-6de38f6a8aa7>`_
 
 Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
 We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference. 

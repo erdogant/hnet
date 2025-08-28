@@ -5,6 +5,7 @@ __pycache__/
 
 # Personal
 *.zip
+.pypirc
 
 # C extensions
 *.so

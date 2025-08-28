@@ -206,7 +206,7 @@ With the summarize functionality, the results will be summarized towards categor
 ### Maintainer
 * Erdogan Taskesen, github: [erdogant](https://github.com/erdogant)
 * Contributions are welcome.
-* This library is free. But powered by caffeine! Like it? Chip in what it's worth, and keep me coding!🙂
+* This library is free. But powered by caffeine! Like it? Chip in what it's worth, and keep me creating new functionalities!🙂
  
 [![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy+me+a+coffee&emoji=&slug=erdogant&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/erdogant)
 

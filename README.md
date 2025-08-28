@@ -33,7 +33,7 @@ It can be used for parametric, non-parametric, and discrete distributions. ‚≠êÔ∏
 | **Summarization** | Summarize complex networks into interpretable structures. | [Link](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#summarize-results) | - | - |
 | **Feature Importance** | Rank variables by importance within associations. | [Link](https://erdogant.github.io/hnet/pages/html/Use%20Cases.html#feature-importance) | - | - |
 | **Interactive Visualizations** | Explore results with dynamic dashboards and d3-based visualizations. | [Dashboard](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface) | - | [Titanic Example](https://erdogant.github.io/docs/d3graph/titanic_example/index.html) |
-| **Performance Evaluation** | Compare accuracy with Bayesian association learning and benchmarks. | [Link](https://erdogant.github.io/hnet/pages/html/index.html) | [Link](https://arxiv.org/abs/2005.04679) | - |
+| **Performance Evaluation** | Compare accuracy with Bayesian association learning and benchmarks. | [Link](https://arxiv.org/abs/2005.04679) | - | - |
 | **Interactive Dashboard** | No data leaves your machine. All computations are performed locally. | [Link](https://erdogant.github.io/hnet/pages/html/Documentation.html#online-web-interface) | - | - |
 
 

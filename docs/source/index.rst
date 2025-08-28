@@ -27,7 +27,8 @@ Use HNET if your goal is:
 -----------------------------------
 
 .. note::
-	**Your ❤ is important to keep maintaining this package.** You can `support <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_ in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_.
+    This library is **free**. But powered by caffeine! Like it? Chip in what it's worth, and keep me creating new functionalities!🙂
+    You can `support <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_ in various ways, have a look at the `sponser page <https://erdogant.github.io/hnet/pages/html/Documentation.html>`_.
 	Report bugs, issues and feature extensions at `github <https://github.com/erdogant/hnet/>`_ page.
 
 	.. code-block:: console

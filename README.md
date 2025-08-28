@@ -45,8 +45,8 @@ It can be used for parametric, non-parametric, and discrete distributions. ‚≠êÔ∏
 - **Gumroad Blogs with podcast:** [GumRoad](https://erdogant.github.io/hnet/pages/html/Documentation.html#gumroad-products-with-podcasts)
 - **Documentation:** [Website](https://erdogant.github.io/hnet)
 - **Bug Reports and Feature Requests:** [GitHub Issues](https://github.com/erdogant/hnet/issues)
-- [**arXiv**](https://arxiv.org/abs/2005.04679)
-- [**Article in pdf**](https://arxiv.org/pdf/2005.04679)
+- Article: [arXiv](https://arxiv.org/abs/2005.04679)
+- Article: [PDF](https://arxiv.org/pdf/2005.04679)
 
 ---
 

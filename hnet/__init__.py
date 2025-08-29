@@ -18,19 +18,16 @@ from datazets import get as import_example
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 
 # Setup package-level logger
 _logger = logging.getLogger('hnet')
 _log_handler = logging.StreamHandler()
-_fmt = '[{asctime}] [{name}] [{levelname}] {message}'
-_formatter = logging.Formatter(fmt=_fmt, style='{', datefmt='%d-%m-%Y %H:%M:%S')
+_formatter = logging.Formatter(fmt='[{asctime}] [{name:<12.12}] [{levelname:<8}] {message}', style='{', datefmt='%d-%m-%Y %H:%M:%S')
 _log_handler.setFormatter(_formatter)
 _log_handler.setLevel(logging.DEBUG)
-
 if not _logger.hasHandlers():  # avoid duplicate handlers if re-imported
     _logger.addHandler(_log_handler)
-
 _logger.setLevel(logging.DEBUG)
 _logger.propagate = True  # allow submodules to inherit this handler
 

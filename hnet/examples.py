@@ -3,6 +3,8 @@
 # print(hnet.__version__)
 
 # %% test examples
+import numpy as np
+import pandas as pd
 
 from hnet import hnet
 hn = hnet()
@@ -10,11 +12,6 @@ df = hn.import_example()
 
 import hnet
 df=hnet.import_example('titanic')
-
-# %%
-import numpy as np
-import pandas as pd
-
 
 # %% Titanic case
 from hnet import hnet

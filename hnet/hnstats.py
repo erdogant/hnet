@@ -360,29 +360,25 @@ def _remove_columns_without_dtype(df, dtypes):
     return(df, dtypes)
 
 
-# %% Clean empty rows
 def _drop_empty(df, Xlabx):
-    dfO=df.copy()
-    cols=dfO.columns.values
-    rows=dfO.index.values
-
+    dfO = df.copy()
+    cols = dfO.columns.values
+    rows = dfO.index.values
     # Set diagonal on nan
-    np.fill_diagonal(df.values, np.nan)
-
-    droplabel=[]
+    for i, col in enumerate(cols):
+        if col in rows:
+            dfO.loc[col, col] = np.nan
+    droplabel = []
     for col in cols:
-        if np.any(cols==col):
-            if np.all(np.logical_and(df.loc[:, cols==col].isna().values.reshape(-1, 1), df.loc[rows==col, :].isna().values.reshape(-1, 1))):
-                logger.info('Dropping %s' %(col))
+        if np.any(cols == col):
+            if np.all(np.logical_and(dfO.loc[:, cols == col].isna().values.reshape(-1, 1), dfO.loc[rows == col, :].isna().values.reshape(-1, 1))):
+                logger.info('Dropping %s' % (col))
                 droplabel.append(col)
-
     # Remove labels from the original df
-    Xlabx=Xlabx[np.isin(dfO.columns, droplabel)==False]
+    Xlabx = Xlabx[np.isin(dfO.columns, droplabel) == False]
     dfO.drop(labels=droplabel, axis=0, inplace=True)
     dfO.drop(labels=droplabel, axis=1, inplace=True)
-
-    return(dfO, Xlabx)
-
+    return (dfO, Xlabx)
 
 # %% Setup columns in correct dtypes
 def _filter_significance(out, alpha, multtest):
@@ -406,42 +402,43 @@ def _nancleaning(datac, y):
 
 # %% Do the math
 def _post_processing(simmat_padj, nr_succes_pop_n, simmat_labx, alpha, multtest, fillna, dropna):
-    # Clean label names by chaning X.0 into X
+    # Clean label names by changing X.0 into X
+    simmat_padj = simmat_padj.copy()  # ensure we own the data
     simmat_padj.columns = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.columns))
     simmat_padj.index = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, simmat_padj.index.values))
     nr_succes_pop_n = np.array(nr_succes_pop_n)
     nr_succes_pop_n[:, 0] = list(map(lambda x: x[:-2] if x[-2:]=='.0' else x, nr_succes_pop_n[:, 0]))
-
     logger.debug(simmat_padj)
     # Multiple test correction
     simmat_padj = _multipletestcorrectionAdjmat(simmat_padj, multtest)
     # Remove variables for which both rows and columns are empty
-    if dropna: [simmat_padj, simmat_labx]=_drop_empty(simmat_padj, simmat_labx)
+    if dropna: [simmat_padj, simmat_labx] = _drop_empty(simmat_padj, simmat_labx)
     # Fill empty fields
     if fillna: simmat_padj.fillna(1, inplace=True)
-    # Remove those with P>alpha, to prevent unnecesarilly edges
-    simmat_padj[simmat_padj>alpha]=1
+    # Remove those with P>alpha, to prevent unnecessarily edges
+    simmat_padj[simmat_padj > alpha] = 1
     # Convert P-values to -log10 scale
     adjmatLog = _logscale(simmat_padj)
-
     # Set zeros on diagonal but make sure it is correctly ordered
-    if np.all(adjmatLog.index.values==adjmatLog.columns.values):
-        np.fill_diagonal(adjmatLog.values, 0)
-    if np.all(simmat_padj.index.values==simmat_padj.columns.values):
-        np.fill_diagonal(simmat_padj.values, 1)
-
+    if np.all(adjmatLog.index.values == adjmatLog.columns.values):
+        for col in adjmatLog.columns:
+            if col in adjmatLog.index:
+                adjmatLog.loc[col, col] = 0
+    if np.all(simmat_padj.index.values == simmat_padj.columns.values):
+        for col in simmat_padj.columns:
+            if col in simmat_padj.index:
+                simmat_padj.loc[col, col] = 1
     # Remove edges from matrix
     if dropna:
-        idx1=np.where((simmat_padj==1).sum(axis=1)==simmat_padj.shape[0])[0]
-        idx2=np.where((simmat_padj==1).sum(axis=0)==simmat_padj.shape[0])[0]
-        keepidx= np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1, idx2))
-        simmat_padj=simmat_padj.iloc[keepidx, keepidx]
-        adjmatLog=adjmatLog.iloc[keepidx, keepidx]
-        simmat_labx=simmat_labx[keepidx]
+        idx1 = np.where((simmat_padj == 1).sum(axis=1) == simmat_padj.shape[0])[0]
+        idx2 = np.where((simmat_padj == 1).sum(axis=0) == simmat_padj.shape[0])[0]
+        keepidx = np.setdiff1d(np.arange(simmat_padj.shape[0]), np.intersect1d(idx1, idx2))
+        simmat_padj = simmat_padj.iloc[keepidx, keepidx]
+        adjmatLog = adjmatLog.iloc[keepidx, keepidx]
+        simmat_labx = simmat_labx[keepidx]
         IA, _ = ismember(nr_succes_pop_n[:, 0], simmat_padj.columns.values)
         nr_succes_pop_n = nr_succes_pop_n[IA, :]
-
-    return(simmat_padj, adjmatLog, simmat_labx, nr_succes_pop_n)
+    return (simmat_padj, adjmatLog, simmat_labx, nr_succes_pop_n)
 
 
 # %% Scale weights
@@ -524,12 +521,14 @@ def _white_black_list(df, dtypes, white_list, black_list):
 
 # %%
 def _bool_processesing(df, dtypes, excl_background):
-    if isinstance(dtypes, str) | (np.any(dtypes=='bool')):
-        Iloc = ((df.dtypes=='bool') | (dtypes=='bool')).values
+    if isinstance(dtypes, str) or (np.any(dtypes == 'bool')):
+        Iloc = ((df.dtypes == 'bool') | (np.array(dtypes) == 'bool')).values
         if np.any(Iloc):
             logger.info('Converting boolean values..')
-            # Set as int
-            df.loc[:, Iloc] = df.loc[:, Iloc].astype('int')
+            # Cast bool columns to object first, then to int, to avoid dtype rejection
+            bool_cols = df.columns[Iloc]
+            for col in bool_cols:
+                df[col] = df[col].astype(int)
             # Remove the background values
             if (excl_background is None):
                 excl_background = ['0.0']
@@ -540,13 +539,68 @@ def _bool_processesing(df, dtypes, excl_background):
             excl_background = excl_background + ['0.0']
             # Get only unique background
             excl_background = np.unique(np.array(excl_background)).tolist()
-            logger.info('Set parameter <excl_background> to: %s.' %(str(excl_background)))
+            logger.info('Set parameter <excl_background> to: %s.' % (str(excl_background)))
             if not isinstance(dtypes, str):
-                # Set dtypes as catagorical
                 dtypes = np.array(dtypes)
-                dtypes[dtypes=='bool']='cat'
-    # Return
+                dtypes[dtypes == 'bool'] = 'cat'
     return df, dtypes, excl_background
+
+# def _bool_processesing(df, dtypes, excl_background, logger=None):
+#     """
+#     Convert boolean columns to integers and update dtype info & background exclusions.
+    
+#     Parameters
+#     ----------
+#     df : pd.DataFrame
+#     dtypes : str or array-like
+#     excl_background : list or str or None
+#     logger : optional, logging object
+    
+#     Returns
+#     -------
+#     df : pd.DataFrame
+#     dtypes : updated dtypes array
+#     excl_background : updated list
+#     """
+
+#     # Ensure dtypes is array-like for uniform processing
+#     dtypes_arr = np.array(dtypes) if not isinstance(dtypes, str) else dtypes
+
+#     # Check if 'bool' is requested
+#     process_bool = False
+#     if isinstance(dtypes, str):
+#         process_bool = dtypes == 'bool'
+#     else:
+#         process_bool = np.any(dtypes_arr == 'bool')
+
+#     if process_bool:
+#         # Identify boolean columns in df
+#         bool_cols = df.select_dtypes(include='bool').columns.tolist()
+#         if bool_cols:
+#             if logger:
+#                 logger.info('Converting boolean values to integers...')
+#             # Convert to int (nullable if needed)
+#             df[bool_cols] = df[bool_cols].astype('int')
+
+#             # Handle background exclusions
+#             if excl_background is None:
+#                 excl_background = ['0.0']
+#             elif isinstance(excl_background, str):
+#                 excl_background = [excl_background]
+
+#             # Always include '0.0' and get unique values
+#             excl_background = np.unique(np.array(excl_background + ['0.0'])).tolist()
+
+#             if logger:
+#                 logger.info(f'Set parameter <excl_background> to: {excl_background}')
+
+#             # Update dtypes if it was an array
+#             if not isinstance(dtypes, str):
+#                 dtypes_arr = np.array(dtypes)
+#                 dtypes_arr[dtypes_arr == 'bool'] = 'cat'
+#                 dtypes = dtypes_arr
+
+#     return df, dtypes, excl_background
 
 
 # %% Preprocessing

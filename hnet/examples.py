@@ -2,6 +2,13 @@
 # print(dir(hnet))
 # print(hnet.__version__)
 
+# %%
+
+from hnet import hnet
+hn = hnet()
+df = hn.import_example('stormofswords')
+
+
 # %% test examples
 import numpy as np
 import pandas as pd
@@ -23,17 +30,17 @@ del df['Name']
 results_new = hn.association_learning(df)
 
 # STATIC
-hn.heatmap(summarize=False, cluster=False)
 hn.plot(node_color='cluster')
+hn.heatmap(summarize=False, cluster=False)
 
 # Feature importance
 hn.plot_feat_importance(marker_size=50)
 
-hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
-hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/d3graph.html', node_color='cluster')
+# hn.d3heatmap(savepath='c:/temp/titanic_summarize/heatmap.html')
+# hn.d3graph(savepath='c:/temp/titanic_summarize_d3graph/d3graph.html', node_color='cluster')
 
-hn.d3heatmap()
-hn.d3graph()
+# hn.d3heatmap()
+# hn.d3graph()
 
 # %%
 from hnet import hnet

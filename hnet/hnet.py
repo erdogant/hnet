@@ -21,11 +21,12 @@ import hnet.network as network
 from hnet.savefig import savefig
 import pypickle
 import colourmap
-import df2onehot
 import imagesc
 from ismember import ismember
 import warnings
 import datazets as dz
+from df2onehot.utils import set_dtypes, set_y
+    
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
 
@@ -641,7 +642,9 @@ class hnet():
 
         # Set weights for edges
         adjmatLogWEIGHT = adjmatLog.copy()
-        np.fill_diagonal(adjmatLogWEIGHT.values, 0)
+        for col in adjmatLogWEIGHT.columns:
+            if col in adjmatLogWEIGHT.index:
+                adjmatLogWEIGHT.loc[col, col] = 0
         adjmatLogWEIGHT = pd.DataFrame(index=adjmatLog.index.values.astype(str), data=MinMaxScaler(feature_range=(0, 20)).fit_transform(adjmatLogWEIGHT.values), columns=adjmatLog.columns.astype(str))
 
         # Set size for node
@@ -668,8 +671,12 @@ class hnet():
 
         for i in range(0, adjmatLog.shape[0]):
             G.add_node(adjmatLog.index.values[i], node_size=node_size[i], node_label=labx[i])
+
         # Add properties to edges
-        np.fill_diagonal(adjmatLog.values, 0)
+        for col in adjmatLog.columns:
+            if col in adjmatLog.index:
+                adjmatLog.loc[col, col] = 0
+
         for i in range(0, adjmatLog.shape[0]):
             idx=np.where(adjmatLog.iloc[i, :]>0)[0]
             labels=adjmatLog.iloc[i, idx]
@@ -829,30 +836,32 @@ class hnet():
 
         """
         if simmatP is None:
-            if self.results.get('simmatP', None) is None: raise ValueError('[hnet] >Error: Input requires the result from the association_learning() function.')
+            if self.results.get('simmatP', None) is None:
+                raise ValueError('[hnet] >Error: Input requires the result from the association_learning() function.')
             simmatP = self.results['simmatP']
         if labx is None:
             labx = self.results['labx']
-
+    
         df_rules = pd.DataFrame(index=np.arange(0, simmatP.shape[0]), columns=['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
         df_rules['consequents'] = simmatP.index.values
-
+    
         for i in tqdm(range(0, simmatP.shape[0]), disable=hnstats.disable_tqdm(), desc='Combining Pvalues'):
-            idx = np.where(simmatP.iloc[i, :]<1)[0]
+            idx = np.where(simmatP.iloc[i, :] < 1)[0]
             # Remove self
             idx = np.setdiff1d(idx, i)
-            # Store rules
-            df_rules['antecedents'].iloc[i] = list(simmatP.iloc[i, idx].index)
-            df_rules['antecedents_labx'].iloc[i] = labx[idx]
+            if len(idx) == 0:
+                continue
+            # Store rules — use .at to avoid chained assignment issues in newer pandas
+            df_rules.at[i, 'antecedents'] = list(simmatP.iloc[i, idx].index)
+            df_rules.at[i, 'antecedents_labx'] = list(labx[idx])
             # Combine pvalues
-            df_rules['Pfisher'].iloc[i] = combine_pvalues(simmatP.iloc[i, idx].values, method='fisher')[1]
-
+            df_rules.at[i, 'Pfisher'] = combine_pvalues(simmatP.iloc[i, idx].values, method='fisher')[1]
+    
         # Keep only lines with pvalues
         df_rules.dropna(how='any', subset=['Pfisher'], inplace=True)
         # Sort
         df_rules.sort_values(by=['Pfisher'], ascending=True, inplace=True)
         df_rules.reset_index(inplace=True, drop=True)
-        # Return
         return df_rules
 
     def import_example(self, data='titanic', url=None, sep=','):
@@ -1081,9 +1090,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background)
 
     # Set y as string
-    y = df2onehot.set_y(y, y_min=y_min, verbose=0) # hnstats.convert_verbose_to_old(hnstats.get_logger())
+    y = set_y(y, y_min=y_min, verbose=0) # hnstats.convert_verbose_to_old(hnstats.get_logger())
     # Determine dtypes for columns
-    df, dtypes = df2onehot.set_dtypes(df, dtypes, verbose=0)
+    df, dtypes = set_dtypes(df, dtypes, verbose=0)
     # Compute fit
     out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'])
     # Multiple test correction

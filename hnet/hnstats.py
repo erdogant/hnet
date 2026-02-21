@@ -545,63 +545,6 @@ def _bool_processesing(df, dtypes, excl_background):
                 dtypes[dtypes == 'bool'] = 'cat'
     return df, dtypes, excl_background
 
-# def _bool_processesing(df, dtypes, excl_background, logger=None):
-#     """
-#     Convert boolean columns to integers and update dtype info & background exclusions.
-    
-#     Parameters
-#     ----------
-#     df : pd.DataFrame
-#     dtypes : str or array-like
-#     excl_background : list or str or None
-#     logger : optional, logging object
-    
-#     Returns
-#     -------
-#     df : pd.DataFrame
-#     dtypes : updated dtypes array
-#     excl_background : updated list
-#     """
-
-#     # Ensure dtypes is array-like for uniform processing
-#     dtypes_arr = np.array(dtypes) if not isinstance(dtypes, str) else dtypes
-
-#     # Check if 'bool' is requested
-#     process_bool = False
-#     if isinstance(dtypes, str):
-#         process_bool = dtypes == 'bool'
-#     else:
-#         process_bool = np.any(dtypes_arr == 'bool')
-
-#     if process_bool:
-#         # Identify boolean columns in df
-#         bool_cols = df.select_dtypes(include='bool').columns.tolist()
-#         if bool_cols:
-#             if logger:
-#                 logger.info('Converting boolean values to integers...')
-#             # Convert to int (nullable if needed)
-#             df[bool_cols] = df[bool_cols].astype('int')
-
-#             # Handle background exclusions
-#             if excl_background is None:
-#                 excl_background = ['0.0']
-#             elif isinstance(excl_background, str):
-#                 excl_background = [excl_background]
-
-#             # Always include '0.0' and get unique values
-#             excl_background = np.unique(np.array(excl_background + ['0.0'])).tolist()
-
-#             if logger:
-#                 logger.info(f'Set parameter <excl_background> to: {excl_background}')
-
-#             # Update dtypes if it was an array
-#             if not isinstance(dtypes, str):
-#                 dtypes_arr = np.array(dtypes)
-#                 dtypes_arr[dtypes_arr == 'bool'] = 'cat'
-#                 dtypes = dtypes_arr
-
-#     return df, dtypes, excl_background
-
 
 # %% Preprocessing
 def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_background=None, white_list=None, black_list=None):
@@ -618,9 +561,9 @@ def _preprocessing(df, dtypes='pandas', y_min=10, perc_min_num=0.8, excl_backgro
     # Remove columns without dtype
     df, dtypes = _remove_columns_without_dtype(df, dtypes)
     # Make onehot matrix for response variable y
-    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=convert_verbose_to_old(get_logger()))
+    df_onehot = df2onehot.df2onehot(df, dtypes=dtypes, y_min=y_min, deep_extract=False, hot_only=True, perc_min_num=perc_min_num, excl_background=excl_background, verbose=get_logger())
     # Set the dtypes for the input dataframe
-    df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True, verbose=0)
+    df, dtypes = df2onehot.set_dtypes(df, dtypes=dtypes, deep_extract=False, perc_min_num=perc_min_num, num_if_decimal=True)
     dtypes = np.array(dtypes)
 
     # Make sure its limited to the number of y_min

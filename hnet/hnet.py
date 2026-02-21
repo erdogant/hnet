@@ -186,8 +186,8 @@ class hnet():
         logger.info('Association learning across [%d] categories.' %(X_comb.shape[1]))
 
         nr_succes_pop_n = []
-
-        for i in tqdm(range(0, X_comb.shape[1]), disable=hnstats.disable_tqdm(), desc='Association learning across categories'):
+        logger.info('Association learning across categories')
+        for i in tqdm(range(0, X_comb.shape[1]), disable=hnstats.disable_tqdm()):
             nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min)
             nr_succes_pop_n.append(nr_succes_i)
             logger.debug('[%d] %s' %(i, nr_succes_i))
@@ -257,12 +257,12 @@ class hnet():
         if not np.all(simmatP.shape[0]==len(labx)):
             raise ValueError('[hnet] >Error: The number of columns in [simmatP] does not match with the label [labx]!')
 
-        logger.info('Computing category association using fishers method..')
+        logger.info('Computing category association using Fishers method.')
         uilabx = np.unique(labx)
         adjmatP = np.ones((len(uilabx), len(uilabx)))
 
         # Combine Pvalues for catagories based on fishers method
-        for labxC in tqdm(uilabx, disable=hnstats.disable_tqdm(), desc='Computing category association using fishers method..'):
+        for labxC in tqdm(uilabx, disable=hnstats.disable_tqdm()):
             for labxR in uilabx:
                 Ic = labx==labxC
                 Ir = labx==labxR
@@ -1090,9 +1090,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     df, dtypes, excl_background = hnstats._bool_processesing(df, dtypes, excl_background=excl_background)
 
     # Set y as string
-    y = set_y(y, y_min=y_min, verbose=0) # hnstats.convert_verbose_to_old(hnstats.get_logger())
+    y = set_y(y, y_min=y_min)
     # Determine dtypes for columns
-    df, dtypes = set_dtypes(df, dtypes, verbose=0)
+    df, dtypes = set_dtypes(df, dtypes)
     # Compute fit
     out = hnstats._compute_significance(df, y, dtypes, specificity=config['specificity'])
     # Multiple test correction

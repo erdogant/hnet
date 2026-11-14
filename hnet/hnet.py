@@ -15,7 +15,8 @@ import pandas as pd
 import os
 import networkx as nx
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
-from scipy.stats import combine_pvalues
+from scipy.stats import combine_pvalues, chi2
+from scipy.special import gammaln, logsumexp
 import hnet.hnstats as hnstats
 import hnet.network as network
 from hnet.savefig import savefig
@@ -32,6 +33,21 @@ label_encoder = LabelEncoder()
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+# %% Log survival function of Fishers method
+def _fisher_logsf(statistic, k):
+    """Natural log of the P-value of Fishers method, without underflow.
+
+    Fishers statistic is chi-square distributed with 2k degrees of freedom. For an even number of degrees of freedom the
+    survival function is exp(-y) * sum_{j<k}(y^j / j!), with y = statistic / 2. scipy.stats.chi2.logsf returns -inf in the
+    far tail, whereas this expression is evaluated in log space.
+    """
+    y = statistic / 2
+    if y <= 0:
+        return 0.0
+    j = np.arange(k)
+    return float(-y + logsumexp(j * np.log(y) - gammaln(j + 1)))
 
 
 # %% Association learning across all variables
@@ -250,7 +266,13 @@ class hnet():
         return self.results
 
     def _compute_associations_cat(self, simmatP, labx):
-        """Compute category associations by fishers method."""
+        """Compute category associations by fishers method.
+
+        The P-values of all label pairs between two categories are combined using Fishers method.
+        P-values of exactly 0 (underflow) are set to 1e-323, as is done in the -log10(P) matrix of the labels, and the
+        -log10(P) values are computed in log space. This guarantees finite values that increase with the strength of
+        the association, without capping the strongest associations.
+        """
         # Make some checks
         if not np.all(simmatP.columns==simmatP.index.values):
             raise ValueError('[hnet] >Error: Adjacency matrix [simmatP] does not have the same number of columns and index!')
@@ -260,22 +282,23 @@ class hnet():
         logger.info('Computing category association using Fishers method.')
         uilabx = np.unique(labx)
         adjmatP = np.ones((len(uilabx), len(uilabx)))
+        adjmatlogP = np.zeros((len(uilabx), len(uilabx)))
 
         # Combine Pvalues for catagories based on fishers method
         for labxC in tqdm(uilabx, disable=hnstats.disable_tqdm()):
             for labxR in uilabx:
                 Ic = labx==labxC
                 Ir = labx==labxR
-                adjmatP[uilabx==labxR, uilabx==labxC] = combine_pvalues(simmatP.loc[Ir, Ic].values.ravel(), method='fisher')[1]
+                # Clip at 1e-323 (smallest representable) because a P-value of 0 gives an infinite Fisher statistic.
+                pvalues = np.clip(simmatP.loc[Ir, Ic].values.ravel().astype(float), 1e-323, 1)
+                statistic = combine_pvalues(pvalues, method='fisher')[0]
+                adjmatP[uilabx==labxR, uilabx==labxC] = chi2.sf(statistic, 2 * len(pvalues))
+                adjmatlogP[uilabx==labxR, uilabx==labxC] = -_fisher_logsf(statistic, len(pvalues)) / np.log(10)
 
         # Store in dataframe
         adjmatP = pd.DataFrame(data=adjmatP, index=uilabx, columns=uilabx)
-        adjmatlogP = -np.log10(adjmatP)
+        adjmatlogP = pd.DataFrame(data=adjmatlogP, index=uilabx, columns=uilabx)
         adjmatlogP[adjmatlogP<=0]=0
-        # Replace inf values with maximum value that is possible
-        # adjmatlogP[np.isinf(adjmatlogP)]=323
-        for (columnName, columnData) in adjmatlogP.items():
-            columnData.loc[~(columnData!= np.inf)] = columnData.loc[columnData!= np.inf].max()
         return adjmatP, adjmatlogP
 
     def _feat_importance(self, simmatLogP, labx):

@@ -31,7 +31,7 @@ results_new = hn.association_learning(df)
 
 # STATIC
 hn.plot(node_color='cluster')
-hn.heatmap(summarize=False, cluster=False)
+hn.heatmap(summarize=False, cluster=True)
 
 # Feature importance
 hn.plot_feat_importance(marker_size=50)
@@ -43,29 +43,50 @@ hn.plot_feat_importance(marker_size=50)
 # hn.d3graph()
 
 # %%
+# =============================================================================
+# When people buy A, they also tend to buy product B
+# =============================================================================
 from hnet import hnet
-hn = hnet()
-df = hn.import_example('grocery_products')
-results = hn.association_learning(df)
-hn.d3graph(summarize=True)
-hn.d3heatmap(summarize=True)
+import pandas as pd
+import datazets as dz
+
+df = dz.get('grocery_products')
+
+# One-hot encode all products in all columns
+one_hot = (
+    pd.get_dummies(df.stack())          # encode products
+      .groupby(level=0)                 # group back by original row
+      .sum()                            # combine products per transaction
+      .astype(int)
+)
+# one_hot = one_hot.astype(bool)
+print(one_hot)
+
+hn = hnet(excl_background=[0, False, None, 0.0, '0.0', '0', 'none', 'None'], dtypes=np.array(['bool']*one_hot.shape[1]))
+# hn = hnet(excl_background=['0.0', False, 0.0, None], dtypes=np.array(['bool']*one_hot.shape[1]))
+results = hn.association_learning(one_hot)
+hn.d3graph()
+# hn.d3graph(summarize=True)
+# hn.d3heatmap(summarize=True)
 
 # %%
 from hnet import hnet
 hn = hnet()
 df = hn.import_example('sprinkler')
 
-hn1 = hnet(excl_background='0.0', dtypes=np.array(['bool']*df.shape[1]))
+hn1 = hnet(excl_background=['0.0', None], dtypes=np.array(['bool']*df.shape[1]))
 out1 = hn1.association_learning(df.astype(bool))
-hn1.d3graph()
+hn1.plot()
+# hn1.d3graph()
 
 hn2 = hnet()
 out2 = hn2.association_learning(df.astype(bool))
+hn2.plot()
 # hn2.d3graph(summarize=True)
-hn2.d3graph()
+# hn2.d3graph()
 
-hn2.d3heatmap(summarize=True)
-hn2.d3heatmap(summarize=False)
+# hn2.d3heatmap(summarize=True)
+# hn2.d3heatmap(summarize=False)
 
 hn2.heatmap(summarize=True, cluster=False)
 hn2.heatmap(cluster=True)

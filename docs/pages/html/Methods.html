@@ -203,10 +203,10 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Set response variable y</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="c1"># Compute enrichment for input dataset df and y</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -259,10 +259,10 @@ When variables are black listed, they are excluded from the search and the resul
 <section id="white-listing">
 <h2>White listing<a class="headerlink" href="#white-listing" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 
 <span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -272,10 +272,10 @@ When variables are black listed, they are excluded from the search and the resul
 <section id="black-listing">
 <h2>Black listing<a class="headerlink" href="#black-listing" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 
 <span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>

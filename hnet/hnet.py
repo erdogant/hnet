@@ -289,6 +289,7 @@ class hnet():
             for labxR in uilabx:
                 Ic = labx==labxC
                 Ir = labx==labxR
+                # adjmatP[uilabx==labxR, uilabx==labxC] = combine_pvalues(simmatP.loc[Ir, Ic].values.ravel(), method='fisher')[1]
                 # Clip at 1e-323 (smallest representable) because a P-value of 0 gives an infinite Fisher statistic.
                 pvalues = np.clip(simmatP.loc[Ir, Ic].values.ravel().astype(float), 1e-323, 1)
                 statistic = combine_pvalues(pvalues, method='fisher')[0]
@@ -297,8 +298,13 @@ class hnet():
 
         # Store in dataframe
         adjmatP = pd.DataFrame(data=adjmatP, index=uilabx, columns=uilabx)
+        # adjmatlogP = -np.log10(adjmatP)
         adjmatlogP = pd.DataFrame(data=adjmatlogP, index=uilabx, columns=uilabx)
         adjmatlogP[adjmatlogP<=0]=0
+        # Replace inf values with maximum value that is possible
+        # adjmatlogP[np.isinf(adjmatlogP)]=323
+        # for (columnName, columnData) in adjmatlogP.items():
+        #     columnData.loc[~(columnData!= np.inf)] = columnData.loc[columnData!= np.inf].max()
         return adjmatP, adjmatlogP
 
     def _feat_importance(self, simmatLogP, labx):

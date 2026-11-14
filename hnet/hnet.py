@@ -322,8 +322,9 @@ class hnet():
             Pcounts.append((simmatLogP.iloc[Iloc, :]>0).sum(axis=1).sum())
 
         # Compute corrected Pvalue
-        Pcorr = (np.array(Psum) / np.array(Pcounts))
-        Pcorr[np.isnan(Pcorr)]=0
+        Psum_arr = np.array(Psum, dtype=float)
+        Pcounts_arr = np.array(Pcounts, dtype=float)
+        Pcorr = np.divide(Psum_arr, Pcounts_arr, out=np.zeros_like(Psum_arr), where=Pcounts_arr != 0)
         # Store
         df_feat_importance = pd.DataFrame(data=np.c_[Pcounts, Psum, Pcorr], columns=['degree', 'Psum', 'Pcorr'])
         df_feat_importance.index = uilabx

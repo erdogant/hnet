@@ -334,13 +334,16 @@ def _addcolumns(simmat_padj, colnames, Xlabx, catnames):
         newcols=list((colnames.values[Iloc==False]).astype(str))
         newcats=list((catnames[Iloc==False]).astype(str))
 
-        # Make new columns in dataframe
-        for col, cat in zip(newcols, newcats):
-            simmat_padj[col]=np.nan
-            Xlabx = np.append(Xlabx, cat)
+        # Make new columns in dataframe in one operation to avoid fragmentation
+        if len(newcols) > 0:
+            newcols_df = pd.DataFrame(np.nan, index=simmat_padj.index, columns=newcols)
+            simmat_padj = pd.concat([simmat_padj, newcols_df], axis=1)
+            # Update labels
+            Xlabx = np.append(Xlabx, newcats)
 
-        addrow=pd.DataFrame(index=newcols, columns=simmat_padj.columns.values).astype(float)
-        simmat_padj=pd.concat([simmat_padj, addrow])
+        # Add corresponding rows
+        addrow = pd.DataFrame(index=newcols, columns=simmat_padj.columns.values).astype(float)
+        simmat_padj = pd.concat([simmat_padj, addrow], axis=0)
     return(simmat_padj, Xlabx)
 
 
@@ -467,7 +470,7 @@ def _path_correct(savepath, filename='fig', ext='.png'):
     savepath='./tmp/fig'
     savepath='./tmp/fig.png'
     savepath='fig.png'
-    
+
     """
     out=None
     if not isinstance(savepath, type(None)):

@@ -18,7 +18,7 @@ from datazets import get as import_example
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.3.3'
+__version__ = '1.3.4'
 
 # Setup package-level logger
 _logger = logging.getLogger('hnet')

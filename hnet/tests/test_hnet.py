@@ -2,6 +2,14 @@ import numpy as np
 import pandas as pd
 import hnet
 
+def _independent_binary_data():
+    # Nonconstant columns of a Hadamard matrix are balanced and pairwise independent.
+    matrix = np.ones((1, 1), dtype=int)
+    for _ in range(7):
+        matrix = np.block([[matrix, matrix], [matrix, -matrix]])
+    values = (matrix[:, 1:52] + 1) // 2
+    return pd.DataFrame(values[:, :50]), values[:, 50]
+
 def test_import_example():
     from hnet import hnet
     hn = hnet()
@@ -94,13 +102,11 @@ def test_hnet():
     hn.association_learning(df)
     assert hn.results['simmatP'].shape==(4,4)
     
-    # TEST 2: Compute across all combinations : should be empty
-    nfeat = 100
-    nobservations = 50
-    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-    dtypes = np.array(['cat']*nobservations)
-    dtypes[np.random.randint(0,2,nobservations)==1]='num'
-    y = np.random.randint(0,2,nfeat)
+
+def test_independent_association():
+    # Compute across all combinations: should be empty
+    df, _ = _independent_binary_data()
+    dtypes = np.array(['cat', 'num'] * 25)
 
     # Should be empty
     hn = hnet.hnet(dtypes=dtypes)
@@ -121,48 +127,40 @@ def test_combined_rules():
     assert np.all(rules.columns.values==['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
 
 
-def test_enrichment():
+def test_independent_enrichment():
     import hnet
-    # Example with random categorical and numerical values
-    nfeat = 100
-    nobservations = 50
-    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-    dtypes = np.array(['cat']*nobservations)
-    dtypes[np.random.randint(0,2,nobservations)==1]='num'
-    y = np.random.randint(0,2,nfeat)
+    # Example with independent categorical and numerical values
+    df, y = _independent_binary_data()
+    dtypes = np.array(['cat', 'num'] * 25)
 
     # TEST 1: Compute enrichment: should be empty
     out = hnet.enrichment(df,y, dtypes=dtypes)
     assert out.shape==(0,0)
 
     # TEST 2: Example with 1 true positive column
-    nfeat=100
-    nobservations=50
-    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-    y = np.random.randint(0,2,nfeat)
+    df, y = _independent_binary_data()
     df['positive_one'] = y
-    dtypes = np.array(['cat']*(nobservations+1))
-    dtypes[np.random.randint(0,2,nobservations+1)==1]='num'
-    dtypes[-1]='cat'
+    dtypes = np.append(dtypes, 'cat')
     # Run model
     out = hnet.enrichment(df,y, alpha=0.05, dtypes=dtypes)
     assert out.shape[0]==1
     assert out.shape[1]>=11
+    assert out['category_name'].tolist()==['positive_one']
     
     # No pvalue should give all resutls back
     out = hnet.enrichment(df,y, alpha=1, dtypes=dtypes)
     assert out.shape==(51, 13)
 
     # TEST 3 : Example most simple manner with and without multiple test correction
-    nfeat=100
-    nobservations=50
-    df = pd.DataFrame(np.random.randint(0,2,(nfeat,nobservations)))
-    y = np.random.randint(0,2,nfeat)
+    df, y = _independent_binary_data()
     out = hnet.enrichment(df,y)
     # With multiple testing : should be empty
     assert out.shape==(0,0)
     out = hnet.enrichment(df,y, multtest=None)
-    
+
+
+def test_enrichment():
+    import hnet
     # TEST 4 : CHECK P_VALUE ORDER
     hn = hnet.hnet()
     df = hn.import_example('titanic')

@@ -532,16 +532,19 @@ def _bool_processesing(df, dtypes, excl_background):
             bool_cols = df.columns[Iloc]
             for col in bool_cols:
                 df[col] = df[col].astype(int)
-            # Remove the background values
-            if (excl_background is None):
+            # Normalize excl_background
+            if excl_background is None:
                 excl_background = ['0.0']
             # Make list if required
             if isinstance(excl_background, str):
                 excl_background = [excl_background]
-            # Append to background
-            excl_background = excl_background + ['0.0']
-            # Get only unique background
-            excl_background = np.unique(np.array(excl_background)).tolist()
+            elif not isinstance(excl_background, (list, tuple, np.ndarray)):
+                excl_background = [excl_background]
+            # Filter out None (np.unique cannot sort None with str/int) and append default
+            excl_background = [x for x in excl_background if x is not None]
+            excl_background = list(excl_background) + ['0.0']
+            # Unique as strings for stable comparison across mixed types (0, False, '0.0', ...)
+            excl_background = np.unique(np.array([str(x) for x in excl_background])).tolist()
             logger.info('Set parameter <excl_background> to: %s.' % (str(excl_background)))
             if not isinstance(dtypes, str):
                 dtypes = np.array(dtypes)

@@ -154,7 +154,7 @@
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'sprinkler'</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -182,7 +182,7 @@ pip<span class="w"> </span>install<span class="w"> </span>scatterd
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;cancer&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'cancer'</span><span class="p">)</span>
 <span class="c1"># Print</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
@@ -267,9 +267,9 @@ In many use-cases, your scatterplot would not be colored because you do not know
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scatterd</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatterd</span>
 <span class="c1"># Make scatter plot</span>
-<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset with True labels&#39;</span><span class="p">)</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneX'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneY'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">'labx'</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'Set2'</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Cancer dataset with True labels'</span><span class="p">)</span>
 <span class="c1"># Make scatter plot wihtout colors</span>
-<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cancer dataset.&#39;</span><span class="p">)</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneX'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneY'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Cancer dataset.'</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-center" id="id1">
@@ -290,8 +290,8 @@ Step 2 is to compute the enrichment of the variables (meta-data) with the cluste
 
 <span class="c1"># Determine cluster labels</span>
 <span class="n">dbscan</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">labx</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">]])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of detected clusters: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labx</span><span class="p">))))</span>
+<span class="n">labx</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'tsneX'</span><span class="p">,</span><span class="s1">'tsneY'</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Number of detected clusters: </span><span class="si">%d</span><span class="s1">'</span> <span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labx</span><span class="p">))))</span>
 <span class="c1"># Number of detected clusters: 22</span>
 </pre></div>
 </div>
@@ -299,7 +299,7 @@ Step 2 is to compute the enrichment of the variables (meta-data) with the cluste
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Enrichment of clusterlabels with the meta-data</span>
-<span class="c1"># results = hnet.enrichment(df[[&#39;age&#39;, &#39;sex&#39;, &#39;survival_months&#39;, &#39;death_indicator&#39;,&#39;labx&#39;]], labx)</span>
+<span class="c1"># results = hnet.enrichment(df[['age', 'sex', 'survival_months', 'death_indicator','labx']], labx)</span>
 
 <span class="c1"># [hnet] &gt;Start making fit..</span>
 <span class="c1"># [df2onehot] &gt;Auto detecting dtypes</span>
@@ -319,7 +319,7 @@ Step 2 is to compute the enrichment of the variables (meta-data) with the cluste
 <span class="c1"># [hnet] &gt;Fin</span>
 
 <span class="c1"># For demonstration purposes I will only do the true cancer label column.</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;labx&#39;</span><span class="p">]],</span> <span class="n">labx</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">enrichment</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'labx'</span><span class="p">]],</span> <span class="n">labx</span><span class="p">)</span>
 
 <span class="c1"># Examine the results</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
@@ -683,17 +683,17 @@ Note that the target labels in <em>y</em> can be significantly enriched more the
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scatterd</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatterd</span>
 
 <span class="c1"># Import</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)[</span><span class="s1">&#39;logP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'y'</span><span class="p">)[</span><span class="s1">'logP'</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]</span>
 <span class="n">enriched_label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">labx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="n">enriched_label</span> <span class="o">=</span> <span class="n">enriched_label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;category_label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">enriched_label</span> <span class="o">=</span> <span class="n">enriched_label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">'category_label'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
 <span class="c1"># Scatterplot of the cluster numbers</span>
-<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labx</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneX'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneY'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labx</span><span class="p">,</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># Scatterplot of the significantly enriched cancer labels</span>
-<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tsneY&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">enriched_label</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Significantly enriched cancer labels&#39;</span><span class="p">)</span>
+<span class="n">scatterd</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneX'</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">'tsneY'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">enriched_label</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">fontcolor</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'Set2'</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'Significantly enriched cancer labels'</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-center" id="id2">

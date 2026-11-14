@@ -261,7 +261,7 @@ The titanic dataset is depiced above and the spinkler below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># import example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'sprinkler'</span><span class="p">)</span>
 
 <span class="c1"># print DataFrame</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -345,7 +345,7 @@ The titanic dataset is depiced above and the spinkler below.</p>
 </table>
 <p>Example of the student dataset containing mixed datatypes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'student'</span><span class="p">)</span>
 
 <span class="c1"># print DataFrame</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -493,7 +493,7 @@ The titanic dataset is depiced above and the spinkler below.</p>
 <p>Importing data from a csv file can be performed using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./pathname/to/file.csv&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'./pathname/to/file.csv'</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -505,14 +505,14 @@ In the example below, we will download a dataset from the archives of [UCI](<a c
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Download from url</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">'https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data'</span><span class="p">)</span>
 
 <span class="c1"># Specify columns</span>
-<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;workclass&#39;</span><span class="p">,</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">,</span><span class="s1">&#39;education&#39;</span><span class="p">,</span><span class="s1">&#39;education-num&#39;</span><span class="p">,</span><span class="s1">&#39;marital-status&#39;</span><span class="p">,</span><span class="s1">&#39;occupation&#39;</span><span class="p">,</span><span class="s1">&#39;relationship&#39;</span><span class="p">,</span><span class="s1">&#39;race&#39;</span><span class="p">,</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">,</span><span class="s1">&#39;capital-loss&#39;</span><span class="p">,</span><span class="s1">&#39;hours-per-week&#39;</span><span class="p">,</span><span class="s1">&#39;native-country&#39;</span><span class="p">,</span><span class="s1">&#39;earnings&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'age'</span><span class="p">,</span><span class="s1">'workclass'</span><span class="p">,</span><span class="s1">'fnlwgt'</span><span class="p">,</span><span class="s1">'education'</span><span class="p">,</span><span class="s1">'education-num'</span><span class="p">,</span><span class="s1">'marital-status'</span><span class="p">,</span><span class="s1">'occupation'</span><span class="p">,</span><span class="s1">'relationship'</span><span class="p">,</span><span class="s1">'race'</span><span class="p">,</span><span class="s1">'sex'</span><span class="p">,</span><span class="s1">'capital-gain'</span><span class="p">,</span><span class="s1">'capital-loss'</span><span class="p">,</span><span class="s1">'hours-per-week'</span><span class="p">,</span><span class="s1">'native-country'</span><span class="p">,</span><span class="s1">'earnings'</span><span class="p">]</span>
 
 <span class="c1"># Initialize</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'fnlwgt'</span><span class="p">])</span>
 <span class="c1"># Run HNet</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
@@ -530,10 +530,10 @@ However, datasets should contain at least 1 catagorical value. Datasets containi
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_boston</span><span class="p">()</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;feature_names&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">'data'</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">'feature_names'</span><span class="p">])</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span><span class="p">()</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;feature_names&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">'data'</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="s1">'feature_names'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -546,7 +546,7 @@ It all starts with the initialization:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Initialize model and set parameters</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">perc_min_num</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">multtest</span><span class="o">=</span><span class="s1">&#39;holm&#39;</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">perc_min_num</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">multtest</span><span class="o">=</span><span class="s1">'holm'</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="s1">'pandas'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The object now returns an object containing variables user defined settings. Parameters that are not specified are set to default. For more details, see the API docstrings.</p>
@@ -557,7 +557,7 @@ It all starts with the initialization:</p>
 <p>The object can now be feeded with dataframe <em>df</em>, using <code class="docutils literal notranslate"><span class="pre">association_learning</span></code> function.
 The association_learning outputs various output variables in a dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="c1"># dict_keys([&#39;simmatP&#39;, &#39;simmatLogP&#39;, &#39;labx&#39;, &#39;dtypes&#39;, &#39;counts&#39;, &#39;rules&#39;])</span>
+<span class="c1"># dict_keys(['simmatP', 'simmatLogP', 'labx', 'dtypes', 'counts', 'rules'])</span>
 </pre></div>
 </div>
 <hr>

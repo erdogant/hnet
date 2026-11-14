@@ -191,7 +191,7 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 <h2>Static graph<a class="headerlink" href="#static-graph" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 <span class="c1"># Load example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'sprinkler'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -205,7 +205,7 @@ The advantage is that d3graph is an interactive and stand-alone network. The net
 <h2>Dynamic graph - d3blocks<a class="headerlink" href="#dynamic-graph-d3blocks" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 <span class="c1"># Load example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'sprinkler'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -229,7 +229,7 @@ Matrix cells can also be encoded to show additional data; here color depicts clu
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Load example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;sprinkler&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'sprinkler'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -258,7 +258,7 @@ Here color depicts clusters computed by a community-detection algorithm. Below i
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Load example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -295,7 +295,7 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Load example</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -341,11 +341,11 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will remove the node Age and SibSp.</span>
 
 <span class="c1"># d3blocks</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 <span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 <span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -354,22 +354,22 @@ but it will describe whether <strong>Parch</strong> was significantly associated
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and SibSp</span>
 
 <span class="c1"># d3blocks</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 <span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 <span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><strong>White list example in plot</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example we will keep only the node Survived and Age</span>
 
 <span class="c1"># d3blocks</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">])</span>
 <span class="c1"># Plot</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">])</span>
 <span class="c1"># Heatmap</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">])</span>
 </pre></div>
 </div>
 <hr>

@@ -173,7 +173,7 @@ To unravel the associations between the variables, and gain insights, we can eas
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;cancer&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'cancer'</span><span class="p">)</span>
 
 <span class="c1"># Print</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -255,7 +255,7 @@ To unravel the associations between the variables, and gain insights, we can eas
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Initialize</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tsneX&#39;</span><span class="p">,</span><span class="s1">&#39;tsneY&#39;</span><span class="p">,</span><span class="s1">&#39;PC1&#39;</span><span class="p">,</span><span class="s1">&#39;PC2&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'tsneX'</span><span class="p">,</span><span class="s1">'tsneY'</span><span class="p">,</span><span class="s1">'PC1'</span><span class="p">,</span><span class="s1">'PC2'</span><span class="p">])</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -293,7 +293,7 @@ Here we can see that the strongest antecedents are BRCA: Breast cancer, CESC: Ce
 A Fishers Pvalue is detected of 0 (because of floating precision error.)
 The second most significant hit is that females, and death indicator=1 implies to Breast cancer cases.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import example dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">'rules'</span><span class="p">])</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -337,11 +337,11 @@ The second most significant hit is that females, and death indicator=1 implies t
 </pre></div>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/cancer/defaults/index.html" height="600px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the interactive graph but color on clusters.</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">'cluster'</span><span class="p">)</span>
 </pre></div>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/cancer/node_color/index.html" height="600px" width="100%", frameBorder="0"></iframe><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter using white_list</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;labx&#39;</span><span class="p">,</span><span class="s1">&#39;survival_months&#39;</span><span class="p">])</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">'cluster'</span><span class="p">,</span> <span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'labx'</span><span class="p">,</span><span class="s1">'survival_months'</span><span class="p">])</span>
 </pre></div>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/cancer/white_list/" height="600px" width="100%", frameBorder="0"></iframe></section>
@@ -354,7 +354,7 @@ We will set the dtypes manually to make sure each variable has the correct dtype
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;fifa&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'fifa'</span><span class="p">)</span>
 
 <span class="c1"># Print</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -546,7 +546,7 @@ We will set the dtypes manually to make sure each variable has the correct dtype
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Initialize</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">dtypes</span><span class="o">=</span><span class="p">[</span><span class="s1">'None'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">,</span> <span class="s1">'num'</span><span class="p">])</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -601,7 +601,7 @@ A lot of information seems relevant for improvement of matches. As an example, i
 Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
 It seems that football is not so complicated after all ;)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import example dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">'rules'</span><span class="p">])</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -662,9 +662,9 @@ This dataset is Multivariate (categorical, and integer variables), contains in t
 <span class="kn">import</span><span class="w"> </span><span class="nn">hnet</span>
 
 <span class="c1"># Download directly from the archives of UCI using the url location</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">'https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data'</span><span class="p">)</span>
 <span class="c1"># There are no column names so attach it.</span>
-<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;workclass&#39;</span><span class="p">,</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">,</span><span class="s1">&#39;education&#39;</span><span class="p">,</span><span class="s1">&#39;education-num&#39;</span><span class="p">,</span><span class="s1">&#39;marital-status&#39;</span><span class="p">,</span><span class="s1">&#39;occupation&#39;</span><span class="p">,</span><span class="s1">&#39;relationship&#39;</span><span class="p">,</span><span class="s1">&#39;race&#39;</span><span class="p">,</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">,</span><span class="s1">&#39;capital-loss&#39;</span><span class="p">,</span><span class="s1">&#39;hours-per-week&#39;</span><span class="p">,</span><span class="s1">&#39;native-country&#39;</span><span class="p">,</span><span class="s1">&#39;earnings&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'age'</span><span class="p">,</span><span class="s1">'workclass'</span><span class="p">,</span><span class="s1">'fnlwgt'</span><span class="p">,</span><span class="s1">'education'</span><span class="p">,</span><span class="s1">'education-num'</span><span class="p">,</span><span class="s1">'marital-status'</span><span class="p">,</span><span class="s1">'occupation'</span><span class="p">,</span><span class="s1">'relationship'</span><span class="p">,</span><span class="s1">'race'</span><span class="p">,</span><span class="s1">'sex'</span><span class="p">,</span><span class="s1">'capital-gain'</span><span class="p">,</span><span class="s1">'capital-loss'</span><span class="p">,</span><span class="s1">'hours-per-week'</span><span class="p">,</span><span class="s1">'native-country'</span><span class="p">,</span><span class="s1">'earnings'</span><span class="p">]</span>
 <span class="c1"># Examine the results by eye</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
@@ -783,11 +783,11 @@ This dataset is Multivariate (categorical, and integer variables), contains in t
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Set a few variables to float to make sure that these are processed as numeric values.</span>
-<span class="n">cols_as_float</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;hours-per-week&#39;</span><span class="p">,</span><span class="s1">&#39;capital-loss&#39;</span><span class="p">,</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">]</span>
+<span class="n">cols_as_float</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'age'</span><span class="p">,</span><span class="s1">'hours-per-week'</span><span class="p">,</span><span class="s1">'capital-loss'</span><span class="p">,</span><span class="s1">'capital-gain'</span><span class="p">]</span>
 <span class="n">df</span><span class="p">[</span><span class="n">cols_as_float</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols_as_float</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 
 <span class="c1"># Black list one of the variables. (I do not now what it does and whether it should be numeric or categoric)</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'fnlwgt'</span><span class="p">])</span>
 
 <span class="c1"># Learn the associations.</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -848,7 +848,7 @@ A lot of information seems relevant for improvement of matches. As an example, i
 Checkout the Pvalues here. Although they are significant, its less then with the cancer data set for example.
 It seems that football is not so complicated after all ;)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import example dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hn</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">'rules'</span><span class="p">])</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -935,7 +935,7 @@ It seems that football is not so complicated after all ;)</p>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
 
 <span class="c1"># Import example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Learn the relationships</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -985,7 +985,7 @@ It seems that football is not so complicated after all ;)</p>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/index.html" height="1500px" width="1500px", frameBorder="0"></iframe><p>Color the node labels based on network clustering.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Color on cluster label</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">d3graph</span><span class="p">(</span><span class="n">node_color</span><span class="o">=</span><span class="s1">'cluster'</span><span class="p">)</span>
 </pre></div>
 </div>
 <iframe src="https://erdogant.github.io/docs/d3graph/titanic_example/titanic_d3graph_cluster.html" height="1500px" width="1500px", frameBorder="0"></iframe></section>
@@ -1023,7 +1023,7 @@ With the summarize functionality, the results will be summarized towards categor
 <span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Load example dataset</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hnet</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Initialize</span>
 <span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">()</span>
@@ -1063,10 +1063,10 @@ Witht black listing we specify which variables are included in the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># White list the underneath variables</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">white_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 
 <span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -1086,10 +1086,10 @@ Witht black listing we specify which variables are excluded in the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hnet</span><span class="w"> </span><span class="kn">import</span> <span class="n">hnet</span>
 
 <span class="c1"># Black list the underneath variables</span>
-<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PassengerId&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">,</span> <span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">])</span>
+<span class="n">hn</span> <span class="o">=</span> <span class="n">hnet</span><span class="p">(</span><span class="n">black_list</span><span class="o">=</span><span class="p">[</span><span class="s1">'PassengerId'</span><span class="p">,</span> <span class="s1">'Survived'</span><span class="p">,</span> <span class="s1">'Pclass'</span><span class="p">,</span> <span class="s1">'Name'</span><span class="p">,</span> <span class="s1">'Sex'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">,</span> <span class="s1">'SibSp'</span><span class="p">])</span>
 
 <span class="c1"># Load data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">&#39;titanic&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">import_example</span><span class="p">(</span><span class="s1">'titanic'</span><span class="p">)</span>
 
 <span class="c1"># Association learning</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="o">.</span><span class="n">association_learning</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>

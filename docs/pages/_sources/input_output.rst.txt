@@ -197,7 +197,8 @@ It all starts with the initialization:
     from hnet import hnet
     
     # Initialize model and set parameters
-    hn = hnet(alpha=0.05, y_min=10, perc_min_num=0.8, multtest='holm', dtypes='pandas')
+    # num_num_test controls numeric–numeric association testing (default: 'spearman')
+    hn = hnet(alpha=0.05, y_min=10, perc_min_num=0.8, multtest='holm', dtypes='pandas', num_num_test='spearman')
 
 
 The object now returns an object containing variables user defined settings. Parameters that are not specified are set to default. For more details, see the API docstrings.

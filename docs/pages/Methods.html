@@ -67,6 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#statistical-inference">Statistical inference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#hypergeometric-test">Hypergeometric test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numericnumeric-testing">Numeric–numeric testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiple-testing">Multiple testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enrichment">Enrichment</a></li>
 </ul>
@@ -177,9 +178,19 @@
 <h2>Wilcoxon Ranksum<a class="headerlink" href="#wilcoxon-ranksum" title="Link to this heading"></a></h2>
 <p>To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.</p>
 </section>
+<section id="numericnumeric-testing">
+<h2>Numeric–numeric testing<a class="headerlink" href="#numericnumeric-testing" title="Link to this heading"></a></h2>
+<p>HNet also supports association testing between pairs of numeric variables (num–num). By default this is enabled and uses the Spearman rank correlation (non-parametric), which is consistent with the rank-based tests used elsewhere in the pipeline. Optionally, Pearson correlation can be selected. The resulting two-sided p-values are stored in the same adjacency matrix (simmatP) and participate in the subsequent multiple-testing correction. Numeric–numeric testing can be disabled by setting <code class="docutils literal notranslate"><span class="pre">num_num_test=None</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_num_test='spearman'</span></code> (default): Spearman rank correlation p-values between every pair of original numeric features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_num_test='pearson'</span></code>: Pearson correlation p-values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_num_test=None</span></code>: Disable numeric–numeric testing.</p></li>
+</ul>
+<p>Pairs with fewer than three pairwise-complete observations or with a constant column are skipped (p-value set to NaN).</p>
+</section>
 <section id="multiple-testing">
 <h2>Multiple testing<a class="headerlink" href="#multiple-testing" title="Link to this heading"></a></h2>
-<p>All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
+<p>All tested edge probabilities between pairs of vertices — categoric–categoric, categoric–numeric, and numeric–numeric — are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods.</p>
 <table class="docutils align-center" id="id3">
 <caption><span class="caption-text">Equation 4</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <tbody>

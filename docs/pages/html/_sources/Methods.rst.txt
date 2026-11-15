@@ -58,10 +58,23 @@ Wilcoxon Ranksum
 
 To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination) we utilized the Mann-Whitney-U test. Each numeric vector Xni, is split on categoric feature Xci versus ~Xci, and tested whether randomly selected value from Xci will be less than or greater than a randomly selected value from ~Xci.
 
+
+Numeric–numeric testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+
+HNet also supports association testing between pairs of numeric variables (num–num). By default this is enabled and uses the Spearman rank correlation (non-parametric), which is consistent with the rank-based tests used elsewhere in the pipeline. Optionally, Pearson correlation can be selected. The resulting two-sided p-values are stored in the same adjacency matrix (simmatP) and participate in the subsequent multiple-testing correction. Numeric–numeric testing can be disabled by setting ``num_num_test=None``.
+
+* ``num_num_test='spearman'`` (default): Spearman rank correlation p-values between every pair of original numeric features.
+* ``num_num_test='pearson'``: Pearson correlation p-values.
+* ``num_num_test=None``: Disable numeric–numeric testing.
+
+Pairs with fewer than three pairwise-complete observations or with a constant column are skipped (p-value set to NaN).
+
+
 Multiple testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
-All tested edge probabilities between pairs of vertices, either categoric-categoric or categoric-numeric, are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods. 
+All tested edge probabilities between pairs of vertices — categoric–categoric, categoric–numeric, and numeric–numeric — are stored in an adjacency matrix (Padj), and are corrected for multiple testing. The default Multiple Test Method (MTM) is set to Holm20 (Figure 1, equation 4) but optional are various other False Discovery Rate (FDR)18 or Familywise error rate (FWER)19 methods. 
 
 
 .. |eq_4| image:: ../figs/other/eq_4.png

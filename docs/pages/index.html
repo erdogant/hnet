@@ -142,7 +142,7 @@
 <p>Real-world data sets often contain measurements with both continues and categorical values for the same sample. Despite the availability of many libraries, data sets with mixed data types require intensive pre-processing steps, and it remains a challenge to describe the relationships of one variable on another. The data understanding part is crucial but without making any assumptions on the model form, the search space is super-exponential in the number of variables and therefore not a common practice.
 We propose graphical hypergeometric networks (HNet), a method where associations across variables are tested for significance by statistical inference.
 HNet learns the Association from datasets with mixed datatypes and with unknown function. Input datasets can range from generic dataframes to nested data structures with lists, missing values and enumerations. The aim is to determine a network with significant associations that can shed light on the complex relationships across variables.
-HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values.</p>
+HNet can be used for all kind of datasets that contain features such as categorical, boolean, and/or continuous values. Associations are tested for categoric–categoric (hypergeometric), categoric–numeric (Mann-Whitney U), and numeric–numeric pairs (Spearman by default, or Pearson).</p>
 <p>Use HNET if your goal is:</p>
 <ul class="simple">
 <li><ol class="arabic simple">
@@ -204,6 +204,7 @@ You can <a class="reference external" href="https://erdogant.github.io/hnet/page
 <li class="toctree-l1"><a class="reference internal" href="Methods.html#statistical-inference">Statistical inference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Methods.html#hypergeometric-test">Hypergeometric test</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Methods.html#wilcoxon-ranksum">Wilcoxon Ranksum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Methods.html#numericnumeric-testing">Numeric–numeric testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Methods.html#multiple-testing">Multiple testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Methods.html#enrichment">Enrichment</a></li>
 </ul>

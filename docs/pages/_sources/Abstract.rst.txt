@@ -12,7 +12,7 @@ Results
     We demonstrate that HNet showed high accuracy and performance in the detection of node links. In the case of the Alarm data set we can demonstrate on average an MCC score of 0.33 + 0.0002 (P<1x10-6), whereas Bayesian structure learning resulted in an average MCC score of 0.52 + 0.006 (P<1x10-11), and randomly assigning edges resulted in a MCC score of 0.004 + 0.0003 (P=0.49).
 
 Conclusions
-    HNet can process raw unstructured data sets, allows analysis of mixed data types, it easily scales up in number of variables, and allows detailed examination of the detected associations.
+    HNet can process raw unstructured data sets, allows analysis of mixed data types (including numeric–numeric associations via Spearman or Pearson), it easily scales up in number of variables, and allows detailed examination of the detected associations.
 
 
 Schematic overview

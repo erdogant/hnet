@@ -279,6 +279,9 @@ class hnet():
 
         """
         if not isinstance(df, pd.DataFrame): raise ValueError('Input data [df] must be of type pd.DataFrame()')
+        # Re-apply verbosity so dependency loggers (e.g. df2onehot) match self.verbose
+        # even if they were imported/configured after __init__.
+        utils.set_logger(self.verbose)
         # Clean readily fitted models to ensure correct results.
         self._clean()
         # Preprocessing
@@ -1137,10 +1140,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     assert isinstance(df, pd.DataFrame), 'Data must be of type pd.DataFrame()'
     assert len(y)==df.shape[0], 'Length of [df] and [y] must be equal'
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
-    # Handle verbose logging - use instance verbose if not overridden
+    # Handle verbose logging - use instance verbose if not overridden.
+    # set_logger also syncs the df2onehot logger.
     verbose = utils.set_logger(verbose) if verbose is not None else utils.get_logger()
-    logging.getLogger('df2onehot').setLevel(utils.get_logger())
-
 
     # DECLARATIONS
     config = {}

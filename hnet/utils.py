@@ -138,19 +138,29 @@ def set_logger(verbose='info'):
     # Apply level on the package logger. Keep handlers at the lowest level so
     # that *only* the logger level controls what is emitted (raising a handler
     # to WARNING would permanently hide DEBUG even after set_logger('debug')).
-    pkg_logger = logging.getLogger('hnet')
-    pkg_logger.setLevel(level)
-    for handler in pkg_logger.handlers:
-        handler.setLevel(logging.DEBUG)
+    _apply_level('hnet', level)
 
-    # Also update any child loggers (e.g. leftovers from older getLogger(__name__))
-    # so an explicit level on a child cannot bypass the package setting.
-    prefix = 'hnet.'
-    for name in list(logging.Logger.manager.loggerDict):
-        if name.startswith(prefix):
-            logging.getLogger(name).setLevel(level)
+    # Keep dependency loggers in sync. df2onehot's own set_logger() is unreliable
+    # (it targets a wrong logger name in some releases), which caused its messages
+    # to only respect verbosity on a second run. Setting it here makes the first
+    # association_learning() call already honor verbose=.
+    _apply_level('df2onehot', level)
 
     return level
+
+
+def _apply_level(name, level):
+    """Set *level* on logger *name* and all of its existing children."""
+    pkg = logging.getLogger(name)
+    pkg.setLevel(level)
+    for handler in pkg.handlers:
+        # Handler stays open; logger level is the filter.
+        handler.setLevel(logging.DEBUG)
+
+    prefix = name + '.'
+    for child_name in list(logging.Logger.manager.loggerDict):
+        if child_name.startswith(prefix):
+            logging.getLogger(child_name).setLevel(level)
 
 
 def disable_tqdm():

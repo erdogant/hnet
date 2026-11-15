@@ -18,6 +18,7 @@ from hnet import hnet
 df = sns.load_dataset("penguins")
 hn = hnet(verbose='info')
 results_new = hn.association_learning(df)
+
 # %%
 
 

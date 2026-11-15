@@ -5,7 +5,7 @@ from ismember import ismember
 
 import numpy as np
 import pandas as pd
-from scipy.stats import hypergeom, ranksums
+from scipy.stats import hypergeom, ranksums, spearmanr, pearsonr
 import statsmodels.stats.multitest as multitest
 from sklearn.preprocessing import MinMaxScaler
 
@@ -134,6 +134,53 @@ def _prob_ranksums(datac, yc, specificity=None):
         out['category_label']=''
 
     return(out)
+
+
+# %% Numeric–numeric association testing
+def _numeric_numeric_pvalues(df_num, method='spearman'):
+    """Pairwise p-values between numeric columns (Spearman or Pearson).
+
+    Parameters
+    ----------
+    df_num : pd.DataFrame
+        DataFrame containing only numeric columns.
+    method : str, {'spearman', 'pearson'}
+        Correlation method used to obtain the two-sided p-value.
+
+    Returns
+    -------
+    pd.DataFrame
+        Square symmetric matrix of p-values. Diagonal is 1. Cells that cannot
+        be tested (constant column or fewer than 3 pairwise-complete observations)
+        are NaN.
+    """
+    cols = list(df_num.columns.astype(str))
+    n = len(cols)
+    P = np.ones((n, n), dtype=float)
+    if n < 2:
+        return pd.DataFrame(P, index=cols, columns=cols)
+
+    data = df_num.to_numpy(dtype=float, copy=True)
+    for i in range(n):
+        for j in range(i + 1, n):
+            x = data[:, i]
+            y = data[:, j]
+            mask = np.isfinite(x) & np.isfinite(y)
+            if mask.sum() < 3:
+                p = np.nan
+            else:
+                xi, yi = x[mask], y[mask]
+                if np.nanstd(xi) == 0 or np.nanstd(yi) == 0:
+                    p = np.nan
+                else:
+                    if method == 'spearman':
+                        _, p = spearmanr(xi, yi)
+                    elif method == 'pearson':
+                        _, p = pearsonr(xi, yi)
+                    else:
+                        raise ValueError("method must be 'spearman' or 'pearson'")
+            P[i, j] = P[j, i] = p
+    return pd.DataFrame(P, index=cols, columns=cols)
 
 
 # %% Hypergeometric test

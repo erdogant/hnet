@@ -17,8 +17,12 @@ from sklearn.preprocessing import minmax_scale, MinMaxScaler
 import df2onehot
 from ismember import ismember
 import classeval as clf
-import hnet.hnstats as hnstats
 
+try:
+    import hnet.hnstats as hnstats
+except:
+    import hnstats as hnstats
+    
 import logging
 logger = logging.getLogger(__name__)
 

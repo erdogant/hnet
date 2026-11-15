@@ -17,9 +17,6 @@ import networkx as nx
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from scipy.stats import combine_pvalues, chi2
 from scipy.special import gammaln, logsumexp
-import hnet.hnstats as hnstats
-import hnet.network as network
-from hnet.savefig import savefig
 import pypickle
 import colourmap
 import imagesc
@@ -27,6 +24,15 @@ from ismember import ismember
 import warnings
 import datazets as dz
 from df2onehot.utils import set_dtypes, set_y
+
+try:
+    import hnet.hnstats as hnstats
+    import hnet.network as network
+    from hnet.savefig import savefig
+except: 
+    import hnstats as hnstats
+    import network as network
+    from savefig import savefig
     
 warnings.filterwarnings("ignore")
 label_encoder = LabelEncoder()
@@ -56,12 +62,13 @@ class hnet():
 
     This is the main function to detect significant edge probabilities between pairs of vertices (node-links) given the input DataFrame.
 
-    A multi-step process is performed which consisting 5 steps.
-        1. Pre-processing: Typing and One-hot Enconding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).
-        2. Combinations: Make smart combinations between features because many mutual exclusive classes do exists.
+    A multi-step process is performed consisting of the following steps.
+        1. Pre-processing: Typing and One-hot Encoding. Each feature is set as being categoric, numeric or is excluded. The typing can be user-defined or automatically determined on conditions. Encoding of features in a one-hot dense array is done for the categoric terms. The one-hot dense array is subsequently used to create combinatory features using k combinations over n features (without replacement).
+        2. Combinations: Make smart combinations between features because many mutual exclusive classes do exist.
         3. Hypergeometric test: The final dense array is used to assess significance with the categoric features.
         4. Wilcoxon Ranksum: To assess significance across the numeric features (Xnumeric) in relation to the dense array (Xcombination), the Mann-Whitney-U test is performed.
-        5. Multiple test correction: Declaring significance for node-links.
+        5. Numeric–numeric testing (optional, on by default): Spearman (or Pearson) correlation p-values between every pair of original numeric features.
+        6. Multiple test correction: Declaring significance for node-links.
 
     The final output of HNet is an adjacency matrix containing edge weights that depicts the strength of pairs of vertices.
     The adjacency matrix can then be examined as a network representation using D3blocks.
@@ -108,6 +115,11 @@ class hnet():
         If a list of edges is provided as black_list, they are excluded from the search and the resulting model will not contain any of those edges.
     white_list : List or None (default : None)
         If a list of edges is provided as white_list, the search is limited to those edges. The resulting model will then only contain edges that are in white_list.
+    num_num_test : str or None, {'spearman', 'pearson', None} (default : 'spearman')
+        Statistical test for numeric–numeric pairs. Spearman (default) is non-parametric
+        and consistent with the rank-based tests used elsewhere. Set to None to disable
+        numeric–numeric testing. Resulting p-values are stored in simmatP (and flow into
+        the category-aggregated matrix) together with all other associations.
 
     Returns
     -------
@@ -149,14 +161,16 @@ class hnet():
 
     """
 
-    def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None, verbose='info'):
-        """Initialize distfit with user-defined parameters."""
+    def __init__(self, alpha=0.05, y_min=10, perc_min_num=0.8, k=1, multtest='holm', dtypes='pandas', specificity='medium', dropna=True, excl_background=None, black_list=None, white_list=None, num_num_test='spearman', verbose='info'):
+        """Initialize hnet with user-defined parameters."""
         if (alpha is None): alpha=1
         if (y_min is None): y_min=1
         if isinstance(white_list, str): white_list=[white_list]
         if isinstance(black_list, str): black_list=[black_list]
         if (white_list is not None) and len(white_list)==0: white_list=None
         if (black_list is not None) and len(black_list)==0: black_list=None
+        if num_num_test is not None and num_num_test not in ('spearman', 'pearson'):
+            raise ValueError("num_num_test must be 'spearman', 'pearson', or None")
         # Store in object
         self.alpha = alpha
         self.y_min = np.maximum(1, y_min)
@@ -170,6 +184,7 @@ class hnet():
         self.excl_background = excl_background
         self.white_list = white_list
         self.black_list = black_list
+        self.num_num_test = num_num_test
         self.verbose = verbose
         hnstats.set_logger(verbose=verbose)
 
@@ -207,6 +222,18 @@ class hnet():
             nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min)
             nr_succes_pop_n.append(nr_succes_i)
             logger.debug('[%d] %s' %(i, nr_succes_i))
+
+        # Numeric–numeric pairs (Spearman / Pearson)
+        if self.num_num_test is not None:
+            num_mask = np.asarray(dtypes) == 'num'
+            colNum = df.columns[num_mask]
+            if len(colNum) >= 2:
+                logger.info('Association learning across numeric–numeric pairs (%s).' % self.num_num_test)
+                Pnum = hnstats._numeric_numeric_pvalues(df[colNum], method=self.num_num_test)
+                # Align names (simmatP uses string index/columns) and write the block
+                common = Pnum.index.intersection(simmatP.index.astype(str))
+                if len(common) >= 2:
+                    simmatP.loc[common, common] = Pnum.loc[common, common]
 
         # Post processing
         simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna)
@@ -250,7 +277,7 @@ class hnet():
         # Clean readily fitted models to ensure correct results.
         self._clean()
         # Preprocessing
-        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df)
+        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df.copy())
         # Here we go! Over all columns now
         simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes)
         # Combine rules

@@ -1286,7 +1286,6 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
     maxstr = np.minimum(X_comb.columns.str.len().max(), 40)
     # Do math if response variable has more then 1 option
     if len(np.unique(y))>1:
-        logger.debug('Working on [%s]%s ' %(X_comb.columns[i], '.' * (maxstr - len(X_comb.columns[i]))), end='')
         # Remove columns if it belongs to the same categorical subgroup; these can never overlap!
         Iloc = ~np.isin(df.columns, X_labx[i])
         # Compute fit
@@ -1307,12 +1306,16 @@ def _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, specificit
             simmatP.loc[colname, IA] = dfout['Padj'].iloc[IB].values
             # Count nr. successes
             out = [colname, X_comb.iloc[:, i].sum() / X_comb.shape[0]]
-            # showprogress
-            logger.debug('[%g]' %(len(IB)), end='')
+            logger.debug('Working on [%s]%s [%g]',
+                         X_comb.columns[i],
+                         '.' * (maxstr - len(X_comb.columns[i])),
+                         len(IB))
+        else:
+            logger.debug('Working on [%s]%s [0 matches]',
+                         X_comb.columns[i],
+                         '.' * (maxstr - len(X_comb.columns[i])))
     else:
-        logger.debug('Skipping [%s] because length of unique values=1' %(X_comb.columns[i]), end='')
-
-    logger.debug('')
+        logger.debug('Skipping [%s] because length of unique values=1', X_comb.columns[i])
 
     # Return
     return out, simmatP, simmat_labx

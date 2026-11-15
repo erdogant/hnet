@@ -1,35 +1,49 @@
+# --------------------------------------------------------------------------
+# hnet initialization
+# --------------------------------------------------------------------------
 import logging
 
+# Optional TRACE level (also used by set_logger)
+if not hasattr(logging, 'TRACE'):
+    logging.TRACE = 5
+    logging.addLevelName(logging.TRACE, 'TRACE')
+
+# Package logger. Default = INFO. set_logger / get_logger live in hnet.utils
+# and are re-exported below so users can do: import hnet as hn; hn.set_logger('info')
+logger = logging.getLogger('hnet')
+_log_handler = logging.StreamHandler()
+_fmt = '[{asctime}] [{name}] [{levelname}] {message}'
+_formatter = logging.Formatter(fmt=_fmt, style='{', datefmt='%d-%m-%Y %H:%M:%S')
+_log_handler.setFormatter(_formatter)
+_log_handler.setLevel(logging.DEBUG)
+if not logger.handlers:  # avoid duplicate handlers on re-import
+    logger.addHandler(_log_handler)
+logger.setLevel(logging.INFO)
+logger.propagate = False
+
+# --------------------------------------------------------------------------
+# Public API
+# --------------------------------------------------------------------------
 from hnet.hnet import hnet
 
 from hnet.hnet import (
     enrichment,
     compare_networks,
     to_undirected,
-    # import_example,
-    )
+)
 
 from hnet.adjmat_vec import (
     vec2adjmat,
     adjmat2vec,
-    )
+)
+
+from hnet.utils import set_logger, get_logger, log_prefix
 
 from datazets import get as import_example
 
 __author__ = 'Erdogan Tasksen'
 __email__ = 'erdogant@gmail.com'
-__version__ = '1.3.5'
-
-# Setup package-level logger
-_logger = logging.getLogger('hnet')
-_log_handler = logging.StreamHandler()
-_formatter = logging.Formatter(fmt='[{asctime}] [{name:<12.12}] [{levelname:<8}] {message}', style='{', datefmt='%d-%m-%Y %H:%M:%S')
-_log_handler.setFormatter(_formatter)
-_log_handler.setLevel(logging.DEBUG)
-if not _logger.hasHandlers():  # avoid duplicate handlers if re-imported
-    _logger.addHandler(_log_handler)
-_logger.setLevel(logging.DEBUG)
-_logger.propagate = True  # allow submodules to inherit this handler
+__version__ = '1.3.4'
 
 # module level doc-string
 __doc__ = """
@@ -43,32 +57,34 @@ The aim is to determine a network with significant associations that can shed li
 
 Examples
 --------
+>>> # Import library and set verbosity
+>>> import hnet as hn
+>>> hn.set_logger('info')   # or 'warning', 'error', 'debug', 'trace', None
+>>>
 >>> # Initialize hnet with default settings
->>> from hnet import hnet
->>> hn = hnet()
+>>> model = hn.hnet()
 >>> # Load example dataset
->>> df = hn.import_example('titanic')
-
+>>> df = model.import_example('titanic')
+>>>
 >>> # Structure learning
->>> out = hn.association_learning(df)
+>>> out = model.association_learning(df)
 >>>
 >>> # Plot dynamic graphs
->>> G = hn.d3graph()
->>> G = hn.d3heatmap()
+>>> G = model.d3graph()
+>>> G = model.d3heatmap()
 >>>
 >>> # Plot static graph
->>> G = hn.plot()
+>>> G = model.plot()
 >>>
 >>> # Plot heatmap
->>> hn.heatmap(cluster=True)
+>>> model.heatmap(cluster=True)
 >>>
 >>> # Plot feature importance
->>> hn.plot_feat_importance()
+>>> model.plot_feat_importance()
 >>>
 >>> # Examine differences between models
->>> import hnet
->>> scores, adjmat = hnet.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
->>> adjmat_undirected = hnet.to_undirected(out['simmatLogP'])
+>>> scores, adjmat = hn.compare_networks(out['simmatP'], out['simmatP'], showfig=True)
+>>> adjmat_undirected = hn.to_undirected(out['simmatLogP'])
 >>>
 
 References

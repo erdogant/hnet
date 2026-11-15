@@ -1,5 +1,8 @@
 """Statistics that are used in hnet."""
 
+import logging
+logger = logging.getLogger('hnet')
+
 import df2onehot as df2onehot
 from ismember import ismember
 
@@ -13,10 +16,12 @@ import os
 import tempfile
 from pathlib import Path
 import itertools
-import requests
+from tqdm import tqdm
 
-import logging
-logger = logging.getLogger(__name__)
+try:
+    from hnet.utils import get_logger, disable_tqdm, log_prefix
+except:
+    from utils import get_logger, disable_tqdm, log_prefix
 
 
 # %% Compute significance
@@ -159,9 +164,11 @@ def _numeric_numeric_pvalues(df_num, method='spearman'):
     P = np.ones((n, n), dtype=float)
     if n < 2:
         return pd.DataFrame(P, index=cols, columns=cols)
-
+    
     data = df_num.to_numpy(dtype=float, copy=True)
-    for i in range(n):
+    desc = f'{log_prefix()} Association learning [numeric]'
+    for i in tqdm(range(0, n), disable=disable_tqdm(), desc=desc):
+    # for i in range(n):
         for j in range(i + 1, n):
             x = data[:, i]
             y = data[:, j]
@@ -273,7 +280,7 @@ def _logscale(simmat_padj):
 def _multipletestcorrectionAdjmat(adjmat, multtest):
     # Multiple test correction
     if multtest is not None:
-        logger.info('Multiple test correction using %s' %(multtest))
+        logger.info(f'Multiple test correction: {multtest}')
         # Make big row with all pvalues
         tmpP = adjmat.values.ravel()
         # Find not nans
@@ -302,7 +309,7 @@ def _multipletestcorrection(out, multtest):
         if multtest is None:
             Padj = Praw
         else:
-            logger.info('Multiple test correction using %s' %(multtest))
+            logger.info(f'Multiple test correction: {multtest}')
             # Padj=np.zeros_like(Praw)*np.nan
             Padj=multitest.multipletests(Praw, method=multtest)[1]
 
@@ -699,120 +706,3 @@ def _filter_adjmat(simmatLogP, labx, threshold=None, min_edges=None, white_list=
 
     return simmatLogP, labx
 
-# %% Verbosity
-# =============================================================================
-# Functions for verbosity
-# =============================================================================
-def convert_verbose_to_old(verbose):
-    """Convert new verbosity to the old ones."""
-    # In case the new verbosity is used, convert to the old one.
-    if verbose is None: verbose=0
-    if isinstance(verbose, str) or verbose>=10:
-        status_map = {
-            60: 0, 'silent': 0, 'off': 0, 'no': 0, None: 0,
-            40: 1, 'error': 1, 'critical': 1,
-            30: 2, 'warning': 2,
-            20: 3, 'info': 3,
-            10: 4, 'debug': 4}
-        return status_map.get(verbose, 0)
-    else:
-        return verbose
-
-def convert_verbose_to_new(verbose):
-    """Convert old verbosity to the new."""
-    # In case the new verbosity is used, convert to the old one.
-    if verbose is None: verbose=0
-    if not isinstance(verbose, str) and verbose<10:
-        status_map = {
-            'None': 'silent',
-            0: 'silent',
-            6: 'silent',
-            1: 'critical',
-            2: 'warning',
-            3: 'info',
-            4: 'debug',
-            5: 'debug'}
-        if verbose>=2: print('[hnet] WARNING use the standardized verbose status. The status [1-6] will be deprecated in future versions.')
-        return status_map.get(verbose, 0)
-    else:
-        return verbose
-
-def get_logger():
-    return logger.getEffectiveLevel()
-
-
-def set_logger(verbose: [str, int] = 'info', return_status: bool = False):
-    """Set the logger for verbosity messages.
-
-    Parameters
-    ----------
-    verbose : str or int, optional, default='info' (20)
-        Logging verbosity level. Possible values:
-        - 0, 60, None, 'silent', 'off', 'no' : no messages.
-        - 10, 'debug' : debug level and above.
-        - 20, 'info' : info level and above.
-        - 30, 'warning' : warning level and above.
-        - 50, 'critical' : critical level and above.
-
-    Returns
-    -------
-    None.
-
-    > # Set the logger to warning
-    > set_logger(verbose='warning')
-    > # Test with different messages
-    > logger.debug("Hello debug")
-    > logger.info("Hello info")
-    > logger.warning("Hello warning")
-    > logger.critical("Hello critical")
-
-    """
-    # Convert verbose to new
-    verbose = convert_verbose_to_new(verbose)
-
-    # Set 0 and None as no messages.
-    if (verbose==0) or (verbose is None):
-        verbose=60
-    # Convert verbose to numeric level
-    if verbose in (0, None):
-        log_level = logging.CRITICAL + 10  # silent
-    elif isinstance(verbose, str):
-        levels = {
-            'silent': logging.CRITICAL + 10,
-            'off': logging.CRITICAL + 10,
-            'no': logging.CRITICAL + 10,
-            'debug': logging.DEBUG,
-            'info': logging.INFO,
-            'warning': logging.WARNING,
-            'error': logging.ERROR,
-            'critical': logging.CRITICAL,
-        }
-        log_level = levels.get(verbose.lower(), logging.INFO)
-    elif isinstance(verbose, int):
-        log_level = verbose
-    else:
-        log_level = logging.INFO
-
-    # Set package logger
-    logger = logging.getLogger('hnet')
-    logger.setLevel(log_level)
-    for handler in logger.handlers:
-        handler.setLevel(log_level)
-
-    if return_status:
-        return log_level
-
-
-
-def disable_tqdm():
-    """Set the logger for verbosity messages."""
-    return (True if (logger.getEffectiveLevel()>=30) else False)
-
-
-def check_logger(verbose: [str, int] = None):
-    """Check the logger."""
-    if verbose is not None: set_logger(verbose)
-    logger.debug('DEBUG')
-    logger.info('INFO')
-    logger.warning('WARNING')
-    logger.critical('CRITICAL')

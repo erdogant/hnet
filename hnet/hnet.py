@@ -8,6 +8,11 @@
 # -------------------------------------------------
 
 # %% Libraries
+import logging
+import warnings
+logger = logging.getLogger('hnet')
+warnings.filterwarnings("ignore")
+
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import numpy as np
@@ -17,29 +22,26 @@ import networkx as nx
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from scipy.stats import combine_pvalues, chi2
 from scipy.special import gammaln, logsumexp
+
 import pypickle
 import colourmap
 import imagesc
 from ismember import ismember
-import warnings
 import datazets as dz
 from df2onehot.utils import set_dtypes, set_y
 
 try:
+    import hnet.utils as utils
     import hnet.hnstats as hnstats
     import hnet.network as network
     from hnet.savefig import savefig
 except: 
+    import utils as utils
     import hnstats as hnstats
     import network as network
     from savefig import savefig
-    
-warnings.filterwarnings("ignore")
+
 label_encoder = LabelEncoder()
-
-import logging
-logger = logging.getLogger(__name__)
-
 
 # %% Log survival function of Fishers method
 def _fisher_logsf(statistic, k):
@@ -186,7 +188,13 @@ class hnet():
         self.black_list = black_list
         self.num_num_test = num_num_test
         self.verbose = verbose
-        hnstats.set_logger(verbose=verbose)
+        utils.set_logger(verbose=verbose)
+    
+    def get_logger(self):
+        return utils.get_logger()
+
+    def set_logger(self, verbose):
+        return utils.set_logger(verbose)
 
     def prepocessing(self, df):
         """Pre-processing based on the model parameters."""
@@ -214,11 +222,9 @@ class hnet():
         #     print(len(results))
 
         # Print some
-        logger.info('Association learning across [%d] categories.' %(X_comb.shape[1]))
-
         nr_succes_pop_n = []
-        logger.info('Association learning across categories')
-        for i in tqdm(range(0, X_comb.shape[1]), disable=hnstats.disable_tqdm()):
+        desc = f'{utils.log_prefix()} Association learning [categories]'
+        for i in tqdm(range(0, X_comb.shape[1]), disable=utils.disable_tqdm(), desc=desc):
             nr_succes_i, simmatP, simmat_labx = _do_the_math(df, X_comb, dtypes, X_labx, simmatP, simmat_labx, i, self.specificity, self.y_min)
             nr_succes_pop_n.append(nr_succes_i)
             logger.debug('[%d] %s' %(i, nr_succes_i))
@@ -228,7 +234,6 @@ class hnet():
             num_mask = np.asarray(dtypes) == 'num'
             colNum = df.columns[num_mask]
             if len(colNum) >= 2:
-                logger.info('Association learning across numeric–numeric pairs (%s).' % self.num_num_test)
                 Pnum = hnstats._numeric_numeric_pvalues(df[colNum], method=self.num_num_test)
                 # Align names (simmatP uses string index/columns) and write the block
                 common = Pnum.index.intersection(simmatP.index.astype(str))
@@ -238,10 +243,10 @@ class hnet():
         # Post processing
         simmatP, simmatLogP, simmat_labx, nr_succes_pop_n = hnstats._post_processing(simmatP, nr_succes_pop_n, simmat_labx, self.alpha, self.multtest, self.fillna, self.dropna)
         # Message
-        print_text = 'Total number of associatons computed: [%.0d]' %((simmatP.shape[0] * simmatP.shape[1]) - simmatP.shape[0])
-        logger.info('-' * len(print_text))
+        print_text = 'Associatons computed: [%.0d]' %((simmatP.shape[0] * simmatP.shape[1]) - simmatP.shape[0])
+        # logger.info('-' * len(print_text))
         logger.info(print_text)
-        logger.info('-' * len(print_text))
+        # logger.info('-' * len(print_text))
         # Return
         return simmatP, simmatLogP, simmat_labx, nr_succes_pop_n
 
@@ -277,7 +282,7 @@ class hnet():
         # Clean readily fitted models to ensure correct results.
         self._clean()
         # Preprocessing
-        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df.copy())
+        df, simmatP, labx, X_comb, X_labx, dtypes = self.prepocessing(df)
         # Here we go! Over all columns now
         simmatP, simmatLogP, labx, nr_succes_pop_n = self.compute_associations(df, simmatP, labx, X_comb, X_labx, dtypes)
         # Combine rules
@@ -306,13 +311,13 @@ class hnet():
         if not np.all(simmatP.shape[0]==len(labx)):
             raise ValueError('[hnet] >Error: The number of columns in [simmatP] does not match with the label [labx]!')
 
-        logger.info('Computing category association using Fishers method.')
         uilabx = np.unique(labx)
         adjmatP = np.ones((len(uilabx), len(uilabx)))
         adjmatlogP = np.zeros((len(uilabx), len(uilabx)))
 
         # Combine Pvalues for catagories based on fishers method
-        for labxC in tqdm(uilabx, disable=hnstats.disable_tqdm()):
+        desc = f'{utils.log_prefix()} Compute category association: Fishers method'
+        for labxC in tqdm(uilabx, disable=utils.disable_tqdm(), desc=desc):
             for labxR in uilabx:
                 Ic = labx==labxC
                 Ir = labx==labxR
@@ -901,8 +906,9 @@ class hnet():
     
         df_rules = pd.DataFrame(index=np.arange(0, simmatP.shape[0]), columns=['antecedents_labx', 'antecedents', 'consequents', 'Pfisher'])
         df_rules['consequents'] = simmatP.index.values
-    
-        for i in tqdm(range(0, simmatP.shape[0]), disable=hnstats.disable_tqdm(), desc='Combining Pvalues'):
+        
+        desc = f'{utils.log_prefix()} Combine Pvalues'
+        for i in tqdm(range(0, simmatP.shape[0]), disable=utils.disable_tqdm(), desc=desc):
             idx = np.where(simmatP.iloc[i, :] < 1)[0]
             # Remove self
             idx = np.setdiff1d(idx, i)
@@ -1132,7 +1138,9 @@ def enrichment(df, y, y_min=None, alpha=0.05, multtest='holm', dtypes='pandas', 
     assert len(y)==df.shape[0], 'Length of [df] and [y] must be equal'
     assert 'numpy' in str(type(y)), 'y must be of type numpy array'
     # Handle verbose logging - use instance verbose if not overridden
-    verbose = hnstats.set_logger(verbose) if verbose is not None else hnstats.get_logger()
+    verbose = utils.set_logger(verbose) if verbose is not None else utils.get_logger()
+    logging.getLogger('df2onehot').setLevel(utils.get_logger())
+
 
     # DECLARATIONS
     config = {}
@@ -1199,7 +1207,8 @@ def to_undirected(adjmat, method='logp'):
     adjmatS=np.zeros(adjmat.shape, dtype=float)
 
     # Make symmetric using maximum as combining function
-    for i in tqdm(range(adjmat.shape[0]), disable=hnstats.disable_tqdm(), desc='Make adjacency matrix undirected..'):
+    desc = f'{utils.log_prefix()} Make adjacency matrix undirected'
+    for i in tqdm(range(adjmat.shape[0]), disable=utils.disable_tqdm(), desc=desc):
         for j in range(adjmat.shape[1]):
             if method=='logp':
                 # Maximum -log10(P) values

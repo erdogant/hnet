@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 from ismember import ismember
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('hnet')
 
 # %%  Convert adjacency matrix to vector
 def vec2adjmat(source, target, weight=None, symmetric=True):

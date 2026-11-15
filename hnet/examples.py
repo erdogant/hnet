@@ -2,35 +2,55 @@
 # print(dir(hnet))
 # print(hnet.__version__)
 
+import hnet as hn
+hn.set_logger('info')      # default
+hn.set_logger('warning')
+hn.set_logger('debug')
+hn.set_logger('trace')
+hn.set_logger(None)        # silence
+print(hn.get_logger())     # e.g. 20
+
+# %% Penguins dataset
+import seaborn as sns
+from hnet import hnet
+
+# Load dataset
+df = sns.load_dataset("penguins")
+hn = hnet(verbose='info')
+results_new = hn.association_learning(df)
 # %%
 
-from hnet import hnet
-hn = hnet()
-df = hn.import_example('stormofswords')
+
+hn.plot(figsize=(25,25))
+hn.d3graph()
+hn.d3heatmap()
+
+# hn.d3graph(summarize=True)
+# hn.d3heatmap(summarize=True)
+hn.plot_feat_importance(marker_size=50)
+
+# %%
+
+# from hnet import hnet
+# hn = hnet()
+# df = hn.import_example('stormofswords')
 
 
 # %% test examples
 import numpy as np
 import pandas as pd
-
 from hnet import hnet
-hn = hnet()
-df = hn.import_example()
+import datazets as dz
 
-import hnet
-df=hnet.import_example('titanic')
-
-# %% Titanic case
-from hnet import hnet
-hn = hnet()
-df = hn.import_example('titanic')
-
+df = dz.get('titanic')
 del df['PassengerId']
 del df['Name']
+
+hn = hnet()
 results_new = hn.association_learning(df)
 
 # STATIC
-hn.plot(node_color='cluster')
+hn.plot(node_color='cluster', figsize=(20,20))
 hn.heatmap(summarize=False, cluster=True)
 
 # Feature importance

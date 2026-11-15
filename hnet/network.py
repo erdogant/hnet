@@ -19,12 +19,12 @@ from ismember import ismember
 import classeval as clf
 
 try:
-    import hnet.hnstats as hnstats
+    import hnet.utils as utils
 except:
-    import hnstats as hnstats
+    import utils as utils
     
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('hnet')
 
 #%% Make graph from adjacency matrix
 def to_graph(adjmat):
@@ -42,7 +42,7 @@ def to_graph(adjmat):
     """
     assert float(nx.__version__)>2, 'This function requires networkx to be v2 or higher. Try to: pip install --upgrade networkx'
     config = dict()
-    config['verbose'] = hnstats.get_logger()
+    config['verbose'] = utils.get_logger()
 
     adjmat = df2onehot.is_DataFrame(adjmat)
     logger.info('Making graph..')
@@ -175,7 +175,7 @@ def cluster_comparison_centralities(G, width=5, height=4, showfig=False, methodt
     config['showfig']=showfig
     config['width']=width
     config['height']=height
-    config['verbose'] = hnstats.get_logger()
+    config['verbose'] = utils.get_logger()
 
     logger.info('Error in network function: Compute a dozen of centralities and clusterlabels')
     
@@ -210,7 +210,7 @@ def plot(G, node_color=None, node_label=None, node_size=100, node_size_scale=[25
     config['filename']=filename
     config['width']=width
     config['height']=height
-    config['verbose']=hnstats.get_logger()
+    config['verbose']=utils.get_logger()
     config['node_size_scale']=node_size_scale
     
     logger.error('Error in network function: Creating network plot')

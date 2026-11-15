@@ -9,7 +9,7 @@
 from os import mkdir
 from os import path
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('hnet')
 
 #%%
 def savefig(fig, filepath, dpi=100, transp=False):
